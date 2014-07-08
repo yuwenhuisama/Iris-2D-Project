@@ -1,0 +1,154 @@
+Iris2D 更新日志
+
+版本号 v4.07.08.1
+2014.7.5
+修改：
+IrisBitmap类：
+修改了IrisDrawText函数，通过GDI+的描边方式修正了之前绘制文字不清晰的问题。
+
+IrisViewport类：
+修正了RenderSurface函数中忘记释放oldSurface可能导致内存溢出的问题。
+
+版本号 v4.07.05.1
+2014.7.5
+新增：
+（*Library版）
+实装了最新版本的Iris 2D。
+增添了IrisAudio，通过Iris 2D的基于Fmod的音频引擎，能够播放许多种类的不同格式音乐。
+重构了整个Libaray版本的代码结构，同时最新版本的Iris 2D Library版的使用不需要配置DirectX环境。（对象生成的API删除了无用的Device参数）
+修改了一些类型转换的数据问题
+
+IrisBitmap类：
+添加了SaveToFile函数，允许将Bitmap中的位图直接保存到文件中。（png格式）
+
+版本号 v3.06.20.1
+2014.6.20
+新增：
+IrisGraphics类：
+实现了fadeIn、fadeOut函数
+
+修改：
+Iris2D.cpp
+修改了Windows回调函数，修复了退出冲突的BUG。
+
+XMLDefine.h
+修改和增添了一些新的宏，方便XML文档的生成。
+
+版本号 v3.06.05.1
+2014.06.05
+新增：
+（*新功能）内嵌XML解释器，现在可以用XML文档来绘制静态界面
+
+修改：
+（*大幅度修改）修改了IrisBitmap、IrisSprite、IrisViewport的构造函数移除了D3DDevice的无用参数
+为所有类的可直接修改的成员全部设置了访问器，并且把它们设置为私有成员
+
+版本号 v2.06.04.1
+2014.06.04
+新增：
+ModuleIrisGraphics类：
+实现了getBrightness和setBrightness两个访问器
+
+修改：
+IrisApp类：
+修改了Setup函数，引入了光照以实现亮度的调节
+
+IrisSprite类：
+修改了Draw函数，引入了光照实现了亮度的调节
+
+IrisBitmap类：
+修改了MakeTexture和SetOpacity两个函数以实现透明度的调节
+
+版本号 v2.06.02.1
+2014.06.02
+新增：
+IrisViewport类：
+增加了GetRect、SetRect、GetTone、SetTone、GetColor、SetColor几个访问器
+新增了ToneDeal函数以实现tone，现保留不使用。
+修改了RenderToBackbuffer函数实现了视口的tone，但是当前版本的tone只是对Viewport中的精灵适用tone而不是整个Viewport区域，和RGSS不太相同。
+增加了viewportTone成员以实现tone
+
+IrisFont类：
+新增WStringToString以转换wstring到string
+新增EnumFontsProc回调函数
+实现了Existed函数
+
+ModuleIrisGraphics类：
+实现了Wait函数
+实现了frameReset函数
+实现了snap2Bitmap函数
+
+修改：
+IrisBitmap类：
+修改了SetFont，实现访问保护
+修改了MakeTexture函数，以实现Viewport的tone
+修改了Draw函数以实现Viewport的tone
+修正了SetPixel对像素点设置的错误
+
+IrisSprite类：
+修改了SetTone、SetSrcRect、SetBitmap，实现访问保护
+
+版本号 v2.06.01.1
+2014.06.01
+IrisSprite类：
+修改：
+修改了IrisSprite类的构造函数，以符合《C++编程规范》中的风格
+修改了Update函数以实现Flash
+修改了SetBitmap
+
+增加：
+realFlashDuration、isFlash、flashColor、flashDuration四个私有变量以实现Flash函数
+实现了Flash，但不建议使用
+
+IrisBitmap类：
+增加：
+PrevFlash、DoFlash、EndFlash三个函数以实现Sprite的Flash
+
+
+版本号 v2.05.31.1
+2014.05.31
+IrisViewport类：
+修改：
+修改了RenderToBackBuffer函数使之绘制Texture到后台交换页面上（缓冲技术）以便于实现全局画面的修改
+修改了MakeBuffer函数以解决绘图边角纹理混乱的问题
+修改了MakeTexture函数，删除了无用的纹理生成，提高了效率
+
+ModuleIrisGraphics类：
+修改：
+修改了Update函数以实现后台交换页面的实现
+修改了Init函数以实现后台交换页面的生成
+
+新增：
+实现了ox oy
+新增ExchangeTexture、ExchangeVertex两个静态成员
+新增MakeExchangeTexture、MakeExchangeVertex两个函数
+
+版本号 v1.05.30.1
+2014.05.30
+IrisSprite类：
+修改：
+直接提供了tone、color、bitmap、srcRect的访问器
+修改了IrisSprite类的构造函数
+修改了IrisSprite类的析构函数
+修改了Draw函数
+修改了GetWidth和GetHeight两个函数，删除了.cpp里面的那两个
+
+新增：
+实现了ox oy
+实现了精灵的色调
+新增了srcRect的访问器
+
+IrisBitmap类：
+修改：
+直接提供了font的访问器
+修改了IrisBitmap类的构造函数
+修改了IrisBitmap类的析构函数
+修改了Draw函数、MakeTexture函数
+
+新增：
+实现了Sprite的srcRect限制绘制的功能
+增加了两个成员变量limitRect和tone
+
+IrisTone类：
+增加：
+（*对Library版）增加了GetIrisTone和ReleaseIrisTone接口
