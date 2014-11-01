@@ -29,7 +29,7 @@ Welcome to Iris-2D-Project !!
   
   So, I have to apologize that the plateform-crossing of Iris 2D has not been started yet, so Iris 2D now only can run on Windows and based on DirectX 9.0; but I promise that other platforms' edition of Iris 2D will soon come out.
   
-  If you have some advice and just want to contact with me, please e-mail me with these address:
+  If you have some advice and just want to contact with me, please e-mail me follow these addresses:
   
   a1026121287@hotmail.com;
   1026121287@qq.com
