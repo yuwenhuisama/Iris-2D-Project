@@ -1,0 +1,13 @@
+Iris 2D Biscuit Update Log
+
+Version v1.10.05.1
+2014.11.05
+Iris 2D Biscuit Release
+Notice: This vision belongs to alpha version, so there are some functions are still uncompleted.
+
+Edition Biscuit Features
+For Iris 2D Biscuit-Turkey-A(SC)
+Global:
+1.(Important)Use programmable render pipeline(hlsl) to replace fixed render pipeline in Iris 2D Amethyst, leading to higher efficiency of render and lower resource usage when running.
+2.Modify and optimizes some functions which can lead to problems of efficiency.
+3.Modify the realize of ModuleIrisGraphics::Update to repair possible problem of frame missing.

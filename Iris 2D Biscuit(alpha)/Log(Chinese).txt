@@ -1,0 +1,13 @@
+Iris 2D Biscuit 更新日志
+
+版本号 v1.10.05.1
+2014.11.05
+Iris 2D Biscuit 发布
+该版本为测试版本，所以有些功能没有完善，这一点请注意。
+
+Biscuit版本特性：
+Iris 2D Biscuit-Turkey-A(SC)
+全局：
+采用可编程管线代替 Iris 2D Amethyst 的固定管线，渲染效率更高，程序运行时占用更低。
+修改并优化了 Iris 2D Amethyst 版本中存在效率问题的几个函数。
+修改了 ModuleIrisGraphics::Update 的实现，可能存在掉帧问题也被修复。
