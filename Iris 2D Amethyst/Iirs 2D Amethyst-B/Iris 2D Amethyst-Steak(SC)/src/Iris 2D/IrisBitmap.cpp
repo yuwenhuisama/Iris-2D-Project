@@ -293,7 +293,9 @@ void IrisBitmap::SetFont(IrisFont* font){
 }
 
 void IrisBitmap::Dispose(){
-	Gdiplus::Color color(0, 0, 0, 0);
+	if (Disposed()){
+		return;
+	}
 	delete this->bitmap;
 	delete this->font;
 	delete this->limitRect;
