@@ -692,7 +692,7 @@ void IrisBitmap::RadialBlur(float angle, int division){
 
 int IrisBitmap::TextSize(const IrisFont* fontIris, wstring str){
 	int size = IrisFont::defaultSize;
-	IrisColor *color = IrisFont::defaultColor;
+	IrisColor *color;
 	wstring name;
 	bool bold, shadow, italic;
 
@@ -701,6 +701,7 @@ int IrisBitmap::TextSize(const IrisFont* fontIris, wstring str){
 		bold = IrisFont::defaultBold;
 		shadow = IrisFont::defaultShadow;
 		italic = IrisFont::defaultItalic;
+		color = IrisFont::defaultColor;
 	}
 	else
 	{
@@ -708,6 +709,7 @@ int IrisBitmap::TextSize(const IrisFont* fontIris, wstring str){
 		bold = fontIris->bold;
 		shadow = fontIris->shadow;
 		italic = fontIris->italic;
+		color = fontIris->color;
 	}
 
 	wstring text(str);
@@ -741,7 +743,7 @@ void IrisBitmap::IrisDrawText(const IrisFont* fontIris, int x, int y, int width,
 	//this->needRefreshTexture = true;
 
 	int size = IrisFont::defaultSize;
-	IrisColor *color = IrisFont::defaultColor;
+	IrisColor *color;
 	wstring name;
 	bool bold, shadow, italic;
 
@@ -750,6 +752,7 @@ void IrisBitmap::IrisDrawText(const IrisFont* fontIris, int x, int y, int width,
 		bold = IrisFont::defaultBold;
 		shadow = IrisFont::defaultShadow;
 		italic = IrisFont::defaultItalic;
+		color = IrisFont::defaultColor;
 	}
 	else
 	{
@@ -757,6 +760,7 @@ void IrisBitmap::IrisDrawText(const IrisFont* fontIris, int x, int y, int width,
 		bold = fontIris->bold;
 		shadow = fontIris->shadow;
 		italic = fontIris->italic;
+		color = fontIris->color;
 	}
 
 	// release

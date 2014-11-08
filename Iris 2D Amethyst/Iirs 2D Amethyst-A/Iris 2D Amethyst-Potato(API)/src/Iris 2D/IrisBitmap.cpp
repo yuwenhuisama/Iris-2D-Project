@@ -603,7 +603,7 @@ void IrisBitmap::RadialBlur(float angle, int division){
 
 int IrisBitmap::TextSize(const IIrisFont* fontIris, wstring str){
 	int size = IrisFont::defaultSize;
-	IrisColor *color = (IrisColor*)IrisFont::defaultColor;
+	IrisColor *color;
 	wstring name;
 	bool bold, shadow, italic;
 
@@ -612,6 +612,7 @@ int IrisBitmap::TextSize(const IIrisFont* fontIris, wstring str){
 		bold = IrisFont::defaultBold;
 		shadow = IrisFont::defaultShadow;
 		italic = IrisFont::defaultItalic;
+		color = (IrisColor*)IrisFont::defaultColor;
 	}
 	else
 	{
@@ -619,6 +620,7 @@ int IrisBitmap::TextSize(const IIrisFont* fontIris, wstring str){
 		bold = ((IrisFont*)fontIris)->bold;
 		shadow = ((IrisFont*)fontIris)->shadow;
 		italic = ((IrisFont*)fontIris)->italic;
+		color = (IrisColor*)((IrisFont*)fontIris)->color;
 	}
 
 	wstring text(str);
@@ -650,7 +652,7 @@ void IrisBitmap::IrisDrawText(const IIrisFont* fontIris, int x, int y, int width
 	Graphics tg(tBitmap);
 
 	int size = IrisFont::defaultSize;
-	IrisColor *color = (IrisColor*)IrisFont::defaultColor;
+	IrisColor *color;
 	wstring name;
 	bool bold, shadow, italic;
 
@@ -659,6 +661,7 @@ void IrisBitmap::IrisDrawText(const IIrisFont* fontIris, int x, int y, int width
 		bold = IrisFont::defaultBold;
 		shadow = IrisFont::defaultShadow;
 		italic = IrisFont::defaultItalic;
+		color = (IrisColor*)IrisFont::defaultColor;
 	}
 	else
 	{
@@ -666,6 +669,7 @@ void IrisBitmap::IrisDrawText(const IIrisFont* fontIris, int x, int y, int width
 		bold = ((IrisFont*)fontIris)->bold;
 		shadow = ((IrisFont*)fontIris)->shadow;
 		italic = ((IrisFont*)fontIris)->italic;
+		color = (IrisColor*)((IrisFont*)fontIris)->color;
 	}
 
 	FontFamily fontFamily(name.c_str());
