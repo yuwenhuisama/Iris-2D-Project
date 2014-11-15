@@ -65,17 +65,11 @@ int IrisApp::MessageLoop(){
 			currentTime = GetTickCount();
 			if (currentTime > lastTime){
 				timeDelta = (float)(currentTime - lastTime);
-
 				ModuleIrisGraphics::frameCount += 1;
 				ModuleIrisGraphics::frameRate = 1000.0f / timeDelta;
-
 				lastTime = currentTime + (DWORD)(1000.0f / FPSMax);
-
 				CanDisplay = true;
 			}
-
-			//Alpha enabled
-			Device->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 			ModuleIrisGraphics::UpdateBackBuffer(shader, proj);
 		}
 	}
@@ -163,14 +157,14 @@ bool IrisApp::Setup(int Width, int Height){
 	Device->SetSamplerState(0, D3DSAMP_MIPFILTER, D3DTEXF_POINT);
 
 	/* persist to change*/
-	//Device->SetRenderState(D3DRS_LIGHTING, true);
+	Device->SetRenderState(D3DRS_LIGHTING, true);
 
-	//D3DXVECTOR3 dir(0.0f, 0.0f, 1.0f);
-	//D3DXCOLOR c = d3d::WHITE;
-	//D3DLIGHT9 dirLight = d3d::InitDirectionalLight(&dir, &c);
+	D3DXVECTOR3 dir(0.0f, 0.0f, 1.0f);
+	D3DXCOLOR c = d3d::WHITE;
+	D3DLIGHT9 dirLight = d3d::InitDirectionalLight(&dir, &c);
 
-	//Device->SetLight(0, &dirLight);
-	//Device->LightEnable(0, true);
+	Device->SetLight(0, &dirLight);
+	Device->LightEnable(0, true);
 
 	Device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
 	Device->SetRenderState(D3DRS_ALPHAREF, 0x00000000);
@@ -186,6 +180,9 @@ bool IrisApp::Setup(int Width, int Height){
 	// set blending factors so that alpha component determines transparency
 	Device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	Device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+
+	// alpha enable
+	Device->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 
 	return true;
 }

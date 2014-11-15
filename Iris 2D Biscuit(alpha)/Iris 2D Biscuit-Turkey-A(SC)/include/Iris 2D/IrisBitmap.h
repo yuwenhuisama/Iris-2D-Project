@@ -60,8 +60,6 @@ private:
 	void MakeBuffer(int width, int height);
 	void MakeTexture(const IrisRect* limitRect);
 
-	void SetOpacity(int opacity);
-
 	IrisViewport *inhoodViewport;
 
 	bool needRefreshTexture;
@@ -141,5 +139,7 @@ public:
 	void SaveToFile(wstring fileName);
 
 	static bool GraphicsChange;
+
+	friend class ModuleIrisGraphics;
 };
 #endif

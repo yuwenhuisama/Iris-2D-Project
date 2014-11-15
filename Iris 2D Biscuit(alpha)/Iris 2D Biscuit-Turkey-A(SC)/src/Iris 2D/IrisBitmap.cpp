@@ -199,28 +199,7 @@ void IrisBitmap::MakeTexture(const IrisRect* limitRect){
 	b = tone.blue + b + (grayfull - b) * tone.gray / 256
 	*/
 	
-	for(unsigned int x = 0; x < bmpdt.Width; x++){
-		for(unsigned int y = 0; y < bmpdt.Height; y++){
-			c1 = p + x + y * bmpdt.Stride / sizeof(ARGBQuad);
-			c2 = p2 + x + y * rect.Pitch / sizeof(ARGBQuad);
-			c2->Alpha = c1->Alpha;// * opacity / 255;
-			c2->Red = c1->Red;
-			c2->Green = c1->Green;
-			c2->Blue = c1->Blue;
-
-			//grayfull = (c1->Red * 38 + c1->Green * 75 + c1->Blue * 15) >> 7;
-			//c2->Red = tone->red + c1->Red + (grayfull - c1->Red) * tone->alpha / 255;
-			//c2->Green = tone->green + c1->Green + (grayfull - c1->Green) * tone->alpha / 255;
-			//c2->Blue = tone->blue + c1->Blue + (grayfull - c1->Blue) * tone->alpha / 255;
-
-			//grayfull = (c1->Red * 38 + c1->Green * 75 + c1->Blue * 15) >> 7;
-			//c2->Red = this->inhoodViewport->GetTone()->red + c1->Red + (grayfull - c1->Red) * this->inhoodViewport->GetTone()->alpha / 255;
-			//c2->Green = this->inhoodViewport->GetTone()->green + c1->Green + (grayfull - c1->Green) * this->inhoodViewport->GetTone()->alpha / 255;
-			//c2->Blue = this->inhoodViewport->GetTone()->blue + c1->Blue + (grayfull - c1->Blue) * this->inhoodViewport->GetTone()->alpha / 255;
-		}
-	}
-
-	//memcpy(rect.pBits, bmpdt.Scan0, bmpdt.Width * bmpdt.Height * 4);
+	memcpy(p2, p, bmpdt.Width * bmpdt.Height * sizeof(ARGBQuad));
 
 	this->bitmap->UnlockBits(&bmpdt);
 	this->texture->UnlockRect(0);
@@ -369,16 +348,18 @@ bool IrisBitmap::IrisBitmapBitBlt(int x, int y, Bitmap *destBitmap, Bitmap* srcB
 	BYTE* tp1 = (BYTE*)p;
 	BYTE* tp2 = (BYTE*)p2;
 
-	for (UINT y = 0; y < bmpdt2->Height; y++){
-		for (UINT x = 0; x <bmpdt2->Width; x++){
-			PARGBQuad c1 = (PARGBQuad)tp1 + x + y * bmpdt1->Stride / sizeof(ARGBQuad);
-			PARGBQuad c2 = (PARGBQuad)tp2 + x + y * bmpdt2->Stride / sizeof(ARGBQuad);
-			c2->Alpha = c1->Alpha;
-			c2->Blue = c1->Blue * opacity / 255 + c2->Blue * (1 - opacity / 255);
-			c2->Green = c1->Green * opacity / 255 + c2->Green * (1 - opacity / 255);
-			c2->Red = c1->Red * opacity / 255 + c2->Red * (1 - opacity / 255);
-		}
-	}
+	//for (UINT y = 0; y < bmpdt2->Height; y++){
+	//	for (UINT x = 0; x <bmpdt2->Width; x++){
+	//		PARGBQuad c1 = (PARGBQuad)tp1 + x + y * bmpdt1->Stride / sizeof(ARGBQuad);
+	//		PARGBQuad c2 = (PARGBQuad)tp2 + x + y * bmpdt2->Stride / sizeof(ARGBQuad);
+	//		c2->Alpha = c1->Alpha;
+	//		c2->Blue = c1->Blue * opacity / 255 + c2->Blue * (1 - opacity / 255);
+	//		c2->Green = c1->Green * opacity / 255 + c2->Green * (1 - opacity / 255);
+	//		c2->Red = c1->Red * opacity / 255 + c2->Red * (1 - opacity / 255);
+	//	}
+	//}
+
+	memcpy(tp2, tp1, bmpdt2->Width * bmpdt2->Height * sizeof(ARGBQuad));
 
 	bmp1->UnlockBits(bmpdt1);
 	bmp2->UnlockBits(bmpdt2);
@@ -520,15 +501,11 @@ void IrisBitmap::GradientFillRect(const IrisRect *rect, const IrisColor *color1,
 
 void IrisBitmap::Clear(){
 	this->needRefreshTexture = true;
-	//graphics->Clear(Color(100, 100, 100));
 
 	Bitmap* tp = this->bitmap->Clone(0, 0, this->width, this->height, PixelFormat32bppARGB);
 	Graphics* tg = new Graphics(tp);
-
 	delete this->bitmap;
-
 	tg->Clear(Color(0, 0, 0, 0));
-	
 	this->bitmap = tp->Clone(0, 0, tp->GetWidth(), tp->GetHeight(), PixelFormat32bppARGB);
 
 	delete tp;
@@ -537,11 +514,9 @@ void IrisBitmap::Clear(){
 }
 
 void IrisBitmap::ClearRect(int x, int y, int width, int height){
-	//SolidBrush *tpBrush = new SolidBrush(Color(0, 0, 0));
 	this->needRefreshTexture = true;
 	IrisColor color(0, 0, 0, 0);
 	this->FillRect(x, y, width, height, &color);
-	
 }
 
 void IrisBitmap::ClearRect(const IrisRect* rect){
@@ -773,30 +748,6 @@ IDirect3DTexture9* IrisBitmap::GetTexture(){
 
 IDirect3DDevice9* IrisBitmap::GetDevice(){
 	return this->Device;
-}
-
-void IrisBitmap::SetOpacity(int opacity){
-
-	IrisRect srcRect(0, 0, (float)this->bitmap->GetWidth(), (float)this->bitmap->GetHeight());
-	// 计算相交矩形
-	int iwidth = (int)(limitRect->x + limitRect->width > srcRect.width ? srcRect.width - limitRect->x : limitRect->width);
-	int iheight = (int)(limitRect->y + limitRect->height > srcRect.height ? srcRect.height - limitRect->y : limitRect->height);
-
-	D3DLOCKED_RECT rect;
-	this->texture->LockRect(0, &rect, NULL, 0);
-
-	PARGBQuad p2 = (PARGBQuad)rect.pBits;
-
-	PARGBQuad c2 = 0;
-
-	for (int x = 0; x < iwidth; x++){
-		for (int y = 0; y < iheight; y++){
-			c2 = p2 + x + y * rect.Pitch / sizeof(ARGBQuad);
-			c2->Alpha = c2->Alpha * opacity / 255;
-		}
-	}
-
-	this->texture->UnlockRect(0);
 }
 
 int IrisBitmap::GetWidth(){

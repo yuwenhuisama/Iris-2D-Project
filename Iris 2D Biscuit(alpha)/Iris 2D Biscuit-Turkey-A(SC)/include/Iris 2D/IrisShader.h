@@ -16,12 +16,12 @@ public:
 	void SetViewportProjMatrix(const D3DXMATRIX& projMatrix);
 	void SetBackbufferProjMatrix(const D3DXMATRIX& projMatrix);
 	void SetTransitionProjMatrix(const D3DXMATRIX& proj);
+	void SetTransitionType(int type);
 
 	bool DoSpriteShade(list<IrisSprite*>& spriteList);
 	bool DoViewportShade(list<IrisViewport*>& viewportList);
 	bool DoBackBufferShade();
-	bool DoTransitionShade(
-		IDirect3DTexture9* pre, IDirect3DTexture9* mask, IDirect3DTexture9* target, const float& cmp);
+	bool DoTransitionShade(IDirect3DTexture9* mask, const float& cmp);
 
 	bool ReleaseShaderSource();
 
@@ -57,10 +57,10 @@ private:
 	D3DXHANDLE transitionMaskTexHandle;
 	D3DXHANDLE transitionTargetTexHandle;
 	D3DXHANDLE transitionCmpPixelHandle;
+	D3DXHANDLE transitionTypeHandle;
 
 	D3DXHANDLE spriteToneVectorHandle;
 	D3DXHANDLE spriteOpacityHandle;
-	D3DXHANDLE spriteBrightnessHandle;
 
 	D3DXHANDLE viewportToneVectorHandle;
 

@@ -3,8 +3,6 @@
 
 #include <sstream>
 
-//IDirect3DDevice9 *Device = 0;
-
 IrisApp* app;
 MyLayout layout;
 
@@ -53,6 +51,9 @@ void ResourceInit(){
 
 bool Display(){
 
+	ModuleIrisGraphics::transition(40, L"image\\001-Blind01.png", 0);
+	//ModuleIrisGraphics::transition(40, L"", 0);
+
 	BEGIN_IRIS_SAFE_WHILE()
 		if (ModuleIrisInput::KeyBoardKeyTrigger(DIK_P))
 			ModuleIrisAudio::BgmFade(10000);
@@ -86,12 +87,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	int showCmd){
 
 	app = IrisApp::Instance();
-	app->Init(hInstance, 800, 600, Display, L"My Iris App");
-
-	ResourceInit();
-	ModuleIrisAudio::BgmPlay(L"media\\music\\おく はなこ - 兜禅.mp3", 100, 100);
-
-	app->Run();
+	if (app->Init(hInstance, 800, 600, Display, L"My Iris App")){
+		ResourceInit();
+		ModuleIrisAudio::BgmPlay(L"media\\music\\おく はなこ - 兜禅.mp3", 100, 100);
+		app->Run();
+	}
 	app->Release();
 	delete app;
 

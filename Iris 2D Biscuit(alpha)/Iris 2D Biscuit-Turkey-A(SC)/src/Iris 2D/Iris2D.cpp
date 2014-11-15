@@ -49,7 +49,7 @@ bool d3d::InitD3D(
 	wc.hInstance     = hInstance;
 	wc.hIcon         = LoadIcon(0, IDI_APPLICATION);
 	wc.hCursor       = LoadCursor(0, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	wc.lpszMenuName  = 0;
 	wc.lpszClassName = L"Iris2D";
 

@@ -24,10 +24,10 @@ IrisShader::IrisShader()
 	transitionMaskTexHandle = 0;
 	transitionTargetTexHandle = 0;
 	transitionCmpPixelHandle = 0;
+	transitionTypeHandle = 0;
 
 	spriteToneVectorHandle = 0;
 	spriteOpacityHandle = 0;
-	spriteBrightnessHandle = 0;
 
 	spriteTexHandle = 0;
 	viewportTexHandle = 0;
@@ -109,7 +109,6 @@ bool IrisShader::InitShader(IDirect3DDevice9* td, wstring spriteShaderFileName,
 	spriteTexHandle = spriteEffect->GetParameterByName(0, "Tex");
 	spriteToneVectorHandle = spriteEffect->GetParameterByName(0, "ToneVector");
 	spriteOpacityHandle = spriteEffect->GetParameterByName(0, "Opacity");
-	spriteBrightnessHandle = spriteEffect->GetParameterByName(0, "Brightness");
 
 	spriteTechHandle = spriteEffect->GetTechniqueByName("LightAndTexture");
 
@@ -131,6 +130,7 @@ bool IrisShader::InitShader(IDirect3DDevice9* td, wstring spriteShaderFileName,
 	transitionMaskTexHandle = transitionEffect->GetParameterByName(0, "MaskTex");
 	transitionTargetTexHandle = transitionEffect->GetParameterByName(0, "TargetTex");
 	transitionCmpPixelHandle = transitionEffect->GetParameterByName(0, "CmpPixel");
+	transitionTypeHandle = transitionEffect->GetParameterByName(0, "Type");
 
 	transitionTechHandle = transitionEffect->GetTechniqueByName("LightAndTexture");
 
@@ -204,19 +204,6 @@ bool IrisShader::DoSpriteShade(list<IrisSprite*>& sprites){
 
 		spriteEffect->SetMatrix(spriteWorldMatrixHandle, &resultMatrix);
 
-		//D3DMATERIAL9 mtrl;// = d3d::WHITElibfmodex_MTRL;
-
-		//int x = ModuleIrisGraphics::getBrightness();
-
-		//mtrl.Ambient = D3DXCOLOR(D3DCOLOR_XRGB(x, x, x));
-		//mtrl.Diffuse = D3DXCOLOR(D3DCOLOR_XRGB(x, x, x));
-		//mtrl.Specular = D3DXCOLOR(D3DCOLOR_XRGB(x, x, x));
-		//mtrl.Emissive = d3d::BLACK;
-		//mtrl.Power = 5.0f;
-		//Device->SetMaterial(&mtrl);
-
-		spriteEffect->SetInt(spriteBrightnessHandle, ModuleIrisGraphics::getBrightness());
-
 		spriteEffect->Begin(&numPasses, 0);
 
 		for (int i = 0; i < numPasses; i++)
@@ -274,7 +261,21 @@ bool IrisShader::DoBackBufferShade(){
 
 	UINT numPasses = 0;
 	backBufferEffect->SetTechnique(backBufferTechHandle);
-	backBufferEffect->SetTexture(backBufferTexHandle, ModuleIrisGraphics::ExchangeTexture);
+	if (ModuleIrisGraphics::isFreeze)
+		backBufferEffect->SetTexture(backBufferTexHandle, ModuleIrisGraphics::TransitionTexture);
+	else
+		backBufferEffect->SetTexture(backBufferTexHandle, ModuleIrisGraphics::ExchangeTexture);
+
+	D3DMATERIAL9 mtrl;// = d3d::WHITE_MTRL;
+
+	int x = ModuleIrisGraphics::getBrightness();
+
+	mtrl.Ambient = D3DXCOLOR(D3DCOLOR_XRGB(x, x, x));
+	mtrl.Diffuse = D3DXCOLOR(D3DCOLOR_XRGB(x, x, x));
+	mtrl.Specular = D3DXCOLOR(D3DCOLOR_XRGB(x, x, x));
+	mtrl.Emissive = d3d::BLACK;
+	mtrl.Power = 5.0f;
+	Device->SetMaterial(&mtrl);
 
 	D3DXMATRIX M;
 	D3DXMatrixIdentity(&M);
@@ -299,27 +300,29 @@ void IrisShader::SetTransitionProjMatrix(const D3DXMATRIX& proj){
 	transitionEffect->SetMatrix(transitionProjMatrixHandle, &proj);
 }
 
-bool IrisShader::DoTransitionShade(
-	IDirect3DTexture9* pre, IDirect3DTexture9* mask, IDirect3DTexture9* target, const float& cmp){
+void IrisShader::SetTransitionType(int type){
+	transitionEffect->SetInt(transitionTypeHandle, type);
+}
+
+bool IrisShader::DoTransitionShade(IDirect3DTexture9* mask, const float& cmp){
 	
+	transitionEffect->SetTechnique(transitionTechHandle);
+
 	D3DXMATRIX M;
 	D3DXMatrixIdentity(&M);
-	transitionEffect->SetTexture(transitionPreTexHandle, pre);
+	transitionEffect->SetMatrix(transitionWorldMatrixHandle, &M);
+	transitionEffect->SetTexture(transitionPreTexHandle, ModuleIrisGraphics::FreezedTexture);
 	transitionEffect->SetTexture(transitionMaskTexHandle, mask);
-	transitionEffect->SetTexture(transitionTargetTexHandle, target);
+	transitionEffect->SetTexture(transitionTargetTexHandle, ModuleIrisGraphics::ExchangeTexture);
 	transitionEffect->SetFloat(transitionCmpPixelHandle, cmp);
 
 	UINT numPasses = 0;
-	transitionEffect->SetTechnique(transitionTechHandle);
 
 	transitionEffect->Begin(&numPasses, 0);
 	for (int i = 0; i < numPasses; i++)
 	{
-		backBufferEffect->BeginPass(i);
+		transitionEffect->BeginPass(i);
 
-		//Device->SetFVF(d3d::Vertex::FVF);
-		transitionEffect->SetMatrix(backBufferWorldMatrixHandle, &M);
-		//transitionEffect->SetTexture(backBufferTexHandle, ModuleIrisGraphics::ExchangeTexture);
 		Device->SetStreamSource(0, ModuleIrisGraphics::ExchangeVertex, 0, sizeof(Iris2DVertex));
 		Device->DrawPrimitive(D3DPT_TRIANGLELIST, 0, 2);
 
@@ -335,6 +338,8 @@ bool IrisShader::ReleaseShaderSource(){
 		d3d::Release<ID3DXEffect*>(spriteEffect);
 		d3d::Release<ID3DXEffect*>(viewportEffect);
 		d3d::Release<ID3DXEffect*>(backBufferEffect);
+		d3d::Release<ID3DXEffect*>(transitionEffect);
+		transitionEffect = NULL;
 		spriteEffect = NULL;
 		viewportEffect = NULL;
 		backBufferEffect = NULL;

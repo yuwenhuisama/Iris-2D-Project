@@ -147,7 +147,6 @@ IrisViewport* IrisSprite::GetViewport(){
 
 void IrisSprite::SetOpacity(int tOpacity){
 	this->opacity = tOpacity;
-	this->bitmap->SetOpacity(this->opacity);
 }
 
 int IrisSprite::GetOpacity(){
@@ -221,6 +220,4 @@ IrisSprite::~IrisSprite(void)
 {
 	if(!this->Disposed())
 		this->Dispose();
-	//if(!this->bitmap->Disposed())
-	//	this->bitmap->Dispose();
 }

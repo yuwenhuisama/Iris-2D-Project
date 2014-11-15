@@ -6,6 +6,7 @@ matrix WorldMatrix;
 matrix ProjMatrix;
 
 float CmpPixel;
+int Type;
 
 texture PreTex;
 texture MaskTex;
@@ -50,13 +51,18 @@ struct PS_OUTPUT {
 PS_OUTPUT ps_main(PS_INPUT input) {
 	PS_OUTPUT output = (PS_OUTPUT)0;
 	float4 preColor = tex2D(S0, input.uv);
-	float4 maskColor = tex2D(S1, input.uv);
 	float4 targetColor = tex2D(S2, input.uv);
 
-	if (maskColor.a >= CmpPixel)
-		output.color = targetColor;
-	else
-		output.color = preColor;
+	if (Type == 0){
+		output.color = preColor * CmpPixel + targetColor * (1.0f - CmpPixel);
+	}
+	else {
+		float4 maskColor = tex2D(S1, input.uv);
+		if (maskColor.r > CmpPixel)
+			output.color = targetColor;
+		else
+			output.color = preColor;
+	}
 
 	return output;
 }
@@ -72,6 +78,7 @@ technique LightAndTexture
 		//
 		// Set Misc render states.
 
+		vertexshader = null;
 		pixelshader = compile ps_2_0 ps_main();
 	    // fvf = XYZ | Normal | Tex1;
 		fvf = XYZ | Tex1;

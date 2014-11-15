@@ -20,22 +20,6 @@ sampler S0 = sampler_state
     MipFilter = LINEAR;
 };
 
-struct PS_INPUT {
-	float2 uv : TEXCOORD;
-};
-
-struct PS_OUTPUT {
-	vector color : COLOR;
-};
-
-PS_OUTPUT ps_main(PS_INPUT input) {
-	PS_OUTPUT output = (PS_OUTPUT)0;
-	float4 incolor = tex2D(S0, input.uv);
-	output.color = incolor;
-	
-	return output;
-}
-
 // 
 // Effect
 //
@@ -47,7 +31,8 @@ technique LightAndTexture
         //
         // Set Misc render states.
 
-		pixelshader  = compile ps_2_0 ps_main();
+		vertexshader	 = null;
+		pixelshader		 = null;
         fvf              = XYZ | Tex1;
         Lighting         = true;
         NormalizeNormals = true;
@@ -58,6 +43,8 @@ technique LightAndTexture
 
         WorldTransform[0]   = (WorldMatrix);
         ProjectionTransform = (ProjMatrix);
+
+		Sampler[0] = (S0);
 
     }
 

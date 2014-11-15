@@ -33,10 +33,10 @@ PS_OUTPUT ps_main(PS_INPUT input) {
 	PS_OUTPUT output = (PS_OUTPUT)0;
 	float4 incolor = tex2D(S0, input.uv);
 	output.color = incolor;
-	int grayfull = (output.color.r * 38 + output.color.g * 75 + output.color.b * 15) / 128;
-	output.color.r = (float)(ToneVector.r + output.color.r * 255 + (grayfull - output.color.r * 255) * ToneVector.a / 255) / 255.0f;
-	output.color.g = (float)(ToneVector.g + output.color.g * 255 + (grayfull - output.color.g * 255) * ToneVector.a / 255) / 255.0f;
-	output.color.b = (float)(ToneVector.b + output.color.b * 255 + (grayfull - output.color.b * 255) * ToneVector.a / 255) / 255.0f;
+	float grayfull = (float)(incolor.r * 255.0f * 38.0f + incolor.g * 255.0f * 75.0f + incolor.b * 255.0f * 15.0f) / 128.0f;
+	output.color.r = (float)((float)ToneVector.r + incolor.r * 255.0f + (grayfull - incolor.r * 255.0f) * (float)ToneVector.a / 255.0f) / 255.0f;
+	output.color.g = (float)((float)ToneVector.g + incolor.g * 255.0f + (grayfull - incolor.g * 255.0f) * (float)ToneVector.a / 255.0f) / 255.0f;
+	output.color.b = (float)((float)ToneVector.b + incolor.b * 255.0f + (grayfull - incolor.b * 255.0f) * (float)ToneVector.a / 255.0f) / 255.0f;
 	
 	return output;
 }

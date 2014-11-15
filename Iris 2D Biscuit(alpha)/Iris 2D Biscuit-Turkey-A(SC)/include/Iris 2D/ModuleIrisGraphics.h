@@ -76,6 +76,9 @@ public:
 	static IDirect3DTexture9* PreTexture;
 	static IDirect3DTexture9* TargetTexture;
 
+	static IDirect3DTexture9* FreezedTexture;
+	static IDirect3DTexture9* TransitionTexture;
+
 	static int getBrightness();
 	static void setBrightness(int brightness);
 

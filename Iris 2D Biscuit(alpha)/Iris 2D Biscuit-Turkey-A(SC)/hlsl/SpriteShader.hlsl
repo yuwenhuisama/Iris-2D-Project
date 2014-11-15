@@ -6,7 +6,6 @@ matrix WorldMatrix;
 matrix ProjMatrix;
 int4 ToneVector;
 int Opacity;
-int Brightness;
 
 texture Tex;
 
@@ -40,8 +39,6 @@ PS_OUTPUT ps_main(PS_INPUT input) {
 	output.color.r = (float)((float)ToneVector.r + incolor.r * 255.0f + (grayfull - incolor.r * 255.0f) * (float)ToneVector.a / 255.0f) / 255.0f;
 	output.color.g = (float)((float)ToneVector.g + incolor.g * 255.0f + (grayfull - incolor.g * 255.0f) * (float)ToneVector.a / 255.0f) / 255.0f;
 	output.color.b = (float)((float)ToneVector.b + incolor.b * 255.0f + (grayfull - incolor.b * 255.0f) * (float)ToneVector.a / 255.0f) / 255.0f;
-	
-	output.color.rgb -= (1.0 - (float)Brightness / 255.0f);
 
 	return output;
 }

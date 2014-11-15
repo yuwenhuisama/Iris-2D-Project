@@ -18,6 +18,9 @@ IDirect3DDevice9 *ModuleIrisGraphics::Device;
 IDirect3DTexture9* ModuleIrisGraphics::ExchangeTexture = 0;
 IDirect3DVertexBuffer9* ModuleIrisGraphics::ExchangeVertex = 0;
 
+IDirect3DTexture9* ModuleIrisGraphics::FreezedTexture = 0;
+IDirect3DTexture9* ModuleIrisGraphics::TransitionTexture = 0;
+
 float ModuleIrisGraphics::frameRate = 0;
 unsigned long ModuleIrisGraphics::frameCount = 0;
 float ModuleIrisGraphics::brightness = 255;
@@ -70,6 +73,9 @@ ModuleIrisGraphics::ModuleIrisGraphics(void)
 void ModuleIrisGraphics::MakeExchangeTexture(){
 	Device->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8,
 		D3DPOOL_DEFAULT, &(ExchangeTexture), NULL);
+	Device->CreateTexture(width, height, 1, 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &FreezedTexture, NULL);
+	Device->CreateTexture(width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8,
+		D3DPOOL_DEFAULT, &(TransitionTexture), NULL);
 }
 
 void ModuleIrisGraphics::MakeExchangeVertex(){
@@ -143,10 +149,10 @@ void ModuleIrisGraphics::Update(){
 
 	IrisApp::Instance()->CanDisplay = false;
 
-	// 如果正在冻结，那么不把后台交换页画上去
-	app->Device->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
 	ModuleIrisGraphics::UpdateSpritesAndViewports(shader, proj);
-	ModuleIrisGraphics::UpdateBackBuffer(shader, proj);
+	// 如果正在冻结，那么不把后台交换页画上去
+	if (!isFreeze)
+		ModuleIrisGraphics::UpdateBackBuffer(shader, proj);
 }
 
 
@@ -158,7 +164,6 @@ void ModuleIrisGraphics::UpdateSpritesAndViewports(IrisShader*& shader, D3DXMATR
 	}
 
 	// 把Viewport的Texture画到后台交换页上
-
 	IDirect3DSurface9* eSurface;
 	IDirect3DSurface9* oldSurface;
 	ModuleIrisGraphics::ExchangeTexture->GetSurfaceLevel(0, &(eSurface));
@@ -180,7 +185,6 @@ void ModuleIrisGraphics::UpdateSpritesAndViewports(IrisShader*& shader, D3DXMATR
 void ModuleIrisGraphics::UpdateBackBuffer(IrisShader*& shader, D3DXMATRIX& proj){
 
 	shader->SetBackbufferProjMatrix(proj);
-
 	// 最后把后台交换页画到后台缓存上
 	Device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0);
 	Device->BeginScene();
@@ -188,9 +192,7 @@ void ModuleIrisGraphics::UpdateBackBuffer(IrisShader*& shader, D3DXMATRIX& proj)
 	shader->DoBackBufferShade();
 
 	Device->EndScene();
-	//Alpha disabled
-	Device->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
-
+	
 	Device->Present(0, 0, 0, 0);
 }
 
@@ -216,6 +218,80 @@ void ModuleIrisGraphics::Wait(int duration){
 
 void ModuleIrisGraphics::freeze(){
 	isFreeze = true;
+	
+	// 保存当前BackBuffer
+	IDirect3DSurface9* EXSurface;
+	IDirect3DSurface9* ExchangeSurface;
+	ExchangeTexture->GetSurfaceLevel(0, &EXSurface);
+	Device->CreateOffscreenPlainSurface(width, height, D3DFMT_A8R8G8B8, D3DPOOL_SYSTEMMEM, &ExchangeSurface, 0);
+	Device->GetRenderTargetData(EXSurface, ExchangeSurface);
+
+	D3DLOCKED_RECT rect;
+	memset(&rect, 0, sizeof(rect));
+	FreezedTexture->LockRect(0, &rect, NULL, 0);
+	PARGBQuad p1 = (PARGBQuad)rect.pBits;
+	PARGBQuad c1 = 0;
+
+	D3DLOCKED_RECT rc;
+	memset(&rc, 0, sizeof(rc));
+	ExchangeSurface->LockRect(&rc, 0, D3DLOCK_NOOVERWRITE);
+	PARGBQuad p2 = (PARGBQuad)rc.pBits;
+	PARGBQuad c2 = 0;
+	
+	memcpy(p1, p2, width * height * sizeof(ARGBQuad));
+
+	ExchangeSurface->UnlockRect();
+	FreezedTexture->UnlockRect(0);
+	EXSurface->Release();
+	ExchangeSurface->Release();
+}
+
+void ModuleIrisGraphics::transition(int duration, wstring filename, int vague){
+
+	if (!isFreeze){
+		freeze();
+	}
+	Update();
+
+	IDirect3DTexture9* maskTexture = NULL;
+	IrisBitmap* mask = NULL;
+	IrisShader* shader = IrisShader::Instance();
+	if (filename == L"")
+		shader->SetTransitionType(0);
+	else {
+		shader->SetTransitionType(1);
+		mask = new IrisBitmap(filename);
+		mask->MakeTexture(mask->limitRect);
+		maskTexture = mask->GetTexture();
+	}
+
+	IDirect3DSurface9* eSurface;
+	IDirect3DSurface9* oldSurface;
+	
+	D3DXMATRIX proj;
+	D3DXMatrixOrthoOffCenterLH(&proj, 0.0f, (float)ModuleIrisGraphics::getWidth(), (float)ModuleIrisGraphics::getHeight(), 0.0f, 0, 9999.0f);
+	shader->SetTransitionProjMatrix(proj);
+
+	// gray值越大越先消失
+	float cmp = 1.0;
+	float step = cmp / duration;
+	ModuleIrisGraphics::TransitionTexture->GetSurfaceLevel(0, &eSurface);
+	while (cmp >= 0){
+		/* 先画到TransitionTexturer上 */
+		Device->GetRenderTarget(0, &oldSurface);
+		Device->SetRenderTarget(0, eSurface);
+		Device->Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0);
+		Device->BeginScene();
+		shader->DoTransitionShade(maskTexture, cmp);
+		Device->EndScene();
+		/* 最后画到backbuffer上 */
+		Device->SetRenderTarget(0, oldSurface);
+		Update();
+		cmp -= step;
+	}
+	if (mask)
+		delete mask;
+	isFreeze = false;
 }
 
 void ModuleIrisGraphics::fadeOut(int duration){
@@ -236,10 +312,6 @@ void ModuleIrisGraphics::fadeIn(int duration){
 		if (brightness > 255.0f) brightness = 255.0f;
 		Update();
 	}
-}
-
-void ModuleIrisGraphics::transition(int duration, wstring filename, int vague){
-	isFreeze = false;
 }
 
 void ModuleIrisGraphics::snap2Bitmap(IrisBitmap *bitmap){
