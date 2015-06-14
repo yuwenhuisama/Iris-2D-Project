@@ -124,7 +124,7 @@ else(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finput-charset=GBK -std=c++11")
 endif(MSVC)
 
-add_executable(Iris2D_Biscuit_Turkey
+add_executable(Iris2D_Biscuit_Turkey WIN32
 	${TURKEY_ENCRYPTION_HEADER}
 	${TURKEY_ENCRYPTION_SRC}
 	${TURKEY_IRIS2D_HEADER}
