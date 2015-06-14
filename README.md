@@ -1,37 +1,22 @@
-Welcome to Iris-2D-Project !!
-===============
-
-  It's too plesure for me that you can take a little time to read this README.
-
-  Iris 2D is, I think, a kind 2D game engine for developers to create much types of game in a relax and quickly way.
-
-  Now, as what you see, the structure of Iris 2D just looks a lot like RGSS(Ruby Game Scripte System) if you know, a very famous game engine drived by Ruby, also a very famous and great scripte language. Yeah, in fact, my thought of creating Iris 2D just came from RGSS, because I find that I can create any game with RGSS for its mature and exquisite programming style - of course, the hole of Ruby in it also makes a difference.
-  
-  However, some problems have come out along with using RGSS - for example, RGSS is not open source project and I cannot know the principle of this game engien so I cannot repair some BUGs when I get trouble with them in my game-creating; and also RGSS is based on DirectDraw - it's some of out-of-date I think(because Microsoft have already removed hardware acceleration from DirectDrow), so when I run game developed by RGSS on some new operating system(such as Windows Vista and higher) game became so slow that I cannot bear(particularly when I start it). So, the idea of creating a RGSS-like game engine came out.
-  
-  My initial intent was just to create a simple game engine which can make some simple game, but with the develpment of this engine, I gradually feel that it's just not my ultimate target, but I should create a good game engine just like RGSS to make develper (includes me) to create game relaxly, quickly and happily. So I give the embryonic of my game engine a beautiful name Iris 2D and wanna share it to many people with the same thought with me.
-  
-  So, let me give a brief introduction for Iris 2D and wish that you can use or develop it together with me:
-  
-  Iris 2D is a game engine whose structrue is related to RGSS but just not copies any part from RGSS. Iris 2D is an open source game engine based on DirectX and OpenGL(under development) aimed at relax-and-happy-game-programming and crossing platform. You can make any type of game in your mind with Iris 2D.
-  
-  Iris 2D is not too mature, there are still many parts of it needed to be complete, but I think I'll make to it.
-  
-  Iris 2D usually has some different versions, every versions is aimed to defferent platform or purpose:
-  
-  If the name of Iris 2D is attached with "A", it means that this edition is for deveoper using Visual Studio, source code of this version can be compiled under VC++ and may have some problems with other complilers.
-  
-  If the name of Iris 2D is attached with "B", it means that this edition is for deveoper using MinGW, source code of this version can be compiled under MinGW and may have some problems with other complilers.
-  
-  If the subname of Iris 2D is attached with braces and words "SC", it means that this edition is for straightly compiling - you can get a PE file(exe) of Iris 2D and run it directely.
-  
-  If the subname of Iris 2D is attached with braces and words "API", it means that this edition is for user creating game in theirselves' window with calling of Iris 2D API.
-  
-  So, I have to apologize that the plateform-crossing of Iris 2D has not been started yet, so Iris 2D now only can run on Windows and based on DirectX 9.0; but I promise that other platforms' edition of Iris 2D will soon come out.
-  
-  If you have some advice and just want to contact with me, please e-mail me follow these addresses:
-  
-  a1026121287@hotmail.com;
-  1026121287@qq.com
-  
-  Thanks for reading, wish you a happy game-developing !!
+# Welcome to Iris-2D-Project !!
+-----
+### What is Iris 2D ?
+        A 2D game engine that can be used to make much types of 2D game. And also, Iris 2D just has its own convinient tools to help developer get better use of it.
+    
+### How can I get to use Iris 2D ?
+        Well, since you have come to get this page of Github, then I think the most direct function is just to sync this project to you local machine with any git client that you are get used to.
+        
+        If you have already get the source code of Iris 2D, it depends what you have get:
+        
+        If you have get the Edition Iris 2D Amethyst you have to configure the right developement environment of the source code you have get (the name of source code folder marked "A" means it can be compiled with MSVC and one marked "B" means it can be compiled with GCC. Also, name marked "API" means what you will get after compiling is a dynamic library and marked "SC" means that is an executable file that you can excute it directly.)
+        
+        Oh, configuring the development environment is TOO DIFFICULT and you don't kown how to do it? 
+        
+        Don't worry. Edition Iris 2D Amethyst is not be recommended anymore, it just means you SHOULD NOT pay any attention to it anymore.
+        
+        Edition Iris 2D Biscuit is the newest edition of Iris 2D, and you can just use CMake to get the development environment easily from the source code you have get - it's very easy to use CMake, google it and you will get more information if you don't kown it.
+        
+        If you have done it, what you have to do next is just to compile and run what you have get.
+        
+### How do I learn to use Iris 2D ?
+        You can read the source code of Iris 2D's Demo and API Reference Manual(under updating) to learn how to use Iris 2D.
