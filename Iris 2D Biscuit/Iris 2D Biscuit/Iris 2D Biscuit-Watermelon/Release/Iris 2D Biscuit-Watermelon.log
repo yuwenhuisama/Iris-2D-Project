@@ -1,0 +1,16 @@
+﻿生成启动时间为 2015/9/21 星期一 16:50:07。
+     1>项目“D:\与程序有关的文档\Iris 2D\Iris 2D Biscuit\Iris 2D Biscuit-A\Iris 2D Biscuit-Watermelon\Iris 2D Biscuit-Watermelon.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Release\\" /Fd"Release\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\与程序有关的文档\Iris 2D\Iris 2D Biscuit\Iris 2D Biscuit-A\Release\Iris 2D Biscuit-Watermelon.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\与程序有关的文档\Iris 2D\Iris 2D Biscuit\Iris 2D Biscuit-A\Release\Iris 2D Biscuit-Watermelon.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\与程序有关的文档\Iris 2D\Iris 2D Biscuit\Iris 2D Biscuit-A\Release\Iris 2D Biscuit-Watermelon.lib" /MACHINE:X86 /SAFESEH Release\main.obj
+         正在生成代码
+         All 68 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+         已完成代码的生成
+         Iris 2D Biscuit-Watermelon.vcxproj -> D:\与程序有关的文档\Iris 2D\Iris 2D Biscuit\Iris 2D Biscuit-A\Release\Iris 2D Biscuit-Watermelon.exe
+     1>已完成生成项目“D:\与程序有关的文档\Iris 2D\Iris 2D Biscuit\Iris 2D Biscuit-A\Iris 2D Biscuit-Watermelon\Iris 2D Biscuit-Watermelon.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:04.73

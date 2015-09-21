@@ -1,0 +1,7 @@
+;sprite = Sprite.new()
+;sprite.bitmap = Bitmap.new("image/kurumi.jpg")
+
+if(true, 0) {
+	;Graphics.update()
+	//;Input.upadte()
+}
