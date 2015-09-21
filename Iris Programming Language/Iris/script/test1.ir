@@ -1,0 +1,94 @@
+// class Node {
+	// ;get [@data]
+	// ;gset [@leftNode]
+	// ;gset [@rightNode]
+	
+	// fun __format(data, leftNode, rightNode) {
+		// ;@data = data
+		// ;@leftNode = leftNode
+		// ;@rightNode = rightNode
+	// }
+	
+	// fun display() {
+		// ;print(@data, " ")
+	// }
+// }
+
+// class SortedBinaryTree {
+	// fun __format() {
+		// ;@root = nil
+	// }
+	
+	// fun __insert(cur_node, data) {
+		// if(cur_node.data < data) {
+			// if(cur_node.leftNode == nil) {
+				// ;cur_node.leftNode = Node.new(data, nil, nil)
+			// } else {
+				// ;__insert(cur_node.leftNode, data)
+			// }
+		// } else {
+			// if(cur_node.rightNode == nil) {
+				// ;cur_node.rightNode = Node.new(data, nil, nil)
+			// } else {
+				// ;__insert(cur_node.rightNode, data)
+			// }		
+		// }
+	// }
+	
+	// fun __display(cur_node) {
+		// if(cur_node == nil) {
+			// ;return
+		// }
+		// ;cur_node.display()
+		// ;__display(cur_node.leftNode)
+		// ;__display(cur_node.rightNode)
+	// }
+	
+	// fun insert(data) {
+		// if(@root == nil) {
+			// ;@root = Node.new(data, nil, nil)
+		// }
+		// else {
+			// ;__insert(@root, data)
+		// }
+	// }
+	
+	// fun display() {
+		// ;__display(@root)
+	// }
+// }
+
+// ;obj = SortedBinaryTree.new()
+// ;obj.insert(10)
+// ;obj.insert(9)
+// ;obj.insert(11)
+// ;obj.insert(12)
+// ;obj.insert(8)
+// ;print("二叉排序树的结果为：")
+// ;obj.display()
+// ;print("\n")
+
+fun f(x) {
+	;return (x**3 - 2*x - 5)
+}
+
+fun abs(x) {
+	if(x < 0) {
+		;return -x
+	} else {
+		;return x
+	}
+}
+
+;a = 2.0
+;b = 2.2
+;c = 0.0
+;d = c - b
+;print("k\tk-1\tk+1\n")
+if(abs(d) > 0.0005, 0) {
+	;c = b - f(b) * (b - a) / (f(b) - f(a))
+	;print(b, "\t", a, "\t", c, "\n")
+	;d = c - b
+	;a = b
+	;b = c
+}

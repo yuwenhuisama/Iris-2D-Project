@@ -1,0 +1,23 @@
+;print("Test!!", "\n")
+
+;array = [1, 2, 3, 4, 5]
+if(true, 20, i) {
+	;array.push(i + 5)
+}
+
+;array.each() {
+	iterator => [elem] :
+	;print(elem, " ")
+}
+;print("\n")
+
+class Father {
+
+	fun __format() {
+		;print("Father Init!", "\n")
+	}
+
+	fun show(message) {
+		;print("Father show! ", message, "\n")
+	}
+}

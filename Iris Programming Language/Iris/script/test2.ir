@@ -1,0 +1,210 @@
+
+/*
+module ModuleTest {
+	fun say_goodbye() {
+		;print("Bye, ", @value, "\n")
+	}
+	
+	module ModuleTest2 {
+	
+		class ClassTest2 {
+			fun self.say_name(name) {
+				;print("My name is ", name, "!", "\n")
+			}
+		}
+	}
+	
+	;personal [say_goodbye]
+}
+
+interface IUnkown {
+	;fun say_name()
+}
+
+class ClassTest involves ModuleTest 
+				joints IUnkown
+{
+
+	;gset [@value]
+	
+	fun __format(value) {
+		;self.value = value
+	}
+	
+	fun say_name() {
+		;print("Name given is ", @value, "\n")
+	}
+	
+	fun say_hello() {
+		;print("Hello, ", @value, "\n")
+	}
+	
+	fun say_hello_and_goodbye() {
+		;self.say_hello()
+		;self.say_goodbye()
+	}
+	
+	;personal [say_hello]
+	;relative [say_name]
+	;everyone [say_hello_and_goodbye]
+	
+}
+
+//;ModuleTest::ModuleTest2::ClassTest2.say_name("Iris")
+
+;c = 1
+
+;obj = ClassTest.new("Master!")
+;obj.say_hello_and_goodbye()
+
+;array = ["12", "2", "3", obj]
+for(i in array) {
+	;print(i, "\n")
+}
+
+;hash = { 1 => 2, 2 => 3, -3 => 4, "obj" => obj }
+;hash[1] = 8
+for((k, v) in hash) {
+	;print(k, "\t", v, "\n")
+}
+*/
+
+/*
+fun throw_irregular(){
+	if(true, 5, i) {
+		;print("Method!", "\n")
+		if(i == 4) {
+			;groan("Irregular!")
+		}
+	}
+}
+
+fun wrapper() {
+	;print("Warpper!", "\n")
+	;throw_irregular()
+}
+
+order {
+	;wrapper()
+}
+serve(e) {
+	;print(e, "\n")
+	;print("Irregular Get!", "\n")
+}
+ignore {
+	;print("Have to do.", "\n")
+}
+*/
+
+/*
+class MyWife {
+	;get [@name]
+	;get [@bra_size]
+	
+	fun __format(name, bra_size) {
+		;@name = name
+		;@bra_size = bra_size
+	}
+	
+	fun say_hello() {
+		;return
+		;print("Hello, Husband! My name is ", @name, " !\n")
+	}
+	
+	fun say_bra_size(){
+		;print("Uhn, my bra size is ", @bra_size, " !", "\n")
+	}
+}
+
+//;your_wife = MyWife.new()
+
+;my_wife = MyWife.new("Iris", "C++")
+;my_wife.say_hello()
+;my_wife.say_bra_size()
+
+fun test_func(param, *vparam) {
+	;print(param, "\n")
+	for(i in vparam) {
+		;print(i, ",")
+	}
+}
+
+;test_func("123", "321", "1", "3")
+*/
+
+/*
+;a = 10
+class TestA {
+	fun new_block() {
+		;b = 11
+		;@k = 12
+		;Block.new() {
+			iterator => [j, k] :
+			;print("j = ", j, ",", "k = ", k, "\n")
+			;print(a, ",", b, "\n")
+			;print(@k, "\n")
+			;print("This is a Block.", "\n")
+		}
+	}
+}
+;TestA.new().new_block().call("Hello", "Iris!")
+*/
+
+// ;[5, 2, 3, 4, 1].each() {
+	// iterator => [elem] :
+	// ;elem += 1
+	// ;print(elem, "\n")
+// }
+
+/*
+fun function_call() {
+	;print("Befor calling\n")
+	;a = 10
+	;b = 20
+	;block
+	;print("After calling\n")
+} with {
+	;print("Another\n")
+	;cast(a, b)
+	;print("More Another\n")
+} without {
+	;print("No Block.\n")
+}
+
+;function_call() {
+	iterator => [f, g] :
+	;print("f = ", f, " g = ", g, "\n")
+}
+
+*/
+
+;require("script/test2.ir")
+
+class Son extends Father {
+
+	fun __format() {
+		;super()
+		;print("Son Init!", "\n")
+	}
+
+	fun show() {
+		;super("Hello, Iris!")
+		;print("Son show!", "\n")
+	}
+}
+;Son.new().show()
+
+// ;print("Hello,Iris!", "\n")
+
+// ;eval(";print(10, \"\n\")")
+// ;eval(";print(11)")
+
+;array = [[1, 2, 3],
+		  [4, 5, 6],
+		  [7, 8, 9]]
+if( true, array.size, i) {
+	if( true, array[i - 1].size, j) {
+		;print(array[i - 1][j - 1], " ")
+	}
+	;print("\n")
+}

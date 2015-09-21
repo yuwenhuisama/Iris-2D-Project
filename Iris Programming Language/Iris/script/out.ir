@@ -1,0 +1,28 @@
+;iter = 1
+;n = 3
+;array = []
+;array[1] = 2
+;print("ËØÊı¼ÆËãÖĞ\n")
+
+if(true, 0){
+	;flag = true
+	//try all element in array
+	for(i in array){
+		if(n % i == 0){
+			;flag = false
+			;break
+		}
+	}
+	//is prime
+	if(flag == true){
+		;iter += 1
+		;array[iter] = n
+		;print(array[iter])
+		;print("  ")
+		;n+=1
+	}
+	//not prime
+	if(flag == false){
+		;n+=1
+	}
+}

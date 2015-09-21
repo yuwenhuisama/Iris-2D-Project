@@ -1,0 +1,69 @@
+class Node {
+	;get [@data]
+	;gset [@leftNode]
+	;gset [@rightNode]
+	
+	fun __format(data, leftNode, rightNode) {
+		;@data = data
+		;@leftNode = leftNode
+		;@rightNode = rightNode
+	}
+	
+	fun display() {
+		;print(@data, " ")
+	}
+}
+
+class SortedBinaryTree {
+	fun __format() {
+		;@root = nil
+	}
+	
+	fun __insert(cur_node, data) {
+		if(cur_node.data < data) {
+			if(cur_node.leftNode == nil) {
+				;cur_node.leftNode = Node.new(data, nil, nil)
+			} else {
+				;__insert(cur_node.leftNode, data)
+			}
+		} else {
+			if(cur_node.rightNode == nil) {
+				;cur_node.rightNode = Node.new(data, nil, nil)
+			} else {
+				;__insert(cur_node.rightNode, data)
+			}		
+		}
+	}
+	
+	fun __display(cur_node) {
+		if(cur_node == nil) {
+			;return
+		}
+		;cur_node.display()
+		;__display(cur_node.leftNode)
+		;__display(cur_node.rightNode)
+	}
+	
+	fun insert(data) {
+		if(@root == nil) {
+			;@root = Node.new(data, nil, nil)
+		}
+		else {
+			;__insert(@root, data)
+		}
+	}
+	
+	fun display() {
+		;__display(@root)
+	}
+}
+
+;obj = SortedBinaryTree.new()
+;obj.insert(10)
+;obj.insert(9)
+;obj.insert(11)
+;obj.insert(12)
+;obj.insert(8)
+;print("二叉排序树的结果为：")
+;obj.display()
+;print("\n")

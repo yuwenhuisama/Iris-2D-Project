@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="源文件\LexYacc">
+      <UniqueIdentifier>{a184771d-b106-4f37-9e12-42d95a97de17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IrisComponents">
+      <UniqueIdentifier>{a341264a-6e9c-435d-a5a1-a466da77ddf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\IrisComponents">
+      <UniqueIdentifier>{d0fb6072-ad35-4afc-a23a-0bd7cdc3faeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\LexYacc">
+      <UniqueIdentifier>{0af4020f-10f3-453e-8510-fb64e7903db9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Util">
+      <UniqueIdentifier>{e99e7206-26fb-43fc-8db3-c3b3b1e31796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IrisStructure">
+      <UniqueIdentifier>{abe634b0-e02d-4e1b-9e57-f5e6e184fa66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\IrisStructure">
+      <UniqueIdentifier>{c6c618c8-5e48-4053-9eac-16b5ea0ddd2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IrisNativeClasses">
+      <UniqueIdentifier>{acac7530-93d2-4416-86ec-dbae0e8e29e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\IrisNativeClasses">
+      <UniqueIdentifier>{0c6d74ba-bc61-4038-91bf-e4db106c033a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IrisComponents\IrisUnil">
+      <UniqueIdentifier>{b934ee3d-a33e-45a6-bfa3-ebe36e4bc40c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\IrisComponents\IrisUnil">
+      <UniqueIdentifier>{d5f9b16f-224f-424e-b791-28a76030dc66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IrisNativeModules">
+      <UniqueIdentifier>{5b8be7b8-9a51-4ecf-8248-b27e223ed6dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\IrisNativeModules">
+      <UniqueIdentifier>{5c5bfc94-678e-4591-bdfa-736e64745dd0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\LexYacc\unistd.h">
+      <Filter>头文件\LexYacc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LexYacc\y.tab.h">
+      <Filter>头文件\LexYacc</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisBlock.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisContextEnvironment.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisHeap.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisIdentifier.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisList.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisStack.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisStatementResult.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisTree.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisValue.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisUnil\IrisVariable.h">
+      <Filter>头文件\IrisComponents\IrisUnil</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisExpression.h">
+      <Filter>头文件\IrisComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisParticularStatements.h">
+      <Filter>头文件\IrisComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisComponents\IrisStatement.h">
+      <Filter>头文件\IrisComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisArray.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisArrayTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisClassBase.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisClassBaseTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisClosureBlockBase.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisClosureBlockBaseTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisFalseClass.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisFalseClassTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisFloat.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisFloatTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisHash.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisHashTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisInteger.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisIntegerTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisInterfaceBase.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisInterfaceBaseTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisMethodBase.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisMethodBaseTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisModuleBase.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisModuleBaseTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisNativeClasses.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisNilClass.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisNilClassTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisObjectBase.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisString.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisStringTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisTrueClass.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeClasses\IrisTrueClassTag.h">
+      <Filter>头文件\IrisNativeClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeModules\IrisGC.h">
+      <Filter>头文件\IrisNativeModules</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeModules\IrisGCModule.h">
+      <Filter>头文件\IrisNativeModules</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisNativeModules\IrisKernel.h">
+      <Filter>头文件\IrisNativeModules</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisStructure\IrisClass.h">
+      <Filter>头文件\IrisStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisStructure\IrisClosureBlock.h">
+      <Filter>头文件\IrisStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisStructure\IrisInterface.h">
+      <Filter>头文件\IrisStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisStructure\IrisMethod.h">
+      <Filter>头文件\IrisStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisStructure\IrisModule.h">
+      <Filter>头文件\IrisStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisStructure\IrisObject.h">
+      <Filter>头文件\IrisStructure</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisInterpreter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisBlock.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisContextEnvironment.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisHeap.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisIdentifier.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisStack.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisStatementResult.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisValue.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisUnil\IrisVariable.cpp">
+      <Filter>源文件\IrisComponents\IrisUnil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisExpression.cpp">
+      <Filter>源文件\IrisComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisComponents\IrisStatement.cpp">
+      <Filter>源文件\IrisComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisArray.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisArrayTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisClassBase.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisClassBaseTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisClosureBlockBase.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisClosureBlockBaseTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisFalseClass.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisFalseClassTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisFloat.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisFloatTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisHash.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisHashTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisInteger.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisIntegerTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisInterfaceBase.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisInterfaceBaseTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisMethodBase.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisMethodBaseTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisModuleBase.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisModuleBaseTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisNilClass.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisNilClassTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisObjectBase.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisString.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisStringTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisTrueClass.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeClasses\IrisTrueClassTag.cpp">
+      <Filter>源文件\IrisNativeClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeModules\IrisGC.cpp">
+      <Filter>源文件\IrisNativeModules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeModules\IrisGCModule.cpp">
+      <Filter>源文件\IrisNativeModules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisNativeModules\IrisKernel.cpp">
+      <Filter>源文件\IrisNativeModules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisStructure\IrisClass.cpp">
+      <Filter>源文件\IrisStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisStructure\IrisClosureBlock.cpp">
+      <Filter>源文件\IrisStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisStructure\IrisInterface.cpp">
+      <Filter>源文件\IrisStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisStructure\IrisMethod.cpp">
+      <Filter>源文件\IrisStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisStructure\IrisModule.cpp">
+      <Filter>源文件\IrisStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisStructure\IrisObject.cpp">
+      <Filter>源文件\IrisStructure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LexYacc\lex.yy.cpp">
+      <Filter>源文件\LexYacc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LexYacc\y.tab.cpp">
+      <Filter>源文件\LexYacc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisInterpreter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
