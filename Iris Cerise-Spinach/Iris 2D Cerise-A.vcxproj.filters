@@ -1,0 +1,476 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\audiodefs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\comdecl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D2D1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D2D1Helper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D2DBaseTypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D2Derr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3d9.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3d9caps.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3d9types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D10_1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D10_1shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D10effect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3d10misc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3d10sdklayers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D10shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D11.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D11SDKLayers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3D11Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3Dcommon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3Dcompiler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DCSX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9anim.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9core.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9effect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9math.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9shape.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9tex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx9xof.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX10.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\d3dx10async.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX10core.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX10math.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX10mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX10tex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX11.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX11async.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX11core.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\D3DX11tex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\Dcommon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dinput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dinputd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dsconf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dsetup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dsound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\DWrite.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dxdiag.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\DxErr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dxfile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\DXGI.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\DXGIFormat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\DXGIType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\dxsdkver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\gameux.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\PIXPlugin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\rmxfguid.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\rmxftmpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\rpcsal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\X3DAudio.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\xact3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\xact3d3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\xact3wb.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XAPO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XAPOBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XAPOFX.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XAudio2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XAudio2fx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XDSP.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\XInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\xma2defs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DirectX\xnamath.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Encryption\EncryptionDefines.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Encryption\GeneralEncriptyDefines.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Encryption\GeneralEncriptySourceExtract.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Encryption\IrisGraphicsSourceExtract.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Encryption\LZSS.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod_codec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod_dsp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod_errors.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod_memoryinfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Fmod Ex\fmod_output.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisApp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisBitmap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisColor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisD3DNamespace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisEncripedResourceManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisFont.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisPlane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisRect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisSprite.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisTilemap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisTone.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisViewport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\IrisWindow.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\ModuleIrisAudio.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\ModuleIrisGraphics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\ModuleIrisInput.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D\resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LayoutXML\mylayout.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LayoutXML\tinystr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LayoutXML\tinyxml.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LayoutXML\XMLDefine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris 2D Library.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2DSupports.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Encryption\EncryptionFunction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Encryption\GeneralEncriptySourceExtract.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Encryption\IrisGraphicsSourceExtract.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Encryption\LZSS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\Iris2D.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisBitmap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisColor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisEncripedResourceManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisFont.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisPlane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisRect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisSprite.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisTilemap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisTone.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisViewport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\IrisWindow.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\ModuleIrisAudio.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\ModuleIrisGraphics.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D\ModuleIrisInput.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XML Layout\tinystr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XML Layout\tinyxml.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XML Layout\tinyxmlerror.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\XML Layout\tinyxmlparser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris 2D Library.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\DirectX\D3DX_DXGIFormatConvert.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\DirectX\d3dx9math.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\DirectX\D3DX10math.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\DirectX\xnamathconvert.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\DirectX\xnamathmatrix.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\DirectX\xnamathmisc.inl">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\DirectX\xnamathvector.inl">
+      <Filter>头文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>
