@@ -1,0 +1,20 @@
+;bitmap = Bitmap.new("image/kurumi.jpg")
+;sprite = Sprite.new()
+;sprite.bitmap = bitmap
+;flag = true
+if(true, 0) {
+ 	if(flag) {
+		;sprite.x += 1
+		;sprite.y += 1
+		if(sprite.x == 60) {
+			;flag = false
+		}
+	} else {
+		;sprite.x -= 1
+		;sprite.y -= 1	
+		if(sprite.x == 0) {
+			;flag = true
+		}
+	}
+	;Graphics.update()
+}

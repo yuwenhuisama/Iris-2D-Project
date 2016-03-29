@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Iris Application Demo", "Ir
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Iris Cerise-Spinach", "Iris Cerise-Spinach\Iris 2D Cerise-A.vcxproj", "{A55FC24E-9FE2-4600-9DB4-648D097DE422}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Iris 2D Extension For Iris Lang", "Iris 2D Extension For Iris Lang\Iris Extension.vcxproj", "{47AA9312-94B1-4C5F-8465-193B71DA5CF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{A55FC24E-9FE2-4600-9DB4-648D097DE422}.Release|x64.Build.0 = Release|x64
 		{A55FC24E-9FE2-4600-9DB4-648D097DE422}.Release|x86.ActiveCfg = Release|Win32
 		{A55FC24E-9FE2-4600-9DB4-648D097DE422}.Release|x86.Build.0 = Release|Win32
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Debug|x64.ActiveCfg = Debug|x64
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Debug|x64.Build.0 = Debug|x64
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Debug|x86.ActiveCfg = Debug|Win32
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Debug|x86.Build.0 = Debug|Win32
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Release|x64.ActiveCfg = Release|x64
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Release|x64.Build.0 = Release|x64
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Release|x86.ActiveCfg = Release|Win32
+		{47AA9312-94B1-4C5F-8465-193B71DA5CF4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
