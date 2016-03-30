@@ -20,7 +20,7 @@ void InitResource() {
 }
 
 int ExitCondition() {
-	return 0;
+	return app->IsQuited();
 }
 
 void ShowFatalErrorMessage(char* pMessage) {

@@ -3,7 +3,7 @@
 ;sprite.bitmap = bitmap
 ;flag = true
 if(true, 0) {
- 	if(flag) {
+  	if(flag) {
 		;sprite.x += 1
 		;sprite.y += 1
 		if(sprite.x == 60) {
