@@ -11,15 +11,34 @@ void DecodeFunction(DWORD dwSrcData, DWORD& dwDestData, const DWORD dwKey1, cons
 }
 
 void InitResource(){
-	GetIrisEncripedResourceManager()->AddGraphResource(L"image.dat", DecodeFunction);
+	//GetIrisEncripedResourceManager()->AddGraphResource(L"image.dat", DecodeFunction);
 
 	sp = GetIrisSprite();
-	sp->SetBitmap(GetIrisBitmap(L"image\\1.jpg"));
+	//sp->SetBitmap(GetIrisBitmap(L"image\\1.jpg"));
+	sp->SetBitmap(GetIrisBitmap(L"image\\kurumi.jpg"));
 } 
 
 bool Display(){
 	InitResource();
+
+	bool flag = true;
 	BEGIN_IRIS_SAFE_WHILE()
+
+		if(flag){
+			sp->SetX(sp->GetX() + 1);
+			sp->SetY(sp->GetY() + 1);
+			if (sp->GetX() == 60) {
+				flag = false;
+			}
+		}
+		else {
+			sp->SetX(sp->GetX() - 1);
+			sp->SetY(sp->GetY() - 1);
+			if (sp->GetX() == 0) {
+				flag = true;
+			}
+		}
+
 		IrisGraphicsUpdate(); 
 		IrisInputUpdate();
 	END_IRIS_SAFE_WHILE()
