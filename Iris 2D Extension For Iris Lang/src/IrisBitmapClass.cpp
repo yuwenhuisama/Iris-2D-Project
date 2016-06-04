@@ -1,35 +1,9 @@
-#include "IrisMapping/IrisBitmap.h"
+#include "IrisMapping/IrisBitmapClass.h"
 
-static std::string WStringToString(const std::wstring &wstr)
-{
-	int nLen = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
-	if (nLen <= 0) return std::string("");
-	char* pszDst = new char[nLen];
-	if (NULL == pszDst) return std::string("");
-	WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), -1, pszDst, nLen, NULL, NULL);
-	pszDst[nLen - 1] = 0;
-	std::string strTemp(pszDst);
-	delete[] pszDst;
-	return strTemp;
-}
+std::string WStringToString(const std::wstring &wstr);
+std::wstring StringToWString(const std::string &str);
 
-static std::wstring StringToWString(const std::string &str)
-{
-	int nSize = MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), 0, 0);
-	if (nSize <= 0) return NULL;
-	WCHAR *pwszDst = new WCHAR[nSize + 1];
-	if (NULL == pwszDst) return NULL;
-	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), pwszDst, nSize);
-	pwszDst[nSize] = 0;
-	if (pwszDst[0] == 0xFEFF)                    // skip Oxfeff
-		for (int i = 0; i < nSize; i++)
-			pwszDst[i] = pwszDst[i + 1];
-	wstring wcharString(pwszDst);
-	delete pwszDst;
-	return wcharString;
-}
-
-IrisValue IrisBitmap::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	if (ivsVariableValues->GetSize() == 2) {
 		auto& ivWidth = ivsVariableValues->GetValue(0);
 		auto& ivHeight = ivsVariableValues->GetValue(1);
@@ -52,7 +26,7 @@ IrisValue IrisBitmap::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 		IrisDev_SetObjectInstanceVariable(ivObj, "@height", ivHeight);
 		IrisDev_SetObjectInstanceVariable(ivObj, "@font", IrisDev_Nil());
 
-		return IrisDev_Nil();
+		return ivObj;
 	}
 	else if (ivsVariableValues->GetSize() == 1) {
 		auto& ivFilename = ivsVariableValues->GetValue(0);
@@ -73,12 +47,15 @@ IrisValue IrisBitmap::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 		IrisDev_SetObjectInstanceVariable(ivObj, "@height", IrisDev_CreateIntegerInstanceByInstantValue(pBitmap->GetHeight()));
 		IrisDev_SetObjectInstanceVariable(ivObj, "@font", IrisDev_Nil());
 
-		return IrisDev_Nil();
+		return ivObj;
 	}
-	return IrisDev_Nil();
+	else {
+		IrisDev_GroanIrregularWithString("Invaild parameter list");
+		return ivObj;
+	}
 }
 
-IrisValue IrisBitmap::Dispose(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::Dispose(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
 
 	pBitmap->Dispose();
@@ -86,7 +63,7 @@ IrisValue IrisBitmap::Dispose(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::Disposed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::Disposed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
 
 	if (pBitmap->Disposed()) {
@@ -97,7 +74,7 @@ IrisValue IrisBitmap::Disposed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	}
 }
 
-IrisValue IrisBitmap::Blt(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::Blt(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValue->GetValue(0);
 	auto& ivY = ivsValue->GetValue(1);
 	auto& ivSrcBitmap = ivsValue->GetValue(2);
@@ -136,7 +113,7 @@ IrisValue IrisBitmap::Blt(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::StretchBlt(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::StretchBlt(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivDestRect = ivsValue->GetValue(0);
 	auto& ivSrcBitmap = ivsValue->GetValue(1);
 	auto& ivSrcRect = ivsValue->GetValue(2);
@@ -169,7 +146,7 @@ IrisValue IrisBitmap::StretchBlt(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::FillRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::FillRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	if (ivsVariableValues->GetSize() == 5) {
 		auto& ivX = ivsVariableValues->GetValue(0);
 		auto& ivY = ivsVariableValues->GetValue(1);
@@ -228,10 +205,13 @@ IrisValue IrisBitmap::FillRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 
 		return IrisDev_Nil();
 	}
-	return IrisDev_Nil();
+	else {
+		IrisDev_GroanIrregularWithString("Invaild parameter list.");
+		return IrisDev_Nil();
+	}
 }
 
-IrisValue IrisBitmap::GradientFillRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::GradientFillRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	if (ivsVariableValues->GetSize() == 7) {
 		auto& ivX = ivsVariableValues->GetValue(0);
 		auto& ivY = ivsVariableValues->GetValue(1);
@@ -315,10 +295,13 @@ IrisValue IrisBitmap::GradientFillRect(IrisValue & ivObj, IIrisValues * ivsValue
 
 		return IrisDev_Nil();
 	}
-	return IrisDev_Nil();
+	else {
+		IrisDev_GroanIrregularWithString("Invaild parameter list.");
+		return IrisDev_Nil();
+	}
 }
 
-IrisValue IrisBitmap::Clear(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::Clear(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
 
 	pBitmap->Clear();
@@ -326,7 +309,7 @@ IrisValue IrisBitmap::Clear(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::ClearRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::ClearRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	if (ivsVariableValues->GetSize() == 4) {
 		auto& ivX = ivsVariableValues->GetValue(0);
 		auto& ivY = ivsVariableValues->GetValue(1);
@@ -373,10 +356,13 @@ IrisValue IrisBitmap::ClearRect(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 
 		return IrisDev_Nil();
 	}
-	return IrisDev_Nil();
+	else {
+		IrisDev_GroanIrregularWithString("Invaild parameter list.");
+		return IrisDev_Nil();
+	}
 }
 
-IrisValue IrisBitmap::GetPixel(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::GetPixel(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValue->GetValue(0);
 	auto& ivY = ivsValue->GetValue(1);
 
@@ -397,12 +383,15 @@ IrisValue IrisBitmap::GetPixel(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	ivsParam->SetValue(0, IrisDev_CreateIntegerInstanceByInstantValue(pColor->GetRed()));
 	ivsParam->SetValue(1, IrisDev_CreateIntegerInstanceByInstantValue(pColor->GetGreen()));
 	ivsParam->SetValue(2, IrisDev_CreateIntegerInstanceByInstantValue(pColor->GetBlue()));
-	ivsParam->SetValue(4, IrisDev_CreateIntegerInstanceByInstantValue(pColor->GetAlpha()));
+	ivsParam->SetValue(3, IrisDev_CreateIntegerInstanceByInstantValue(pColor->GetAlpha()));
 
-	return IrisDev_CreateNormalInstance(IrisDev_GetClass("Color"), ivsParam, nullptr);
+	auto ivResult = IrisDev_CreateNormalInstance(IrisDev_GetClass("Color"), ivsParam, nullptr);
+	IrisDev_ReleaseIrisValuesList(ivsParam);
+
+	return ivResult;
 }
 
-IrisValue IrisBitmap::SetPixel(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::SetPixel(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValue->GetValue(0);
 	auto& ivY = ivsValue->GetValue(1);
 	auto& ivColor = ivsValue->GetValue(2);
@@ -429,7 +418,7 @@ IrisValue IrisBitmap::SetPixel(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::HueChange(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::HueChange(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivHue = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivHue)) {
@@ -444,7 +433,7 @@ IrisValue IrisBitmap::HueChange(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::Blur(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::Blur(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
 
 	pBitmap->Blur();
@@ -452,12 +441,12 @@ IrisValue IrisBitmap::Blur(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::RadialBlur(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::RadialBlur(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivAngle = ivsValue->GetValue(0);
 	auto& ivDivision = ivsValue->GetValue(1);
 
-	if (!IrisDev_CheckClassIsInteger(ivAngle) && !IrisDev_CheckClassIsFloat(ivAngle)) {
-		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+	if (!IrisDev_CheckClassIsInteger(ivAngle)) {
+		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
 	}
 
 	if (IrisDev_CheckClassIsInteger(ivDivision)) {
@@ -473,7 +462,7 @@ IrisValue IrisBitmap::RadialBlur(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	return IrisDev_Nil();
 }
 
-IrisValue IrisBitmap::TextSize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::TextSize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivFont = ivsValue->GetValue(0);
 	auto& ivStr = ivsValue->GetValue(1);
 
@@ -491,12 +480,12 @@ IrisValue IrisBitmap::TextSize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 
 	string sStr = string(cStr);
 	wstring wsStr = StringToWString(sStr);
-	pBitmap->TextSize(pFont, wsStr);
+	auto nSize = pBitmap->TextSize(pFont, wsStr);
 
-	return IrisDev_Nil();
+	return IrisDev_CreateIntegerInstanceByInstantValue(nSize);
 }
 
-IrisValue IrisBitmap::IrisDrawText(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::IrisDrawText(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	if (ivsVariableValues->GetSize() == 6) {
 		auto& ivX = ivsVariableValues->GetValue(0);
 		auto& ivY = ivsVariableValues->GetValue(1);
@@ -575,22 +564,25 @@ IrisValue IrisBitmap::IrisDrawText(IrisValue & ivObj, IIrisValues * ivsValue, II
 
 		return IrisDev_Nil();
 	}
-	return IrisDev_Nil();
+	else {
+		IrisDev_GroanIrregularWithString("Invaild parameter list.");
+		return IrisDev_Nil();
+	}
 }
 
-IrisValue IrisBitmap::GetWidth(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::GetWidth(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@width");
 }
 
-IrisValue IrisBitmap::GetHeight(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::GetHeight(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@height");
 }
 
-IrisValue IrisBitmap::GetFont(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::GetFont(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@font");
 }
 
-IrisValue IrisBitmap::SetFont(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisBitmapClass::SetFont(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivFont = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivFont, "Font")) {
@@ -607,29 +599,29 @@ IrisValue IrisBitmap::SetFont(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 	return IrisDev_Nil();
 }
 
-void IrisBitmap::Mark(void * pNativePointer) {}
+void IrisBitmapClass::Mark(void * pNativePointer) {}
 
-const char * IrisBitmap::NativeClassNameDefine() const {
-	return "IrisBitmap";
+const char * IrisBitmapClass::NativeClassNameDefine() const {
+	return "Bitmap";
 }
 
-IIrisClass * IrisBitmap::NativeSuperClassDefine() const {
+IIrisClass * IrisBitmapClass::NativeSuperClassDefine() const {
 	return IrisDev_GetClass("Object");
 }
 
-int IrisBitmap::GetTrustteeSize(void * pNativePointer) {
+int IrisBitmapClass::GetTrustteeSize(void * pNativePointer) {
 	return sizeof(IIrisBitmap);
 }
 
-void * IrisBitmap::NativeAlloc() {
+void * IrisBitmapClass::NativeAlloc() {
 	return GetTravialIIrisBitmap();
 }
 
-void IrisBitmap::NativeFree(void * pNativePointer) {
+void IrisBitmapClass::NativeFree(void * pNativePointer) {
 	ReleaseIrisBitmap(static_cast<IIrisBitmap*>(pNativePointer));
 }
 
-void IrisBitmap::NativeClassDefine() {
+void IrisBitmapClass::NativeClassDefine() {
 	IrisDev_AddInstanceMethod(this, "__format", Initialize, 0, true);
 	IrisDev_AddInstanceMethod(this, "dispose", Dispose, 0, false);
 	IrisDev_AddInstanceMethod(this, "disposed", Disposed, 0, false);
@@ -654,10 +646,10 @@ void IrisBitmap::NativeClassDefine() {
 	IrisDev_AddSetter(this, "@font", SetFont);
 }
 
-IrisBitmap::IrisBitmap() {
+IrisBitmapClass::IrisBitmapClass() {
 
 }
 
-IrisBitmap::~IrisBitmap() {
+IrisBitmapClass::~IrisBitmapClass() {
 
 }

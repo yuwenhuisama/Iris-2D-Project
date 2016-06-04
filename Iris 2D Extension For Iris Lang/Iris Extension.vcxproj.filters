@@ -66,12 +66,6 @@
     <ClInclude Include="include\IrisColor.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\IrisPointer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IrisPointerTag.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\IrisRectD.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -81,19 +75,34 @@
     <ClInclude Include="include\IrisGraphics.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\IrisMapping\IrisBitmap.h">
+    <ClInclude Include="include\IrisMapping\IrisFontClass.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\IrisMapping\IrisColor.h">
+    <ClInclude Include="include\IrisMapping\IrisToneClass.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\IrisMapping\IrisGraphics.h">
+    <ClInclude Include="include\IrisMapping\IrisViewportClass.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\IrisMapping\IrisRectD.h">
+    <ClInclude Include="include\IrisMapping\IrisBitmapClass.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\IrisMapping\IrisSprite.h">
+    <ClInclude Include="include\IrisMapping\IrisColorClass.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisMapping\IrisGraphicsModule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisMapping\IrisRectClass.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisMapping\IrisSpriteClass.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisMapping\IrisInputModule.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IrisMapping\IrisAudioModule.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,26 +119,38 @@
     <ClCompile Include="include\IrisUnil\IrisValue.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisBitmap.cpp">
+    <ClCompile Include="src\IrisFontClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisColor.cpp">
+    <ClCompile Include="src\IrisToneClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisGraphics.cpp">
+    <ClCompile Include="src\IrisViewportClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisPointer.cpp">
+    <ClCompile Include="src\IrisBitmapClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisPointerTag.cpp">
+    <ClCompile Include="src\IrisColorClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisRectD.cpp">
+    <ClCompile Include="src\IrisGraphicsModule.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\IrisSprite.cpp">
+    <ClCompile Include="src\IrisRectClass.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\IrisSpriteClass.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisInputModule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IrisAudioModule.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="IrisLangLibrary.lib" />
   </ItemGroup>
 </Project>

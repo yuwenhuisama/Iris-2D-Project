@@ -1,6 +1,7 @@
-#include "IrisMapping/IrisRectD.h"
+#include "IrisMapping/IrisRectClass.h"
+float GetFloatWhateverFloatOrInteger(const IrisValue& ivValue);
 
-IrisValue IrisRectD::Initialize(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValues->GetValue(0);
 	auto& ivY = ivsValues->GetValue(1);
 	auto& ivWidth = ivsValues->GetValue(2);
@@ -24,10 +25,10 @@ IrisValue IrisRectD::Initialize(IrisValue & ivObj, IIrisValues * ivsValues, IIri
 	}
 
 	auto pRect = IrisDev_GetNativePointer<IIrisRect*>(ivObj);
-	auto fX = static_cast<float>(IrisDev_GetFloat(ivX));
-	auto fY = static_cast<float>(IrisDev_GetFloat(ivY));
-	auto fWidth = static_cast<float>(IrisDev_GetFloat(ivWidth));
-	auto fHeight = static_cast<float>(IrisDev_GetFloat(ivHeight));
+	auto fX = static_cast<float>(GetFloatWhateverFloatOrInteger(ivX));
+	auto fY = static_cast<float>(GetFloatWhateverFloatOrInteger(ivY));
+	auto fWidth = static_cast<float>(GetFloatWhateverFloatOrInteger(ivWidth));
+	auto fHeight = static_cast<float>(GetFloatWhateverFloatOrInteger(ivHeight));
 
 	pRect->SetInitData(fX, fY, fWidth, fHeight);
 
@@ -36,10 +37,10 @@ IrisValue IrisRectD::Initialize(IrisValue & ivObj, IIrisValues * ivsValues, IIri
 	IrisDev_SetObjectInstanceVariable(ivObj, "@width", ivWidth);
 	IrisDev_SetObjectInstanceVariable(ivObj, "@height", ivHeight);
 
-	return IrisDev_Nil();
+	return ivObj;
 }
 
-IrisValue IrisRectD::Set(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::Set(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValues->GetValue(0);
 	auto& ivY = ivsValues->GetValue(1);
 	auto& ivWidth = ivsValues->GetValue(2);
@@ -63,10 +64,10 @@ IrisValue IrisRectD::Set(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues
 	}
 
 	auto pRect = IrisDev_GetNativePointer<IIrisRect*>(ivObj);
-	float nX = static_cast<float>(IrisDev_GetFloat(ivX));
-	float nY = static_cast<float>(IrisDev_GetFloat(ivY));
-	float nWidth = static_cast<float>(IrisDev_GetFloat(ivWidth));
-	float nHeight = static_cast<float>(IrisDev_GetFloat(ivHeight));
+	float nX = static_cast<float>(GetFloatWhateverFloatOrInteger(ivX));
+	float nY = static_cast<float>(GetFloatWhateverFloatOrInteger(ivY));
+	float nWidth = static_cast<float>(GetFloatWhateverFloatOrInteger(ivWidth));
+	float nHeight = static_cast<float>(GetFloatWhateverFloatOrInteger(ivHeight));
 
 	pRect->Set(nX, nY, nWidth, nHeight);
 
@@ -78,7 +79,7 @@ IrisValue IrisRectD::Set(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues
 	return IrisDev_Nil();
 }
 
-IrisValue IrisRectD::SetX(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::SetX(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValues->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivX) && !IrisDev_CheckClassIsFloat(ivX)) {
@@ -87,7 +88,7 @@ IrisValue IrisRectD::SetX(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValue
 	}
 
 	auto pRect = IrisDev_GetNativePointer<IIrisRect*>(ivObj);
-	float fX = static_cast<float>(IrisDev_GetFloat(ivX));
+	float fX = static_cast<float>(GetFloatWhateverFloatOrInteger(ivX));
 
 	pRect->SetX(fX);
 
@@ -96,7 +97,7 @@ IrisValue IrisRectD::SetX(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValue
 	return IrisDev_Nil();
 }
 
-IrisValue IrisRectD::SetY(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::SetY(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivY = ivsValues->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivY) && !IrisDev_CheckClassIsFloat(ivY)) {
@@ -105,7 +106,7 @@ IrisValue IrisRectD::SetY(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValue
 	}
 
 	auto pRect = IrisDev_GetNativePointer<IIrisRect*>(ivObj);
-	float fY = static_cast<float>(IrisDev_GetFloat(ivY));
+	float fY = static_cast<float>(GetFloatWhateverFloatOrInteger(ivY));
 
 	pRect->SetY(fY);
 
@@ -114,7 +115,7 @@ IrisValue IrisRectD::SetY(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValue
 	return IrisDev_Nil();
 }
 
-IrisValue IrisRectD::SetWidth(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::SetWidth(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivWidth = ivsValues->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivWidth) && !IrisDev_CheckClassIsFloat(ivWidth)) {
@@ -123,7 +124,7 @@ IrisValue IrisRectD::SetWidth(IrisValue & ivObj, IIrisValues * ivsValues, IIrisV
 	}
 
 	auto pRect = IrisDev_GetNativePointer<IIrisRect*>(ivObj);
-	float fWidth = static_cast<float>(IrisDev_GetFloat(ivWidth));
+	float fWidth = static_cast<float>(GetFloatWhateverFloatOrInteger(ivWidth));
 
 	pRect->SetWidth(fWidth);
 
@@ -133,7 +134,7 @@ IrisValue IrisRectD::SetWidth(IrisValue & ivObj, IIrisValues * ivsValues, IIrisV
 	return IrisDev_Nil();
 }
 
-IrisValue IrisRectD::SetHeight(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::SetHeight(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivHeight = ivsValues->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivHeight) && !IrisDev_CheckClassIsFloat(ivHeight)) {
@@ -142,53 +143,52 @@ IrisValue IrisRectD::SetHeight(IrisValue & ivObj, IIrisValues * ivsValues, IIris
 	}
 
 	auto pRect = IrisDev_GetNativePointer<IIrisRect*>(ivObj);
-	float fHeight = static_cast<float>(IrisDev_GetFloat(ivHeight));
+	float fHeight = static_cast<float>(GetFloatWhateverFloatOrInteger(ivHeight));
 
 	pRect->SetHeight(fHeight);
-
 	
 	IrisDev_SetObjectInstanceVariable(ivObj, "@height", ivHeight);
 
 	return IrisDev_Nil();
 }
 
-IrisValue IrisRectD::GetX(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::GetX(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@x");
 }
 
-IrisValue IrisRectD::GetY(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::GetY(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@y");
 }
 
-IrisValue IrisRectD::GetWidth(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::GetWidth(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@width");
 }
 
-IrisValue IrisRectD::GetHeight(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisRectClass::GetHeight(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@height");
 }
 
-const char * IrisRectD::NativeClassNameDefine() const {
-	return "IrisRect";
+const char * IrisRectClass::NativeClassNameDefine() const {
+	return "Rect";
 }
 
-IIrisClass * IrisRectD::NativeSuperClassDefine() const {
+IIrisClass * IrisRectClass::NativeSuperClassDefine() const {
 	return IrisDev_GetClass("Object");
 }
 
-int IrisRectD::GetTrustteeSize(void * pNativePointer) {
+int IrisRectClass::GetTrustteeSize(void * pNativePointer) {
 	return sizeof(IIrisRect);
 }
 
-void * IrisRectD::NativeAlloc() {
+void * IrisRectClass::NativeAlloc() {
 	return GetTravialIIrisRect();
 }
 
-void IrisRectD::NativeFree(void * pNativePointer) {
+void IrisRectClass::NativeFree(void * pNativePointer) {
 	ReleaseIrisRect(static_cast<IIrisRect*>(pNativePointer));
 }
 
-void IrisRectD::NativeClassDefine() {
+void IrisRectClass::NativeClassDefine() {
 	IrisDev_AddInstanceMethod(this, "__format", Initialize, 4, false);
 	IrisDev_AddInstanceMethod(this, "set", Set, 4, false);
 
@@ -203,10 +203,10 @@ void IrisRectD::NativeClassDefine() {
 	IrisDev_AddSetter(this, "@height", SetHeight);
 }
 
-IrisRectD::IrisRectD() {
+IrisRectClass::IrisRectClass() {
 
 }
 
-IrisRectD::~IrisRectD() {
+IrisRectClass::~IrisRectClass() {
 
 }

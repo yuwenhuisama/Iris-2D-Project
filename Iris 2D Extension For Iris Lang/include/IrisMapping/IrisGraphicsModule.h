@@ -8,7 +8,7 @@ using namespace Iris2D;
 
 
 
-class IrisGraphics : public IIrisModule {
+class IrisGraphicsModule : public IIrisModule {
 public:
 	static IrisValue ModuleIrisGraphicsGetHwnd(IrisValue& ivObj, IIrisValues* ivsValue, IIrisValues* ivsVariableValues, IIrisContextEnvironment* pContextEnvironment);
 
@@ -70,8 +70,8 @@ public:
 
 	//------
 
-	IrisGraphics();
-	~IrisGraphics();
+	IrisGraphicsModule();
+	~IrisGraphicsModule();
 
 private:
 	const char* NativeModuleNameDefine() const;

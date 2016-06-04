@@ -1,8 +1,10 @@
-#include "IrisMapping/IrisSprite.h"
+#include "IrisMapping/IrisSpriteClass.h"
 
-IrisValue IrisSprite::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	
+float GetFloatWhateverFloatOrInteger(const IrisValue& ivValue);
+
+IrisValue IrisSpriteClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
+
 	if (!ivsValue) {
 		IrisDev_SetObjectInstanceVariable(ivObj, "@viewport", IrisDev_Nil());
 	}
@@ -22,6 +24,7 @@ IrisValue IrisSprite::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 		IrisDev_GroanIrregularWithString("Invaild parameter list.");
 		return IrisDev_Nil();
 	}
+
 	IrisDev_SetObjectInstanceVariable(ivObj, "@bitmap", IrisDev_Nil());
 	IrisDev_SetObjectInstanceVariable(ivObj, "@rect", IrisDev_Nil());
 	IrisDev_SetObjectInstanceVariable(ivObj, "@visible", IrisDev_True());
@@ -30,18 +33,18 @@ IrisValue IrisSprite::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	IrisDev_SetObjectInstanceVariable(ivObj, "@z", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetZ())));
 	IrisDev_SetObjectInstanceVariable(ivObj, "@ox", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetOx())));
 	IrisDev_SetObjectInstanceVariable(ivObj, "@oy", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetOy())));
-	IrisDev_SetObjectInstanceVariable(ivObj, "@zoomx", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetZoomX())));
-	IrisDev_SetObjectInstanceVariable(ivObj, "@zoomy", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetZoomY())));
+	IrisDev_SetObjectInstanceVariable(ivObj, "@zoom_x", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetZoomX())));
+	IrisDev_SetObjectInstanceVariable(ivObj, "@zoom_y", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetZoomY())));
 	IrisDev_SetObjectInstanceVariable(ivObj, "@angle", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetAngle())));
-	IrisDev_SetObjectInstanceVariable(ivObj, "@waveamp", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWaveAmp())));
-	IrisDev_SetObjectInstanceVariable(ivObj, "@wavelength", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWaveLength())));
-	IrisDev_SetObjectInstanceVariable(ivObj, "@wavespeed", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWaveSpeed())));
-	IrisDev_SetObjectInstanceVariable(ivObj, "@wavephase", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWavePhase())));
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_amp", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWaveAmp())));
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_length", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWaveLength())));
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_speed", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWaveSpeed())));
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_phase", IrisDev_CreateFloatInstanceByInstantValue(static_cast<double>(pSprite->GetWavePhase())));
 
-	return IrisDev_Nil();
+	return ivObj;
 }
 
-IrisValue IrisSprite::SetViewport(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetViewport(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivViewport = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivViewport, "Viewport")) {
@@ -59,11 +62,11 @@ IrisValue IrisSprite::SetViewport(IrisValue & ivObj, IIrisValues * ivsValue, IIr
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::GetViewport(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetViewport(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@viewport");
 }
 
-IrisValue IrisSprite::Dispose(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValue, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::Dispose(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValue, IIrisContextEnvironment * pContextEnvironment) {
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
 
 	pSprite->Dispose();
@@ -71,7 +74,7 @@ IrisValue IrisSprite::Dispose(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::Disposed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValue, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::Disposed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValue, IIrisContextEnvironment * pContextEnvironment) {
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
 
 	if (pSprite->Disposed()) {
@@ -82,7 +85,7 @@ IrisValue IrisSprite::Disposed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	}
 }
 
-IrisValue IrisSprite::Flash(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::Flash(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivColor = ivsValue->GetValue(0);
 	auto& ivDuration = ivsValue->GetValue(1);
 
@@ -104,7 +107,7 @@ IrisValue IrisSprite::Flash(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::Update(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::Update(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
 
 	pSprite->Update();
@@ -112,19 +115,19 @@ IrisValue IrisSprite::Update(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVal
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::GetWidth(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvrionment) {
+IrisValue IrisSpriteClass::GetWidth(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvrionment) {
 	auto ivBitmap = IrisDev_GetObjectInstanceVariable(ivObj, "@bitmap");
 
 	return IrisDev_GetObjectInstanceVariable(ivBitmap, "@width");
 }
 
-IrisValue IrisSprite::GetHeight(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvrionment) {
+IrisValue IrisSpriteClass::GetHeight(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvrionment) {
 	auto ivBitmap = IrisDev_GetObjectInstanceVariable(ivObj, "@bitmap");
 
 	return IrisDev_GetObjectInstanceVariable(ivBitmap, "@height");
 }
 
-IrisValue IrisSprite::SetOpacity(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetOpacity(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivOpacity = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivOpacity)) {
@@ -142,71 +145,71 @@ IrisValue IrisSprite::SetOpacity(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::GetOpacity(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetOpacity(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@opacity");
 }
 
-IrisValue IrisSprite::GetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@bitmap");
 }
 
-IrisValue IrisSprite::GetRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@rect");
 }
 
-IrisValue IrisSprite::GetVisible(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetVisible(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@visible");
 }
 
-IrisValue IrisSprite::GetX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@x");
 }
 
-IrisValue IrisSprite::GetY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@y");
 }
 
-IrisValue IrisSprite::GetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@z");
 }
 
-IrisValue IrisSprite::GetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@ox");
 }
 
-IrisValue IrisSprite::GetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@oy");
 }
 
-IrisValue IrisSprite::GetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@zoomx");
 }
 
-IrisValue IrisSprite::GetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@zoomy");
 }
 
-IrisValue IrisSprite::GetAngle(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetAngle(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@angle");
 }
 
-IrisValue IrisSprite::GetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@waveamp");
 }
 
-IrisValue IrisSprite::GetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@wavelength");
 }
 
-IrisValue IrisSprite::GetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@wavespeed");
 }
 
-IrisValue IrisSprite::GetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::GetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@wavephase");
 }
 
-IrisValue IrisSprite::SetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivBitmap = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivBitmap, "Bitmap")) {
@@ -223,7 +226,7 @@ IrisValue IrisSprite::SetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivRect = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivRect, "Rect")) {
@@ -239,7 +242,7 @@ IrisValue IrisSprite::SetRect(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetVisible(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetVisible(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivVisible = ivsValue->GetValue(0);
 
 	if (ivVisible != IrisDev_True() && ivVisible != IrisDev_False()) {
@@ -247,7 +250,6 @@ IrisValue IrisSprite::SetVisible(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	//auto bVisible = static_cast<bool>(IrisDev_GetInt(ivVisible));
 	auto bVisible = ivVisible == IrisDev_True() ? true : false;
 
 	pSprite->SetVisible(bVisible);
@@ -257,7 +259,7 @@ IrisValue IrisSprite::SetVisible(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivX = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivX) && !IrisDev_CheckClassIsFloat(ivX)) {
@@ -265,7 +267,7 @@ IrisValue IrisSprite::SetX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fX = IrisDev_CheckClassIsFloat(ivX) ? static_cast<float>(IrisDev_GetFloat(ivX)) : static_cast<float>(IrisDev_GetInt(ivX));
+	auto fX = GetFloatWhateverFloatOrInteger(ivX);
 
 	pSprite->SetX(fX);
 
@@ -274,7 +276,7 @@ IrisValue IrisSprite::SetX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivY = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivY) && !IrisDev_CheckClassIsFloat(ivY)) {
@@ -283,7 +285,8 @@ IrisValue IrisSprite::SetY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
 //	auto fY = static_cast<float>(IrisDev_GetFloat(ivY));
-	auto fY = IrisDev_CheckClassIsFloat(ivY) ? static_cast<float>(IrisDev_GetFloat(ivY)) : static_cast<float>(IrisDev_GetInt(ivY));
+	//auto fY = IrisDev_CheckClassIsFloat(ivY) ? static_cast<float>(IrisDev_GetFloat(ivY)) : static_cast<float>(IrisDev_GetInt(ivY));
+	auto fY = GetFloatWhateverFloatOrInteger(ivY);
 
 	pSprite->SetY(fY);
 
@@ -292,7 +295,7 @@ IrisValue IrisSprite::SetY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivZ = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivZ) && !IrisDev_CheckClassIsFloat(ivZ)) {
@@ -300,7 +303,7 @@ IrisValue IrisSprite::SetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fZ = static_cast<float>(IrisDev_GetFloat(ivZ));
+	auto fZ = GetFloatWhateverFloatOrInteger(ivZ);
 
 	pSprite->SetZ(fZ);
 
@@ -309,7 +312,7 @@ IrisValue IrisSprite::SetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValue
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivOx = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivOx) && !IrisDev_CheckClassIsFloat(ivOx)) {
@@ -317,7 +320,7 @@ IrisValue IrisSprite::SetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fOx = static_cast<float>(IrisDev_GetFloat(ivOx));
+	auto fOx = GetFloatWhateverFloatOrInteger(ivOx);
 
 	pSprite->SetOx(fOx);
 
@@ -326,7 +329,7 @@ IrisValue IrisSprite::SetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivOy = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivOy) && !IrisDev_CheckClassIsFloat(ivOy)) {
@@ -334,7 +337,7 @@ IrisValue IrisSprite::SetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fOy = static_cast<float>(IrisDev_GetFloat(ivOy));
+	auto fOy = GetFloatWhateverFloatOrInteger(ivOy);
 
 	pSprite->SetOy(fOy);
 
@@ -343,7 +346,7 @@ IrisValue IrisSprite::SetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivZoomX = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivZoomX) && !IrisDev_CheckClassIsFloat(ivZoomX)) {
@@ -351,7 +354,7 @@ IrisValue IrisSprite::SetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fZoomX = static_cast<float>(IrisDev_GetFloat(ivZoomX));
+	auto fZoomX = GetFloatWhateverFloatOrInteger(ivZoomX);
 
 	pSprite->SetZoomX(fZoomX);
 
@@ -360,7 +363,7 @@ IrisValue IrisSprite::SetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivZoomY = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivZoomY) && !IrisDev_CheckClassIsFloat(ivZoomY)) {
@@ -368,7 +371,7 @@ IrisValue IrisSprite::SetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fZoomY = static_cast<float>(IrisDev_GetFloat(ivZoomY));
+	auto fZoomY = GetFloatWhateverFloatOrInteger(ivZoomY);
 
 	pSprite->SetZoomY(fZoomY);
 
@@ -377,15 +380,15 @@ IrisValue IrisSprite::SetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetAngle(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetAngle(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivAngle = ivsValue->GetValue(0);
 
-	if (!IrisDev_CheckClassIsInteger(ivAngle) && !IrisDev_CheckClassIsFloat(ivAngle)) {
-		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+	if (!IrisDev_CheckClassIsInteger(ivAngle)) {
+		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or an Integer");
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fAngle = static_cast<float>(IrisDev_GetFloat(ivAngle));
+	auto fAngle = static_cast<float>(IrisDev_GetInt(ivAngle));
 
 	pSprite->SetAngle(fAngle);
 
@@ -394,7 +397,7 @@ IrisValue IrisSprite::SetAngle(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivWaveAmp = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivWaveAmp) && !IrisDev_CheckClassIsFloat(ivWaveAmp)) {
@@ -402,7 +405,7 @@ IrisValue IrisSprite::SetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fWaveAmp = static_cast<float>(IrisDev_GetFloat(ivWaveAmp));
+	auto fWaveAmp = GetFloatWhateverFloatOrInteger(ivWaveAmp);
 
 	pSprite->SetWaveAmp(fWaveAmp);
 
@@ -411,7 +414,7 @@ IrisValue IrisSprite::SetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivWaveLength = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivWaveLength) && !IrisDev_CheckClassIsFloat(ivWaveLength)) {
@@ -419,7 +422,7 @@ IrisValue IrisSprite::SetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, I
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fWaveLength = static_cast<float>(IrisDev_GetFloat(ivWaveLength));
+	auto fWaveLength = GetFloatWhateverFloatOrInteger(ivWaveLength);
 
 	pSprite->SetWaveLength(fWaveLength);
 
@@ -428,7 +431,7 @@ IrisValue IrisSprite::SetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, I
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivWaveSpeed = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivWaveSpeed) && !IrisDev_CheckClassIsFloat(ivWaveSpeed)) {
@@ -436,7 +439,7 @@ IrisValue IrisSprite::SetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, II
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fWaveSpeed = static_cast<float>(IrisDev_GetFloat(ivWaveSpeed));
+	auto fWaveSpeed = GetFloatWhateverFloatOrInteger(ivWaveSpeed);
 
 	pSprite->SetWaveSpeed(fWaveSpeed);
 
@@ -445,7 +448,7 @@ IrisValue IrisSprite::SetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, II
 	return IrisDev_Nil();
 }
 
-IrisValue IrisSprite::SetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisSpriteClass::SetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivWavePhase = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivWavePhase) && !IrisDev_CheckClassIsFloat(ivWavePhase)) {
@@ -453,7 +456,7 @@ IrisValue IrisSprite::SetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, II
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
-	auto fWavePhase = static_cast<float>(IrisDev_GetFloat(ivWavePhase));
+	auto fWavePhase = GetFloatWhateverFloatOrInteger(ivWavePhase);
 
 	pSprite->SetWavePhase(fWavePhase);
 
@@ -462,35 +465,37 @@ IrisValue IrisSprite::SetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, II
 	return IrisDev_Nil();
 }
 
-const char * IrisSprite::NativeClassNameDefine() const {
-	return "IrisSprite";
+const char * IrisSpriteClass::NativeClassNameDefine() const {
+	return "Sprite";
 }
 
-IIrisClass * IrisSprite::NativeSuperClassDefine() const {
+IIrisClass * IrisSpriteClass::NativeSuperClassDefine() const {
 	return IrisDev_GetClass("Object");
 }
 
-int IrisSprite::GetTrustteeSize(void * pNativePointer) {
+int IrisSpriteClass::GetTrustteeSize(void * pNativePointer) {
 	return sizeof(IIrisSprite);
 }
 
-void * IrisSprite::NativeAlloc() {
+void * IrisSpriteClass::NativeAlloc() {
 	return GetTravialIIrisSprite();
 }
 
-void IrisSprite::NativeFree(void * pNativePointer) {
+void IrisSpriteClass::NativeFree(void * pNativePointer) {
 	ReleaseIrisSprite(static_cast<IIrisSprite*>(pNativePointer));
 }
 
-void IrisSprite::NativeClassDefine() {
+void IrisSpriteClass::NativeClassDefine() {
 	IrisDev_AddInstanceMethod(this, "__format", Initialize, 0, true);
 	IrisDev_AddInstanceMethod(this, "flash", Flash, 2, false);
 	IrisDev_AddInstanceMethod(this, "dispose", Dispose, 0, false);
 	IrisDev_AddInstanceMethod(this, "disposed", Disposed, 0, false);
 	IrisDev_AddInstanceMethod(this, "update", Update, 0, false);
-	IrisDev_AddInstanceMethod(this, "get_width", GetWidth, 0, false);
-	IrisDev_AddInstanceMethod(this, "get_height", GetHeight, 0, false);
+	//IrisDev_AddInstanceMethod(this, "width", GetWidth, 0, false);
+	//IrisDev_AddInstanceMethod(this, "height", GetHeight, 0, false);
 
+	IrisDev_AddGetter(this, "@width", GetWidth);
+	IrisDev_AddGetter(this, "@height", GetHeight);
 	IrisDev_AddGetter(this, "@bitmap", GetBitmap);
 	IrisDev_AddGetter(this, "@rect", GetRect);
 	IrisDev_AddGetter(this, "@visible", GetVisible);
@@ -524,10 +529,10 @@ void IrisSprite::NativeClassDefine() {
 	IrisDev_AddSetter(this, "@wavephase", SetWavePhase);
 }
 
-IrisSprite::IrisSprite() {
+IrisSpriteClass::IrisSpriteClass() {
 
 }
 
-IrisSprite::~IrisSprite() {
+IrisSpriteClass::~IrisSpriteClass() {
 	
 }

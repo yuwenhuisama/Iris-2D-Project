@@ -8,7 +8,7 @@
 using namespace Iris2D;
 
 
-class IrisBitmap : public IIrisClass {
+class IrisBitmapClass : public IIrisClass {
 public:
 	static IrisValue Initialize(IrisValue& ivObj, IIrisValues* ivsValue, IIrisValues* ivsVariableValues, IIrisContextEnvironment* pContextEnvironment);
 
@@ -64,7 +64,7 @@ public:
 
 	void NativeClassDefine();
 
-	IrisBitmap();
-	~IrisBitmap();
+	IrisBitmapClass();
+	~IrisBitmapClass();
 };
 #endif

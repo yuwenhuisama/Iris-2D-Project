@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include\</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);include</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,18 +159,21 @@
     <ClInclude Include="include\IrisInterfaces\IIrisObject.h" />
     <ClInclude Include="include\IrisInterfaces\IIrisValues.h" />
     <ClInclude Include="include\IrisLangLibrary.h" />
-    <ClInclude Include="include\IrisMapping\IrisBitmap.h" />
-    <ClInclude Include="include\IrisMapping\IrisColor.h" />
-    <ClInclude Include="include\IrisMapping\IrisGraphics.h" />
-    <ClInclude Include="include\IrisMapping\IrisRectD.h" />
-    <ClInclude Include="include\IrisMapping\IrisSprite.h" />
+    <ClInclude Include="include\IrisMapping\IrisAudioModule.h" />
+    <ClInclude Include="include\IrisMapping\IrisFontClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisBitmapClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisColorClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisGraphicsModule.h" />
+    <ClInclude Include="include\IrisMapping\IrisInputModule.h" />
+    <ClInclude Include="include\IrisMapping\IrisRectClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisSpriteClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisToneClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisViewportClass.h" />
     <ClInclude Include="include\IrisUnil\IrisValue.h" />
     <ClInclude Include="Iris Extension.h" />
     <ClInclude Include="include\IrisBitmap.h" />
     <ClInclude Include="include\IrisColor.h" />
     <ClInclude Include="include\IrisGraphics.h" />
-    <ClInclude Include="include\IrisPointer.h" />
-    <ClInclude Include="include\IrisPointerTag.h" />
     <ClInclude Include="include\IrisRectD.h" />
     <ClInclude Include="include\IrisSprite.h" />
     <ClInclude Include="stdafx.h" />
@@ -193,13 +196,16 @@
     </ClCompile>
     <ClCompile Include="include\IrisUnil\IrisValue.cpp" />
     <ClCompile Include="Iris Extension.cpp" />
-    <ClCompile Include="src\IrisBitmap.cpp" />
-    <ClCompile Include="src\IrisColor.cpp" />
-    <ClCompile Include="src\IrisGraphics.cpp" />
-    <ClCompile Include="src\IrisPointer.cpp" />
-    <ClCompile Include="src\IrisPointerTag.cpp" />
-    <ClCompile Include="src\IrisRectD.cpp" />
-    <ClCompile Include="src\IrisSprite.cpp" />
+    <ClCompile Include="src\IrisAudioModule.cpp" />
+    <ClCompile Include="src\IrisFontClass.cpp" />
+    <ClCompile Include="src\IrisBitmapClass.cpp" />
+    <ClCompile Include="src\IrisColorClass.cpp" />
+    <ClCompile Include="src\IrisGraphicsModule.cpp" />
+    <ClCompile Include="src\IrisInputModule.cpp" />
+    <ClCompile Include="src\IrisRectClass.cpp" />
+    <ClCompile Include="src\IrisSpriteClass.cpp" />
+    <ClCompile Include="src\IrisToneClass.cpp" />
+    <ClCompile Include="src\IrisViewportClass.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -211,6 +217,9 @@
     <ProjectReference Include="..\Iris Cerise-Spinach\Iris 2D Cerise-A.vcxproj">
       <Project>{a55fc24e-9fe2-4600-9db4-648d097de422}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="IrisLangLibrary.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

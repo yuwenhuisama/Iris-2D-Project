@@ -3,6 +3,7 @@
 ;sprite.bitmap = bitmap
 ;flag = true
 if(true, 0) {
+/*
   	if(flag) {
 		;sprite.x += 1
 		;sprite.y += 1
@@ -16,5 +17,12 @@ if(true, 0) {
 			;flag = true
 		}
 	}
+*/
+	if(Input.keyboard_press(19)) {
+		;sprite.x -= 1
+	} elseif(Input.keyboard_press(20)) {
+		;sprite.x += 1
+	}
+	;Input.update()
 	;Graphics.update()
 }

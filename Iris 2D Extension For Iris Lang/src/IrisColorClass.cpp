@@ -1,6 +1,6 @@
-#include "IrisMapping/IrisColor.h"
+#include "IrisMapping/IrisColorClass.h"
 
-IrisValue IrisColor::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivRed = ivsValue->GetValue(0);
 	auto& ivGreen = ivsValue->GetValue(1);
 	auto& ivBlue = ivsValue->GetValue(2);
@@ -35,10 +35,10 @@ IrisValue IrisColor::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 	IrisDev_SetObjectInstanceVariable(ivObj, "@blue", ivBlue);
 	IrisDev_SetObjectInstanceVariable(ivObj, "@alpha", ivAlpha);
 
-	return IrisDev_Nil();
+	return ivObj;
 }
 
-IrisValue IrisColor::Set(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::Set(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivRed = ivsValue->GetValue(0);
 	auto& ivGreen = ivsValue->GetValue(1);
 	auto& ivBlue = ivsValue->GetValue(2);
@@ -76,23 +76,23 @@ IrisValue IrisColor::Set(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues 
 	return IrisDev_Nil();
 }
 
-IrisValue IrisColor::GetRed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::GetRed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@red");
 }
 
-IrisValue IrisColor::GetGreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::GetGreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@green");
 }
 
-IrisValue IrisColor::GetBlue(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::GetBlue(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@blue");
 }
 
-IrisValue IrisColor::GetAlpha(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::GetAlpha(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_GetObjectInstanceVariable(ivObj, "@alpha");
 }
 
-IrisValue IrisColor::SetRed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::SetRed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivRed = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivRed)) {
@@ -109,7 +109,7 @@ IrisValue IrisColor::SetRed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValu
 	return IrisDev_Nil();
 }
 
-IrisValue IrisColor::SetGreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::SetGreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivGreen = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivGreen)) {
@@ -126,7 +126,7 @@ IrisValue IrisColor::SetGreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 	return IrisDev_Nil();
 }
 
-IrisValue IrisColor::SetBlue(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::SetBlue(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivBlue = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivBlue)) {
@@ -143,7 +143,7 @@ IrisValue IrisColor::SetBlue(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVal
 	return IrisDev_Nil();
 }
 
-IrisValue IrisColor::SetAlpha(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisColorClass::SetAlpha(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivAlpha = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClassIsInteger(ivAlpha)) {
@@ -160,30 +160,30 @@ IrisValue IrisColor::SetAlpha(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 	return IrisDev_Nil();
 }
 
-void IrisColor::Mark(void * pNativePointer) {
+void IrisColorClass::Mark(void * pNativePointer) {
 
 }
 
-const char * IrisColor::NativeClassNameDefine() const {
-	return "IrisColor";
+const char * IrisColorClass::NativeClassNameDefine() const {
+	return "Color";
 }
 
-IIrisClass * IrisColor::NativeSuperClassDefine() const {
+IIrisClass * IrisColorClass::NativeSuperClassDefine() const {
 	return IrisDev_GetClass("Object");
 }
 
-int IrisColor::GetTrustteeSize(void * pNativePointer) {
+int IrisColorClass::GetTrustteeSize(void * pNativePointer) {
 	return sizeof(IIrisColor);
 }
-void * IrisColor::NativeAlloc() {
+void * IrisColorClass::NativeAlloc() {
 	return GetTravialIIrisColor();
 }
 
-void IrisColor::NativeFree(void * pNativePointer) {
+void IrisColorClass::NativeFree(void * pNativePointer) {
 	ReleaseIrisColor(static_cast<IIrisColor*>(pNativePointer));
 }
 
-void IrisColor::NativeClassDefine() {
+void IrisColorClass::NativeClassDefine() {
 	IrisDev_AddClassMethod(this, "__format", Initialize, 4, false);
 	IrisDev_AddClassMethod(this, "set", Set, 4, false);
 
@@ -198,10 +198,10 @@ void IrisColor::NativeClassDefine() {
 	IrisDev_AddSetter(this, "@alpha", SetAlpha);
 }
 
-IrisColor::IrisColor() {
+IrisColorClass::IrisColorClass() {
 
 }
 
-IrisColor::~IrisColor() {
+IrisColorClass::~IrisColorClass() {
 
 }

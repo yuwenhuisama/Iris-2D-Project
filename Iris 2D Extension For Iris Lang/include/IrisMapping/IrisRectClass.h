@@ -7,7 +7,7 @@
 #include "Iris 2D Library.h"
 using namespace Iris2D;
 
-class IrisRectD : public IIrisClass {
+class IrisRectClass : public IIrisClass {
 public:
 	static IrisValue Initialize(IrisValue& ivObj, IIrisValues* ivsValues, IIrisValues* ivsVariableValues, IIrisContextEnvironment* pContextEnvironment);
 
@@ -44,7 +44,7 @@ public:
 
 	void NativeClassDefine();
 
-	IrisRectD();
-	~IrisRectD();
+	IrisRectClass();
+	~IrisRectClass();
 };
 #endif

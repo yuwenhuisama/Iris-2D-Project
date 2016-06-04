@@ -7,7 +7,7 @@
 #include "Iris 2D Library.h"
 using namespace Iris2D;
 
-class IrisColor : public IIrisClass {
+class IrisColorClass : public IIrisClass {
 public:
 	static IrisValue Initialize(IrisValue& ivObj, IIrisValues* ivsValue, IIrisValues* ivsVariableValues, IIrisContextEnvironment* pContextEnvironment);
 
@@ -44,7 +44,7 @@ public:
 
 	void NativeClassDefine();
 
-	IrisColor();
-	~IrisColor();
+	IrisColorClass();
+	~IrisColorClass();
 };
 #endif

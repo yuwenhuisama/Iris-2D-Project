@@ -34,7 +34,6 @@ bool InitInterpreter() {
 	iisInit.m_pfFatalErrorMessageFunction = ShowFatalErrorMessage;
 
 	if (!IR_Initialize(&iisInit)) {
-		//cout << "Error when initializing Iris!" << endl;
 		::MessageBoxA(0, "Error when initializing Iris!", "Fatal Error", 0);
 		return false;
 	}
@@ -45,28 +44,19 @@ bool InitInterpreter() {
 }
 
 bool Display() {
-	//InitResource();
-	//BEGIN_IRIS_SAFE_WHILE()
-	//	IrisGraphicsUpdate();
-	//	IrisInputUpdate();
-	//END_IRIS_SAFE_WHILE()
-
 	InitInterpreter();
 
 	if (!IR_LoadScriptFromPath("script.ir")) {
-		//cout << "Error when loading script!" << endl;
 		::MessageBoxA(0, "Error when loading script!", "Fatal Error", 0);
 		return 0;
 	}
 	         
 	if (!IR_Run()) {
-		//cout << "Error when running script!" << endl;
 		::MessageBoxA(0, "Error when running script!", "Fatal Error", 0);
 		return 0;
 	}
 
 	if (!IR_ShutDown()) {
-		//cout << "Error when Shutting down script!" << endl;
 		::MessageBoxA(0, "Error when Shutting down script!", "Fatal Error", 0);
 		return 0;
 	}
@@ -81,8 +71,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	app = GetIrisApp();
 	if (app->Init(hInstance, 800, 600, Display, L"My Iris App")) {
-		//ResourceInit();
-		//ModuleIrisAudio::BgmPlay(L"media\\music\\おく はなこ - 兜禅.mp3", 100, 100);
 		app->Run();
 	}
 	app->Release();

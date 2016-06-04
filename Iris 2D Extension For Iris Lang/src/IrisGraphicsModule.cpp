@@ -1,52 +1,27 @@
-#include "IrisMapping/IrisGraphics.h"
+#include "IrisMapping/IrisGraphicsModule.h"
 
-std::string WStringToString(const std::wstring &wstr)
-{
-	int nLen = WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), -1, NULL, 0, NULL, NULL);
-	if (nLen <= 0) return std::string("");
-	char* pszDst = new char[nLen];
-	if (NULL == pszDst) return std::string("");
-	WideCharToMultiByte(CP_ACP, 0, wstr.c_str(), -1, pszDst, nLen, NULL, NULL);
-	pszDst[nLen - 1] = 0;
-	std::string strTemp(pszDst);
-	delete[] pszDst;
-	return strTemp;
-}
+std::string WStringToString(const std::wstring &wstr);
 
-std::wstring StringToWString(const std::string &str)
-{
-	int nSize = MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), 0, 0);
-	if (nSize <= 0) return NULL;
-	WCHAR *pwszDst = new WCHAR[nSize + 1];
-	if (NULL == pwszDst) return NULL;
-	MultiByteToWideChar(CP_ACP, 0, str.c_str(), str.size(), pwszDst, nSize);
-	pwszDst[nSize] = 0;
-	if (pwszDst[0] == 0xFEFF)                    // skip Oxfeff
-		for (int i = 0; i < nSize; i++)
-			pwszDst[i] = pwszDst[i + 1];
-	wstring wcharString(pwszDst);
-	delete pwszDst;
-	return wcharString;
-}
+std::wstring StringToWString(const std::string &str);
 
-IrisValue IrisGraphics::ModuleIrisGraphicsGetHwnd(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsGetHwnd(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_CreateIntegerInstanceByInstantValue((int)IrisGraphicsGetHwnd());
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsGetWidth(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsGetWidth(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_CreateIntegerInstanceByInstantValue(IrisGraphicsGetWidth());
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsGetHeight(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsGetHeight(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_CreateIntegerInstanceByInstantValue(IrisGraphicsGetHeight());
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsUpdate(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsUpdate(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	IrisGraphicsUpdate();
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsWait(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsWait(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivDuration = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
@@ -60,7 +35,7 @@ IrisValue IrisGraphics::ModuleIrisGraphicsWait(IrisValue & ivObj, IIrisValues * 
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsFadeOut(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsFadeOut(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivDuration = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
@@ -74,7 +49,7 @@ IrisValue IrisGraphics::ModuleIrisGraphicsFadeOut(IrisValue & ivObj, IIrisValues
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsFadeIn(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsFadeIn(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivDuration = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
@@ -88,12 +63,12 @@ IrisValue IrisGraphics::ModuleIrisGraphicsFadeIn(IrisValue & ivObj, IIrisValues 
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsFreeze(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsFreeze(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	IrisGraphicsFreeze();
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsTransition(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsTransition(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivDuration = ivsValue->GetValue(0);
 	auto& ivFilename = ivsValue->GetValue(1);
 	auto& ivVague = ivsValue->GetValue(2);
@@ -123,7 +98,7 @@ IrisValue IrisGraphics::ModuleIrisGraphicsTransition(IrisValue & ivObj, IIrisVal
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsSnap2Bitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsSnap2Bitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivBitmap = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivBitmap, "Bitmap")) {
@@ -137,12 +112,12 @@ IrisValue IrisGraphics::ModuleIrisGraphicsSnap2Bitmap(IrisValue & ivObj, IIrisVa
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsFrameReset(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsFrameReset(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	IrisGraphicsFrameReset();
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsResizeScreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsResizeScreen(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivWidth = ivsValue->GetValue(0);
 	auto& ivHeight = ivsValue->GetValue(1);
 
@@ -162,19 +137,19 @@ IrisValue IrisGraphics::ModuleIrisGraphicsResizeScreen(IrisValue & ivObj, IIrisV
 	return IrisDev_Nil();
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsGetFrameRate(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsGetFrameRate(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_CreateIntegerInstanceByInstantValue(static_cast<int>(IrisGraphicsGetFrameRate()));
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsGetFrameCount(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsGetFrameCount(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_CreateIntegerInstanceByInstantValue(IrisGraphicsGetFrameCount());
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsGetBrightness(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsGetBrightness(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	return IrisDev_CreateIntegerInstanceByInstantValue(IrisGraphicsGetBrightness());
 }
 
-IrisValue IrisGraphics::ModuleIrisGraphicsSetBrightness(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+IrisValue IrisGraphicsModule::ModuleIrisGraphicsSetBrightness(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
 	auto& ivBrightness = ivsValue->GetValue(0);
 
 	if (!IrisDev_CheckClass(ivBrightness, "Integer")) {
@@ -188,15 +163,15 @@ IrisValue IrisGraphics::ModuleIrisGraphicsSetBrightness(IrisValue & ivObj, IIris
 	return IrisDev_Nil();
 }
 
-const char * IrisGraphics::NativeModuleNameDefine() const {
-	return "IrisGraphics";
+const char * IrisGraphicsModule::NativeModuleNameDefine() const {
+	return "Graphics";
 }
 
-IIrisModule * IrisGraphics::NativeUpperModuleDefine() const {
+IIrisModule * IrisGraphicsModule::NativeUpperModuleDefine() const {
 	return nullptr;
 }
 
-void IrisGraphics::NativeModuleDefine() {
+void IrisGraphicsModule::NativeModuleDefine() {
 	IrisDev_AddClassMethod(this, "get_hwnd", ModuleIrisGraphicsGetHwnd, 0, false);
 	IrisDev_AddClassMethod(this, "get_width", ModuleIrisGraphicsGetWidth, 0, false);
 	IrisDev_AddClassMethod(this, "get_height", ModuleIrisGraphicsGetHeight, 0, false);
@@ -232,10 +207,10 @@ void IrisGraphics::NativeModuleDefine() {
 	IrisDev_AddInstanceMethod(this, "set_brightness", ModuleIrisGraphicsSetBrightness, 1, false);
 }
 
-IrisGraphics::IrisGraphics() {
+IrisGraphicsModule::IrisGraphicsModule() {
 
 }
 
-IrisGraphics::~IrisGraphics() {
+IrisGraphicsModule::~IrisGraphicsModule() {
 
 }
