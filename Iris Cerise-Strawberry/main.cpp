@@ -12,19 +12,11 @@ void DecodeFunction(DWORD dwSrcData, DWORD& dwDestData, const DWORD dwKey1, cons
 	dwDestData ^= dwKey1;
 }
 
-void InitResource() {
-	//GetIrisEncripedResourceManager()->AddGraphResource(L"image.dat", DecodeFunction);
-
-	//sp = GetIrisSprite();
-	//sp->SetBitmap(GetIrisBitmap(L"image\\1.jpg"));
-}
-
 int ExitCondition() {
 	return app->IsQuited();
 }
 
 void ShowFatalErrorMessage(char* pMessage) {
-	//cout << pMessage << endl;
 	::MessageBoxA(0, pMessage, "Fatal Error", 0);
 }
 
@@ -46,7 +38,7 @@ bool InitInterpreter() {
 bool Display() {
 	InitInterpreter();
 
-	if (!IR_LoadScriptFromPath("script.ir")) {
+	if (!IR_LoadScriptFromPath("script/main.ir")) {
 		::MessageBoxA(0, "Error when loading script!", "Fatal Error", 0);
 		return 0;
 	}
