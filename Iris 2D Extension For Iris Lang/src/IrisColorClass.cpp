@@ -8,18 +8,22 @@ IrisValue IrisColorClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, 
 
 	if (!IrisDev_CheckClassIsInteger(ivRed)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivGreen)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivBlue)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivAlpha)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pColor = IrisDev_GetNativePointer<IIrisColor*>(ivObj);
@@ -46,18 +50,22 @@ IrisValue IrisColorClass::Set(IrisValue & ivObj, IIrisValues * ivsValue, IIrisVa
 
 	if (!IrisDev_CheckClassIsInteger(ivRed)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivGreen)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivBlue)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivAlpha)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pColor = IrisDev_GetNativePointer<IIrisColor*>(ivObj);
@@ -97,6 +105,7 @@ IrisValue IrisColorClass::SetRed(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 
 	if (!IrisDev_CheckClassIsInteger(ivRed)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pColor = IrisDev_GetNativePointer<IIrisColor*>(ivObj);
@@ -114,6 +123,7 @@ IrisValue IrisColorClass::SetGreen(IrisValue & ivObj, IIrisValues * ivsValue, II
 
 	if (!IrisDev_CheckClassIsInteger(ivGreen)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pColor = IrisDev_GetNativePointer<IIrisColor*>(ivObj);
@@ -131,6 +141,7 @@ IrisValue IrisColorClass::SetBlue(IrisValue & ivObj, IIrisValues * ivsValue, IIr
 
 	if (!IrisDev_CheckClassIsInteger(ivBlue)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pColor = IrisDev_GetNativePointer<IIrisColor*>(ivObj);
@@ -148,6 +159,7 @@ IrisValue IrisColorClass::SetAlpha(IrisValue & ivObj, IIrisValues * ivsValue, II
 
 	if (!IrisDev_CheckClassIsInteger(ivAlpha)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pColor = IrisDev_GetNativePointer<IIrisColor*>(ivObj);
@@ -184,8 +196,8 @@ void IrisColorClass::NativeFree(void * pNativePointer) {
 }
 
 void IrisColorClass::NativeClassDefine() {
-	IrisDev_AddClassMethod(this, "__format", Initialize, 4, false);
-	IrisDev_AddClassMethod(this, "set", Set, 4, false);
+	IrisDev_AddInstanceMethod(this, "__format", Initialize, 4, false);
+	IrisDev_AddInstanceMethod(this, "set", Set, 4, false);
 
 	IrisDev_AddGetter(this, "@red", GetRed);
 	IrisDev_AddGetter(this, "@green", GetGreen);

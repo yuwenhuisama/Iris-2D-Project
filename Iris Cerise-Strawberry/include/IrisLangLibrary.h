@@ -29,6 +29,21 @@ typedef IrisValue(*IrisNativeFunction)(IrisValue&, IIrisValues*, IIrisValues*, I
 typedef void(*IrisDev_FatalErrorMessageFunction)(char* pMessage);
 typedef int(*IrisDev_ExitConditionFunction)();
 
+#define DECLARE_IRISDEV_CLASS_CHECK(klass) IRISLANGLIBRARY_API bool IrisDev_CheckClassIs##klass(const IrisValue& ivValue);
+
+DECLARE_IRISDEV_CLASS_CHECK(Class)
+DECLARE_IRISDEV_CLASS_CHECK(Module)
+DECLARE_IRISDEV_CLASS_CHECK(Interface)
+DECLARE_IRISDEV_CLASS_CHECK(Object)
+DECLARE_IRISDEV_CLASS_CHECK(String)
+DECLARE_IRISDEV_CLASS_CHECK(UniqueString)
+DECLARE_IRISDEV_CLASS_CHECK(Integer)
+DECLARE_IRISDEV_CLASS_CHECK(Float)
+DECLARE_IRISDEV_CLASS_CHECK(Array)
+DECLARE_IRISDEV_CLASS_CHECK(Hash)
+DECLARE_IRISDEV_CLASS_CHECK(Range)
+DECLARE_IRISDEV_CLASS_CHECK(Block)
+
 IRISLANGLIBRARY_API void* _IrisDev_InnerGetNativePointer(const IrisValue& ivValue);
 IRISLANGLIBRARY_API void* _IrisDev_InnerGetNativePointer(IIrisObject* pObject);
 
@@ -58,6 +73,8 @@ IRISLANGLIBRARY_API int IrisDev_GetInt(const IrisValue& ivValue);
 IRISLANGLIBRARY_API double IrisDev_GetFloat(const IrisValue& ivValue);
 IRISLANGLIBRARY_API const char* IrisDev_GetString(const IrisValue& ivValue);
 IRISLANGLIBRARY_API IrisValue IrisDev_CallMethod(const IrisValue& ivObj, IIrisValues* pParameters, const char* szMethodName);
+IRISLANGLIBRARY_API IrisValue IrisDev_CallClassClassMethod(IIrisClass* pClass, const char* szMethodName, IIrisValues* pParameters);
+IRISLANGLIBRARY_API IrisValue IrisDev_CallClassModuleMethod(IIrisModule* pModule, const char* szMethodName, IIrisValues* pParameters);
 IRISLANGLIBRARY_API IIrisClass* IrisDev_GetClass(const char* strClassPathName);
 IRISLANGLIBRARY_API IIrisModule* IrisDev_GetModule(const char* strClassPathName);
 IRISLANGLIBRARY_API IIrisInterface* IrisDev_GetInterface(const char* strClassPathName);

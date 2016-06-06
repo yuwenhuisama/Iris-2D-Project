@@ -20,6 +20,34 @@ void ShowFatalErrorMessage(char* pMessage) {
 	::MessageBoxA(0, pMessage, "Fatal Error", 0);
 }
 
+IrisValue NewPrint(IrisValue & ivObj, IIrisValues * ivsValues, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+	IrisValue ivString;
+	string strOut;
+	if (ivsVariableValues) {
+		for (size_t i = 0; i < ivsVariableValues->GetSize(); ++i) {
+			auto& elem = ivsVariableValues->GetValue(i);
+			if (IrisDev_CheckClassIsString(elem)) {
+				strOut += IrisDev_GetString(elem);
+			}
+			else if (IrisDev_CheckClassIsUniqueString(elem)) {
+				strOut += IrisDev_GetString(elem);
+			}
+			else {
+				ivString = IrisDev_CallMethod(elem, nullptr, "to_string");
+				strOut += IrisDev_GetString(ivString);
+			}
+		}
+	}
+	::MessageBoxA(0, strOut.c_str(), "Message", 0);
+	return IrisDev_Nil();
+}
+
+void CoverPrintMethod() {
+	IIrisModule* pKernelModule = IrisDev_GetModule("Kernel");
+	IrisDev_AddInstanceMethod(pKernelModule, "print", NewPrint, 0, true);
+	IrisDev_AddClassMethod(pKernelModule, "print", NewPrint, 0, true);
+}
+
 bool InitInterpreter() {
 	IrisInitializeStruct iisInit;
 	iisInit.m_pfExitConditionFunction = ExitCondition;
@@ -31,6 +59,8 @@ bool InitInterpreter() {
 	}
 
 	IR_LoadExtention("Iris 2D Extension For Iris Lang.dll");
+
+	CoverPrintMethod();
 
 	return true;
 }

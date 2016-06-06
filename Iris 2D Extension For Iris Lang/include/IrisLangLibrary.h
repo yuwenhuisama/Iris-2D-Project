@@ -73,6 +73,8 @@ IRISLANGLIBRARY_API int IrisDev_GetInt(const IrisValue& ivValue);
 IRISLANGLIBRARY_API double IrisDev_GetFloat(const IrisValue& ivValue);
 IRISLANGLIBRARY_API const char* IrisDev_GetString(const IrisValue& ivValue);
 IRISLANGLIBRARY_API IrisValue IrisDev_CallMethod(const IrisValue& ivObj, IIrisValues* pParameters, const char* szMethodName);
+IRISLANGLIBRARY_API IrisValue IrisDev_CallClassClassMethod(IIrisClass* pClass, const char* szMethodName, IIrisValues* pParameters);
+IRISLANGLIBRARY_API IrisValue IrisDev_CallClassModuleMethod(IIrisModule* pModule, const char* szMethodName, IIrisValues* pParameters);
 IRISLANGLIBRARY_API IIrisClass* IrisDev_GetClass(const char* strClassPathName);
 IRISLANGLIBRARY_API IIrisModule* IrisDev_GetModule(const char* strClassPathName);
 IRISLANGLIBRARY_API IIrisInterface* IrisDev_GetInterface(const char* strClassPathName);

@@ -96,6 +96,7 @@ IrisValue IrisSpriteClass::Flash(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 
 	if (!IrisDev_CheckClassIsInteger(ivDuration)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -182,11 +183,11 @@ IrisValue IrisSpriteClass::GetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 }
 
 IrisValue IrisSpriteClass::GetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	return IrisDev_GetObjectInstanceVariable(ivObj, "@zoomx");
+	return IrisDev_GetObjectInstanceVariable(ivObj, "@zoom_x");
 }
 
 IrisValue IrisSpriteClass::GetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	return IrisDev_GetObjectInstanceVariable(ivObj, "@zoomy");
+	return IrisDev_GetObjectInstanceVariable(ivObj, "@zoom_y");
 }
 
 IrisValue IrisSpriteClass::GetAngle(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
@@ -194,19 +195,19 @@ IrisValue IrisSpriteClass::GetAngle(IrisValue & ivObj, IIrisValues * ivsValue, I
 }
 
 IrisValue IrisSpriteClass::GetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	return IrisDev_GetObjectInstanceVariable(ivObj, "@waveamp");
+	return IrisDev_GetObjectInstanceVariable(ivObj, "@wave_amp");
 }
 
 IrisValue IrisSpriteClass::GetWaveLength(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	return IrisDev_GetObjectInstanceVariable(ivObj, "@wavelength");
+	return IrisDev_GetObjectInstanceVariable(ivObj, "@wave_length");
 }
 
 IrisValue IrisSpriteClass::GetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	return IrisDev_GetObjectInstanceVariable(ivObj, "@wavespeed");
+	return IrisDev_GetObjectInstanceVariable(ivObj, "@wave_speed");
 }
 
 IrisValue IrisSpriteClass::GetWavePhase(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
-	return IrisDev_GetObjectInstanceVariable(ivObj, "@wavephase");
+	return IrisDev_GetObjectInstanceVariable(ivObj, "@wave_phase");
 }
 
 IrisValue IrisSpriteClass::SetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
@@ -214,6 +215,7 @@ IrisValue IrisSpriteClass::SetBitmap(IrisValue & ivObj, IIrisValues * ivsValue, 
 
 	if (!IrisDev_CheckClass(ivBitmap, "Bitmap")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Bitmap");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -231,6 +233,7 @@ IrisValue IrisSpriteClass::SetRect(IrisValue & ivObj, IIrisValues * ivsValue, II
 
 	if (!IrisDev_CheckClass(ivRect, "Rect")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Rect");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -247,6 +250,7 @@ IrisValue IrisSpriteClass::SetVisible(IrisValue & ivObj, IIrisValues * ivsValue,
 
 	if (ivVisible != IrisDev_True() && ivVisible != IrisDev_False()) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Bool");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -264,6 +268,7 @@ IrisValue IrisSpriteClass::SetX(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 
 	if (!IrisDev_CheckClassIsInteger(ivX) && !IrisDev_CheckClassIsFloat(ivX)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -281,6 +286,7 @@ IrisValue IrisSpriteClass::SetY(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 
 	if (!IrisDev_CheckClassIsInteger(ivY) && !IrisDev_CheckClassIsFloat(ivY)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -300,6 +306,7 @@ IrisValue IrisSpriteClass::SetZ(IrisValue & ivObj, IIrisValues * ivsValue, IIris
 
 	if (!IrisDev_CheckClassIsInteger(ivZ) && !IrisDev_CheckClassIsFloat(ivZ)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -317,6 +324,7 @@ IrisValue IrisSpriteClass::SetOx(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 
 	if (!IrisDev_CheckClassIsInteger(ivOx) && !IrisDev_CheckClassIsFloat(ivOx)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -334,6 +342,7 @@ IrisValue IrisSpriteClass::SetOy(IrisValue & ivObj, IIrisValues * ivsValue, IIri
 
 	if (!IrisDev_CheckClassIsInteger(ivOy) && !IrisDev_CheckClassIsFloat(ivOy)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -351,6 +360,7 @@ IrisValue IrisSpriteClass::SetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	if (!IrisDev_CheckClassIsInteger(ivZoomX) && !IrisDev_CheckClassIsFloat(ivZoomX)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -358,7 +368,7 @@ IrisValue IrisSpriteClass::SetZoomX(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	pSprite->SetZoomX(fZoomX);
 
-	IrisDev_SetObjectInstanceVariable(ivObj, "@zoomx", ivZoomX);
+	IrisDev_SetObjectInstanceVariable(ivObj, "@zoom_x", ivZoomX);
 
 	return IrisDev_Nil();
 }
@@ -368,6 +378,7 @@ IrisValue IrisSpriteClass::SetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	if (!IrisDev_CheckClassIsInteger(ivZoomY) && !IrisDev_CheckClassIsFloat(ivZoomY)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -375,7 +386,7 @@ IrisValue IrisSpriteClass::SetZoomY(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	pSprite->SetZoomY(fZoomY);
 
-	IrisDev_SetObjectInstanceVariable(ivObj, "@zoomy", ivZoomY);
+	IrisDev_SetObjectInstanceVariable(ivObj, "@zoom_y", ivZoomY);
 
 	return IrisDev_Nil();
 }
@@ -385,6 +396,7 @@ IrisValue IrisSpriteClass::SetAngle(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	if (!IrisDev_CheckClassIsInteger(ivAngle)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -402,6 +414,7 @@ IrisValue IrisSpriteClass::SetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue,
 
 	if (!IrisDev_CheckClassIsInteger(ivWaveAmp) && !IrisDev_CheckClassIsFloat(ivWaveAmp)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -409,7 +422,7 @@ IrisValue IrisSpriteClass::SetWaveAmp(IrisValue & ivObj, IIrisValues * ivsValue,
 
 	pSprite->SetWaveAmp(fWaveAmp);
 
-	IrisDev_SetObjectInstanceVariable(ivObj, "@waveamp", ivWaveAmp);
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_amp", ivWaveAmp);
 
 	return IrisDev_Nil();
 }
@@ -419,6 +432,7 @@ IrisValue IrisSpriteClass::SetWaveLength(IrisValue & ivObj, IIrisValues * ivsVal
 
 	if (!IrisDev_CheckClassIsInteger(ivWaveLength) && !IrisDev_CheckClassIsFloat(ivWaveLength)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -426,7 +440,7 @@ IrisValue IrisSpriteClass::SetWaveLength(IrisValue & ivObj, IIrisValues * ivsVal
 
 	pSprite->SetWaveLength(fWaveLength);
 
-	IrisDev_SetObjectInstanceVariable(ivObj, "@wavelength", ivWaveLength);
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_length", ivWaveLength);
 
 	return IrisDev_Nil();
 }
@@ -436,6 +450,7 @@ IrisValue IrisSpriteClass::SetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValu
 
 	if (!IrisDev_CheckClassIsInteger(ivWaveSpeed) && !IrisDev_CheckClassIsFloat(ivWaveSpeed)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -443,7 +458,7 @@ IrisValue IrisSpriteClass::SetWaveSpeed(IrisValue & ivObj, IIrisValues * ivsValu
 
 	pSprite->SetWaveSpeed(fWaveSpeed);
 
-	IrisDev_SetObjectInstanceVariable(ivObj, "@wavespeed", ivWaveSpeed);
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_speed", ivWaveSpeed);
 
 	return IrisDev_Nil();
 }
@@ -453,6 +468,7 @@ IrisValue IrisSpriteClass::SetWavePhase(IrisValue & ivObj, IIrisValues * ivsValu
 
 	if (!IrisDev_CheckClassIsInteger(ivWavePhase) && !IrisDev_CheckClassIsFloat(ivWavePhase)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer or a Float");
+		return IrisDev_Nil();
 	}
 
 	auto pSprite = IrisDev_GetNativePointer<IIrisSprite*>(ivObj);
@@ -460,7 +476,7 @@ IrisValue IrisSpriteClass::SetWavePhase(IrisValue & ivObj, IIrisValues * ivsValu
 
 	pSprite->SetWavePhase(fWavePhase);
 
-	IrisDev_SetObjectInstanceVariable(ivObj, "@wavephase", ivWavePhase);
+	IrisDev_SetObjectInstanceVariable(ivObj, "@wave_phase", ivWavePhase);
 
 	return IrisDev_Nil();
 }

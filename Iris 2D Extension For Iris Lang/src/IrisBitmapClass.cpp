@@ -4,16 +4,36 @@ std::string WStringToString(const std::wstring &wstr);
 std::wstring StringToWString(const std::string &str);
 
 IrisValue IrisBitmapClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue, IIrisValues * ivsVariableValues, IIrisContextEnvironment * pContextEnvironment) {
+
+	IIrisValues* pParam = IrisDev_CreateIrisValuesList(2);
+	pParam->SetValue(0, IrisDev_CallClassClassMethod(IrisDev_GetClass("Font"), "default_name", nullptr));
+	pParam->SetValue(1, IrisDev_CallClassClassMethod(IrisDev_GetClass("Font"), "default_size", nullptr));
+	IrisValue ivFont = IrisDev_CreateNormalInstance(IrisDev_GetClass("Font"), pParam, nullptr);
+	IrisDev_ReleaseIrisValuesList(pParam);
+
+	pParam = IrisDev_CreateIrisValuesList(1);
+	pParam->SetValue(0, IrisDev_CallClassClassMethod(IrisDev_GetClass("Font"), "default_bold", nullptr));
+	IrisDev_CallMethod(ivFont, pParam, "__set_bold");
+	pParam->SetValue(0, IrisDev_CallClassClassMethod(IrisDev_GetClass("Font"), "default_italic", nullptr));
+	IrisDev_CallMethod(ivFont, pParam, "__set_italic");
+	pParam->SetValue(0, IrisDev_CallClassClassMethod(IrisDev_GetClass("Font"), "default_shadow", nullptr));
+	IrisDev_CallMethod(ivFont, pParam, "__set_shadow");
+	pParam->SetValue(0, IrisDev_CallClassClassMethod(IrisDev_GetClass("Font"), "default_color", nullptr));
+	IrisDev_CallMethod(ivFont, pParam, "__set_color");
+	IrisDev_ReleaseIrisValuesList(pParam);
+	
 	if (ivsVariableValues->GetSize() == 2) {
 		auto& ivWidth = ivsVariableValues->GetValue(0);
 		auto& ivHeight = ivsVariableValues->GetValue(1);
 
 		if (!IrisDev_CheckClassIsInteger(ivWidth)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+			return ivObj;
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivHeight)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+			return ivObj;
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -24,7 +44,7 @@ IrisValue IrisBitmapClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue,
 
 		IrisDev_SetObjectInstanceVariable(ivObj, "@width", ivWidth);
 		IrisDev_SetObjectInstanceVariable(ivObj, "@height", ivHeight);
-		IrisDev_SetObjectInstanceVariable(ivObj, "@font", IrisDev_Nil());
+		IrisDev_SetObjectInstanceVariable(ivObj, "@font", ivFont);
 
 		return ivObj;
 	}
@@ -45,7 +65,7 @@ IrisValue IrisBitmapClass::Initialize(IrisValue & ivObj, IIrisValues * ivsValue,
 
 		IrisDev_SetObjectInstanceVariable(ivObj, "@width", IrisDev_CreateIntegerInstanceByInstantValue(pBitmap->GetWidth()));
 		IrisDev_SetObjectInstanceVariable(ivObj, "@height", IrisDev_CreateIntegerInstanceByInstantValue(pBitmap->GetHeight()));
-		IrisDev_SetObjectInstanceVariable(ivObj, "@font", IrisDev_Nil());
+		IrisDev_SetObjectInstanceVariable(ivObj, "@font", ivFont);
 
 		return ivObj;
 	}
@@ -83,22 +103,27 @@ IrisValue IrisBitmapClass::Blt(IrisValue & ivObj, IIrisValues * ivsValue, IIrisV
 
 	if (!IrisDev_CheckClassIsInteger(ivX)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivY)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivSrcBitmap, "Bitmap")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be a Bitmap");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivRect, "Rect")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be a Rect");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivOpacity)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 5: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -121,18 +146,22 @@ IrisValue IrisBitmapClass::StretchBlt(IrisValue & ivObj, IIrisValues * ivsValue,
 
 	if (!IrisDev_CheckClass(ivDestRect, "Rect")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Rect");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivSrcBitmap, "Bitmap")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be a Bitmap");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivSrcRect, "Rect")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be a Rect");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivOpacity)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be a Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -156,22 +185,27 @@ IrisValue IrisBitmapClass::FillRect(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 		if (!IrisDev_CheckClassIsInteger(ivX)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivY)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivWidth)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivHeight)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClass(ivColor, "Color")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 5: it must be a Color");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -191,10 +225,12 @@ IrisValue IrisBitmapClass::FillRect(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 		if (!IrisDev_CheckClass(ivRect, "Rect")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Rect");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClass(ivColor, "Color")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be a Color");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -223,30 +259,37 @@ IrisValue IrisBitmapClass::GradientFillRect(IrisValue & ivObj, IIrisValues * ivs
 
 		if (!IrisDev_CheckClassIsInteger(ivX)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivY)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivWidth)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivHeight)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClass(ivColor1, "Color")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 5: it must be a Color");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClass(ivColor2, "Color")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 6: it must be a Color");
+			return IrisDev_Nil();
 		}
 
 		if (ivVertical != IrisDev_True() && ivVertical != IrisDev_False()) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 7: it must be a Bool");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -270,18 +313,22 @@ IrisValue IrisBitmapClass::GradientFillRect(IrisValue & ivObj, IIrisValues * ivs
 
 		if (!IrisDev_CheckClass(ivRect, "Rect")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Rect");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClass(ivColor1, "Color")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be a Color");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClass(ivColor2, "Color")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be a Color");
+			return IrisDev_Nil();
 		}
 
 		if (ivVertical != IrisDev_True() && ivVertical != IrisDev_False()) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be a Bool");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -318,18 +365,22 @@ IrisValue IrisBitmapClass::ClearRect(IrisValue & ivObj, IIrisValues * ivsValue, 
 
 		if (!IrisDev_CheckClassIsInteger(ivX)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivY)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivWidth)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivHeight)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -347,6 +398,7 @@ IrisValue IrisBitmapClass::ClearRect(IrisValue & ivObj, IIrisValues * ivsValue, 
 
 		if (!IrisDev_CheckClass(ivRect, "Rect")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Rect");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -368,10 +420,12 @@ IrisValue IrisBitmapClass::GetPixel(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	if (!IrisDev_CheckClassIsInteger(ivX)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivY)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -398,14 +452,17 @@ IrisValue IrisBitmapClass::SetPixel(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	if (!IrisDev_CheckClassIsInteger(ivX)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsInteger(ivY)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivColor, "Color")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be a Color");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -423,6 +480,7 @@ IrisValue IrisBitmapClass::HueChange(IrisValue & ivObj, IIrisValues * ivsValue, 
 
 	if (!IrisDev_CheckClassIsInteger(ivHue)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -447,10 +505,12 @@ IrisValue IrisBitmapClass::RadialBlur(IrisValue & ivObj, IIrisValues * ivsValue,
 
 	if (!IrisDev_CheckClassIsInteger(ivAngle)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (IrisDev_CheckClassIsInteger(ivDivision)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -468,10 +528,12 @@ IrisValue IrisBitmapClass::TextSize(IrisValue & ivObj, IIrisValues * ivsValue, I
 
 	if (!IrisDev_CheckClass(ivFont, "Font")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Font");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClassIsString(ivStr)) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be a String");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -496,26 +558,32 @@ IrisValue IrisBitmapClass::IrisDrawText(IrisValue & ivObj, IIrisValues * ivsValu
 
 		if (!IrisDev_CheckClassIsInteger(ivX)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivY)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivWidth)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivHeight)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 4: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsString(ivStr)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 5: it must be a String");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivAlign)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 6: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -541,14 +609,17 @@ IrisValue IrisBitmapClass::IrisDrawText(IrisValue & ivObj, IIrisValues * ivsValu
 
 		if (!IrisDev_CheckClass(ivRect, "Rect")) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Rect");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsString(ivStr)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be a String");
+			return IrisDev_Nil();
 		}
 
 		if (!IrisDev_CheckClassIsInteger(ivAlign)) {
 			IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+			return IrisDev_Nil();
 		}
 
 		auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);
@@ -587,6 +658,7 @@ IrisValue IrisBitmapClass::SetFont(IrisValue & ivObj, IIrisValues * ivsValue, II
 
 	if (!IrisDev_CheckClass(ivFont, "Font")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Font");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivObj);

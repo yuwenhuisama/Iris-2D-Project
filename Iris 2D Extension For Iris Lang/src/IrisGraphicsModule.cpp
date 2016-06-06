@@ -26,6 +26,7 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsWait(IrisValue & ivObj, IIrisVal
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto nDuration = IrisDev_GetInt(ivDuration);
@@ -40,6 +41,7 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsFadeOut(IrisValue & ivObj, IIris
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto nDuration = IrisDev_GetInt(ivDuration);
@@ -54,6 +56,7 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsFadeIn(IrisValue & ivObj, IIrisV
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto nDuration = IrisDev_GetInt(ivDuration);
@@ -75,14 +78,17 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsTransition(IrisValue & ivObj, II
 
 	if (!IrisDev_CheckClass(ivDuration, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivFilename, "String")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be a String");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivVague, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 3: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto nDuration = IrisDev_GetInt(ivDuration);
@@ -103,6 +109,7 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsSnap2Bitmap(IrisValue & ivObj, I
 
 	if (!IrisDev_CheckClass(ivBitmap, "Bitmap")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be a Bitmap");
+		return IrisDev_Nil();
 	}
 
 	auto pBitmap = IrisDev_GetNativePointer<IIrisBitmap*>(ivBitmap);
@@ -123,10 +130,12 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsResizeScreen(IrisValue & ivObj, 
 
 	if (!IrisDev_CheckClass(ivWidth, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	if (!IrisDev_CheckClass(ivHeight, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 2: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto nWidth = IrisDev_GetInt(ivWidth);
@@ -154,6 +163,7 @@ IrisValue IrisGraphicsModule::ModuleIrisGraphicsSetBrightness(IrisValue & ivObj,
 
 	if (!IrisDev_CheckClass(ivBrightness, "Integer")) {
 		IrisDev_GroanIrregularWithString("Invaild parameter 1: it must be an Integer");
+		return IrisDev_Nil();
 	}
 
 	auto nBrightness = IrisDev_GetInt(ivBrightness);
