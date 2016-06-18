@@ -160,9 +160,9 @@
     <ClInclude Include="include\IrisInterfaces\IIrisValues.h" />
     <ClInclude Include="include\IrisLangLibrary.h" />
     <ClInclude Include="include\IrisMapping\IrisAudioModule.h" />
-    <ClInclude Include="include\IrisMapping\IrisFontClass.h" />
     <ClInclude Include="include\IrisMapping\IrisBitmapClass.h" />
     <ClInclude Include="include\IrisMapping\IrisColorClass.h" />
+    <ClInclude Include="include\IrisMapping\IrisFontClass.h" />
     <ClInclude Include="include\IrisMapping\IrisGraphicsModule.h" />
     <ClInclude Include="include\IrisMapping\IrisInputModule.h" />
     <ClInclude Include="include\IrisMapping\IrisRectClass.h" />
@@ -197,9 +197,9 @@
     <ClCompile Include="include\IrisUnil\IrisValue.cpp" />
     <ClCompile Include="Iris Extension.cpp" />
     <ClCompile Include="src\IrisAudioModule.cpp" />
-    <ClCompile Include="src\IrisFontClass.cpp" />
     <ClCompile Include="src\IrisBitmapClass.cpp" />
     <ClCompile Include="src\IrisColorClass.cpp" />
+    <ClCompile Include="src\IrisFontClass.cpp" />
     <ClCompile Include="src\IrisGraphicsModule.cpp" />
     <ClCompile Include="src\IrisInputModule.cpp" />
     <ClCompile Include="src\IrisRectClass.cpp" />
