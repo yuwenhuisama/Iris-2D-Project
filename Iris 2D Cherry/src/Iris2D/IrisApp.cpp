@@ -1,0 +1,202 @@
+#include "Iris2D/IrisApp.h"
+#include "Iris2D/IrisD3DResourceManager.h"
+#include "Iris2D/IrisD2DResourceManager.h"
+#include "Iris2D Util/IrisTexture.h"
+#include "Iris2D/IrisShaders/IrisSpriteVertexShader.h"
+#include "Iris2D/IrisShaders/IrisSimplePixelShader.h"
+#include "Iris2D/IrisGraphics.h"
+
+namespace Iris2D
+{
+	int IrisApplication::WindowMessageLoop()
+	{
+		MSG msg = { 0 };
+
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			IrisD3DResourceManager::Instance()->Render();
+		}
+
+		return static_cast<int>(msg.message);
+	}
+
+	IrisApplication* IrisApplication::Instance()
+	{
+		static auto pInstance = IrisApplication();
+		return &pInstance;
+	}
+
+	bool IrisApplication::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wstrTitle)
+	{
+		IrisAppStartInfo iasiInfo;
+		iasiInfo.m_hInstance = hInstance;
+		iasiInfo.m_nWidth = nWidth;
+		iasiInfo.m_nHeight = nHeight;
+		iasiInfo.m_pfFunc = pfGameFunc;
+		iasiInfo.m_wstrTitle = wstrTitle;
+
+		return Initialize(&iasiInfo);
+	}
+
+	bool IrisApplication::Initialize(const IrisAppStartInfo * pInfo)
+	{
+		m_eAppState = IrisAppState::Uninitialized;
+
+		if (!InitializeWindow(pInfo)) {
+			return false;
+		}
+
+		if (!IrisD3DResourceManager::Instance()->Initialize(m_hWindow)) {
+			return false;
+		}
+
+		if (!IrisD2DResourceManager::Instance()->Initialize()) {
+			return false;
+		}
+
+		if (!IrisTexture::Initialize()) {
+			return false;
+		}
+
+		/* Shaders */
+		// Vertex Shader
+		auto pVertexShader = IrisSpriteVertexShader::Instance();
+		auto pD3DManager = IrisD3DResourceManager::Instance();
+		if (!pVertexShader->Initialize()) {
+			return false;
+		}
+
+		// Pixel Shader
+		if (!pVertexShader->CreateInputLayout(pD3DManager->GetD3D11Device())) {
+			return false;
+		}
+
+		auto pPixelShader = IrisSimplePixelShader::Instance();
+		if (!pPixelShader->Initialize()) {
+			return false;
+		}
+
+		m_pfGameFunc = pInfo->m_pfFunc;
+		m_nShowCmd = pInfo->nShowCmd;
+
+		m_eAppState = IrisAppState::Initialized;
+
+		return true;
+	}
+
+	bool IrisApplication::Run()
+	{
+		m_eAppState = IrisAppState::Running;
+		ShowWindow(m_hWindow, m_nShowCmd);
+		return m_pfGameFunc();
+	}
+
+	void IrisApplication::Release()
+	{
+		IrisD3DResourceManager::Instance()->Release();
+		IrisD2DResourceManager::Instance()->Release();
+		IrisTexture::Release();
+		IrisGraphics::Instance()->Release();
+		IrisSimplePixelShader::Instance()->Release();
+		IrisSpriteVertexShader::Instance()->Release();
+	}
+
+	bool IrisApplication::IsUninitialized() const
+	{
+		return m_eAppState == IrisAppState::Uninitialized;
+	}
+
+	bool IrisApplication::IsInitiatlize() const
+	{
+		return m_eAppState == IrisAppState::Initialized;
+	}
+
+	bool IrisApplication::IsRunning() const
+	{
+		return m_eAppState == IrisAppState::Running;
+	}
+
+	bool IrisApplication::IsQuited() const
+	{
+		return m_eAppState == IrisAppState::Quited;
+	}
+
+	void IrisApplication::ShutDown()
+	{
+	}
+
+	void IrisApplication::Quite()
+	{
+		m_eAppState = IrisAppState::Quited;
+	}
+
+	float IrisApplication::GetTimeDelta()
+	{
+		return 0.0f;
+	}
+
+	LRESULT IrisApplication::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+	{
+		PAINTSTRUCT ps;
+		HDC hDC;
+
+		switch (message) {
+		case WM_PAINT:
+			hDC = BeginPaint(hwnd, &ps);
+			EndPaint(hwnd, &ps);
+			break;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			IrisApplication::Instance()->Quite();
+			break;
+		default:
+			return DefWindowProc(hwnd, message, wParam, lParam);
+		}
+		return 0;
+	}
+
+	bool IrisApplication::InitializeWindow(const IrisAppStartInfo* pInfo)
+	{
+		WNDCLASSEX wndClass = { 0 };
+		wndClass.cbSize = sizeof(WNDCLASSEX);
+		wndClass.style = CS_HREDRAW | CS_VREDRAW;
+		wndClass.lpfnWndProc = WndProc;
+		wndClass.hInstance = pInfo->m_hInstance;
+		wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+		wndClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
+		wndClass.lpszMenuName = NULL;
+		wndClass.lpszClassName = L"IrisAppWindow";
+
+		if (!RegisterClassEx(&wndClass)) {
+			return false;
+		}
+
+		RECT rcArea = { 0, 0, pInfo->m_nWidth, pInfo->m_nHeight };
+		AdjustWindowRect(&rcArea, WS_OVERLAPPEDWINDOW, false);
+
+		HWND hHwnd = CreateWindowW(L"IrisAppWindow",
+			pInfo->m_wstrTitle.c_str(),
+			WS_OVERLAPPEDWINDOW,
+			pInfo->m_nX,
+			pInfo->m_nY,
+			rcArea.right - rcArea.left,
+			rcArea.bottom - rcArea.top,
+			nullptr,
+			nullptr,
+			pInfo->m_hInstance,
+			nullptr);
+
+		if (!hHwnd) {
+			return false;
+		}
+
+		m_hWindow = hHwnd;
+
+		//ShowWindow(hwnd, showCmd);
+
+		return true;
+	}
+}
