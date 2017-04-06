@@ -99,7 +99,7 @@ namespace Iris2D
 
 		//m_pCurrentTexture->ReleaseSyncFromDx11Side();
 
-		m_pSwapChain->Present(0, 0);
+		m_pSwapChain->Present(1, 0);
 
 		return true;
 	}

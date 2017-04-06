@@ -37,17 +37,39 @@ namespace Iris2D {
 		pD3DManager->SetVertexShader(pVertexShader);
 		pD3DManager->SetPixelShader(pPixelShader);
 
-		pD3DContenx->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
+		//while (!m_bUpdateLockFlag) {
+			MSG msg = { 0 };
+			if (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+				::TranslateMessage(&msg);
+				::DispatchMessage(&msg);
 
-		for (auto& sprite : m_stSprites)
-		{
-			sprite->Render();
-		}
+				if (msg.message == WM_QUIT) {
+					pApp->Quite();
+					return;
+				}
+			}
+			else {
 
-		if (pApp->WindowMessageLoop() == WM_QUIT) {
-			pApp->Quite();
-			return;
-		}
+				//m_fCurrentTime = ::timeGetTime();
+				//if (m_fCurrentTime > m_fLastTime) {
+				//	auto fTimeDelta = static_cast<float>(m_fCurrentTime - m_fLastTime);
+				//	m_fLastTime = m_fCurrentTime + static_cast<DWORD>(m_fMsPerUpdate);
+				//	m_bUpdateLockFlag = true;
+				//}
+
+				pD3DContenx->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
+
+				for (auto& sprite : m_stSprites)
+				{
+					sprite->Render();
+				}
+
+				IrisD3DResourceManager::Instance()->Render();
+			}
+
+		//}
+
+		//m_bUpdateLockFlag = false;
 	}
 
 	void IrisGraphics::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT)
@@ -112,9 +134,15 @@ namespace Iris2D {
 	{
 	}
 
-	float IrisGraphics::GetFrameRate()
+	void IrisGraphics::SetFrameRate(float nFrameRate)
 	{
-		return 0.0f;
+		m_fFrameRate = nFrameRate;
+		m_fMsPerUpdate = 1000.0f / nFrameRate;
+	}
+
+	float IrisGraphics::GetFrameRate() const
+	{
+		return m_fFrameRate;
 	}
 
 	void IrisGraphics::Release()
@@ -125,4 +153,8 @@ namespace Iris2D {
 		}
 	}
 
+	float IrisGraphics::GetMsPerUpdate()
+	{
+		return m_fMsPerUpdate;
+	}
 }

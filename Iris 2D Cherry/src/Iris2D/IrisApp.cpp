@@ -8,21 +8,6 @@
 
 namespace Iris2D
 {
-	int IrisApplication::WindowMessageLoop()
-	{
-		MSG msg = { 0 };
-
-		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		else {
-			IrisD3DResourceManager::Instance()->Render();
-		}
-
-		return static_cast<int>(msg.message);
-	}
-
 	IrisApplication* IrisApplication::Instance()
 	{
 		static auto pInstance = IrisApplication();
@@ -91,6 +76,9 @@ namespace Iris2D
 	{
 		m_eAppState = IrisAppState::Running;
 		ShowWindow(m_hWindow, m_nShowCmd);
+
+		IrisGraphics::Instance()->m_fLastTime = static_cast<float>(::timeGetTime());
+		IrisGraphics::Instance()->m_fLag = 0.0f;
 		return m_pfGameFunc();
 	}
 
@@ -124,10 +112,6 @@ namespace Iris2D
 		return m_eAppState == IrisAppState::Quited;
 	}
 
-	void IrisApplication::ShutDown()
-	{
-	}
-
 	void IrisApplication::Quite()
 	{
 		m_eAppState = IrisAppState::Quited;
@@ -140,22 +124,13 @@ namespace Iris2D
 
 	LRESULT IrisApplication::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
-		PAINTSTRUCT ps;
-		HDC hDC;
-
 		switch (message) {
-		case WM_PAINT:
-			hDC = BeginPaint(hwnd, &ps);
-			EndPaint(hwnd, &ps);
-			break;
 		case WM_DESTROY:
 			PostQuitMessage(0);
 			IrisApplication::Instance()->Quite();
 			break;
-		default:
-			return DefWindowProc(hwnd, message, wParam, lParam);
 		}
-		return 0;
+		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
 
 	bool IrisApplication::InitializeWindow(const IrisAppStartInfo* pInfo)
@@ -179,7 +154,7 @@ namespace Iris2D
 
 		HWND hHwnd = CreateWindowW(L"IrisAppWindow",
 			pInfo->m_wstrTitle.c_str(),
-			WS_OVERLAPPEDWINDOW,
+			WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX,
 			pInfo->m_nX,
 			pInfo->m_nY,
 			rcArea.right - rcArea.left,
