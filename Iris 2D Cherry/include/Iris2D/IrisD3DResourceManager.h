@@ -32,7 +32,6 @@ namespace Iris2D
 	public:
 		bool Initialize(HWND hWindow);
 		bool Release();
-		bool Render();
 
 	public:
 		ID3D11Device* GetD3D11Device();

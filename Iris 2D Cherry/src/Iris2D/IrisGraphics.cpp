@@ -37,7 +37,7 @@ namespace Iris2D {
 		pD3DManager->SetVertexShader(pVertexShader);
 		pD3DManager->SetPixelShader(pPixelShader);
 
-		//while (!m_bUpdateLockFlag) {
+		while (!m_bUpdateLockFlag) {
 			MSG msg = { 0 };
 			if (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
 				::TranslateMessage(&msg);
@@ -49,13 +49,12 @@ namespace Iris2D {
 				}
 			}
 			else {
-
-				//m_fCurrentTime = ::timeGetTime();
-				//if (m_fCurrentTime > m_fLastTime) {
-				//	auto fTimeDelta = static_cast<float>(m_fCurrentTime - m_fLastTime);
-				//	m_fLastTime = m_fCurrentTime + static_cast<DWORD>(m_fMsPerUpdate);
-				//	m_bUpdateLockFlag = true;
-				//}
+				m_fCurrentTime = static_cast<float>(::timeGetTime());
+				if (m_fCurrentTime >= m_fLastTime) {
+					auto fTimeDelta = (m_fCurrentTime - m_fLastTime);
+					m_fLastTime = m_fCurrentTime + m_fMsPerUpdate;
+					m_bUpdateLockFlag = true;
+				}
 
 				pD3DContenx->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
 
@@ -64,12 +63,48 @@ namespace Iris2D {
 					sprite->Render();
 				}
 
-				IrisD3DResourceManager::Instance()->Render();
+				pD3DManager->GetSwapChain()->Present(1, 0);
+			}
+		}
+		m_bUpdateLockFlag = false;
+	}
+
+	void IrisGraphics::UpdateNoLock(IR_PARAM_RESULT_CT)
+	{
+		const float arrClearColor[4] = { 0.0f, 0.0f, 0.25f, 1.0f };
+
+		auto pApp = IrisApplication::Instance();
+		auto pD3DManager = IrisD3DResourceManager::Instance();
+		auto pD3DContenx = pD3DManager->GetD3DDeviceContext();
+
+		// switch shader
+		auto pVertexShader = IrisSpriteVertexShader::Instance();
+		auto pPixelShader = IrisSimplePixelShader::Instance();
+
+		pD3DManager->SetVertexShader(pVertexShader);
+		pD3DManager->SetPixelShader(pPixelShader);
+
+		MSG msg = { 0 };
+		if (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			::TranslateMessage(&msg);
+			::DispatchMessage(&msg);
+
+			if (msg.message == WM_QUIT) {
+				pApp->Quite();
+				return;
+			}
+		}
+		else {
+			pD3DContenx->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
+
+			for (auto& sprite : m_stSprites)
+			{
+				sprite->Render();
 			}
 
-		//}
+			pD3DManager->GetSwapChain()->Present(0, 0);
+		}
 
-		//m_bUpdateLockFlag = false;
 	}
 
 	void IrisGraphics::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT)

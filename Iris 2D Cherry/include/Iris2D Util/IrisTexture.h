@@ -11,8 +11,8 @@ namespace Iris2D
 		ID3D11ShaderResourceView* m_pTextureResource = nullptr;
 		ID3D11Resource* m_pTexture = nullptr;
 
-		ID2D1RenderTarget* m_pRenderTarget = nullptr;
-		ID2D1Bitmap* m_pBitmap = nullptr;
+		ID2D1RenderTarget* m_pRenderTargetBitmap = nullptr;
+		//ID2D1Bitmap* m_pBitmap = nullptr;
 		HANDLE m_hSharedResourceHandle = nullptr;
 
 		IDXGIKeyedMutex* m_pDX11Mutex = nullptr;
@@ -23,9 +23,11 @@ namespace Iris2D
 		static ID3D11BlendState* sm_pDefaultBlendState;
 
 	public:
+		static IrisTexture* Create(const std::wstring& wstrTexturePath);
+		static IrisTexture* Create(unsigned int nWidth, unsigned int nHeight);
+
 		static bool Initialize();
 		static bool Release();
-		static IrisTexture* Create(const std::wstring& wstrTexturePath);
 		static void Release(IrisTexture*& pTexture);
 
 	private:
@@ -46,7 +48,8 @@ namespace Iris2D
 		void ReleaseSyncFromDx10Side();
 
 		ID3D11Resource* GetTexture();
-		ID2D1Bitmap* GetD2DBitmap();
+		ID2D1RenderTarget* GetRenderTargetBitmap();
+		//ID2D1Bitmap* GetD2DBitmap();
 	};
 }
 #endif // !_H_IRISTEXTURE_

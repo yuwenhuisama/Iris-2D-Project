@@ -77,33 +77,7 @@ namespace Iris2D
 
 		return true;
 	}
-
-	bool IrisD3DResourceManager::Render()
-	{
-		//float arrClearColor[4] = { 0.0f, 0.0f, 0.25f, 1.0f };
-
-		//m_pD3D11Context->ClearRenderTargetView(m_pBackBufferTarget, arrClearColor);
-
-		//m_pD3D11Context->IASetVertexBuffers(0, 1, &m_pCurrentVertexBuffer, &m_nCurrentBufferStride, &m_nCurrentBufferOffset);
-		//m_pD3D11Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		//m_pCurrentTexture->AquireSyncFromDx11Side();
-
-		//auto pShaderResource = m_pCurrentTexture->GetShaderResourceView();
-		//auto pShaderSampler = m_pCurrentTexture->GetDefaultSamplerState();
-
-		//m_pD3D11Context->PSSetShaderResources(0, 1, &pShaderResource);
-		//m_pD3D11Context->PSSetSamplers(0, 1, &pShaderSampler);
-
-		//m_pD3D11Context->Draw(6, 0);
-
-		//m_pCurrentTexture->ReleaseSyncFromDx11Side();
-
-		m_pSwapChain->Present(1, 0);
-
-		return true;
-	}
-
+	
 	ID3D11Device * IrisD3DResourceManager::GetD3D11Device()
 	{
 		return m_pD3D11Device;
@@ -196,21 +170,6 @@ namespace Iris2D
 #ifdef _DEBUG
 		nCreationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif 
-
-		// DX 11 Device
-		//auto hResult = D3D11CreateDevice(
-		//	pAdapter,
-		//	D3D_DRIVER_TYPE_UNKNOWN,
-		//	0,
-		//	nCreationFlags,
-		//	arrDX11FeatureLevels,
-		//	nTotalFeatureLevels,
-		//	D3D11_SDK_VERSION,
-		//	&m_pD3D11Device,
-		//	nullptr,
-		//	&m_pD3D11Context
-		//);
-
 		auto hResult = D3D11CreateDeviceAndSwapChain(
 			pAdapter,
 			D3D_DRIVER_TYPE_UNKNOWN,

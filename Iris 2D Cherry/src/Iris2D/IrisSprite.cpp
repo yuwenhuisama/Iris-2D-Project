@@ -183,6 +183,10 @@ namespace Iris2D
 		pContex->PSSetShaderResources(0, 1, &pShaderResource);
 		pContex->PSSetSamplers(0, 1, &pShaderSampler);
 
+		//DirectX::ScratchImage image;
+		//DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), m_pBitmap->GetTexture()->GetTexture(), image);
+		//DirectX::SaveToWICFile(*image.GetImages(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, L"te.png", &GUID_WICPixelFormat32bppBGRA);
+
 		pContex->Draw(6, 0);
 
 		pTexture->ReleaseSyncFromDx11Side();

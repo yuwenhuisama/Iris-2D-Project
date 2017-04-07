@@ -28,14 +28,14 @@ bool GameCallBack() {
 	pSprite->SetRoomY(0.5f);
 
 	auto angle = 0.0f;
-	//while (!pApp->IsQuited()) {
-	//	pSprite->SetAngle(angle += 1.0f);
-	//	pGraphics->Update();
-	//}
-
-	BEGIN_SAFE_LOOP()
+	while (!pApp->IsQuited()) {
 		pSprite->SetAngle(angle += 1.0f);
-	END_SAFE_LOOP()
+		pGraphics->Update();
+	}
+
+	//BEGIN_SAFE_LOOP()
+	//	pSprite->SetAngle(angle += 1.0f);
+	//END_SAFE_LOOP()
 
 	return true;
 }

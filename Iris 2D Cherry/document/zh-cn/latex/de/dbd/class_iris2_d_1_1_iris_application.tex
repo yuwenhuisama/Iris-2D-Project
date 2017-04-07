@@ -1,0 +1,233 @@
+\hypertarget{class_iris2_d_1_1_iris_application}{}\section{Iris2D\+:\+:Iris\+Application类 参考}
+\label{class_iris2_d_1_1_iris_application}\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+
+
+Iris 2D Application类。  
+
+
+
+
+{\ttfamily \#include $<$Iris\+App.\+h$>$}
+
+\subsection*{类}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_iris2_d_1_1_iris_application_1_1_iris_app_start_info}{Iris\+App\+Start\+Info}
+\begin{DoxyCompactList}\small\item\em Iris 2D 启动信息的结构体。 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public 类型}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_ac74720e6cd3a1968f73e92ea99675884}\label{class_iris2_d_1_1_iris_application_ac74720e6cd3a1968f73e92ea99675884}} 
+typedef bool($\ast$ \hyperlink{class_iris2_d_1_1_iris_application_ac74720e6cd3a1968f73e92ea99675884}{Game\+Func}) ()
+\begin{DoxyCompactList}\small\item\em Iris 2D 回调函数的类型。 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public 成员函数}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize} (H\+I\+N\+S\+T\+A\+N\+CE h\+Instance, unsigned int n\+Width, unsigned int n\+Height, \hyperlink{class_iris2_d_1_1_iris_application_ac74720e6cd3a1968f73e92ea99675884}{Game\+Func} pf\+Game\+Func, const std\+::wstring \&wsz\+Title)
+\begin{DoxyCompactList}\small\item\em 初始化\+Iris 2D 所需要的资源以及组件。 \end{DoxyCompactList}\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_ac20656815694f980fccfc4369727a9a9}{Initialize} (const \hyperlink{struct_iris2_d_1_1_iris_application_1_1_iris_app_start_info}{Iris\+App\+Start\+Info} $\ast$p\+Info)
+\begin{DoxyCompactList}\small\item\em 初始化\+Iris 2D 所需要的资源以及组件。 \end{DoxyCompactList}\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_ae6bb59365978c945201fd8cf82105e4f}{Run} ()
+\begin{DoxyCompactList}\small\item\em 启动 Iris 2D 游戏逻辑，游戏逻辑代码是写在 \hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize()} 的回调函数中的。 \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_a486d999a8d9e96f21b9d064d10d15b96}\label{class_iris2_d_1_1_iris_application_a486d999a8d9e96f21b9d064d10d15b96}} 
+void \hyperlink{class_iris2_d_1_1_iris_application_a486d999a8d9e96f21b9d064d10d15b96}{Release} ()
+\begin{DoxyCompactList}\small\item\em 释放所有由 Iris 2D 维护的资源（如 Sprite/\+Viewport/\+Bitmap ），以及其他和 DirectX 相关的资源。 \end{DoxyCompactList}\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_a1035e03a186b934ecf57371e42475eea}{Is\+Uninitialized} () const
+\begin{DoxyCompactList}\small\item\em 检查当前应用状态是否为未初始化。 \end{DoxyCompactList}\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_ab7a5b7f956f23d3fb3d2ee0de573cb53}{Is\+Initiatlize} () const
+\begin{DoxyCompactList}\small\item\em 检查当前应用状态是否为已初始化。 \end{DoxyCompactList}\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_a795cea1f5d8112a7db7d6429f306a5ff}{Is\+Running} () const
+\begin{DoxyCompactList}\small\item\em 检查当前应用状态是否为正在运行。 \end{DoxyCompactList}\item 
+bool \hyperlink{class_iris2_d_1_1_iris_application_ae9760ff496a4c80f96ad49331407c2e4}{Is\+Quited} () const
+\begin{DoxyCompactList}\small\item\em 检查当前应用状态是否为已退出。 \end{DoxyCompactList}\item 
+void \hyperlink{class_iris2_d_1_1_iris_application_adca8cada1a8841c3f409e856f6878331}{Quite} ()
+\begin{DoxyCompactList}\small\item\em 手动设置当前 \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} 的状态为 Quite 。 \end{DoxyCompactList}\item 
+float \hyperlink{class_iris2_d_1_1_iris_application_a3b8f4de1902aeda08acbe243aad34f15}{Get\+Time\+Delta} ()
+\begin{DoxyCompactList}\small\item\em Get delta time between two frame in Iris 2D. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{静态 Public 成员函数}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} $\ast$ \hyperlink{class_iris2_d_1_1_iris_application_ab2a9826c10d90732f398859782817f8e}{Instance} ()
+\begin{DoxyCompactList}\small\item\em 获取 \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} 的单例指针。 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{详细描述}
+Iris 2D Application类。 
+
+这个类提供了一个单例对象来维护 Iris 2D 应用，包括初始化 Iris 2\+D，释放资源等。 
+
+\subsection{成员函数说明}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_a3b8f4de1902aeda08acbe243aad34f15}\label{class_iris2_d_1_1_iris_application_a3b8f4de1902aeda08acbe243aad34f15}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Get\+Time\+Delta@{Get\+Time\+Delta}}
+\index{Get\+Time\+Delta@{Get\+Time\+Delta}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Get\+Time\+Delta()}{GetTimeDelta()}}
+{\footnotesize\ttfamily float Iris2\+D\+::\+Iris\+Application\+::\+Get\+Time\+Delta (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get delta time between two frame in Iris 2D. 
+
+This can be helpful for use to ensure speed of the game. \begin{DoxyReturn}{返回}
+Time delta (in milliseconds). 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}\label{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Initialize()}{Initialize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Initialize (\begin{DoxyParamCaption}\item[{H\+I\+N\+S\+T\+A\+N\+CE}]{h\+Instance,  }\item[{unsigned int}]{n\+Width,  }\item[{unsigned int}]{n\+Height,  }\item[{\hyperlink{class_iris2_d_1_1_iris_application_ac74720e6cd3a1968f73e92ea99675884}{Game\+Func}}]{pf\+Game\+Func,  }\item[{const std\+::wstring \&}]{wsz\+Title }\end{DoxyParamCaption})}
+
+
+
+初始化\+Iris 2D 所需要的资源以及组件。 
+
+该函数必须在所有和 Iris 2D 相关的操作执行之前被调用。
+
+该函数不再被推荐，这是因为该函数只是用来向下兼容老的 Iris 2D A\+P\+I。
+
+生成的游戏窗口的坐标将会默认为 (0 ,0) 并且 Show Command 将会默认为 0 。 
+\begin{DoxyParams}{参数}
+{\em h\+Instance} & Windows 应用的 Instance 句柄，来自于 Win\+Main 的参数。 \\
+\hline
+{\em n\+Width} & Iris 2D 窗口初始化宽度。 \\
+\hline
+{\em n\+Height} & Iris 2D 窗口初始化高度。 \\
+\hline
+{\em pf\+Game\+Func} & Iris 2D 回调函数指针，用户游戏代码应该被写在此函数之中。 \\
+\hline
+{\em wsz\+Title} & Iris 2D 窗口的初始化标题。 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+如果 Iris 2D 成功初始化，那么返回 true 否则返回 false 。如果初始化失败，那么必须调用 \hyperlink{class_iris2_d_1_1_iris_application_a486d999a8d9e96f21b9d064d10d15b96}{Release()} 来结束当前程序。 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\hyperlink{class_iris2_d_1_1_iris_application_ac20656815694f980fccfc4369727a9a9}{Initialize(const Iris\+App\+Start\+Info$\ast$ p\+Info)} 
+
+\hyperlink{class_iris2_d_1_1_iris_application_ac74720e6cd3a1968f73e92ea99675884}{Game\+Func} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_ac20656815694f980fccfc4369727a9a9}\label{class_iris2_d_1_1_iris_application_ac20656815694f980fccfc4369727a9a9}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Initialize@{Initialize}}
+\index{Initialize@{Initialize}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Initialize()}{Initialize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Initialize (\begin{DoxyParamCaption}\item[{const \hyperlink{struct_iris2_d_1_1_iris_application_1_1_iris_app_start_info}{Iris\+App\+Start\+Info} $\ast$}]{p\+Info }\end{DoxyParamCaption})}
+
+
+
+初始化\+Iris 2D 所需要的资源以及组件。 
+
+该函数必须在所有和 Iris 2D 相关的操作执行之前被调用。（推荐） \begin{DoxyReturn}{返回}
+如果 Iris 2D 成功初始化，那么返回 true 否则返回 false 。如果初始化失败，那么必须调用 \hyperlink{class_iris2_d_1_1_iris_application_a486d999a8d9e96f21b9d064d10d15b96}{Release()} 来结束当前程序。 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\hyperlink{class_iris2_d_1_1_iris_application_a486d999a8d9e96f21b9d064d10d15b96}{Release()} 
+
+\hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize(\+H\+I\+N\+S\+T\+A\+N\+C\+E h\+Instance, unsigned int n\+Width, unsigned int n\+Height, Game\+Func pf\+Game\+Func, const std\+::wstring\& wsz\+Title)} 
+
+\hyperlink{struct_iris2_d_1_1_iris_application_1_1_iris_app_start_info}{Iris\+App\+Start\+Info} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_ab2a9826c10d90732f398859782817f8e}\label{class_iris2_d_1_1_iris_application_ab2a9826c10d90732f398859782817f8e}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Instance@{Instance}}
+\index{Instance@{Instance}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Instance()}{Instance()}}
+{\footnotesize\ttfamily static \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application}$\ast$ Iris2\+D\+::\+Iris\+Application\+::\+Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+获取 \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} 的单例指针。 
+
+\begin{DoxyReturn}{返回}
+\hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} 的单例指针。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_ab7a5b7f956f23d3fb3d2ee0de573cb53}\label{class_iris2_d_1_1_iris_application_ab7a5b7f956f23d3fb3d2ee0de573cb53}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Is\+Initiatlize@{Is\+Initiatlize}}
+\index{Is\+Initiatlize@{Is\+Initiatlize}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Is\+Initiatlize()}{IsInitiatlize()}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Is\+Initiatlize (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+检查当前应用状态是否为已初始化。 
+
+\begin{DoxyReturn}{返回}
+如果 Iris 2D 初始化成功并且 \hyperlink{class_iris2_d_1_1_iris_application_ae6bb59365978c945201fd8cf82105e4f}{Run()} 没有被调用，那么返回 true 否则返回 false 。 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize(\+H\+I\+N\+S\+T\+A\+N\+C\+E h\+Instance, unsigned int n\+Width, unsigned int n\+Height, Game\+Func pf\+Game\+Func, const std\+::wstring\& wsz\+Title)} 
+
+\hyperlink{class_iris2_d_1_1_iris_application_ac20656815694f980fccfc4369727a9a9}{Initialize(const Iris\+App\+Start\+Info$\ast$ p\+Info)} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_ae9760ff496a4c80f96ad49331407c2e4}\label{class_iris2_d_1_1_iris_application_ae9760ff496a4c80f96ad49331407c2e4}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Is\+Quited@{Is\+Quited}}
+\index{Is\+Quited@{Is\+Quited}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Is\+Quited()}{IsQuited()}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Is\+Quited (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+检查当前应用状态是否为已退出。 
+
+当 Iris 2D 的窗口被关闭或者 \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} 单例的状态被手动改变成 Quite ，那么将会发生退出。 \begin{DoxyReturn}{返回}
+如果 Iris 2D 程序的窗口被关闭，那么返回 true 否则返回 false 。 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{参见}
+\hyperlink{class_iris2_d_1_1_iris_application_adca8cada1a8841c3f409e856f6878331}{Quite()} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_a795cea1f5d8112a7db7d6429f306a5ff}\label{class_iris2_d_1_1_iris_application_a795cea1f5d8112a7db7d6429f306a5ff}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Is\+Running@{Is\+Running}}
+\index{Is\+Running@{Is\+Running}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Is\+Running()}{IsRunning()}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Is\+Running (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+检查当前应用状态是否为正在运行。 
+
+\begin{DoxyReturn}{返回}
+如果 \hyperlink{class_iris2_d_1_1_iris_application_ae6bb59365978c945201fd8cf82105e4f}{Run()} 被调用，那么将会返回 true 否则返回 false。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_a1035e03a186b934ecf57371e42475eea}\label{class_iris2_d_1_1_iris_application_a1035e03a186b934ecf57371e42475eea}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Is\+Uninitialized@{Is\+Uninitialized}}
+\index{Is\+Uninitialized@{Is\+Uninitialized}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Is\+Uninitialized()}{IsUninitialized()}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Is\+Uninitialized (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+检查当前应用状态是否为未初始化。 
+
+\begin{DoxyReturn}{返回}
+如果 \hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize()} 没有被调用或者 Iris 2D 初始化失败，那么将会返回 false ，否则返回 true 。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_adca8cada1a8841c3f409e856f6878331}\label{class_iris2_d_1_1_iris_application_adca8cada1a8841c3f409e856f6878331}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Quite@{Quite}}
+\index{Quite@{Quite}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Quite()}{Quite()}}
+{\footnotesize\ttfamily void Iris2\+D\+::\+Iris\+Application\+::\+Quite (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+手动设置当前 \hyperlink{class_iris2_d_1_1_iris_application}{Iris\+Application} 的状态为 Quite 。 
+
+\begin{DoxySeeAlso}{参见}
+\hyperlink{class_iris2_d_1_1_iris_application_ae9760ff496a4c80f96ad49331407c2e4}{Is\+Quited()} 
+\end{DoxySeeAlso}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_application_ae6bb59365978c945201fd8cf82105e4f}\label{class_iris2_d_1_1_iris_application_ae6bb59365978c945201fd8cf82105e4f}} 
+\index{Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}!Run@{Run}}
+\index{Run@{Run}!Iris2\+D\+::\+Iris\+Application@{Iris2\+D\+::\+Iris\+Application}}
+\subsubsection{\texorpdfstring{Run()}{Run()}}
+{\footnotesize\ttfamily bool Iris2\+D\+::\+Iris\+Application\+::\+Run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+启动 Iris 2D 游戏逻辑，游戏逻辑代码是写在 \hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize()} 的回调函数中的。 
+
+\begin{DoxySeeAlso}{参见}
+\hyperlink{class_iris2_d_1_1_iris_application_a84f3ddebb3a3ffb0c172bd41fb952e1a}{Initialize(\+H\+I\+N\+S\+T\+A\+N\+C\+E h\+Instance, unsigned int n\+Width, unsigned int n\+Height, Game\+Func pf\+Game\+Func, const std\+::wstring\& wsz\+Title)} 
+
+\hyperlink{class_iris2_d_1_1_iris_application_ac20656815694f980fccfc4369727a9a9}{Initialize(const Iris\+App\+Start\+Info$\ast$ p\+Info)} 
+\end{DoxySeeAlso}
+
+
+该类的文档由以下文件生成\+:\begin{DoxyCompactItemize}
+\item 
+Iris 2\+D Cherry/\+Iris 2\+D Cherry/include/\+Iris2\+D/Iris\+App.\+h\end{DoxyCompactItemize}

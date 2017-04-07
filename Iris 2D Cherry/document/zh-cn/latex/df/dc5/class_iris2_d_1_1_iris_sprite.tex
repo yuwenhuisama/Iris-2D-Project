@@ -1,0 +1,61 @@
+\hypertarget{class_iris2_d_1_1_iris_sprite}{}\section{Iris2D\+:\+:Iris\+Sprite类 参考}
+\label{class_iris2_d_1_1_iris_sprite}\index{Iris2\+D\+::\+Iris\+Sprite@{Iris2\+D\+::\+Iris\+Sprite}}
+
+
+Iris 2D Sprite 类  
+
+
+
+
+{\ttfamily \#include $<$Iris\+Sprite.\+h$>$}
+
+\subsection*{静态 Public 成员函数}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_iris2_d_1_1_iris_sprite}{Iris\+Sprite} $\ast$ \hyperlink{class_iris2_d_1_1_iris_sprite_ab68ea873fcd8521324c8497455dee852}{Create} ()
+\begin{DoxyCompactList}\small\item\em 创建一个 Sprite 对象。 \end{DoxyCompactList}\item 
+static void \hyperlink{class_iris2_d_1_1_iris_sprite_aa225c6483e0282375187b092ea0cecf9}{Release} (\hyperlink{class_iris2_d_1_1_iris_sprite}{Iris\+Sprite} $\ast$\&p\+Sprite)
+\begin{DoxyCompactList}\small\item\em 释放一个 Sprite 对象。 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{详细描述}
+Iris 2D Sprite 类 
+
+一个 Sprite 抽象地表示了显示在屏幕上的任何东西，进一步地，一个 Sprite 一般都需要一个 Bitmap 来显示图片等，否则将不会展示任何东西。
+
+一个精灵可以控制显示内容的位置、缩放尺寸、角度以及其他显示属性，它是 2D 游戏最基本的元素。 
+
+\subsection{成员函数说明}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_sprite_ab68ea873fcd8521324c8497455dee852}\label{class_iris2_d_1_1_iris_sprite_ab68ea873fcd8521324c8497455dee852}} 
+\index{Iris2\+D\+::\+Iris\+Sprite@{Iris2\+D\+::\+Iris\+Sprite}!Create@{Create}}
+\index{Create@{Create}!Iris2\+D\+::\+Iris\+Sprite@{Iris2\+D\+::\+Iris\+Sprite}}
+\subsubsection{\texorpdfstring{Create()}{Create()}}
+{\footnotesize\ttfamily static \hyperlink{class_iris2_d_1_1_iris_sprite}{Iris\+Sprite}$\ast$ Iris2\+D\+::\+Iris\+Sprite\+::\+Create (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+创建一个 Sprite 对象。 
+
+\begin{DoxyReturn}{返回}
+如果 Sprite 对象创建成功那么返回它的指针否则返回 nullptr。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_sprite_aa225c6483e0282375187b092ea0cecf9}\label{class_iris2_d_1_1_iris_sprite_aa225c6483e0282375187b092ea0cecf9}} 
+\index{Iris2\+D\+::\+Iris\+Sprite@{Iris2\+D\+::\+Iris\+Sprite}!Release@{Release}}
+\index{Release@{Release}!Iris2\+D\+::\+Iris\+Sprite@{Iris2\+D\+::\+Iris\+Sprite}}
+\subsubsection{\texorpdfstring{Release()}{Release()}}
+{\footnotesize\ttfamily static void Iris2\+D\+::\+Iris\+Sprite\+::\+Release (\begin{DoxyParamCaption}\item[{\hyperlink{class_iris2_d_1_1_iris_sprite}{Iris\+Sprite} $\ast$\&}]{p\+Sprite }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+释放一个 Sprite 对象。 
+
+
+\begin{DoxyParams}{参数}
+{\em p\+Sprite} & 指向将要被释放的 Sprite 对象的指针。当该函数被调用之后，传入的指针将会被设置为 nullptr。 \\
+\hline
+\end{DoxyParams}
+
+
+该类的文档由以下文件生成\+:\begin{DoxyCompactItemize}
+\item 
+Iris 2\+D Cherry/\+Iris 2\+D Cherry/include/\+Iris2\+D/Iris\+Sprite.\+h\end{DoxyCompactItemize}

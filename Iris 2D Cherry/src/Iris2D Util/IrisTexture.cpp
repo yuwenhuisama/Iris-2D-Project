@@ -69,9 +69,9 @@ namespace Iris2D
 		auto pD3DManager = IrisD3DResourceManager::Instance();
 
 		if (!pD2DManager->LoadBitmapFromFile(wstrTexturePath, 
-			pTexture->m_pRenderTarget, 
+			pTexture->m_pRenderTargetBitmap, 
 			pTexture->m_pTexture, 
-			pTexture->m_pBitmap, 
+			//pTexture->m_pBitmap, 
 			pTexture->m_hSharedResourceHandle,
 			pTexture->m_pDX10Mutex,
 			pTexture->m_pDX11Mutex)) {
@@ -79,11 +79,58 @@ namespace Iris2D
 			return nullptr;
 		}
 
+		//if (!pD2DManager->LoadBitmapFromFileEx(wstrTexturePath,
+		//	pTexture->m_pTexture,
+		//	pTexture->m_hSharedResourceHandle,
+		//	pTexture->m_pDX10Mutex,
+		//	pTexture->m_pDX11Mutex)) {
+		//	delete pTexture;
+		//	return nullptr;
+		//}
+
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 		srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = 1;
 		srvDesc.Texture2D.MostDetailedMip = 0;
+
+		pTexture->m_bDX10MutexRequired = true;
+
+		auto hResult = pD3DManager->GetD3D11Device()->CreateShaderResourceView(pTexture->m_pTexture, &srvDesc, &pTexture->m_pTextureResource);
+
+		if (FAILED(hResult)) {
+			delete pTexture;
+			return nullptr;
+		}
+
+		return pTexture;
+	}
+
+	IrisTexture * IrisTexture::Create(unsigned int nWidth, unsigned int nHeight)
+	{
+		auto pTexture = new IrisTexture();
+
+		auto pD2DManager = IrisD2DResourceManager::Instance();
+		auto pD3DManager = IrisD3DResourceManager::Instance();
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+
+		if (!pD2DManager->CreateBlankTexture(nWidth,
+			nHeight,
+			pTexture->m_pRenderTargetBitmap,
+			pTexture->m_pTexture,
+			//pTexture->m_pBitmap,
+			pTexture->m_hSharedResourceHandle,
+			pTexture->m_pDX10Mutex,
+			pTexture->m_pDX11Mutex)) {
+
+			delete pTexture;
+			return nullptr;
+		}
 
 		pTexture->m_bDX10MutexRequired = true;
 
@@ -107,7 +154,7 @@ namespace Iris2D
 	{
 		SafeCOMRelease(m_pTextureResource);
 		SafeCOMRelease(m_pTexture);
-		SafeCOMRelease(m_pRenderTarget);
+		SafeCOMRelease(m_pRenderTargetBitmap);
 		SafeCOMRelease(m_pBitmap);
 		SafeCOMRelease(m_pDX11Mutex);
 		SafeCOMRelease(m_pDX10Mutex);
@@ -154,8 +201,13 @@ namespace Iris2D
 		return m_pTexture;
 	}
 
-	ID2D1Bitmap * IrisTexture::GetD2DBitmap()
+	ID2D1RenderTarget* IrisTexture::GetRenderTargetBitmap()
 	{
-		return m_pBitmap;
+		return m_pRenderTargetBitmap;
 	}
+
+	//ID2D1Bitmap * IrisTexture::GetD2DBitmap()
+	//{
+	//	return m_pBitmap;
+	//}
 }

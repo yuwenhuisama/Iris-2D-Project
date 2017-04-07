@@ -12,7 +12,8 @@
 #include <d3d11.h>
 #include <D3DCompiler.h>
 #include <DirectXMath.h>
-#include <d2d1_3.h>
+#include <d2d1_2.h>
+#include <dxgi1_2.h>
 #include <wincodec.h>
 #include <wrl.h>
 
@@ -44,7 +45,7 @@
 #define END_SAFE_LOOP() \
 			__pGraphics__->m_fLag -= IrisGraphics::Instance()->GetMsPerUpdate(); \
 		} \
-		__pGraphics__->Update(); \
+		__pGraphics__->UpdateNoLock(); \
 	}
 
 

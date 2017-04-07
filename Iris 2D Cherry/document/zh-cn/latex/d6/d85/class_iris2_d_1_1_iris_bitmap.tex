@@ -1,0 +1,121 @@
+\hypertarget{class_iris2_d_1_1_iris_bitmap}{}\section{Iris2D\+:\+:Iris\+Bitmap类 参考}
+\label{class_iris2_d_1_1_iris_bitmap}\index{Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}}
+
+
+Iris 2D Bitmap 类  
+
+
+
+
+{\ttfamily \#include $<$Iris\+Bitmap.\+h$>$}
+
+\subsection*{Public 成员函数}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \hyperlink{class_iris2_d_1_1_iris_bitmap_a5bf259139daf86b07d8f0ff8dad44302}{Get\+Width} ()
+\begin{DoxyCompactList}\small\item\em 获取当前 Bitmap 的像素宽度。 \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_iris2_d_1_1_iris_bitmap_ad97028fda44cce4622d8ab78d8ba16b9}{Get\+Height} ()
+\begin{DoxyCompactList}\small\item\em 获取当前 Bitmap 的像素高度。 \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{静态 Public 成员函数}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap} $\ast$ \hyperlink{class_iris2_d_1_1_iris_bitmap_ac9d31fd83b64c4051e1474eb7322442f}{Create} (const std\+::wstring \&wstr\+File\+Name, Iris\+Result $\ast$\+\_\+r\+Param=nullptr)
+\begin{DoxyCompactList}\small\item\em 从磁盘中的图像文件中创建一个 Bitmap 。 \end{DoxyCompactList}\item 
+static \hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap} $\ast$ \hyperlink{class_iris2_d_1_1_iris_bitmap_a42a6c58440df5bb965a2d299cd3620e4}{Create} (unsigned int n\+Width, unsigned int n\+Height, Iris\+Result $\ast$\+\_\+r\+Param=nullptr)
+\begin{DoxyCompactList}\small\item\em 创建一个空白的\+Bitmap。 \end{DoxyCompactList}\item 
+static void \hyperlink{class_iris2_d_1_1_iris_bitmap_a30f09c40ae048de40f06c0a1d6575441}{Release} (\hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap} $\ast$\&p\+Bitmap)
+\begin{DoxyCompactList}\small\item\em 释放一个 Bitmap 。 \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{详细描述}
+Iris 2D Bitmap 类 
+
+一个 Bitmap 就是内存中一系列的像素点，这些像素点可以从磁盘中的图像文件中创建也可以直接在内存中手动创建。
+
+Iris 2D 中的任何图形抽象地来说都是一个 Bitmap 。用户不仅可以创建 Bitmap ，还可以对 Bitmap 进行一些操作，如绘制文字等。 
+
+\subsection{成员函数说明}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_bitmap_ac9d31fd83b64c4051e1474eb7322442f}\label{class_iris2_d_1_1_iris_bitmap_ac9d31fd83b64c4051e1474eb7322442f}} 
+\index{Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}!Create@{Create}}
+\index{Create@{Create}!Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}}
+\subsubsection{\texorpdfstring{Create()}{Create()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static \hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap}$\ast$ Iris2\+D\+::\+Iris\+Bitmap\+::\+Create (\begin{DoxyParamCaption}\item[{const std\+::wstring \&}]{wstr\+File\+Name,  }\item[{Iris\+Result $\ast$}]{\+\_\+r\+Param = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+从磁盘中的图像文件中创建一个 Bitmap 。 
+
+
+\begin{DoxyParams}{参数}
+{\em wstr\+File\+Name} & 图像文件的路径，既可以是相对路径也可以是绝对路径。 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+如果成功创建 Bitmap ，那么将会返回该 \hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap} 的指针，否则返回 nullptr。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_bitmap_a42a6c58440df5bb965a2d299cd3620e4}\label{class_iris2_d_1_1_iris_bitmap_a42a6c58440df5bb965a2d299cd3620e4}} 
+\index{Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}!Create@{Create}}
+\index{Create@{Create}!Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}}
+\subsubsection{\texorpdfstring{Create()}{Create()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static \hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap}$\ast$ Iris2\+D\+::\+Iris\+Bitmap\+::\+Create (\begin{DoxyParamCaption}\item[{unsigned int}]{n\+Width,  }\item[{unsigned int}]{n\+Height,  }\item[{Iris\+Result $\ast$}]{\+\_\+r\+Param = {\ttfamily nullptr} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+创建一个空白的\+Bitmap。 
+
+
+\begin{DoxyParams}{参数}
+{\em n\+Width} & 创建的 Bitmap 的像素宽度。 \\
+\hline
+{\em n\+Height} & 创建的 Bitmap 的像素高度。 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{返回}
+如果成功创建 Bitmap ，那么将会返回该 \hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap} 的指针，否则返回 nullptr。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_bitmap_ad97028fda44cce4622d8ab78d8ba16b9}\label{class_iris2_d_1_1_iris_bitmap_ad97028fda44cce4622d8ab78d8ba16b9}} 
+\index{Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}!Get\+Height@{Get\+Height}}
+\index{Get\+Height@{Get\+Height}!Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}}
+\subsubsection{\texorpdfstring{Get\+Height()}{GetHeight()}}
+{\footnotesize\ttfamily unsigned int Iris2\+D\+::\+Iris\+Bitmap\+::\+Get\+Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+获取当前 Bitmap 的像素高度。 
+
+\begin{DoxyReturn}{返回}
+当前 Bitmap 的像素高度。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_bitmap_a5bf259139daf86b07d8f0ff8dad44302}\label{class_iris2_d_1_1_iris_bitmap_a5bf259139daf86b07d8f0ff8dad44302}} 
+\index{Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}!Get\+Width@{Get\+Width}}
+\index{Get\+Width@{Get\+Width}!Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}}
+\subsubsection{\texorpdfstring{Get\+Width()}{GetWidth()}}
+{\footnotesize\ttfamily unsigned int Iris2\+D\+::\+Iris\+Bitmap\+::\+Get\+Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+获取当前 Bitmap 的像素宽度。 
+
+\begin{DoxyReturn}{返回}
+当前 Bitmap 的像素宽度。 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_iris2_d_1_1_iris_bitmap_a30f09c40ae048de40f06c0a1d6575441}\label{class_iris2_d_1_1_iris_bitmap_a30f09c40ae048de40f06c0a1d6575441}} 
+\index{Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}!Release@{Release}}
+\index{Release@{Release}!Iris2\+D\+::\+Iris\+Bitmap@{Iris2\+D\+::\+Iris\+Bitmap}}
+\subsubsection{\texorpdfstring{Release()}{Release()}}
+{\footnotesize\ttfamily static void Iris2\+D\+::\+Iris\+Bitmap\+::\+Release (\begin{DoxyParamCaption}\item[{\hyperlink{class_iris2_d_1_1_iris_bitmap}{Iris\+Bitmap} $\ast$\&}]{p\+Bitmap }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+释放一个 Bitmap 。 
+
+
+\begin{DoxyParams}{参数}
+{\em p\+Bitmap} & 指向将要被释放的 Bitmap 的指针。当该函数被调用之后，传入的指针将会被设置成 nullptr 。 \\
+\hline
+\end{DoxyParams}
+
+
+该类的文档由以下文件生成\+:\begin{DoxyCompactItemize}
+\item 
+Iris 2\+D Cherry/\+Iris 2\+D Cherry/include/\+Iris2\+D/Iris\+Bitmap.\+h\end{DoxyCompactItemize}

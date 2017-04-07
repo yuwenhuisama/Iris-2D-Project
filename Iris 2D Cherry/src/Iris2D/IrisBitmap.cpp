@@ -17,6 +17,19 @@ namespace Iris2D
 		return pBitmap;
 	}
 
+	IrisBitmap * IrisBitmap::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
+	{
+		auto pBitmap = new IrisBitmap();
+
+		pBitmap->m_pTexture = IrisTexture::Create(nWidth, nHeight);
+		if (pBitmap->m_pTexture == nullptr) {
+			delete pBitmap;
+			return nullptr;
+		}
+
+		return pBitmap;
+	}
+
 	void IrisBitmap::Release(IrisBitmap *& pBitmap)
 	{
 		delete pBitmap;
@@ -30,12 +43,12 @@ namespace Iris2D
 
 	unsigned int IrisBitmap::GetWidth()
 	{
-		return static_cast<unsigned int>(m_pTexture->GetD2DBitmap()->GetPixelSize().width);
+		return static_cast<unsigned int>(m_pTexture->GetRenderTargetBitmap()->GetPixelSize().width);
 	}
 
 	unsigned int IrisBitmap::GetHeight()
 	{
-		return static_cast<unsigned int>(m_pTexture->GetD2DBitmap()->GetPixelSize().height);
+		return static_cast<unsigned int>(m_pTexture->GetRenderTargetBitmap()->GetPixelSize().height);
 	}
 
 	IrisBitmap::~IrisBitmap()
