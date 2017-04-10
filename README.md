@@ -39,6 +39,11 @@ Then, Iris 2D exports its APIs to Iris programming language, and developers can 
 
 This way is provided for those develepers who wanna very quick and simplified game development.
 
+## About Document
+
+English Document: http://iris2d.irisine.com/en-us/html/index.html
+Chinese Document: http://iris2d.irisine.com/zh-cn/html/index.html
+
 ## How to Start an Iris 2D Application with native C++ code
 
 - clone Iris 2D from github:  
