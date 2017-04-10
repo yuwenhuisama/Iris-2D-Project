@@ -41,8 +41,8 @@ This way is provided for those develepers who wanna very quick and simplified ga
 
 ## About Document
 
-English Document: http://iris2d.irisine.com/en-us/html/index.html
-Chinese Document: http://iris2d.irisine.com/zh-cn/html/index.html
+>- English Document: http://iris2d.irisine.com/en-us/html/index.html
+>- Chinese Document: http://iris2d.irisine.com/zh-cn/html/index.html
 
 ## How to Start an Iris 2D Application with native C++ code
 
