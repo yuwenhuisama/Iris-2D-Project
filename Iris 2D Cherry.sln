@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Iris 2D Cherry", "Iris 2D Cherry\Iris 2D Cherry.vcxproj", "{3667FA7D-4BB9-4C48-B123-8A6E2EE852A0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Iris 2D Cherry Spinach", "Iris 2D Cherry Spinach\Iris 2D Cherry Spinach.vcxproj", "{3667FA7D-4BB9-4C48-B123-8A6E2EE852A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
