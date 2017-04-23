@@ -46,31 +46,26 @@ namespace Iris2D
 
 	bool IrisBitmap::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
-		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
-		m_pTexture->AquireSyncFromDx10Side();
+		auto pDestRenderTarget = m_pTexture->GetRenderTargetBitmap();
 
-		pRenderTarget->BeginDraw();
+		// Draw
+		m_pTexture->AquireSyncFromDx10Side();
+		pDestRenderTarget->BeginDraw();
 
 		auto&& cfColorF = IrisDataConvertHelper::ConvertToD2DColor(pColor);
 
 		ID2D1SolidColorBrush* pBrush = nullptr;
-		auto hResult = pRenderTarget->CreateSolidColorBrush(cfColorF, &pBrush);
+		auto hResult = pDestRenderTarget->CreateSolidColorBrush(cfColorF, &pBrush);
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pBrush);
 			m_pTexture->ReleaseSyncFromDx10Side();
 			return false;
 		}
 
-		pRenderTarget->FillRectangle(D2D1::RectF(nX, nY, nX + nWidth, nY + nHeight), pBrush);
+		pDestRenderTarget->FillRectangle(D2D1::RectF(nX, nY, nX + nWidth, nY + nHeight), pBrush);
 
-		hResult = pRenderTarget->EndDraw();
-
+		hResult = pDestRenderTarget->EndDraw();
 		m_pTexture->ReleaseSyncFromDx10Side();
-
-		SafeCOMRelease(pBrush);
-		if (FAILED(hResult)) {
-			return false;
-		}
 
 		return true;
 	}
@@ -78,6 +73,15 @@ namespace Iris2D
 	bool IrisBitmap::FilleRect(IrisRect * pRect, IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
 		return FillRect(pRect->GetX(), pRect->GetY(), pRect->GetWidth(), pRect->GetHeight(), pColor, IR_PARAM);
+	}
+
+	void IrisBitmap::SaveToFile(const std::wstring& wstrFilePath)
+	{
+		m_pTexture->AquireSyncFromDx11Side();
+		DirectX::ScratchImage image;
+		DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), m_pTexture->GetTexture(), image);
+		DirectX::SaveToWICFile(*image.GetImages(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, wstrFilePath.c_str(), &GUID_WICPixelFormat32bppBGRA);
+		m_pTexture->ReleaseSyncFromDx11Side();
 	}
 
 	IrisTexture * IrisBitmap::GetTexture()
@@ -122,7 +126,6 @@ namespace Iris2D
 		pSrcTexture->AquireSyncFromDx11Side();
 		DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), pSrcD3DResource, siImage);
 		pSrcTexture->ReleaseSyncFromDx11Side();
-
 
 		auto pImage = siImage.GetImages();
 		// Create Bitmap

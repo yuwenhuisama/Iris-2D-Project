@@ -144,8 +144,49 @@ namespace Iris2D
 		*/
 		bool StretchBlt(IrisRect* pDestRect, IrisBitmap* pSrcBitmap, IrisRect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
 
+
+		/**
+		* \~english
+		* Fill an area of current bitmap with specified color.
+		*
+		* @param nX X position of top left point of the area.
+		* @param nY Y position of top left point of the area.
+		* @param nWidth Width of the area.
+		* @param nHeight Height of the area.
+		* @param pColor Color used to fill the area.
+		* @see FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT)
+		*/
+		/**
+		* \~chinese
+		* 用指定的颜色填充当前 Bitmap 的一个区域。
+		*
+		* @param nX	区域左上角的 X 坐标。
+		* @param nY 区域左上角的 Y 坐标。
+		* @param nWidth 区域的宽度。
+		* @param nHeight 区域的高度。
+		* @param pColor 用来填充区域的 Color。
+		* @see FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT)
+		*/
 		bool FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, IrisColor* pColor, IR_PARAM_RESULT);
+		/**
+		* \~english
+		* Fill an area of current bitmap with specified color.
+		*
+		* @param pRect Rect used to describe the area.
+		* @param pColor Color used to fill the area.
+		* @see FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT)
+		*/
+		/**
+		* \~chinese
+		* 用指定的颜色填充当前 Bitmap 的一个区域。
+		*
+		* @param pRect 用来描述区域的 Rect。
+		* @param pColor 用来填充区域的 Color。
+		* @see FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT)
+		*/
 		bool FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT);
+
+		void SaveToFile(const std::wstring& wstrFilePath);
 
 		IrisTexture* GetTexture();		
 	private:

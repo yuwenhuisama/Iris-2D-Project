@@ -12,9 +12,13 @@
 
 # Build results
 [Dd]ebug/
+!**/lib/Debug/
+!**/lib/Debug/DirectXTex.lib
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
+!**/lib/Release/
+!**/lib/Release/DirectXTex.lib
 x64/
 x86/
 build/
