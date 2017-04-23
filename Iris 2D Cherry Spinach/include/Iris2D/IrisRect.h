@@ -5,6 +5,18 @@
 
 namespace Iris2D
 {
+	/**
+	* \~english
+	* Rect class of Iris 2D
+	*
+	* A rect represent a rectangle region of screen.
+	*/
+	/**
+	* \~chinese
+	* Iris 2D Rect 类
+	*
+	* 一个 Rect 代表了屏幕上的一个矩形区域。
+	*/
 	class IrisRect
 	{
 	private:
@@ -16,7 +28,6 @@ namespace Iris2D
 		* \~english
 		* Create a rect.
 		* 
-		* A rect represent a rectangle region of screen.
 		* @param fX X position of left top point of created rect.
 		* @param fY Y position of left top point of created rect.
 		* @param fWidth Width of created rect.
@@ -27,7 +38,6 @@ namespace Iris2D
 		* \~chinese
 		* 生成一个 Rect。
 		* 
-		* 一个 Rect 代表了屏幕上的一个矩形区域。
 		* @param fX 生成的 Rect 左上角的 X 坐标。
 		* @param fY 生成的 Rect 左上角的 Y 坐标。
 		* @param fWidth 生成的 Rect 的宽度。
@@ -41,7 +51,6 @@ namespace Iris2D
 		* \~english
 		* Create a rect.
 		*
-		* A rect represent a rectangle region of screen.
 		* @param fLeft X position of left edge of created rect.
 		* @param fTop Y position of top edge of created rect.
 		* @param fRight X position of right edge of created rect.
@@ -52,7 +61,6 @@ namespace Iris2D
 		* \~chinese
 		* 生成一个 Rect。
 		*
-		* 一个 Rect 代表了屏幕上的一个矩形区域。
 		* @param fLeft 生成的 Rect 左边边的 X 坐标。
 		* @param fTop 生成的 Rect 上边边的 Y 坐标。
 		* @param fRight 生成的 Rect 右边边的 X 坐标。
@@ -135,7 +143,7 @@ namespace Iris2D
 		/**
 		* \~english
 		* Set the width of current rect.
-		* @retrun The width of current rect.
+		* @return The width of current rect.
 		*/
 		/**
 		* \~chinese
@@ -147,7 +155,7 @@ namespace Iris2D
 		/**
 		* \~english
 		* Set the height of current rect.
-		* @param fY The width of current rect.
+		* @param fHeight The width of current rect.
 		*/
 		/**
 		* \~chinese
@@ -158,7 +166,7 @@ namespace Iris2D
 		/**
 		* \~english
 		* Set the height of current rect.
-		* @retrun The height of current rect.
+		* @return The height of current rect.
 		*/
 		/**
 		* \~chinese
@@ -193,12 +201,12 @@ namespace Iris2D
 		/**
 		* \~english
 		* Set the y position of top edge of current rect.
-		* @param fRight The y position of top edge of created rect.
+		* @param fTop The y position of top edge of created rect.
 		*/
 		/**
 		* \~chinese
 		* 设置当前 Rect 上边边的 X 坐标。
-		* @param fRight 当前 Rect 上边边的 X 坐标。
+		* @param fTop 当前 Rect 上边边的 X 坐标。
 		*/
 		void SetTop(float fTop);
 		/**
@@ -239,12 +247,12 @@ namespace Iris2D
 		/**
 		* \~english
 		* Set the y position of bottom edge of current rect.
-		* @param fRight The y position of bottom edge of created rect.
+		* @param fBottom The y position of bottom edge of created rect.
 		*/
 		/**
 		* \~chinese
 		* 设置当前 Rect 下边边的 X 坐标。
-		* @param fRight 当前 Rect 下边边的 X 坐标。
+		* @param fBottom 当前 Rect 下边边的 X 坐标。
 		*/
 		void SetBottom(float fBottom);
 		/**

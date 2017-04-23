@@ -156,6 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Iris2D Util\IrisDataConvertHelper.cpp" />
     <ClCompile Include="src\Iris2D\IrisColor.cpp" />
     <ClCompile Include="src\Iris2D\IrisRect.cpp" />
     <ClCompile Include="src\Iris2D\IrisShaders\IrisSpritePixelShader.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="include\Iris2D\IrisShaders\IrisSpritePixelShader.h" />
     <ClInclude Include="include\Iris2D\IrisRect.h" />
     <ClInclude Include="include\Iris2D\IrisColor.h" />
+    <ClInclude Include="include\Iris2D Util\IrisDataConvertHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\DxUtil\DirectXTex.inl" />

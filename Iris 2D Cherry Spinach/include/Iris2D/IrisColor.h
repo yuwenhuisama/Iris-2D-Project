@@ -128,7 +128,7 @@ namespace Iris2D
 		/**
 		* \~english
 		* Set the alpha property of current color.
-		* @param cRed Value of alpha property.
+		* @param cAlpha Value of alpha property.
 		*/
 		/**
 		* \~chinese
@@ -147,7 +147,6 @@ namespace Iris2D
 		* @return 当前 Color 的 Alpha 值。
 		*/
 		unsigned char GetAlpha();
-
 
 		/**
 		* \~english

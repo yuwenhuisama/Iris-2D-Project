@@ -7,6 +7,7 @@ namespace Iris2D
 {
 	class IrisTexture;
 	class IrisRect;
+	class IrisColor;
 
 	/**
 	* \~english
@@ -142,6 +143,9 @@ namespace Iris2D
 		* @return 如果拷贝操作成功，返回 true 否则返回 false。
 		*/
 		bool StretchBlt(IrisRect* pDestRect, IrisBitmap* pSrcBitmap, IrisRect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
+
+		bool FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, IrisColor* pColor, IR_PARAM_RESULT);
+		bool FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT);
 
 		IrisTexture* GetTexture();		
 	private:

@@ -1,8 +1,10 @@
 #include "Iris2D/IrisBitmap.h"
 #include "Iris2D/IrisRect.h"
+#include "Iris2D/IrisColor.h"
 #include "Iris2D Util/IrisTexture.h"
 #include "Iris2D/IrisD3DResourceManager.h"
 #include "Iris2D/IrisD2DResourceManager.h"
+#include "Iris2D Util/IrisDataConvertHelper.h"
 
 
 namespace Iris2D
@@ -40,6 +42,42 @@ namespace Iris2D
 		}
 		delete pBitmap;
 		pBitmap = nullptr;
+	}
+
+	bool IrisBitmap::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	{
+		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
+		m_pTexture->AquireSyncFromDx10Side();
+
+		pRenderTarget->BeginDraw();
+
+		auto&& cfColorF = IrisDataConvertHelper::ConvertToD2DColor(pColor);
+
+		ID2D1SolidColorBrush* pBrush = nullptr;
+		auto hResult = pRenderTarget->CreateSolidColorBrush(cfColorF, &pBrush);
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pBrush);
+			m_pTexture->ReleaseSyncFromDx10Side();
+			return false;
+		}
+
+		pRenderTarget->FillRectangle(D2D1::RectF(nX, nY, nX + nWidth, nY + nHeight), pBrush);
+
+		hResult = pRenderTarget->EndDraw();
+
+		m_pTexture->ReleaseSyncFromDx10Side();
+
+		SafeCOMRelease(pBrush);
+		if (FAILED(hResult)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool IrisBitmap::FilleRect(IrisRect * pRect, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	{
+		return FillRect(pRect->GetX(), pRect->GetY(), pRect->GetWidth(), pRect->GetHeight(), pColor, IR_PARAM);
 	}
 
 	IrisTexture * IrisBitmap::GetTexture()

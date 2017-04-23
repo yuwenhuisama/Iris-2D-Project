@@ -101,7 +101,7 @@ namespace Iris2D
 		*
 		* 如果在设置 Bitmap 之前该 Sprite 已经存在 Bitmap ，那么用户应该手动释放之前的 Bitmap ，Iris 2D 不会自动释放之前的 Bitmap 。此项特性出于对于共享 Bitmap 的考虑。
 		* @param pBitmap 一个 IrisBitmap 对象的指针。
-		* @param bReleasePreSrcBitmap 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个 Bitmap。
+		* @param bReleaseLastSrcBitmap 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个 Bitmap。
 		*/
 		void SetBitmap(IrisBitmap* pBitmap, bool bReleaseLastSrcBitmap = false);
 		IrisBitmap* GetBitmap() const;
@@ -392,7 +392,7 @@ namespace Iris2D
 		* 
 		* (0, 0) of current sprite's bitmap is origin position of taken rect. This function can be helpful to let sprite just show a part of current sprite's bitmap.
 		* @param pSrcRect A pointer to the limit rect object.
-		* @param bReleasePreSrcBitmap Optional, false defaultly. If true is taken, current sprite will initiatively release the rect that has been already stored inside.
+		* @param bReleaseLastSrcRect Optional, false defaultly. If true is taken, current sprite will initiatively release the rect that has been already stored inside.
 		*/
 		/**
 		* \~chinese
@@ -400,9 +400,9 @@ namespace Iris2D
 		*
 		* 当前 Sprite 的 Bitmap 的 (0, 0)  即是传入的 Rect 的原点。这个函数便于让 Sprite 只显示它的 Bitmap 的一部分。
 		* @param pSrcRect 指向限制 Rect 对象的指针。
-		* @param bReleasePreSrcBitmap 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个限制 Rect 对象。
+		* @param bReleaseLastSrcRect 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个限制 Rect 对象。
 		*/
-		void SetSrcRect(IrisRect* pSrcRect, bool bReleaseLastSrcBitmap = false);
+		void SetSrcRect(IrisRect* pSrcRect, bool bReleaseLastSrcRect = false);
 		/**
 		* \~english
 		* Get the limit rect of current sprite.

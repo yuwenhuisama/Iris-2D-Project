@@ -57,6 +57,9 @@
     <ClCompile Include="src\Iris2D\IrisColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Iris2D Util\IrisDataConvertHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Iris2D\IrisApp.h">
@@ -123,6 +126,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Iris2D\IrisColor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D Util\IrisDataConvertHelper.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
