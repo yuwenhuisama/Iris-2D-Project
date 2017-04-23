@@ -32,8 +32,7 @@ namespace Iris2D
 
 	private:
 
-		bool m_bDX10MutexRequired = false;
-		bool m_bDX11MutexRequired = false;
+		unsigned int m_nSync = 0;
 
 		IrisTexture() = default;
 		~IrisTexture();
@@ -50,7 +49,6 @@ namespace Iris2D
 
 		ID3D11Resource* GetTexture();
 		ID2D1RenderTarget* GetRenderTargetBitmap();
-		//ID2D1Bitmap* GetD2DBitmap();
 	};
 }
 #endif // !_H_IRISTEXTURE_

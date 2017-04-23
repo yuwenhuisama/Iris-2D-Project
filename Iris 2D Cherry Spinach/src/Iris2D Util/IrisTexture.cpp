@@ -72,6 +72,7 @@ namespace Iris2D
 			pTexture->m_pRenderTargetBitmap, 
 			pTexture->m_pTexture, 
 			//pTexture->m_pBitmap, 
+			pTexture->m_pTextureResource,
 			pTexture->m_hSharedResourceHandle,
 			pTexture->m_pDX10Mutex,
 			pTexture->m_pDX11Mutex)) {
@@ -79,29 +80,20 @@ namespace Iris2D
 			return nullptr;
 		}
 
-		//if (!pD2DManager->LoadBitmapFromFileEx(wstrTexturePath,
-		//	pTexture->m_pTexture,
-		//	pTexture->m_hSharedResourceHandle,
-		//	pTexture->m_pDX10Mutex,
-		//	pTexture->m_pDX11Mutex)) {
-		//	delete pTexture;
-		//	return nullptr;
-		//}
-
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 		srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = 1;
 		srvDesc.Texture2D.MostDetailedMip = 0;
 
-		pTexture->m_bDX10MutexRequired = true;
+		//pTexture->m_bDX10MutexRequired = true;
 
-		auto hResult = pD3DManager->GetD3D11Device()->CreateShaderResourceView(pTexture->m_pTexture, &srvDesc, &pTexture->m_pTextureResource);
+		//auto hResult = pD3DManager->GetD3D11Device()->CreateShaderResourceView(pTexture->m_pTexture, &srvDesc, &pTexture->m_pTextureResource);
 
-		if (FAILED(hResult)) {
-			delete pTexture;
-			return nullptr;
-		}
+		//if (FAILED(hResult)) {
+		//	delete pTexture;
+		//	return nullptr;
+		//}
 
 		return pTexture;
 	}
@@ -124,6 +116,7 @@ namespace Iris2D
 			pTexture->m_pRenderTargetBitmap,
 			pTexture->m_pTexture,
 			//pTexture->m_pBitmap,
+			pTexture->m_pTextureResource,
 			pTexture->m_hSharedResourceHandle,
 			pTexture->m_pDX10Mutex,
 			pTexture->m_pDX11Mutex)) {
@@ -132,7 +125,7 @@ namespace Iris2D
 			return nullptr;
 		}
 
-		pTexture->m_bDX10MutexRequired = true;
+		//pTexture->m_bDX10MutexRequired = true;
 
 		auto hResult = pD3DManager->GetD3D11Device()->CreateShaderResourceView(pTexture->m_pTexture, &srvDesc, &pTexture->m_pTextureResource);
 
@@ -172,37 +165,22 @@ namespace Iris2D
 
 	void IrisTexture::AquireSyncFromDx11Side()
 	{
-		m_bDX11MutexRequired = true;
-		if (m_bDX10MutexRequired) {
-			m_pDX11Mutex->AcquireSync(1, INFINITE);
-			m_bDX10MutexRequired = false;
-		}
-		else {
-			m_pDX11Mutex->AcquireSync(0, INFINITE);
-		}
+		m_pDX11Mutex->AcquireSync(m_nSync++, INFINITE);
 	}
 
 	void IrisTexture::ReleaseSyncFromDx11Side()
 	{
-		m_pDX11Mutex->ReleaseSync(0);
+		m_pDX11Mutex->ReleaseSync(--m_nSync);
 	}
 
 	void IrisTexture::AquireSyncFromDx10Side()
 	{
-		m_bDX10MutexRequired = true;
-		if (m_bDX11MutexRequired) {
-			m_pDX10Mutex->AcquireSync(0, INFINITE);
-			m_bDX10MutexRequired = false;
-		}
-		else {
-			m_pDX10Mutex->AcquireSync(1, INFINITE);
-		}
-		
+		m_pDX10Mutex->AcquireSync(m_nSync++, INFINITE);
 	}
 
 	void IrisTexture::ReleaseSyncFromDx10Side()
 	{
-		m_pDX10Mutex->ReleaseSync(1);
+		m_pDX10Mutex->ReleaseSync(--m_nSync);
 	}
 	ID3D11Resource * IrisTexture::GetTexture()
 	{
@@ -213,9 +191,4 @@ namespace Iris2D
 	{
 		return m_pRenderTargetBitmap;
 	}
-
-	//ID2D1Bitmap * IrisTexture::GetD2DBitmap()
-	//{
-	//	return m_pBitmap;
-	//}
 }

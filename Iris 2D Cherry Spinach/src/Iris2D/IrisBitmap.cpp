@@ -85,6 +85,8 @@ namespace Iris2D
 		DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), pSrcD3DResource, siImage);
 		pSrcTexture->ReleaseSyncFromDx11Side();
 
+
+		auto pImage = siImage.GetImages();
 		// Create Bitmap
 		float fDpiX = 0.0f;
 		float fDpiY = 0.0f;
@@ -93,11 +95,10 @@ namespace Iris2D
 		D2D1_BITMAP_PROPERTIES dbpProperties;
 		dbpProperties.dpiX = fDpiX;
 		dbpProperties.dpiY = fDpiY;
-		dbpProperties.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		dbpProperties.pixelFormat.format = pImage->format;
 		dbpProperties.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
 
 		ID2D1Bitmap* pDestBitmap = nullptr;
-		auto pImage = siImage.GetImages();
 		unsigned int nSrcWidth = pImage->width;
 		unsigned int nSrcHeight = pImage->height;
 		D2D1_SIZE_U dsuSize = { nSrcWidth, nSrcHeight };

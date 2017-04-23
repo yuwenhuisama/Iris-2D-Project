@@ -18,7 +18,6 @@ namespace Iris2D
 
 	private:
 		IrisD2DResourceManager() = default;
-		bool LoadWICResource(const std::wstring& wstrUri, IWICFormatConverter*& pConverter, unsigned int& nWidth, unsigned int& nHeight);
 		bool CreateTexture(unsigned int nWidth, unsigned int nHeight, ID3D11Resource*& pTexture);
 		bool MakeSharedResource(ID3D11Resource* pTexture, HANDLE& hResourceShareHandle, IDXGIKeyedMutex*& pDX11Mutex);
 		bool CreateDxgiRenderTarget(HANDLE hResourceShareHandle, ID2D1RenderTarget*& pDxgiRenderBitmap, IDXGIKeyedMutex*& pDX10Mutex);
@@ -30,17 +29,11 @@ namespace Iris2D
 			ID2D1RenderTarget*& pDxgiRenderTarget,
 			ID3D11Resource*& pTexture,
 			//ID2D1Bitmap*& pBitmap, 
+			ID3D11ShaderResourceView*& pResourceView,
 			HANDLE& hResourceShareHandle,
 			IDXGIKeyedMutex*& pDX10Mutex,
 			IDXGIKeyedMutex*& pDX11Mutex
 		);
-
-		//bool LoadBitmapFromFileEx(const std::wstring& wstrUri,
-		//	ID3D11Resource*& pTexture,
-		//	HANDLE& hResourceShareHandle,
-		//	IDXGIKeyedMutex*& pDX10Mutex,
-		//	IDXGIKeyedMutex*& pDX11Mutex
-		//);
 
 		bool CreateBlankTexture(
 			unsigned int nWidth,
@@ -48,6 +41,7 @@ namespace Iris2D
 			ID2D1RenderTarget*& pDxgiRenderTarget,
 			ID3D11Resource*& pTexture,
 			//ID2D1Bitmap*& pBitmap,
+			ID3D11ShaderResourceView*& pResourceView,
 			HANDLE& hResourceShareHandle,
 			IDXGIKeyedMutex*& pDX10Mutex,
 			IDXGIKeyedMutex*& pDX11Mutex
