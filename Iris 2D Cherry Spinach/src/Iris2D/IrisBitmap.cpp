@@ -14,7 +14,7 @@ namespace Iris2D
 		auto pBitmap = new IrisBitmap();
 
 		pBitmap->m_pTexture = IrisTexture::Create(wstrFileName);
-		if (pBitmap->m_pTexture == nullptr) {
+		if (!pBitmap->m_pTexture) {
 			delete pBitmap;
 			return nullptr;
 		}
@@ -70,9 +70,78 @@ namespace Iris2D
 		return true;
 	}
 
-	bool IrisBitmap::FilleRect(IrisRect * pRect, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::FillRect(IrisRect * pRect, IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
 		return FillRect(pRect->GetX(), pRect->GetY(), pRect->GetWidth(), pRect->GetHeight(), pColor, IR_PARAM);
+	}
+
+	bool IrisBitmap::Clear(IR_PARAM_RESULT_CT)
+	{
+		auto pDestRenderTarget = m_pTexture->GetRenderTargetBitmap();
+
+		// Draw
+		m_pTexture->AquireSyncFromDx10Side();
+		pDestRenderTarget->BeginDraw();
+
+		pDestRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+	 	auto hResult = pDestRenderTarget->EndDraw();
+		m_pTexture->ReleaseSyncFromDx10Side();
+
+		if (FAILED(hResult)) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool IrisBitmap::ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
+	{
+		return false;
+	}
+
+	bool IrisBitmap::ClearRect(IrisRect * pRect, IR_PARAM_RESULT_CT)
+	{
+		return false;
+	}
+
+	IrisColor* IrisBitmap::GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT_CT)
+	{
+		// Capture Texture
+		auto pSrcD3DResource = m_pTexture->GetTexture();
+		DirectX::ScratchImage siImage;
+		m_pTexture->AquireSyncFromDx11Side();
+		DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), pSrcD3DResource, siImage);
+		m_pTexture->ReleaseSyncFromDx11Side();	
+
+		auto pImage = siImage.GetImages();
+		if (nX < 0 || nX > pImage->width
+			|| nY < 0 || nY > pImage->height) {
+			return nullptr;
+		}
+
+		auto pRawData = pImage->pixels;
+		auto nPitch = pImage->rowPitch;
+
+		union {
+			unsigned int m_nData;
+			struct {
+				unsigned char m_cRed;
+				unsigned char m_cGreen;
+				unsigned char m_cBlue;
+				unsigned char m_cAlpha;
+			} m_stRGBA;
+		} uRGBA;
+
+		uRGBA.m_nData = *reinterpret_cast<unsigned int*>(pRawData + nPitch * nY + nX * sizeof(uRGBA));
+
+		return IrisColor::Create(uRGBA.m_stRGBA.m_cRed, uRGBA.m_stRGBA.m_cGreen, uRGBA.m_stRGBA.m_cBlue, uRGBA.m_stRGBA.m_cAlpha);
+
+	}
+
+	void IrisBitmap::SetPixel(unsigned int nX, unsigned int nY, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	{
+		FillRect(nX, nY, nX + 1, nY + 1, pColor, IR_PARAM);
 	}
 
 	void IrisBitmap::SaveToFile(const std::wstring& wstrFilePath)

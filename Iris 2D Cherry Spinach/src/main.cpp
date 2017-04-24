@@ -11,9 +11,11 @@ bool GameCallBack() {
 
 	auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 500.0f, 400.0f);
 	auto pColor = IrisColor::Create(255, 255, 255, 255);
-	//pBitmap->Blt(30, 320, pBitmap2, pSrcRect, 255);
+	pBitmap->Blt(30, 320, pBitmap2, pSrcRect, 255);
 
-	pBitmap->FilleRect(pSrcRect, pColor);
+	pBitmap->FillRect(pSrcRect, pColor);
+
+	//pBitmap->Clear();
 
 	IrisRect::Release(pSrcRect);
 	IrisColor::Release(pColor);

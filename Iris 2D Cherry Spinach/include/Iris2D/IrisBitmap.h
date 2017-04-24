@@ -144,7 +144,6 @@ namespace Iris2D
 		*/
 		bool StretchBlt(IrisRect* pDestRect, IrisBitmap* pSrcBitmap, IrisRect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
 
-
 		/**
 		* \~english
 		* Fill an area of current bitmap with specified color.
@@ -184,7 +183,15 @@ namespace Iris2D
 		* @param pColor 用来填充区域的 Color。
 		* @see FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT)
 		*/
-		bool FilleRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT);
+		bool FillRect(IrisRect* pRect, IrisColor* pColor, IR_PARAM_RESULT);
+
+		bool Clear(IR_PARAM_RESULT);
+
+		bool ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
+		bool ClearRect(IrisRect* pRect, IR_PARAM_RESULT);
+
+		IrisColor* GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT);
+		void SetPixel(unsigned int nX, unsigned int nY, IrisColor *pColor, IR_PARAM_RESULT);
 
 		void SaveToFile(const std::wstring& wstrFilePath);
 

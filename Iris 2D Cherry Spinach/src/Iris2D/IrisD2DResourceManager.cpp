@@ -31,6 +31,54 @@ namespace Iris2D
 		return true;
 	}
 
+	bool IrisD2DResourceManager::LoadWICResource(const std::wstring& wstrUri, IWICFormatConverter*& pConverter, unsigned int& nWidth, unsigned int& nHeight) {
+
+		IWICBitmapDecoder* pDecoder = nullptr;
+		IWICBitmapFrameDecode* pSource = nullptr;
+		// Load Picture
+		auto hResult = m_pWICImagingFactory->CreateDecoderFromFilename(
+			wstrUri.c_str(),
+			nullptr,
+			GENERIC_READ,
+			WICDecodeMetadataCacheOnLoad,
+			&pDecoder
+		);
+
+		if (FAILED(hResult)) {
+			goto failed_release;
+		}
+
+		hResult = pDecoder->GetFrame(0, &pSource);
+		if (FAILED(hResult))
+		{
+			goto failed_release;
+		}
+
+		pSource->GetSize(&nWidth, &nHeight);
+
+		hResult = m_pWICImagingFactory->CreateFormatConverter(&pConverter);
+		if (FAILED(hResult))
+		{
+			goto failed_release;
+		}
+
+		hResult = pConverter->Initialize(pSource, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone, nullptr, 0.0f, WICBitmapPaletteTypeMedianCut);
+		if (FAILED(hResult))
+		{
+			goto failed_release;
+		}
+
+		SafeCOMRelease(pDecoder);
+		SafeCOMRelease(pSource);
+		return true;
+
+	failed_release:
+
+		SafeCOMRelease(pDecoder);
+		SafeCOMRelease(pSource);
+		return false;
+	}
+
 	bool IrisD2DResourceManager::CreateTexture(unsigned int nWidth, unsigned int nHeight, ID3D11Resource*& pTexture) {
 		// CreateTexture
 		D3D11_TEXTURE2D_DESC texDesc;
@@ -148,8 +196,11 @@ namespace Iris2D
 		ID3D11ShaderResourceView*& pResourceView,
 		HANDLE& hResourceShareHandle,
 		IDXGIKeyedMutex*& pDX10Mutex,
-		IDXGIKeyedMutex*& pDX11Mutex)
-	{
+		IDXGIKeyedMutex*& pDX11Mutex) {
+		IWICBitmapFrameDecode* pSource = nullptr;
+		IWICFormatConverter* pConverter = nullptr;
+
+		ID2D1Bitmap* pBitmap = nullptr;
 		pDxgiRenderTarget = nullptr;
 		pTexture = nullptr;
 		hResourceShareHandle = nullptr;
@@ -157,37 +208,21 @@ namespace Iris2D
 		unsigned int nWidth = 0;
 		unsigned int nHeight = 0;
 
-		DirectX::ScratchImage stImage;
-		DirectX::TexMetadata tmImageInfo;
-		auto hResult = DirectX::LoadFromWICFile(wstrUri.c_str(), DirectX::WIC_FLAGS_NONE, &tmImageInfo, stImage, nullptr);
+		//if (!LoadWICResource(wstrUri, pConverter, nWidth, nHeight)) {
+		//	return false;
+		//}
 
-		if (FAILED(hResult)) {
+		DirectX::TexMetadata tmInfo;
+		DirectX::ScratchImage siImage;
+		DirectX::LoadFromWICFile(wstrUri.c_str(), DirectX::WIC_FLAGS_NONE, &tmInfo, siImage);
+		auto pImage = siImage.GetImages();
+
+		nWidth = pImage->width;
+		nHeight = pImage->height;
+
+		if (!CreateTexture(nWidth, nHeight, pTexture)) {
 			return false;
 		}
-
-		auto pDevice = IrisD3DResourceManager::Instance()->GetD3D11Device();
-		hResult = DirectX::CreateShaderResourceViewEx(
-			pDevice,
-			stImage.GetImages(),
-			stImage.GetImageCount(),
-			tmImageInfo,
-			D3D11_USAGE_DEFAULT,
-			D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
-			0,
-			D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX,
-			false,
-			&pResourceView
-		);
-
-		if (FAILED(hResult)) {
-			SafeCOMRelease(pTexture);
-			return false;
-		}
-
-		pResourceView->GetResource(&pTexture);
-
-		nWidth = tmImageInfo.width;
-		nHeight = tmImageInfo.height;
 
 		if (!MakeSharedResource(pTexture, hResourceShareHandle, pDX11Mutex)) {
 			return false;
@@ -197,7 +232,77 @@ namespace Iris2D
 			return false;
 		}
 
+		// Get DPI
+		float fDpiX = 0.0f;
+		float fDpiY = 0.0f;
+		m_pD2DFactory->GetDesktopDpi(&fDpiX, &fDpiY);
+
+		// Create Bitmap
+		//auto hResult = pDxgiRenderTarget->CreateBitmapFromWicBitmap(pConverter, &pBitmap);
+		D2D1_BITMAP_PROPERTIES dbpProperties;
+		dbpProperties.dpiX = fDpiX;
+		dbpProperties.dpiY = fDpiY;
+		dbpProperties.pixelFormat.format = pImage->format;
+		dbpProperties.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+
+		auto hResult = pDxgiRenderTarget->CreateBitmap(D2D1::SizeU(nWidth, nHeight), pImage->pixels, pImage->rowPitch, dbpProperties, &pBitmap);
 		if (FAILED(hResult)) {
+			SafeCOMRelease(pBitmap);
+			SafeCOMRelease(pConverter);
+			return false;
+		}
+		//SafeCOMRelease(pBitmap);
+		SafeCOMRelease(pConverter);
+
+		auto dsProps = D2D1::RenderTargetProperties(
+			D2D1_RENDER_TARGET_TYPE_HARDWARE,
+			D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+			fDpiX,
+			fDpiY
+		);
+
+		//Render
+		hResult = pDX10Mutex->AcquireSync(0, INFINITE);
+
+		pDxgiRenderTarget->BeginDraw();
+		pDxgiRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+		//auto siSize = pBitmap->GetSize();
+		auto ptTop = D2D1::Point2F(0.0f, 0.0f);
+
+		pDxgiRenderTarget->DrawBitmap(pBitmap,
+			D2D1::RectF(
+				ptTop.x,
+				ptTop.y,
+				ptTop.x + nWidth,
+				ptTop.y + nHeight
+			)
+		);
+
+		hResult = pDxgiRenderTarget->EndDraw();
+
+		SafeCOMRelease(pBitmap);
+		if (FAILED(hResult)) {
+			pDX10Mutex->ReleaseSync(0);
+			return false;
+		}
+
+		hResult = pDX10Mutex->ReleaseSync(0);
+
+		if (FAILED(hResult)) {
+			return false;
+		}
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+
+		hResult = IrisD3DResourceManager::Instance()->GetD3D11Device()->CreateShaderResourceView(pTexture, &srvDesc, &pResourceView);
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pTexture);
+			SafeCOMRelease(pResourceView);
 			return false;
 		}
 
