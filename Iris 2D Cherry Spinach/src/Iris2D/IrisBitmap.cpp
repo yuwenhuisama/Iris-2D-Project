@@ -65,6 +65,12 @@ namespace Iris2D
 		pDestRenderTarget->FillRectangle(D2D1::RectF(nX, nY, nX + nWidth, nY + nHeight), pBrush);
 
 		hResult = pDestRenderTarget->EndDraw();
+		SafeCOMRelease(pBrush);
+
+		if (FAILED(hResult)) {
+			return false;
+		}
+
 		m_pTexture->ReleaseSyncFromDx10Side();
 
 		return true;
@@ -83,7 +89,7 @@ namespace Iris2D
 		m_pTexture->AquireSyncFromDx10Side();
 		pDestRenderTarget->BeginDraw();
 
-		pDestRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+		pDestRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black, 0.0f));
 
 	 	auto hResult = pDestRenderTarget->EndDraw();
 		m_pTexture->ReleaseSyncFromDx10Side();
@@ -97,12 +103,18 @@ namespace Iris2D
 
 	bool IrisBitmap::ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
 	{
-		return false;
+		auto pClearColor = IrisColor::Create(0, 0, 0, 0);
+		auto bResult = FillRect(nX, nY, nWidth, nHeight, pClearColor);
+		IrisColor::Release(pClearColor);
+		return bResult;
 	}
 
 	bool IrisBitmap::ClearRect(IrisRect * pRect, IR_PARAM_RESULT_CT)
 	{
-		return false;
+		auto pClearColor = IrisColor::Create(0, 0, 0, 0);
+		auto bResult = FillRect(pRect, pClearColor);
+		IrisColor::Release(pClearColor);
+		return bResult;
 	}
 
 	IrisColor* IrisBitmap::GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT_CT)
@@ -125,10 +137,11 @@ namespace Iris2D
 
 		union {
 			unsigned int m_nData;
+			// ARGB
 			struct {
-				unsigned char m_cRed;
-				unsigned char m_cGreen;
 				unsigned char m_cBlue;
+				unsigned char m_cGreen;
+				unsigned char m_cRed;
 				unsigned char m_cAlpha;
 			} m_stRGBA;
 		} uRGBA;
@@ -139,18 +152,36 @@ namespace Iris2D
 
 	}
 
-	void IrisBitmap::SetPixel(unsigned int nX, unsigned int nY, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::SetPixel(unsigned int nX, unsigned int nY, IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
-		FillRect(nX, nY, nX + 1, nY + 1, pColor, IR_PARAM);
+		return FillRect(nX, nY, nX + 1, nY + 1, pColor, IR_PARAM);
 	}
 
-	void IrisBitmap::SaveToFile(const std::wstring& wstrFilePath)
+	bool IrisBitmap::SaveToFile(const std::wstring& wstrFilePath)
 	{
 		m_pTexture->AquireSyncFromDx11Side();
 		DirectX::ScratchImage image;
-		DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), m_pTexture->GetTexture(), image);
-		DirectX::SaveToWICFile(*image.GetImages(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, wstrFilePath.c_str(), &GUID_WICPixelFormat32bppBGRA);
+		auto hResult = DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), m_pTexture->GetTexture(), image);
+		if (FAILED(hResult)) {
+			return false;
+		}
+
+		hResult = DirectX::SaveToWICFile(*image.GetImages(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, wstrFilePath.c_str(), &GUID_WICPixelFormat32bppBGRA);
+		if (FAILED(hResult)) {
+			return false;
+		}
+
 		m_pTexture->ReleaseSyncFromDx11Side();
+	}
+
+	bool IrisBitmap::HueChange(float fHue, IR_PARAM_RESULT_CT)
+	{
+		ID2D1Effect* pEffectRgbToHue = nullptr;
+		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
+		//pRenderTarget->CreteaEffect()
+		//IrisD2DResourceManager::Instance()->GetD2DFactory()
+
+		return true;
 	}
 
 	IrisTexture * IrisBitmap::GetTexture()

@@ -6,7 +6,7 @@ namespace Iris2D
 	IrisColor * IrisColor::Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha)
 	{
 		auto pColor = new IrisColor();
-		pColor->m_n4Color = { cRed, cBlue, cGreen, cAlpha };
+		pColor->m_n4Color = { cRed, cGreen, cBlue, cAlpha };
 		return pColor;
 	}
 
@@ -49,12 +49,12 @@ namespace Iris2D
 
 	unsigned char IrisColor::GetBlue()
 	{
-		return m_n4Color.x;
+		return m_n4Color.z;
 	}
 
 	void IrisColor::SetAlpha(unsigned char cAlpha)
 	{
-		m_n4Color.z = cAlpha;
+		m_n4Color.w = cAlpha;
 		m_bModifyDirtyFlag = true;
 	}
 

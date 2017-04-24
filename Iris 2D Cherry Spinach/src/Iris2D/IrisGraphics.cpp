@@ -24,7 +24,7 @@ namespace Iris2D {
 
 	void IrisGraphics::Update(IR_PARAM_RESULT_CT)
 	{
-		const float arrClearColor[4] = { 0.0f, 0.0f, 0.25f, 1.0f };
+		const float arrClearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 		auto pApp = IrisApplication::Instance();
 		auto pD3DManager = IrisD3DResourceManager::Instance();

@@ -191,9 +191,11 @@ namespace Iris2D
 		bool ClearRect(IrisRect* pRect, IR_PARAM_RESULT);
 
 		IrisColor* GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT);
-		void SetPixel(unsigned int nX, unsigned int nY, IrisColor *pColor, IR_PARAM_RESULT);
+		bool SetPixel(unsigned int nX, unsigned int nY, IrisColor *pColor, IR_PARAM_RESULT);
 
-		void SaveToFile(const std::wstring& wstrFilePath);
+		bool SaveToFile(const std::wstring& wstrFilePath);
+
+		bool HueChange(float fHue, IR_PARAM_RESULT);
 
 		IrisTexture* GetTexture();		
 	private:

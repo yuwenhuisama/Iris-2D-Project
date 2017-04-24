@@ -31,6 +31,7 @@ namespace Iris2D
 		return true;
 	}
 
+	/*
 	bool IrisD2DResourceManager::LoadWICResource(const std::wstring& wstrUri, IWICFormatConverter*& pConverter, unsigned int& nWidth, unsigned int& nHeight) {
 
 		IWICBitmapDecoder* pDecoder = nullptr;
@@ -78,6 +79,7 @@ namespace Iris2D
 		SafeCOMRelease(pSource);
 		return false;
 	}
+	*/
 
 	bool IrisD2DResourceManager::CreateTexture(unsigned int nWidth, unsigned int nHeight, ID3D11Resource*& pTexture) {
 		// CreateTexture
@@ -197,8 +199,8 @@ namespace Iris2D
 		HANDLE& hResourceShareHandle,
 		IDXGIKeyedMutex*& pDX10Mutex,
 		IDXGIKeyedMutex*& pDX11Mutex) {
-		IWICBitmapFrameDecode* pSource = nullptr;
-		IWICFormatConverter* pConverter = nullptr;
+		//IWICBitmapFrameDecode* pSource = nullptr;
+		//IWICFormatConverter* pConverter = nullptr;
 
 		ID2D1Bitmap* pBitmap = nullptr;
 		pDxgiRenderTarget = nullptr;
@@ -248,11 +250,10 @@ namespace Iris2D
 		auto hResult = pDxgiRenderTarget->CreateBitmap(D2D1::SizeU(nWidth, nHeight), pImage->pixels, pImage->rowPitch, dbpProperties, &pBitmap);
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pBitmap);
-			SafeCOMRelease(pConverter);
+			//SafeCOMRelease(pConverter);
 			return false;
 		}
-		//SafeCOMRelease(pBitmap);
-		SafeCOMRelease(pConverter);
+		//SafeCOMRelease(pConverter);
 
 		auto dsProps = D2D1::RenderTargetProperties(
 			D2D1_RENDER_TARGET_TYPE_HARDWARE,
@@ -267,15 +268,12 @@ namespace Iris2D
 		pDxgiRenderTarget->BeginDraw();
 		pDxgiRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
-		//auto siSize = pBitmap->GetSize();
-		auto ptTop = D2D1::Point2F(0.0f, 0.0f);
-
 		pDxgiRenderTarget->DrawBitmap(pBitmap,
 			D2D1::RectF(
-				ptTop.x,
-				ptTop.y,
-				ptTop.x + nWidth,
-				ptTop.y + nHeight
+				0.0f,
+				0.0f,
+				static_cast<float>(nWidth),
+				static_cast<float>(nHeight)
 			)
 		);
 
