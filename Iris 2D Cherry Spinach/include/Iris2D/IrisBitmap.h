@@ -62,6 +62,9 @@ namespace Iris2D
 		*/
 		static IrisBitmap* Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
 
+		static IrisBitmap* Create(IrisBitmap* pSrcBitmap, IR_PARAM_RESULT);
+		static IrisBitmap* CopyFrom(IrisBitmap* pSrcBitmap, IR_PARAM_RESULT);
+
 		/**
 		* \~english
 		* Release a bitmap.
@@ -196,6 +199,8 @@ namespace Iris2D
 		bool SaveToFile(const std::wstring& wstrFilePath);
 
 		bool HueChange(float fHue, IR_PARAM_RESULT);
+
+		bool Dispose();
 
 		IrisTexture* GetTexture();		
 	private:

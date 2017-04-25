@@ -35,6 +35,23 @@ namespace Iris2D
 		return pBitmap;
 	}
 
+	IrisBitmap * IrisBitmap::Create(IrisBitmap * pSrcBitmap, IR_PARAM_RESULT_CT)
+	{
+		auto pNewBitmap = IrisBitmap::Create(pSrcBitmap->GetWidth(), pSrcBitmap->GetHeight(), IR_PARAM);
+		auto pArea = IrisRect::Create(0.0f, 0.0f, static_cast<float>(pSrcBitmap->GetWidth()), static_cast<float>(pSrcBitmap->GetHeight()));
+
+		pNewBitmap->Blt(0, 0, pSrcBitmap, pArea, 255.0f, IR_PARAM);
+
+		IrisRect::Release(pArea);
+
+		return pNewBitmap;
+	}
+
+	IrisBitmap * IrisBitmap::CopyFrom(IrisBitmap * pSrcBitmap, IR_PARAM_RESULT_CT)
+	{
+		return IrisBitmap::Create(pSrcBitmap, IR_PARAM);
+	}
+
 	void IrisBitmap::Release(IrisBitmap *& pBitmap)
 	{
 		if (!pBitmap) {
@@ -62,7 +79,7 @@ namespace Iris2D
 			return false;
 		}
 
-		pDestRenderTarget->FillRectangle(D2D1::RectF(nX, nY, nX + nWidth, nY + nHeight), pBrush);
+		pDestRenderTarget->FillRectangle(D2D1::RectF(static_cast<float>(nX), static_cast<float>(nY), static_cast<float>(nX + nWidth), static_cast<float>(nY + nHeight)), pBrush);
 
 		hResult = pDestRenderTarget->EndDraw();
 		SafeCOMRelease(pBrush);
@@ -78,7 +95,11 @@ namespace Iris2D
 
 	bool IrisBitmap::FillRect(IrisRect * pRect, IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
-		return FillRect(pRect->GetX(), pRect->GetY(), pRect->GetWidth(), pRect->GetHeight(), pColor, IR_PARAM);
+		return FillRect(static_cast<unsigned int>(pRect->GetX()), 
+			static_cast<unsigned int>(pRect->GetY()),
+			static_cast<unsigned int>(pRect->GetWidth()),
+			static_cast<unsigned int>(pRect->GetHeight()),
+			pColor, IR_PARAM);
 	}
 
 	bool IrisBitmap::Clear(IR_PARAM_RESULT_CT)
@@ -159,28 +180,94 @@ namespace Iris2D
 
 	bool IrisBitmap::SaveToFile(const std::wstring& wstrFilePath)
 	{
-		m_pTexture->AquireSyncFromDx11Side();
-		DirectX::ScratchImage image;
-		auto hResult = DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), m_pTexture->GetTexture(), image);
-		if (FAILED(hResult)) {
-			return false;
-		}
-
-		hResult = DirectX::SaveToWICFile(*image.GetImages(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, wstrFilePath.c_str(), &GUID_WICPixelFormat32bppBGRA);
-		if (FAILED(hResult)) {
-			return false;
-		}
-
-		m_pTexture->ReleaseSyncFromDx11Side();
+		return m_pTexture->SaveToFile(wstrFilePath); 
 	}
 
 	bool IrisBitmap::HueChange(float fHue, IR_PARAM_RESULT_CT)
 	{
-		ID2D1Effect* pEffectRgbToHue = nullptr;
-		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
-		//pRenderTarget->CreteaEffect()
-		//IrisD2DResourceManager::Instance()->GetD2DFactory()
+		// Copy a bitmap
+		auto pTmpBitmap = IrisBitmap::Create(this);
+		auto pTmpTexture = pTmpBitmap->GetTexture();
 
+		ID2D1Effect* pEffectHueRotate = nullptr;
+		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
+		auto pSurface = m_pTexture->GetDxgiSurface();
+
+		auto pD2DContext = IrisD2DResourceManager::Instance()->GetD2DDeviceContext();
+		auto pD2DFactory = IrisD2DResourceManager::Instance()->GetD2DFactory();
+
+		float fDpiX = 0.0f;
+		float fDpiY = 0.0f;
+		pD2DFactory->GetDesktopDpi(&fDpiX, &fDpiY);
+
+		D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
+			D2D1_BITMAP_OPTIONS_TARGET,
+			D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+			fDpiX,
+			fDpiY
+		);
+
+		m_pTexture->AquireSyncFromDx11Side();
+		pTmpTexture->AquireSyncFromDx11Side();
+		ID2D1Bitmap1* pBitmap = nullptr;
+		ID2D1Bitmap1* pBitmap2 = nullptr;
+		auto hResult = pD2DContext->CreateBitmapFromDxgiSurface(pSurface, &bitmapProperties, &pBitmap);
+		SafeCOMRelease(pSurface);
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pBitmap);
+			IrisBitmap::Release(pTmpBitmap);
+			return false;
+		}
+
+		auto pTmpSurface = pTmpTexture->GetDxgiSurface();
+		hResult = pD2DContext->CreateBitmapFromDxgiSurface(pTmpSurface, &bitmapProperties, &pBitmap2);
+		SafeCOMRelease(pTmpSurface);
+		
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pBitmap);
+			IrisBitmap::Release(pTmpBitmap);
+			return false;
+		}
+
+		hResult = pD2DContext->CreateEffect(CLSID_D2D1HueRotation, &pEffectHueRotate);
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pBitmap);
+			SafeCOMRelease(pEffectHueRotate);
+			IrisBitmap::Release(pTmpBitmap);
+			return false;
+		}
+
+		pEffectHueRotate->SetInput(0, pBitmap2);
+		pEffectHueRotate->SetValue(D2D1_HUEROTATION_PROP_ANGLE, fHue);
+		
+		pD2DContext->SetTarget(pBitmap);
+		pD2DContext->BeginDraw();
+		pD2DContext->DrawImage(pEffectHueRotate);
+
+		hResult = pD2DContext->EndDraw();
+
+		pTmpTexture->ReleaseSyncFromDx11Side();
+		m_pTexture->ReleaseSyncFromDx11Side();
+
+		if (FAILED(pTmpTexture)) {
+			SafeCOMRelease(pBitmap);
+			SafeCOMRelease(pBitmap2);
+			SafeCOMRelease(pEffectHueRotate);
+			IrisBitmap::Release(pTmpBitmap);
+			return false;
+		}
+
+		SafeCOMRelease(pBitmap);
+		SafeCOMRelease(pBitmap2);
+		SafeCOMRelease(pEffectHueRotate);
+		IrisBitmap::Release(pTmpBitmap);
+
+		return true;
+	}
+
+	bool IrisBitmap::Dispose()
+	{
+		IrisTexture::Release(m_pTexture);
 		return true;
 	}
 
@@ -201,7 +288,7 @@ namespace Iris2D
 
 	bool IrisBitmap::Blt(unsigned int nDestX, unsigned int nDestY, IrisBitmap * pSrcBitmap, IrisRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
 	{
-		auto pDestSrc = IrisRect::Create(nDestX, nDestY, pSrcRect->GetWidth(), pSrcRect->GetHeight());
+		auto pDestSrc = IrisRect::Create(static_cast<float>(nDestX), static_cast<float>(nDestY), static_cast<float>(pSrcRect->GetWidth()), static_cast<float>(pSrcRect->GetHeight()));
 		auto bResult = StretchBlt(pDestSrc, pSrcBitmap, pSrcRect, fOpacity, IR_PARAM);
 		IrisRect::Release(pDestSrc);
 

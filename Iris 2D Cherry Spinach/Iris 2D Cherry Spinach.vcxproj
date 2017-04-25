@@ -156,6 +156,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportVertexShade.cpp" />
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportPixelShader.cpp" />
+    <ClCompile Include="src\Iris2D\IrisViewport.cpp" />
     <ClCompile Include="src\Iris2D Util\IrisDataConvertHelper.cpp" />
     <ClCompile Include="src\Iris2D\IrisColor.cpp" />
     <ClCompile Include="src\Iris2D\IrisRect.cpp" />
@@ -177,6 +180,8 @@
     <ClInclude Include="include\DxUtil\WICTextureLoader.h" />
     <ClInclude Include="include\Iris2D Util\IrisResult.h" />
     <ClInclude Include="include\Iris2D Util\IrisSpriteVertex.h" />
+    <ClInclude Include="include\Iris2D Util\IrisViewportShaderBuffers.h" />
+    <ClInclude Include="include\Iris2D Util\IrisViewportVertex.h" />
     <ClInclude Include="include\Iris2D.h" />
     <ClInclude Include="include\Iris2DCompileConfigure.h" />
     <ClInclude Include="include\Iris2D\IrisApp.h" />
@@ -196,6 +201,9 @@
     <ClInclude Include="include\Iris2D\IrisRect.h" />
     <ClInclude Include="include\Iris2D\IrisColor.h" />
     <ClInclude Include="include\Iris2D Util\IrisDataConvertHelper.h" />
+    <ClInclude Include="include\Iris2D\IrisViewport.h" />
+    <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportVertexShader.h" />
+    <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportPixelShader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\DxUtil\DirectXTex.inl" />

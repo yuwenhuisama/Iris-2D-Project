@@ -10,7 +10,7 @@ namespace Iris2D
 		IrisVertexShaderBase() = default;
 		virtual ~IrisVertexShaderBase() = default;
 
-		virtual bool CreateInputLayout(ID3D11Device * pDevice) = 0;
+		virtual bool CreateInputLayout() = 0;
 		virtual ID3D11InputLayout* GetInputLayout() = 0;
 		virtual ID3D11VertexShader* GetVertexShader() = 0;
 	};

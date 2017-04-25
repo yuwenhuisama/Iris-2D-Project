@@ -1,38 +1,37 @@
-#include "Iris2D/IrisShaders/IrisSpriteVertexShader.h"
+#include "Iris2D/IrisShaders/IrisViewportVertexShader.h"
 #include "Iris2D/IrisD3DResourceManager.h"
 
 
-namespace Iris2D
-{
-	IrisSpriteVertexShader * IrisSpriteVertexShader::Instance()
+namespace Iris2D {
+	IrisViewportVertexShader * IrisViewportVertexShader::Instance()
 	{
-		static auto pVertex = IrisSpriteVertexShader();
-		return &pVertex;
+		static auto pShader = IrisViewportVertexShader();
+		return &pShader;
 	}
 
-	std::wstring IrisSpriteVertexShader::ShaderFileDefine()
+	std::wstring IrisViewportVertexShader::ShaderFileDefine()
 	{
-		return L"shaders\\iris2d_sprite_vertex_shader.fx";
+		return L"shaders\\iris2d_viewport_vertex_shader.fx";
 	}
 
-	std::string IrisSpriteVertexShader::ShaderEntryFuncDefine()
+	std::string IrisViewportVertexShader::ShaderEntryFuncDefine()
 	{
 		return "VSMain";
 	}
 
-	std::string IrisSpriteVertexShader::ShaderVersionDefine()
+	std::string IrisViewportVertexShader::ShaderVersionDefine()
 	{
 		return "vs_4_0";
 	}
 
-	bool IrisSpriteVertexShader::ShaderSubResourceDefine()
+	bool IrisViewportVertexShader::ShaderSubResourceDefine()
 	{
 		auto pDevice = IrisD3DResourceManager::Instance()->GetD3D11Device();
 
 		D3D11_BUFFER_DESC dbdMatrix;
 		memset(&dbdMatrix, 0, sizeof(D3D11_BUFFER_DESC));
 		dbdMatrix.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		dbdMatrix.ByteWidth = sizeof(IrisSpriteVertexShaderBuffer);
+		dbdMatrix.ByteWidth = sizeof(IrisViewportVertexShaderBuffer);
 		dbdMatrix.Usage = D3D11_USAGE_DEFAULT;
 
 		auto hResult = pDevice->CreateBuffer(&dbdMatrix, nullptr, &m_pMatrixBuffer);
@@ -52,7 +51,7 @@ namespace Iris2D
 		return true;
 	}
 
-	bool IrisSpriteVertexShader::CreateShader(ID3DBlob * pBlob)
+	bool IrisViewportVertexShader::CreateShader(ID3DBlob * pBlob)
 	{
 		auto hResult = IrisD3DResourceManager::Instance()->
 			GetD3D11Device()->
@@ -71,13 +70,22 @@ namespace Iris2D
 		return true;
 	}
 
-	bool IrisSpriteVertexShader::SetToContext()
+	bool IrisViewportVertexShader::SetToContext()
 	{
 		IrisD3DResourceManager::Instance()->GetD3DDeviceContext()->VSSetShader(m_pVertextShader, nullptr, 0);
 		return true;
 	}
 
-	bool IrisSpriteVertexShader::CreateInputLayout()
+	bool IrisViewportVertexShader::Release()
+	{
+		SafeCOMRelease(m_pMatrixBuffer);
+		SafeCOMRelease(m_pViewProjectMatrixBuffer);
+		SafeCOMRelease(m_pVertextShader);
+		SafeCOMRelease(m_pInputLayout);
+		return true;
+	}
+
+	bool IrisViewportVertexShader::CreateInputLayout()
 	{
 		auto pDevice = IrisD3DResourceManager::Instance()->GetD3D11Device();
 
@@ -104,37 +112,27 @@ namespace Iris2D
 		return true;
 	}
 
-	void IrisSpriteVertexShader::SetViewProjectMatrix(const DirectX::XMMATRIX & mxVPMatrix)
+	ID3D11InputLayout * IrisViewportVertexShader::GetInputLayout()
+	{
+		return m_pInputLayout;
+	}
+
+	ID3D11VertexShader * IrisViewportVertexShader::GetVertexShader()
+	{
+		return m_pVertextShader;
+	}
+
+	void IrisViewportVertexShader::SetViewProjectMatrix(const DirectX::XMMATRIX & mxVPMatrix)
 	{
 		auto pContext = IrisD3DResourceManager::Instance()->GetD3DDeviceContext();
 		pContext->UpdateSubresource(m_pViewProjectMatrixBuffer, 0, nullptr, &mxVPMatrix, 0, 0);
 		pContext->VSSetConstantBuffers(1, 1, &m_pViewProjectMatrixBuffer);
 	}
 
-	void IrisSpriteVertexShader::SetWorldMatrix(const IrisSpriteVertexShaderBuffer& mbBuffer)
+	void IrisViewportVertexShader::SetWorldMatrix(const IrisViewportVertexShaderBuffer & mbBuffer)
 	{
 		auto pContext = IrisD3DResourceManager::Instance()->GetD3DDeviceContext();
 		pContext->UpdateSubresource(m_pMatrixBuffer, 0, nullptr, &mbBuffer, 0, 0);
 		pContext->VSSetConstantBuffers(0, 1, &m_pMatrixBuffer);
 	}
-
-	bool IrisSpriteVertexShader::Release()
-	{
-		SafeCOMRelease(m_pMatrixBuffer);
-		SafeCOMRelease(m_pViewProjectMatrixBuffer);
-		SafeCOMRelease(m_pVertextShader);
-		SafeCOMRelease(m_pInputLayout);
-		return true;
-	}
-
-	ID3D11InputLayout * IrisSpriteVertexShader::GetInputLayout()
-	{
-		return m_pInputLayout;
-	}
-
-	ID3D11VertexShader * IrisSpriteVertexShader::GetVertexShader()
-	{
-		return m_pVertextShader;
-	}
-
 }

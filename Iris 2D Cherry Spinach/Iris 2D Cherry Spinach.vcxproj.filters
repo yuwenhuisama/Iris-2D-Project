@@ -60,6 +60,15 @@
     <ClCompile Include="src\Iris2D Util\IrisDataConvertHelper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Iris2D\IrisViewport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportVertexShade.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportPixelShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Iris2D\IrisApp.h">
@@ -129,6 +138,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Iris2D Util\IrisDataConvertHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D Util\IrisViewportVertex.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D\IrisViewport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D Util\IrisViewportShaderBuffers.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportVertexShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportPixelShader.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

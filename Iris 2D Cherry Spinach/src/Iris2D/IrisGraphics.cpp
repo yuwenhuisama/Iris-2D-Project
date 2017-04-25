@@ -1,8 +1,10 @@
 #include "Iris2D/IrisGraphics.h"
 #include "Iris2D/IrisApp.h"
-#include "Iris2D/IrisSprite.h"
+#include "Iris2D/IrisViewport.h"
 #include "Iris2D/IrisShaders/IrisSpriteVertexShader.h"
 #include "Iris2D/IrisShaders/IrisSpritePixelShader.h"
+#include "Iris2D/IrisShaders/IrisViewportVertexShader.h"
+#include "Iris2D/IrisShaders/IrisViewportPixelShader.h"
 #include "Iris2D/IrisD3DResourceManager.h"
 
 namespace Iris2D {
@@ -12,14 +14,14 @@ namespace Iris2D {
 		return &pInstance;
 	}
 
-	void IrisGraphics::AddSprite(IrisSprite * pSprite)
+	void IrisGraphics::AddViewport(IrisViewport * pViewport)
 	{
-		m_stSprites.insert(pSprite);
+		m_stViewports.insert(pViewport);
 	}
 
-	void IrisGraphics::RemoveSprite(IrisSprite * pSprite)
+	void IrisGraphics::RemoveViewport(IrisViewport * pViewport)
 	{
-		m_stSprites.erase(pSprite);
+		m_stViewports.erase(pViewport);
 	}
 
 	void IrisGraphics::Update(IR_PARAM_RESULT_CT)
@@ -31,11 +33,11 @@ namespace Iris2D {
 		auto pD3DContenx = pD3DManager->GetD3DDeviceContext();
 
 		// switch shader
-		auto pVertexShader = IrisSpriteVertexShader::Instance();
-		auto pPixelShader = IrisSpritePixelShader::Instance();
+		//auto pVertexShader = IrisSpriteVertexShader::Instance();
+		//auto pPixelShader = IrisSpritePixelShader::Instance();
 
-		pD3DManager->SetVertexShader(pVertexShader);
-		pD3DManager->SetPixelShader(pPixelShader);
+		//pD3DManager->SetVertexShader(pVertexShader);
+		//pD3DManager->SetPixelShader(pPixelShader);
 
 		while (!m_bUpdateLockFlag) {
 			MSG msg = { 0 };
@@ -58,9 +60,19 @@ namespace Iris2D {
 
 				pD3DContenx->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
 
-				for (auto& sprite : m_stSprites)
+				pD3DManager->SetVertexShader(IrisSpriteVertexShader::Instance());
+				pD3DManager->SetPixelShader(IrisSpritePixelShader::Instance());
+				for (auto& pViewport : m_stViewports)
 				{
-					sprite->Render();
+					pViewport->RenderSprite();
+				}
+
+				IrisViewportVertexShader::Instance()->SetViewProjectMatrix(pD3DManager->GetViewMatrix());
+				pD3DManager->SetVertexShader(IrisViewportVertexShader::Instance());
+				pD3DManager->SetPixelShader(IrisViewportPixelShader::Instance());
+				for (auto& pViewport : m_stViewports)
+				{
+					pViewport->RenderSelf();
 				}
 
 				pD3DManager->GetSwapChain()->Present(1, 0);
@@ -71,18 +83,18 @@ namespace Iris2D {
 
 	void IrisGraphics::UpdateNoLock(IR_PARAM_RESULT_CT)
 	{
-		const float arrClearColor[4] = { 0.0f, 0.0f, 0.25f, 1.0f };
+		const float arrClearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 		auto pApp = IrisApplication::Instance();
 		auto pD3DManager = IrisD3DResourceManager::Instance();
 		auto pD3DContenx = pD3DManager->GetD3DDeviceContext();
 
 		// switch shader
-		auto pVertexShader = IrisSpriteVertexShader::Instance();
-		auto pPixelShader = IrisSpritePixelShader::Instance();
+		//auto pVertexShader = IrisSpriteVertexShader::Instance();
+		//auto pPixelShader = IrisSpritePixelShader::Instance();
 
-		pD3DManager->SetVertexShader(pVertexShader);
-		pD3DManager->SetPixelShader(pPixelShader);
+		//pD3DManager->SetVertexShader(pVertexShader);
+		//pD3DManager->SetPixelShader(pPixelShader);
 
 		MSG msg = { 0 };
 		if (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
@@ -97,9 +109,10 @@ namespace Iris2D {
 		else {
 			pD3DContenx->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
 
-			for (auto& sprite : m_stSprites)
+			IrisViewportVertexShader::Instance()->SetViewProjectMatrix(pD3DManager->GetViewMatrix());
+			for (auto& sprite : m_stViewports)
 			{
-				sprite->Render();
+				sprite->RenderSprite();
 			}
 
 			pD3DManager->GetSwapChain()->Present(0, 0);
@@ -182,9 +195,9 @@ namespace Iris2D {
 
 	void IrisGraphics::Release()
 	{
-		for (auto& sprite : m_stSprites)
+		for (auto& pViewport : m_stViewports)
 		{
-			IrisSprite::InnerRelease(sprite);
+			IrisViewport::InnerRelease(const_cast<IrisViewport*>(pViewport));
 		}
 	}
 

@@ -182,6 +182,24 @@ namespace Iris2D
 	{
 		m_pDX10Mutex->ReleaseSync(--m_nSync);
 	}
+
+	bool IrisTexture::SaveToFile(const std::wstring & wstrFilePath)
+	{
+		AquireSyncFromDx11Side();
+		DirectX::ScratchImage image;
+		auto hResult = DirectX::CaptureTexture(IrisD3DResourceManager::Instance()->GetD3D11Device(), IrisD3DResourceManager::Instance()->GetD3DDeviceContext(), m_pTexture, image);
+		if (FAILED(hResult)) {
+			return false;
+		}
+
+		hResult = DirectX::SaveToWICFile(*image.GetImages(), DirectX::WIC_FLAGS_NONE, GUID_ContainerFormatPng, wstrFilePath.c_str(), &GUID_WICPixelFormat32bppBGRA);
+		if (FAILED(hResult)) {
+			return false;
+		}
+		ReleaseSyncFromDx11Side();
+		return true;
+	}
+
 	ID3D11Resource * IrisTexture::GetTexture()
 	{
 		return m_pTexture;
@@ -190,5 +208,16 @@ namespace Iris2D
 	ID2D1RenderTarget* IrisTexture::GetRenderTargetBitmap()
 	{
 		return m_pRenderTargetBitmap;
+	}
+	IDXGISurface * IrisTexture::GetDxgiSurface()
+	{
+		IDXGISurface* pSurface = nullptr;
+		//auto hResult = IrisD3DResourceManager::Instance()->GetD3D11Device()->OpenSharedResource(m_hSharedResourceHandle, __uuidof(IDXGISurface), reinterpret_cast<LPVOID*>(&pSurface));
+		auto hResult = m_pTexture->QueryInterface(__uuidof(IDXGISurface), (void**)&pSurface);
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pSurface);
+			return nullptr;
+		}
+		return pSurface;
 	}
 }

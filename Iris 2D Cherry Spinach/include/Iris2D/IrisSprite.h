@@ -9,6 +9,7 @@ namespace Iris2D
 	class IrisBitmap;
 	class IrisRect;
 	class IrisColor;
+	class IrisViewport;
 	typedef IrisColor IrisTone;
 	__declspec(align(16)) 
 	/**
@@ -51,6 +52,7 @@ namespace Iris2D
 		float m_fZoomY = 1.0f;
 		
 		bool m_bVisible = true;
+		IrisViewport* m_pViewport = nullptr;
 
 		bool m_bPositionDirtyFlag = false;
 		bool m_bAngleDirtyFlag = false;
@@ -62,14 +64,18 @@ namespace Iris2D
 		/**
 		* \~english
 		* Create a sprite object.
+		*
+		* @param pViewport The viewport in which current sprite is put. If nullptr is taken, current sprite will be put into global viewport.
 		* @return If sprite has been created successfully pointer of IrisSprite will be returned otherwise nullptr.
 		*/
 		/**
 		* \~chinese
 		* 创建一个 Sprite 对象。
+		*
+		* @param pViewport 该 Sprite 所处的 Viewport。如果设置为 nullptr 那么当前 Sprite 将会被放在全局 Viewport 之中。
 		* @return 如果 Sprite 对象创建成功那么返回它的指针否则返回 nullptr。
 		*/
-		static IrisSprite* Create();
+		static IrisSprite* Create(IrisViewport* pViewport = nullptr);
 
 		/**
 		* \~english
@@ -456,6 +462,7 @@ namespace Iris2D
 		void Update();
 
 		void Render();
+		bool Dispose();
 
 	private:
 		IrisSprite() = default;

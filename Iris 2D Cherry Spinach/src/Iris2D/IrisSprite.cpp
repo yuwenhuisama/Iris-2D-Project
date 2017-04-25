@@ -1,4 +1,5 @@
 #include "Iris2D/IrisSprite.h"
+#include "Iris2D/IrisViewport.h"
 #include "Iris2D/IrisBitmap.h"
 #include "Iris2D/IrisRect.h"
 #include "Iris2D/IrisColor.h"
@@ -12,10 +13,11 @@
 
 namespace Iris2D
 {
-	IrisSprite * Iris2D::IrisSprite::Create()
+	IrisSprite * Iris2D::IrisSprite::Create(IrisViewport* pViewport)
 	{
 		auto pSprite = new IrisSprite();
-		IrisGraphics::Instance()->AddSprite(pSprite);
+		pSprite->m_pViewport = pViewport == nullptr ? IrisViewport::GetGlobalViewport() : pViewport;
+		pSprite->m_pViewport->AddSprite(pSprite);;
 
 		return pSprite;
 	}
@@ -25,7 +27,7 @@ namespace Iris2D
 		if (!pSprite) {
 			return;
 		}
-		IrisGraphics::Instance()->RemoveSprite(pSprite);
+		pSprite->m_pViewport->RemoveSprite(pSprite);
 		InnerRelease(pSprite);
 		pSprite = nullptr;
 	}
@@ -240,7 +242,7 @@ namespace Iris2D
 
 	void IrisSprite::Render()
 	{
-		if (!m_pBitmap || !m_bVisible) {
+		if (!m_pBitmap || !m_bVisible || m_bfPixelShaderBuffer.m_fOpacity == 0.0f) {
 			return;
 		}
 
@@ -321,7 +323,6 @@ namespace Iris2D
 		unsigned int nStride = sizeof(IrisSpriteVertex);
 		unsigned int nOffset = 0;
 
-		pVertexShader->SetViewProjectMatrix(pD3DManager->GetViewMatrix());
 		pVertexShader->SetWorldMatrix(m_bfVertexShaderBuffer);
 		pPixelShader->SetColorProcessInfo(m_bfPixelShaderBuffer);
 
@@ -351,6 +352,18 @@ namespace Iris2D
 
 	}
 
+	bool IrisSprite::Dispose()
+	{
+		if (m_pBitmap) {
+			IrisBitmap::Release(m_pBitmap);
+			m_pBitmap = nullptr;
+		}
+		SafeCOMRelease(m_pVertexBuffer);
+
+		return true;
+
+	}
+
 	Iris2D::IrisSprite::~IrisSprite()
 	{
 		if (m_pBitmap) {
@@ -373,13 +386,13 @@ namespace Iris2D
 		auto nHeight = m_pBitmap->GetHeight();
 
 		IrisSpriteVertex arrVertices[] = {
-			{ XMFLOAT4(nWidth, 0.0f,    1.0f, 1.0f),  XMFLOAT2(1.0f, 0.0f) },
-			{ XMFLOAT4(nWidth, nHeight, 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
-			{ XMFLOAT4(0.0f,   nHeight, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+			{ XMFLOAT4(static_cast<float>(nWidth), 0.0f,						1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT4(static_cast<float>(nWidth), static_cast<float>(nHeight), 1.0f, 1.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT4(0.0f,					   static_cast<float>(nHeight), 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
 
-			{ XMFLOAT4(0.0f,   nHeight, 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
-			{ XMFLOAT4(0.0f,   0.0f,    1.0f, 1.0f),   XMFLOAT2(0.0f, 0.0f) },
-			{ XMFLOAT4(nWidth, 0.0f,    1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT4(0.0f,					   static_cast<float>(nHeight), 1.0f, 1.0f), XMFLOAT2(0.0f, 1.0f) },
+			{ XMFLOAT4(0.0f,					   0.0f,						1.0f, 1.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT4(static_cast<float>(nWidth), 0.0f,						1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },
 		};
 
 		D3D11_BUFFER_DESC dbdVertextDesc;

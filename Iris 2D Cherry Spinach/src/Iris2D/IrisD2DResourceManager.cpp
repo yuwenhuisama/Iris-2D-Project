@@ -17,12 +17,35 @@ namespace Iris2D
 			return false;
 		}
 
-		CoInitialize(nullptr);
-		hResult = CoCreateInstance(CLSID_WICImagingFactory2,
-			nullptr,
-			CLSCTX_INPROC_SERVER,
-			IID_IWICImagingFactory2,
-			reinterpret_cast<LPVOID*>(&m_pWICImagingFactory));
+		//CoInitialize(nullptr);
+		//hResult = CoCreateInstance(CLSID_WICImagingFactory2,
+		//	nullptr,
+		//	CLSCTX_INPROC_SERVER,
+		//	IID_IWICImagingFactory2,
+		//	reinterpret_cast<LPVOID*>(&m_pWICImagingFactory));
+
+		IDXGIDevice1*						pDxgiDevice = nullptr;
+
+		auto pD3DDevice = IrisD3DResourceManager::Instance()->GetD3D11Device();
+		// 创建 IDXGIDevice
+		if (SUCCEEDED(hResult)) {
+			hResult = pD3DDevice->QueryInterface(__uuidof(IDXGIDevice1), (void **)&pDxgiDevice);
+		}
+
+		// 创建D2D设备
+		if (SUCCEEDED(hResult)) {
+			hResult = m_pD2DFactory->CreateDevice(pDxgiDevice, &m_pD2DDevice);
+		}
+
+		// 创建D2D设备上下文
+		if (SUCCEEDED(hResult)) {
+			hResult = m_pD2DDevice->CreateDeviceContext(
+				D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
+				&m_pD2DDeviceContext
+			);
+		}
+
+		SafeCOMRelease(pDxgiDevice);
 
 		if (FAILED(hResult)) {
 			return false;
@@ -331,10 +354,6 @@ namespace Iris2D
 		}
 
 		// Create Bitmap
-		D2D1_SIZE_U dsuSize;
-		dsuSize.width = nWidth;
-		dsuSize.width = nHeight;
-
 		float fDpiX = 0.0f;
 		float fDpiY = 0.0f;
 		m_pD2DFactory->GetDesktopDpi(&fDpiX, &fDpiY);
@@ -361,11 +380,11 @@ namespace Iris2D
 
 		hResult = pDxgiRenderTarget->EndDraw();
 		if (FAILED(hResult)) {
-			pDX10Mutex->ReleaseSync(1);
+			pDX10Mutex->ReleaseSync(0);
 			return false;
 		}
 
-		hResult = pDX10Mutex->ReleaseSync(1);
+		hResult = pDX10Mutex->ReleaseSync(0);
 		if (FAILED(hResult)) {
 			return false;
 		}
@@ -378,10 +397,16 @@ namespace Iris2D
 		return m_pD2DFactory;
 	}
 
+	ID2D1DeviceContext * IrisD2DResourceManager::GetD2DDeviceContext()
+	{
+		return m_pD2DDeviceContext;
+	}
+
 	bool IrisD2DResourceManager::Release()
 	{
 		SafeCOMRelease(m_pD2DFactory);
-		SafeCOMRelease(m_pWICImagingFactory);
+		SafeCOMRelease(m_pD2DDevice);
+		SafeCOMRelease(m_pD2DDeviceContext);
 		return true;
 	}
 }

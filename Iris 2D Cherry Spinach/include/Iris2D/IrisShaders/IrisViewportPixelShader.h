@@ -1,24 +1,23 @@
-#ifndef _H_IRISSPRITEPIXELSHADER_
-#define _H_IRISSPRITEPIXELSHADER_
+#ifndef _H_IRISVIEWPORTPIXELSHADER_
+#define _H_IRISVIEWPORTPIXELSHADER_
 #include "IrisPixelShaderBase.h"
-#include "Iris2D Util/IrisSpriteShaderBuffers.h"
+#include "Iris2D Util/IrisViewportShaderBuffers.h"
 
 namespace Iris2D
 {
-	class IrisSpritePixelShader : public IrisPixelShaderBase
+	class IrisViewportPixelShader : public IrisPixelShaderBase
 	{
 	private:
 		ID3D11PixelShader* m_pPixelShader = nullptr;
 		ID3D11Buffer* m_pColorProcessBuffer = nullptr;
 
+	private:
+		IrisViewportPixelShader() = default;
+		~IrisViewportPixelShader() = default;
+
 	public:
-		static IrisSpritePixelShader* Instance();
+		static IrisViewportPixelShader* Instance();
 
-	private:
-		IrisSpritePixelShader() = default;
-		~IrisSpritePixelShader() = default;
-
-	private:
 		// Í¨¹ý IrisPixelShaderBase ¼Ì³Ð
 		virtual std::wstring ShaderFileDefine() override;
 		virtual std::string ShaderEntryFuncDefine() override;
@@ -30,7 +29,8 @@ namespace Iris2D
 		virtual bool SetToContext() override;
 		virtual bool Release() override;
 		virtual ID3D11PixelShader * GetPixelShader() override;
-		void SetColorProcessInfo(const IrisSpritePixelShaderBuffer& ispsInfo);
+
+		void SetColorProcessInfo(const IrisViewportPixelShaderBuffer& ivpsInfo);
 	};
 }
-#endif // !_H_IRISSPRITEPIXELSHADER_
+#endif // _H_IRISVIEWPORTPIXELSHADER_

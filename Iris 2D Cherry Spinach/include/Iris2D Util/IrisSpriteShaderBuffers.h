@@ -47,7 +47,6 @@ namespace Iris2D
 			_mm_free(p);
 		}
 	};
-
 }
 #endif // !_H_IRISSPRITEMATRIXBUFFER_
 

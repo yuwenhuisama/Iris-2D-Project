@@ -7,6 +7,7 @@ bool GameCallBack() {
 	auto pApp = IrisApplication::Instance();
 
 	auto pBitmap = IrisBitmap::Create(L"image\\kurumi.jpg");
+	pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = IrisBitmap::Create(L"image\\leimu.jpg");
 
 	//auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 500.0f, 400.0f);

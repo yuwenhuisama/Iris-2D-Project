@@ -47,8 +47,11 @@ namespace Iris2D
 		void AquireSyncFromDx10Side();
 		void ReleaseSyncFromDx10Side();
 
+		bool SaveToFile(const std::wstring& wstrFilePath);
+
 		ID3D11Resource* GetTexture();
 		ID2D1RenderTarget* GetRenderTargetBitmap();
+		IDXGISurface* GetDxgiSurface();
 	};
 }
 #endif // !_H_IRISTEXTURE_

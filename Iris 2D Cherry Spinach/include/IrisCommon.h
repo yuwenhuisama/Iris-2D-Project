@@ -14,6 +14,9 @@
 #include <DirectXMath.h>
 #include <d2d1_2.h>
 #include <dxgi1_2.h>
+#include <d2d1effects.h>
+#include <d2d1effects_1.h>
+#include <d2d1effects_2.h>
 #include <wincodec.h>
 #include <wrl.h>
 

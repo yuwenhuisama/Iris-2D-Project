@@ -10,8 +10,8 @@ namespace Iris2D
 	private:
 		ID2D1Factory1* m_pD2DFactory = nullptr;
 		ID2D1Device* m_pD2DDevice = nullptr;
-		//ID2D1DeviceContext* m_pD2DDeviceContex = nullptr;
-		IWICImagingFactory2* m_pWICImagingFactory = nullptr;
+		ID2D1DeviceContext* m_pD2DDeviceContext = nullptr;
+		//IWICImagingFactory2* m_pWICImagingFactory = nullptr;
 
 	public:
 		static IrisD2DResourceManager* Instance();
@@ -49,6 +49,7 @@ namespace Iris2D
 		);
 
 		ID2D1Factory1* GetD2DFactory();
+		ID2D1DeviceContext* GetD2DDeviceContext();
 
 		bool Release();
 

@@ -1,9 +1,12 @@
 #include "Iris2D/IrisApp.h"
 #include "Iris2D/IrisD3DResourceManager.h"
 #include "Iris2D/IrisD2DResourceManager.h"
+#include "Iris2D/IrisViewport.h"
 #include "Iris2D Util/IrisTexture.h"
 #include "Iris2D/IrisShaders/IrisSpriteVertexShader.h"
 #include "Iris2D/IrisShaders/IrisSpritePixelShader.h"
+#include "Iris2D/IrisShaders/IrisViewportVertexShader.h"
+#include "Iris2D/IrisShaders/IrisViewportPixelShader.h"
 #include "Iris2D/IrisGraphics.h"
 
 namespace Iris2D
@@ -46,23 +49,44 @@ namespace Iris2D
 			return false;
 		}
 
+		if (!IrisViewport::InitGlobalViewport(pInfo->m_nWidth, pInfo->m_nHeight)) {
+			return false;
+		}
+
 		/* Shaders */
-		// Vertex Shader
-		auto pVertexShader = IrisSpriteVertexShader::Instance();
+		// Sprite Vertex Shader
+		auto pSpriteVertexShader = IrisSpriteVertexShader::Instance();
 		auto pD3DManager = IrisD3DResourceManager::Instance();
-		if (!pVertexShader->Initialize()) {
+		if (!pSpriteVertexShader->Initialize()) {
 			return false;
 		}
 
-		// Pixel Shader
-		if (!pVertexShader->CreateInputLayout(pD3DManager->GetD3D11Device())) {
+		if (!pSpriteVertexShader->CreateInputLayout()) {
 			return false;
 		}
 
-		auto pPixelShader = IrisSpritePixelShader::Instance();
-		if (!pPixelShader->Initialize()) {
+		// Sprite Pixel Shader
+		auto pSpritePixelShader = IrisSpritePixelShader::Instance();
+		if (!pSpritePixelShader->Initialize()) {
 			return false;
 		}
+
+		// Viewport Vertex Shader
+		auto pViewportVertexShader = IrisViewportVertexShader::Instance();
+		if (!pViewportVertexShader->Initialize()) {
+			return false;
+		}
+
+		if (!pViewportVertexShader->CreateInputLayout()) {
+			return false;
+		}
+
+		// Viewport Pixel Shader
+		auto pViewportPixelShader = IrisViewportPixelShader::Instance();
+		if (!pViewportPixelShader->Initialize()) {
+			return false;
+		}
+
 
 		m_pfGameFunc = pInfo->m_pfFunc;
 		m_nShowCmd = pInfo->nShowCmd;
@@ -87,6 +111,7 @@ namespace Iris2D
 		IrisD3DResourceManager::Instance()->Release();
 		IrisD2DResourceManager::Instance()->Release();
 		IrisTexture::Release();
+		IrisViewport::ReleaseGlobalViewport();
 		IrisGraphics::Instance()->Release();
 		IrisSpritePixelShader::Instance()->Release();
 		IrisSpriteVertexShader::Instance()->Release();

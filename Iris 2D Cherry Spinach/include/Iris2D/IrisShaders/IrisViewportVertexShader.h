@@ -1,15 +1,12 @@
-#ifndef _H_IRISSPRITEVERTEXSHADER_
-#define _H_IRISSPRITEVERTEXSHADER_
+#ifndef _H_IRISVIEWPORTVERTEXSHADER_
+#define _H_IRISVIEWPORTVERTEXSHADER_
 #include "IrisVertexShaderBase.h"
-#include "Iris2D Util/IrisSpriteShaderBuffers.h"
+#include "Iris2D Util/IrisViewportShaderBuffers.h"
 
 namespace Iris2D
 {
-	class IrisSpriteVertexShader : public IrisVertexShaderBase
+	class IrisViewportVertexShader : public IrisVertexShaderBase
 	{
-	public:
-		static IrisSpriteVertexShader* Instance();
-
 	private:
 		ID3D11VertexShader* m_pVertextShader = nullptr;
 
@@ -20,8 +17,11 @@ namespace Iris2D
 		ID3D11Buffer* m_pViewProjectMatrixBuffer = nullptr;
 
 	private:
-		IrisSpriteVertexShader() = default;
-		~IrisSpriteVertexShader() = default;
+		IrisViewportVertexShader() = default;
+		~IrisViewportVertexShader() = default;
+	
+	public:
+		static IrisViewportVertexShader* Instance();
 
 	protected:
 		// Í¨¹ý IrisVertexShaderBase ¼Ì³Ð
@@ -38,9 +38,9 @@ namespace Iris2D
 		virtual ID3D11VertexShader * GetVertexShader() override;
 
 		void SetViewProjectMatrix(const DirectX::XMMATRIX& mxVPMatrix);
-		void SetWorldMatrix(const IrisSpriteVertexShaderBuffer& mbBuffer);
+		void SetWorldMatrix(const IrisViewportVertexShaderBuffer& mbBuffer);
 
 		virtual bool Release() override;
 	};
 }
-#endif // _H_IRISSPRITESHADER_
+#endif // !_H_IRISVIEWPORTVERTEXSHADER_

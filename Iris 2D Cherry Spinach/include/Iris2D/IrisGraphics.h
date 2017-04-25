@@ -4,7 +4,7 @@
 #include "../IrisCommon.h"
 
 namespace Iris2D {
-	class IrisSprite;
+	class IrisViewport;
 
 
 	/**
@@ -32,7 +32,7 @@ namespace Iris2D {
 
 		bool m_bUpdateLockFlag = false;
 
-		std::unordered_set<IrisSprite*> m_stSprites;
+		std::unordered_set<IrisViewport*> m_stViewports;
 
 	public:
 		float m_fLag = 0.0f;
@@ -40,7 +40,6 @@ namespace Iris2D {
 		float m_fCurrentTime = 0;
 
 	public:
-
 		/**
 		* \~english
 		* Get the singleton pointer instance of IrisGraphics.
@@ -54,9 +53,8 @@ namespace Iris2D {
 		static IrisGraphics* Instance();
 
 	public:
-		void AddSprite(IrisSprite* pSprite);
-		void RemoveSprite(IrisSprite* pSprite);
-
+		void AddViewport(IrisViewport* pViewport);
+		void RemoveViewport(IrisViewport* pViewport);
 
 		/**
 		* \~english
