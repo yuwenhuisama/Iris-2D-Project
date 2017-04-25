@@ -6,5 +6,6 @@
 #include "Iris2D/IrisSprite.h"
 #include "Iris2D/IrisRect.h"
 #include "Iris2D/IrisColor.h"
+#include "Iris2D/IrisViewport.h"
 
 #endif

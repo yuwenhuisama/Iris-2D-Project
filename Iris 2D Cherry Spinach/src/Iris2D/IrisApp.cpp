@@ -45,6 +45,9 @@ namespace Iris2D
 			return false;
 		}
 
+		IrisGraphics::Instance()->SetWidth(pInfo->m_nWidth);
+		IrisGraphics::Instance()->SetHeight(pInfo->m_nHeight);
+
 		if (!IrisTexture::Initialize()) {
 			return false;
 		}
@@ -86,7 +89,6 @@ namespace Iris2D
 		if (!pViewportPixelShader->Initialize()) {
 			return false;
 		}
-
 
 		m_pfGameFunc = pInfo->m_pfFunc;
 		m_nShowCmd = pInfo->nShowCmd;

@@ -121,6 +121,8 @@ namespace Iris2D {
 
 	private:
 		IrisGraphics() = default;
+		bool Render();
+
 	public:
 		~IrisGraphics() = default;
 	};
