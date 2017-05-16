@@ -172,6 +172,7 @@ namespace Iris2D {
 
 		pD3DContext->ClearRenderTargetView(pD3DManager->GetRenderTargetView(), arrClearColor);
 
+		IrisViewportVertexShader::Instance()->SetViewProjectMatrix(pD3DManager->GetViewMatrix());
 		pD3DManager->SetVertexShader(IrisSpriteVertexShader::Instance());
 		pD3DManager->SetPixelShader(IrisSpritePixelShader::Instance());
 		for (auto& pViewport : m_stViewports)
@@ -179,7 +180,7 @@ namespace Iris2D {
 			pViewport->RenderSprite();
 		}
 
-		IrisViewportVertexShader::Instance()->SetViewProjectMatrix(pD3DManager->GetViewMatrix());
+		IrisSpriteVertexShader::Instance()->SetViewProjectMatrix(pD3DManager->GetViewMatrix());
 		pD3DManager->SetVertexShader(IrisViewportVertexShader::Instance());
 		pD3DManager->SetPixelShader(IrisViewportPixelShader::Instance());
 		for (auto& pViewport : m_stViewports)

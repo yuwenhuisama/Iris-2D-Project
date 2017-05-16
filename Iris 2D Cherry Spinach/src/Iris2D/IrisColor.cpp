@@ -6,6 +6,8 @@ namespace Iris2D
 	IrisColor * IrisColor::Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha)
 	{
 		auto pColor = new IrisColor();
+		pColor->IncreamRefCount();
+
 		pColor->m_n4Color = { cRed, cGreen, cBlue, cAlpha };
 		return pColor;
 	}
@@ -15,8 +17,12 @@ namespace Iris2D
 		if (!pColor) {
 			return;
 		}
-		delete pColor;
-		pColor = nullptr;
+
+		pColor->DecreamRefCount();
+		if (pColor->GetRefCount() == 0) {
+			delete pColor;
+			pColor = nullptr;
+		}
 	}
 
 	void IrisColor::SetRed(unsigned char cRed)
@@ -25,7 +31,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	unsigned char IrisColor::GetRed()
+	unsigned char IrisColor::GetRed() const
 	{
 		return m_n4Color.x;
 	}
@@ -36,7 +42,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	unsigned char IrisColor::GetGreen()
+	unsigned char IrisColor::GetGreen() const
 	{
 		return m_n4Color.y;
 	}
@@ -47,7 +53,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	unsigned char IrisColor::GetBlue()
+	unsigned char IrisColor::GetBlue() const
 	{
 		return m_n4Color.z;
 	}
@@ -58,7 +64,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	unsigned char IrisColor::GetAlpha()
+	unsigned char IrisColor::GetAlpha() const
 	{
 		return m_n4Color.w;
 	}

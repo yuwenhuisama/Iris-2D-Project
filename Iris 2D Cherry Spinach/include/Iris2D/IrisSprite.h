@@ -98,7 +98,6 @@ namespace Iris2D
 		* Set bitmap object to current sprite, which is the image content of current sprite's display.
 		*
 		* If a bitmap has existed in current sprite, user should manually release it as Iris 2D won't automatically release it. This feature comes from thought about shared bitmap.
-		* @param bReleaseLastSrcBitmap Optional, false defaultly. If true is taken, current sprite will initiatively release the bitmap that has been already stored inside.
 		* @param pBitmap A IrisBitmap object's pointer.
 		*/
 		/**
@@ -107,9 +106,8 @@ namespace Iris2D
 		*
 		* 如果在设置 Bitmap 之前该 Sprite 已经存在 Bitmap ，那么用户应该手动释放之前的 Bitmap ，Iris 2D 不会自动释放之前的 Bitmap 。此项特性出于对于共享 Bitmap 的考虑。
 		* @param pBitmap 一个 IrisBitmap 对象的指针。
-		* @param bReleaseLastSrcBitmap 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个 Bitmap。
 		*/
-		void SetBitmap(IrisBitmap* pBitmap, bool bReleaseLastSrcBitmap = false);
+		void SetBitmap(IrisBitmap*& pBitmap);
 		IrisBitmap* GetBitmap() const;
 
 		/**
@@ -272,7 +270,6 @@ namespace Iris2D
 		* 这个属性在以任意点为旋转中心进行旋转的时候相当有用。
 		* @param fOX 当前 Sprite 传送原点的 X 坐标。
 		*/
-
 		void SetOX(float fOX);
 		/**
 		* \~english
@@ -398,7 +395,6 @@ namespace Iris2D
 		* 
 		* (0, 0) of current sprite's bitmap is origin position of taken rect. This function can be helpful to let sprite just show a part of current sprite's bitmap.
 		* @param pSrcRect A pointer to the limit rect object.
-		* @param bReleaseLastSrcRect Optional, false defaultly. If true is taken, current sprite will initiatively release the rect that has been already stored inside.
 		*/
 		/**
 		* \~chinese
@@ -406,9 +402,8 @@ namespace Iris2D
 		*
 		* 当前 Sprite 的 Bitmap 的 (0, 0)  即是传入的 Rect 的原点。这个函数便于让 Sprite 只显示它的 Bitmap 的一部分。
 		* @param pSrcRect 指向限制 Rect 对象的指针。
-		* @param bReleaseLastSrcRect 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个限制 Rect 对象。
 		*/
-		void SetSrcRect(IrisRect* pSrcRect, bool bReleaseLastSrcRect = false);
+		void SetSrcRect(IrisRect*& pSrcRect);
 		/**
 		* \~english
 		* Get the limit rect of current sprite.
@@ -419,7 +414,7 @@ namespace Iris2D
 		* 获取当前 Sprite 的限制 Rect 的指针。
 		* @return 当前 Sprite 的限制 Rect 的指针。
 		*/
-		IrisRect* GetSrcRect();
+		IrisRect* GetSrcRect() const;
 
 		/**
 		* \~english
@@ -432,7 +427,6 @@ namespace Iris2D
 		* resultColor.rgb = tone.rgb + (color.rgb + (grayFull - color.rgb) * tone.a)
 		*
 		* @param pTone A pointer to the tone object.
-		* @param bReleaseLastSrcTone Optional, false defaultly. If true is taken, current sprite will initiatively release the tone that has been already stored inside.
 		*/
 		/**
 		* \~chinese
@@ -446,10 +440,19 @@ namespace Iris2D
 		* resultColor.rgb = tone.rgb + (color.rgb + (grayFull - color.rgb) * tone.a)
 		*
 		* @param pTone 指向 Tone 对象的指针。
-		* @param bReleaseLastSrcTone 可选，默认为 false 。如果设置为 true ，那么 Sprite 将会主动释放已经保存在其内部的那个 Tone 对象。
 		*/
-		void SetTone(IrisTone* pTone, bool bReleaseLastSrcTone = false);
-		IrisTone* GetTone();
+		void SetTone(IrisTone*& pTone);
+		/**
+		* \~english
+		* Get the tone object of current sprite.
+		* @return The pointer to the tone object.
+		*/
+		/**
+		* \~chinese
+		* 获取当前 Sprite 的 Tone 的指针。
+		* @return 当前 Sprite 的 Tone 的指针。
+		*/
+		IrisTone* GetTone() const;
 
 		/**
 		* \~english

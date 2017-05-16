@@ -2,6 +2,7 @@
 #define _H_IRISRECT_
 
 #include "../IrisCommon.h"
+#include "Iris2D Util/IrisRefCounter.h"
 
 namespace Iris2D
 {
@@ -17,7 +18,7 @@ namespace Iris2D
 	*
 	* 一个 Rect 代表了屏幕上的一个矩形区域。
 	*/
-	class IrisRect
+	class IrisRect : public IrisRefCounter
 	{
 	private:
 		DirectX::XMFLOAT4 m_f4Rect { 0.0f, 0.0f, 0.0f, 0.0f };
@@ -104,7 +105,7 @@ namespace Iris2D
 		* 获取当前 Rect 左上角点的 X 坐标。
 		* @return 当前 Rect 左上角点的 X 坐标。
 		*/
-		float GetX();
+		float GetX() const;
 
 		/**
 		* \~english
@@ -127,7 +128,7 @@ namespace Iris2D
 		* 获取当前 Rect 左上角点的 Y 坐标。
 		* @return 当前 Rect 左上角点的 Y 坐标。
 		*/
-		float GetY();
+		float GetY() const;
 
 		/**
 		* \~english
@@ -150,7 +151,7 @@ namespace Iris2D
 		* 设置当前 Rect 的宽度。
 		* @return 当前 Rect 的宽度。
 		*/
-		float GetWidth();
+		float GetWidth() const;
 
 		/**
 		* \~english
@@ -173,7 +174,7 @@ namespace Iris2D
 		* 设置当前 Rect 的高度。
 		* @return 当前 Rect 的高度。
 		*/
-		float GetHeight();
+		float GetHeight() const;
 
 		/**
 		* \~english
@@ -196,7 +197,7 @@ namespace Iris2D
 		* 获取当前 Rect 左边边的 X 坐标。
 		* @return 当前 Rect 左边边的 X 坐标。
 		*/
-		float GetLeft();
+		float GetLeft() const;
 
 		/**
 		* \~english
@@ -219,7 +220,7 @@ namespace Iris2D
 		* 获取当前 Rect 上边边的 X 坐标。
 		* @return 当前 Rect 上边边的 X 坐标。
 		*/
-		float GetTop();
+		float GetTop() const;
 
 		/**
 		* \~english
@@ -242,7 +243,7 @@ namespace Iris2D
 		* 获取当前 Rect 右边边的 X 坐标。
 		* @return 当前 Rect 右边边的 X 坐标。
 		*/
-		float GetRight();
+		float GetRight() const;
 
 		/**
 		* \~english
@@ -265,7 +266,7 @@ namespace Iris2D
 		* 获取当前 Rect 下边边的 X 坐标。
 		* @return 当前 Rect 下边边的 X 坐标。
 		*/
-		float GetBottom();
+		float GetBottom() const;
 
 		/**
 		* \~english

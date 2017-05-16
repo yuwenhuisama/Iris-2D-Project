@@ -2,6 +2,7 @@
 #define _H_IRISCOLOR_
 
 #include "../IrisCommon.h"
+#include "Iris2D Util/IrisRefCounter.h"
 
 namespace Iris2D
 {	/**
@@ -20,7 +21,7 @@ namespace Iris2D
 	*
 	* Color 每个属性都是一个介于 [0, 255] 的 byte 。
 	*/
-	class IrisColor
+	class IrisColor : public IrisRefCounter
 	{
 	private:
 		DirectX::XMINT4 m_n4Color { 0, 0, 0, 0 };
@@ -77,7 +78,7 @@ namespace Iris2D
 		* 获取当前 Color 的 Red 值。
 		* @return 当前 Color 的 Red 值。
 		*/
-		unsigned char GetRed();
+		unsigned char GetRed() const;
 
 		/**
 		* \~english
@@ -100,7 +101,7 @@ namespace Iris2D
 		* 获取当前 Color 的 Green 值。
 		* @return 当前 Color 的 Green 值。
 		*/
-		unsigned char GetGreen();
+		unsigned char GetGreen() const;
 
 		/**
 		* \~english
@@ -123,7 +124,7 @@ namespace Iris2D
 		* 获取当前 Color 的 Blue 值。
 		* @return 当前 Color 的 Blue 值。
 		*/
-		unsigned char GetBlue();
+		unsigned char GetBlue() const;
 
 		/**
 		* \~english
@@ -146,7 +147,7 @@ namespace Iris2D
 		* 获取当前 Color 的 Alpha 值。
 		* @return 当前 Color 的 Alpha 值。
 		*/
-		unsigned char GetAlpha();
+		unsigned char GetAlpha() const;
 
 		/**
 		* \~english

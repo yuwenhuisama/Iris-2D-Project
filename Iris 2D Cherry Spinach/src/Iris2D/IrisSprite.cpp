@@ -37,15 +37,14 @@ namespace Iris2D
 		delete pSprite;
 	}
 
-	void IrisSprite::SetBitmap(IrisBitmap* pBitmap, bool bReleaseLastSrcBitmap)
+	void IrisSprite::SetBitmap(IrisBitmap*& pBitmap)
 	{
 		if (m_pBitmap == pBitmap) {
 			return;
 		}
 
-		if (bReleaseLastSrcBitmap) {
-			IrisBitmap::Release(m_pBitmap);
-		}
+		IrisBitmap::Release(m_pBitmap);
+		pBitmap->IncreamRefCount();
 
 		m_pBitmap =  pBitmap;
 		CreateSpriteVertexBuffer();
@@ -204,34 +203,32 @@ namespace Iris2D
 		return m_bfPixelShaderBuffer.m_fOpacity;;
 	}
 
-	void IrisSprite::SetSrcRect(IrisRect * pSrcRect, bool bReleaseLastSrcBitmap)
+	void IrisSprite::SetSrcRect(IrisRect *& pSrcRect)
 	{
-		if (bReleaseLastSrcBitmap) {
-			IrisRect::Release(m_pSrcRect);
-		}
+		IrisRect::Release(m_pSrcRect);
+		pSrcRect->IncreamRefCount();
+
 		m_pSrcRect = pSrcRect;
 
 		m_bSrcRectDirtyFlag = true;
-
-		//m_bfVertexShaderBuffer.m_fSpriteRect = { pSrcRect->GetLeft(), pSrcRect->GetRight(), pSrcRect->GetTop(), pSrcRect->GetBottom() };
 	}
 
-	IrisRect * IrisSprite::GetSrcRect()
+	IrisRect * IrisSprite::GetSrcRect() const
 	{
 		return m_pSrcRect;
 	}
 
-	void IrisSprite::SetTone(IrisTone * pTone, bool bReleaseLastSrcTone)
+	void IrisSprite::SetTone(IrisTone *& pTone)
 	{
-		if (bReleaseLastSrcTone) {
-			IrisColor::Release(m_pTone);
-		}
+		IrisColor::Release(m_pTone);
+
+		pTone->IncreamRefCount();
 		m_pTone = pTone;
 
 		m_bToneDirtyFlag = true;
 	}
 
-	IrisTone * IrisSprite::GetTone()
+	IrisTone * IrisSprite::GetTone() const
 	{
 		return m_pTone;
 	}
@@ -354,24 +351,18 @@ namespace Iris2D
 
 	bool IrisSprite::Dispose()
 	{
-		if (m_pBitmap) {
-			IrisBitmap::Release(m_pBitmap);
-			m_pBitmap = nullptr;
-		}
+		IrisBitmap::Release(m_pBitmap);
+		IrisRect::Release(m_pSrcRect);
+		IrisColor::Release(m_pTone);
+
 		SafeCOMRelease(m_pVertexBuffer);
 
 		return true;
-
 	}
 
 	Iris2D::IrisSprite::~IrisSprite()
 	{
-		if (m_pBitmap) {
-			IrisBitmap::Release(m_pBitmap);
-			m_pBitmap = nullptr;
-		}
-
-		SafeCOMRelease(m_pVertexBuffer);
+		Dispose();
 	}
 
 	bool IrisSprite::CreateSpriteVertexBuffer()

@@ -6,12 +6,17 @@ bool GameCallBack() {
 	auto pGraphics = IrisGraphics::Instance();
 	auto pApp = IrisApplication::Instance();
 
+	auto pViewport = IrisViewport::Create(20.0f, 20.0f, 600, 600);
 	auto pBitmap = IrisBitmap::Create(L"image\\kurumi.jpg");
 	pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = IrisBitmap::Create(L"image\\leimu.jpg");
 
-	//auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 500.0f, 400.0f);
-	auto pColor = IrisColor::Create(255, 255, 255, 255);
+	auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 300.0f, 300.0f);
+	pViewport->SetSrcRect(pSrcRect);
+	IrisRect::Release(pSrcRect);
+
+	//auto pColor = IrisColor::Create(0, 0, 255, 0);
+	//pViewport->SetTone(pColor);
 	//pBitmap->Blt(30, 320, pBitmap2, pSrcRect, 255);
 
 	//pBitmap->FillRect(pSrcRect, pColor);
@@ -21,11 +26,12 @@ bool GameCallBack() {
 	//auto pPixelColor = pBitmap->GetPixel(0, 0);
 	//pBitmap->SetPixel(0, 0, pColor);
 
-	//IrisRect::Release(pSrcRect);
-	IrisColor::Release(pColor);
-
-	auto pSprite = IrisSprite::Create();
+	auto pSprite = IrisSprite::Create(pViewport);
 	pSprite->SetBitmap(pBitmap);
+	IrisBitmap::Release(pBitmap);
+
+	//IrisRect::Release(pSrcRect);
+	//IrisColor::Release(pColor);
 	//pSprite->SetX(800.0f);
 	//pSprite->SetY(450.0f);
 	//pSprite->SetAngle(0.5f);
@@ -41,7 +47,7 @@ bool GameCallBack() {
 
 	auto angle = 0.0f;
 	while (!pApp->IsQuited()) {
-		//pSprite->SetAngle(angle += 1.0f);
+		//pSprite->SetAngle(angle += 2.0f);
 		pGraphics->Update();
 	}
 

@@ -63,10 +63,16 @@
     <ClCompile Include="src\Iris2D\IrisViewport.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportVertexShade.cpp">
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportPixelShader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportPixelShader.cpp">
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportVertexShader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris2D\IrisFont.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Iris2D Util\IrisRefCounter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -153,6 +159,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportPixelShader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D\IrisFont.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Iris2D Util\IrisRefCounter.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

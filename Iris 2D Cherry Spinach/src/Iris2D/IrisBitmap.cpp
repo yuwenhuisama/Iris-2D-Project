@@ -12,6 +12,7 @@ namespace Iris2D
 	IrisBitmap * IrisBitmap::Create(const std::wstring & wstrFileName, IR_PARAM_RESULT_CT)
 	{
 		auto pBitmap = new IrisBitmap();
+		pBitmap->IncreamRefCount();
 
 		pBitmap->m_pTexture = IrisTexture::Create(wstrFileName);
 		if (!pBitmap->m_pTexture) {
@@ -25,6 +26,7 @@ namespace Iris2D
 	IrisBitmap * IrisBitmap::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
 	{
 		auto pBitmap = new IrisBitmap();
+		pBitmap->IncreamRefCount();
 
 		pBitmap->m_pTexture = IrisTexture::Create(nWidth, nHeight);
 		if (pBitmap->m_pTexture == nullptr) {
@@ -39,6 +41,7 @@ namespace Iris2D
 	{
 		auto pNewBitmap = IrisBitmap::Create(pSrcBitmap->GetWidth(), pSrcBitmap->GetHeight(), IR_PARAM);
 		auto pArea = IrisRect::Create(0.0f, 0.0f, static_cast<float>(pSrcBitmap->GetWidth()), static_cast<float>(pSrcBitmap->GetHeight()));
+		pNewBitmap->IncreamRefCount();
 
 		pNewBitmap->Blt(0, 0, pSrcBitmap, pArea, 255.0f, IR_PARAM);
 
@@ -57,11 +60,15 @@ namespace Iris2D
 		if (!pBitmap) {
 			return;
 		}
-		delete pBitmap;
-		pBitmap = nullptr;
+
+		pBitmap->DecreamRefCount();
+		if (pBitmap->GetRefCount() == 0) {
+			delete pBitmap;
+			pBitmap = nullptr;
+		}
 	}
 
-	bool IrisBitmap::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
 		auto pDestRenderTarget = m_pTexture->GetRenderTargetBitmap();
 
@@ -93,7 +100,7 @@ namespace Iris2D
 		return true;
 	}
 
-	bool IrisBitmap::FillRect(IrisRect * pRect, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::FillRect(const IrisRect * pRect, const IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
 		return FillRect(static_cast<unsigned int>(pRect->GetX()), 
 			static_cast<unsigned int>(pRect->GetY()),
@@ -130,7 +137,7 @@ namespace Iris2D
 		return bResult;
 	}
 
-	bool IrisBitmap::ClearRect(IrisRect * pRect, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::ClearRect(const IrisRect * pRect, IR_PARAM_RESULT_CT)
 	{
 		auto pClearColor = IrisColor::Create(0, 0, 0, 0);
 		auto bResult = FillRect(pRect, pClearColor);
@@ -138,7 +145,7 @@ namespace Iris2D
 		return bResult;
 	}
 
-	IrisColor* IrisBitmap::GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT_CT)
+	IrisColor* IrisBitmap::GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT_CT) const
 	{
 		// Capture Texture
 		auto pSrcD3DResource = m_pTexture->GetTexture();
@@ -173,7 +180,7 @@ namespace Iris2D
 
 	}
 
-	bool IrisBitmap::SetPixel(unsigned int nX, unsigned int nY, IrisColor * pColor, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::SetPixel(unsigned int nX, unsigned int nY, const IrisColor * pColor, IR_PARAM_RESULT_CT)
 	{
 		return FillRect(nX, nY, nX + 1, nY + 1, pColor, IR_PARAM);
 	}
@@ -271,22 +278,22 @@ namespace Iris2D
 		return true;
 	}
 
-	IrisTexture * IrisBitmap::GetTexture()
+	IrisTexture * IrisBitmap::GetTexture() const
 	{
 		return m_pTexture;
 	}
 
-	unsigned int IrisBitmap::GetWidth()
+	unsigned int IrisBitmap::GetWidth() const
 	{
 		return static_cast<unsigned int>(m_pTexture->GetRenderTargetBitmap()->GetPixelSize().width);
 	}
 
-	unsigned int IrisBitmap::GetHeight()
+	unsigned int IrisBitmap::GetHeight() const
 	{
 		return static_cast<unsigned int>(m_pTexture->GetRenderTargetBitmap()->GetPixelSize().height);
 	}
 
-	bool IrisBitmap::Blt(unsigned int nDestX, unsigned int nDestY, IrisBitmap * pSrcBitmap, IrisRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::Blt(unsigned int nDestX, unsigned int nDestY, const IrisBitmap * pSrcBitmap, const IrisRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
 	{
 		auto pDestSrc = IrisRect::Create(static_cast<float>(nDestX), static_cast<float>(nDestY), static_cast<float>(pSrcRect->GetWidth()), static_cast<float>(pSrcRect->GetHeight()));
 		auto bResult = StretchBlt(pDestSrc, pSrcBitmap, pSrcRect, fOpacity, IR_PARAM);
@@ -295,7 +302,7 @@ namespace Iris2D
 		return bResult;
 	}
 
-	bool IrisBitmap::StretchBlt(IrisRect * pDestRect, IrisBitmap * pSrcBitmap, IrisRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
+	bool IrisBitmap::StretchBlt(const IrisRect * pDestRect, const IrisBitmap * pSrcBitmap, const IrisRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
 	{
 		if (fOpacity < 0.0f) {
 			fOpacity = 0.0f;

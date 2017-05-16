@@ -1,6 +1,7 @@
 #include "Iris2D/IrisViewport.h"
 #include "Iris2D/IrisSprite.h"
 #include "Iris2D/IrisRect.h"
+#include "Iris2D/IrisColor.h"
 #include "Iris2D Util/IrisTexture.h"
 #include "Iris2D Util/IrisViewportVertex.h"
 #include "Iris2D/IrisD3DResourceManager.h"
@@ -34,13 +35,15 @@ namespace Iris2D
 		pNewViewport->m_fY = fY;
 		pNewViewport->m_bVertexBufferDirtyFlag = true;
 
-		pNewViewport->m_mxViewProjMatrix = DirectX::XMMatrixOrthographicOffCenterLH(0.0f, static_cast<float>(nWidth), static_cast<float>(nHeight), 0.0f, 0.0f, 9999.0f);
-		pNewViewport->m_mxViewProjMatrix = DirectX::XMMatrixTranspose(pNewViewport->m_mxViewProjMatrix);
+		//pNewViewport->m_mxViewProjMatrix = DirectX::XMMatrixOrthographicOffCenterLH(0.0f, static_cast<float>(nWidth), static_cast<float>(nHeight), 0.0f, 0.0f, 9999.0f);
+		//pNewViewport->m_mxViewProjMatrix = DirectX::XMMatrixTranspose(pNewViewport->m_mxViewProjMatrix);
+
+		//pNewViewport->m_mxViewProjMatrix = IrisD3DResourceManager::Instance()->GetViewMatrix();
 
 		return pNewViewport;
 	}
 
-	IrisViewport * IrisViewport::Create(IrisRect * pRect, IR_PARAM_RESULT_CT)
+	IrisViewport * IrisViewport::Create(const IrisRect * pRect, IR_PARAM_RESULT_CT)
 	{
 		return Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()), IR_PARAM);
 	}
@@ -53,8 +56,17 @@ namespace Iris2D
 
 		IrisGraphics::Instance()->RemoveViewport(pViewport);
 
+		if (sm_pGlobalViewport != pViewport) {
+			sm_pGlobalViewport->m_stSprits.insert(pViewport->m_stSprits.begin(), pViewport->m_stSprits.end());
+		}
+
 		delete pViewport;
 		pViewport = nullptr;
+	}
+
+	void IrisViewport::ManagedRelease(IrisViewport* pViewport)
+	{
+		delete pViewport;
 	}
 
 	void IrisViewport::InnerRelease(IrisViewport *& pViewport)
@@ -81,6 +93,56 @@ namespace Iris2D
 	IrisViewport * IrisViewport::GetGlobalViewport()
 	{
 		return sm_pGlobalViewport;
+	}
+
+	void IrisViewport::SetOX(float fOX)
+	{
+		m_ivvsVertexBuffer.m_f2OxOy.x = fOX;
+	}
+
+	float IrisViewport::GetOX() const
+	{
+		return m_ivvsVertexBuffer.m_f2OxOy.x;
+	}
+
+	void IrisViewport::SetOY(float fOY)
+	{
+		m_ivvsVertexBuffer.m_f2OxOy.y = fOY;
+	}
+
+	float IrisViewport::GetOY() const
+	{
+		return m_ivvsVertexBuffer.m_f2OxOy.y;
+	}
+
+	void IrisViewport::SetSrcRect(IrisRect *& pSrcRect)
+	{
+		IrisRect::Release(m_pSrcRect);
+
+		pSrcRect->IncreamRefCount();
+		m_pSrcRect = pSrcRect;
+
+		m_bSrcRectDirtyFlag = true;
+	}
+
+	IrisRect * IrisViewport::GetSrcRect() const
+	{
+		return m_pSrcRect;
+	}
+
+	void IrisViewport::SetTone(IrisTone *& pTone)
+	{
+		IrisColor::Release(m_pTone);
+
+		pTone->IncreamRefCount();
+		m_pTone = pTone;
+
+		m_bToneDirtyFlag = true;
+	}
+
+	IrisTone * IrisViewport::GetTone() const
+	{
+		return m_pTone;
 	}
 
 	bool IrisViewport::Dispose()
@@ -113,7 +175,10 @@ namespace Iris2D
 		pContext->OMGetRenderTargets(1, &pOldRenderTarget, nullptr);
 		pContext->OMSetRenderTargets(1, &pNewRenderTargetView, nullptr);
 
-		IrisSpriteVertexShader::Instance()->SetViewProjectMatrix(m_mxViewProjMatrix);
+		const float arrClearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		pContext->ClearRenderTargetView(pNewRenderTargetView, arrClearColor);
+
+		//IrisSpriteVertexShader::Instance()->SetViewProjectMatrix(m_mxViewProjMatrix);
 		for (auto pSprite : m_stSprits) {
 			pSprite->Render();
 		}
@@ -140,6 +205,62 @@ namespace Iris2D
 		if (m_bVertexBufferDirtyFlag) {
 			m_ivvsVertexBuffer.m_mxTransMatrix = DirectX::XMMatrixTranspose(DirectX::XMMatrixTranslation(m_fX, m_fY, m_fZ));
 			m_bVertexBufferDirtyFlag = false;
+		}
+		
+		if (m_bToneDirtyFlag || (m_pTone && m_pTone->Modified())) {
+			if (m_pTone) {
+				m_ivpsPixelBuffer.m_f4Tone = { static_cast<float>(m_pTone->GetRed()), static_cast<float>(m_pTone->GetBlue()), static_cast<float>(m_pTone->GetGreen()), static_cast<float>(m_pTone->GetAlpha()) };
+			}
+			else {
+				m_ivpsPixelBuffer.m_f4Tone = { 0.0f, 0.0f, 0.0f, 0.0f };
+			}
+
+			m_bToneDirtyFlag = false;
+
+			if (m_pTone) {
+				m_pTone->ModifyDone();
+			}
+		}
+
+		static auto fAdjust = [](float& fData) -> void {
+			if (fData < 0.0f) {
+				fData = 0.0f;
+			}
+			else if (fData > 1.0f) {
+				fData = 1.0f;
+			}
+		};
+
+		if (m_bSrcRectDirtyFlag || (m_pSrcRect && m_pSrcRect->Modified())) {
+			if (m_pSrcRect) {
+				auto left = m_pSrcRect->GetLeft();
+				auto top = m_pSrcRect->GetTop();
+				auto right = m_pSrcRect->GetRight();
+				auto bottom = m_pSrcRect->GetBottom();
+
+				auto ptSize = m_pTexture->GetRenderTargetBitmap()->GetSize();
+
+				m_ivpsPixelBuffer.m_f4ViewportRect = {
+					m_pSrcRect->GetLeft() / ptSize.width,
+					m_pSrcRect->GetTop() / ptSize.height,
+					m_pSrcRect->GetRight() / ptSize.width,
+					m_pSrcRect->GetBottom() / ptSize.height
+				};
+
+				fAdjust(m_ivpsPixelBuffer.m_f4ViewportRect.x);
+				fAdjust(m_ivpsPixelBuffer.m_f4ViewportRect.y);
+				fAdjust(m_ivpsPixelBuffer.m_f4ViewportRect.z);
+				fAdjust(m_ivpsPixelBuffer.m_f4ViewportRect.w);
+			}
+			else {
+				m_ivpsPixelBuffer.m_f4ViewportRect = { 0.0f, 0.0f, 1.0f, 1.0f };
+			}
+
+			m_bSrcRectDirtyFlag = false;
+
+			if (m_pSrcRect) {
+				m_pSrcRect->ModifyDone();
+			}
 		}
 		//----
 
@@ -219,11 +340,10 @@ namespace Iris2D
 
 	IrisViewport::~IrisViewport()
 	{
-		if (sm_pGlobalViewport != this) {
-			sm_pGlobalViewport->m_stSprits.insert(m_stSprits.begin(), m_stSprits.end());
-		}
-
 		IrisTexture::Release(m_pTexture);
 		SafeCOMRelease(m_pTexture);
+
+		IrisRect::Release(m_pSrcRect);
+		IrisColor::Release(m_pTone);
 	}
 }

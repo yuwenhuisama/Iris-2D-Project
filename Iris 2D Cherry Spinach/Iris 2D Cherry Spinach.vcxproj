@@ -98,6 +98,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +130,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <CompileAsManaged>false</CompileAsManaged>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -156,7 +158,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportVertexShade.cpp" />
+    <ClCompile Include="src\Iris2D Util\IrisRefCounter.cpp" />
+    <ClCompile Include="src\Iris2D\IrisFont.cpp" />
+    <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportVertexShader.cpp" />
     <ClCompile Include="src\Iris2D\IrisShaders\IrisViewportPixelShader.cpp" />
     <ClCompile Include="src\Iris2D\IrisViewport.cpp" />
     <ClCompile Include="src\Iris2D Util\IrisDataConvertHelper.cpp" />
@@ -204,6 +208,8 @@
     <ClInclude Include="include\Iris2D\IrisViewport.h" />
     <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportVertexShader.h" />
     <ClInclude Include="include\Iris2D\IrisShaders\IrisViewportPixelShader.h" />
+    <ClInclude Include="include\Iris2D\IrisFont.h" />
+    <ClInclude Include="include\Iris2D Util\IrisRefCounter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\DxUtil\DirectXTex.inl" />

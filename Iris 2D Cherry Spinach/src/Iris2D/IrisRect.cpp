@@ -7,6 +7,7 @@ namespace Iris2D
 	IrisRect * IrisRect::Create(float fX, float fY, float fWidth, float fHeight)
 	{
 		auto pRect = new IrisRect();
+		pRect->IncreamRefCount();
 
 		if (fWidth <= 0) {
 			fWidth = 1.0f;
@@ -23,6 +24,7 @@ namespace Iris2D
 	IrisRect * IrisRect::Create2(float fLeft, float fTop, float fRight, float fBottom)
 	{
 		auto pRect = new IrisRect();
+		pRect->IncreamRefCount();
 
 		if (fBottom <= fTop) {
 			fBottom = fTop + 1;
@@ -41,8 +43,12 @@ namespace Iris2D
 		if (!pRect) {
 			return;
 		}
-		delete pRect;
-		pRect = nullptr;
+
+		pRect->DecreamRefCount();
+		if (pRect->GetRefCount() == 0) {
+			delete pRect;
+			pRect = nullptr;
+		}
 	}
 
 	void IrisRect::SetX(float fX)
@@ -51,7 +57,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetX()
+	float IrisRect::GetX() const
 	{
 		return m_f4Rect.x;
 	}
@@ -62,7 +68,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetY()
+	float IrisRect::GetY() const
 	{
 		return m_f4Rect.y;
 	}
@@ -73,7 +79,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetWidth()
+	float IrisRect::GetWidth() const
 	{
 		return m_f4Rect.z;
 	}
@@ -84,7 +90,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetHeight()
+	float IrisRect::GetHeight() const
 	{
 		return m_f4Rect.w;
 	}
@@ -96,7 +102,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetLeft()
+	float IrisRect::GetLeft() const
 	{
 		return m_f4Rect.x;
 	}
@@ -107,7 +113,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetRight()
+	float IrisRect::GetRight() const
 	{
 		return m_f4Rect.x + m_f4Rect.z;
 	}
@@ -119,7 +125,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetTop()
+	float IrisRect::GetTop() const
 	{
 		return m_f4Rect.y;
 	}
@@ -130,7 +136,7 @@ namespace Iris2D
 		m_bModifyDirtyFlag = true;
 	}
 
-	float IrisRect::GetBottom()
+	float IrisRect::GetBottom() const
 	{
 		return m_f4Rect.y + m_f4Rect.w;
 	}

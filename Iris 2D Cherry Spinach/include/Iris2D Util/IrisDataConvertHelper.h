@@ -10,9 +10,9 @@ namespace Iris2D
 	class IrisDataConvertHelper
 	{
 	public:
-		static D2D1_RECT_F ConvertToD2DRectF(IrisRect* pRect);
-		static D2D1_RECT_U ConvertToD2DRectU(IrisRect* pRect);
-		static D2D1::ColorF ConvertToD2DColor(IrisColor* pColor);
+		static D2D1_RECT_F ConvertToD2DRectF(const IrisRect* pRect);
+		static D2D1_RECT_U ConvertToD2DRectU(const IrisRect* pRect);
+		static D2D1::ColorF ConvertToD2DColor(const IrisColor* pColor);
 
 	private:
 		IrisDataConvertHelper() = default;
