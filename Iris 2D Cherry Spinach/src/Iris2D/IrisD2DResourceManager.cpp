@@ -24,7 +24,7 @@ namespace Iris2D
 		//	IID_IWICImagingFactory2,
 		//	reinterpret_cast<LPVOID*>(&m_pWICImagingFactory));
 
-		IDXGIDevice1*						pDxgiDevice = nullptr;
+		IDXGIDevice1* pDxgiDevice = nullptr;
 
 		auto pD3DDevice = IrisD3DResourceManager::Instance()->GetD3D11Device();
 		// 创建 IDXGIDevice
@@ -47,7 +47,15 @@ namespace Iris2D
 
 		SafeCOMRelease(pDxgiDevice);
 
+		// 创建DWriteFactory
+		if (SUCCEEDED(hResult)) {
+			hResult = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory3), reinterpret_cast<IUnknown**>(&m_pDWriteFactory));
+		}
+
 		if (FAILED(hResult)) {
+			SafeCOMRelease(m_pD2DDevice);
+			SafeCOMRelease(m_pD2DDeviceContext);
+			SafeCOMRelease(m_pDWriteFactory);
 			return false;
 		}
 
@@ -392,14 +400,19 @@ namespace Iris2D
 		return true;
 	}
 
-	ID2D1Factory1 * IrisD2DResourceManager::GetD2DFactory()
+	ID2D1Factory1 * IrisD2DResourceManager::GetD2DFactory() const
 	{
 		return m_pD2DFactory;
 	}
 
-	ID2D1DeviceContext * IrisD2DResourceManager::GetD2DDeviceContext()
+	ID2D1DeviceContext * IrisD2DResourceManager::GetD2DDeviceContext() const
 	{
 		return m_pD2DDeviceContext;
+	}
+
+	IDWriteFactory3 * IrisD2DResourceManager::GetDWriteFactory() const
+	{
+		return m_pDWriteFactory;
 	}
 
 	bool IrisD2DResourceManager::Release()

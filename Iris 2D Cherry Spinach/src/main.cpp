@@ -6,14 +6,16 @@ bool GameCallBack() {
 	auto pGraphics = IrisGraphics::Instance();
 	auto pApp = IrisApplication::Instance();
 
-	auto pViewport = IrisViewport::Create(20.0f, 20.0f, 600, 600);
+	//auto pViewport = IrisViewport::Create(20.0f, 20.0f, 600, 600);
 	auto pBitmap = IrisBitmap::Create(L"image\\kurumi.jpg");
-	pBitmap->HueChange(90.0f);
+	//pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = IrisBitmap::Create(L"image\\leimu.jpg");
 
-	auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 300.0f, 300.0f);
-	pViewport->SetSrcRect(pSrcRect);
-	IrisRect::Release(pSrcRect);
+	pBitmap->TextSize(nullptr, L"Hello, World!");
+
+	//auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 300.0f, 300.0f);
+	//pViewport->SetSrcRect(pSrcRect);
+	//IrisRect::Release(pSrcRect);
 
 	//auto pColor = IrisColor::Create(0, 0, 255, 0);
 	//pViewport->SetTone(pColor);
@@ -26,7 +28,9 @@ bool GameCallBack() {
 	//auto pPixelColor = pBitmap->GetPixel(0, 0);
 	//pBitmap->SetPixel(0, 0, pColor);
 
-	auto pSprite = IrisSprite::Create(pViewport);
+	pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", IrisBitmap::AlignType::Center);
+
+	auto pSprite = IrisSprite::Create();
 	pSprite->SetBitmap(pBitmap);
 	IrisBitmap::Release(pBitmap);
 
@@ -54,6 +58,8 @@ bool GameCallBack() {
 	//BEGIN_SAFE_LOOP()
 	//	pSprite->SetAngle(angle += 1.0f);
 	//END_SAFE_LOOP()
+	IrisSprite::Release(pSprite);
+
 
 	return true;
 }

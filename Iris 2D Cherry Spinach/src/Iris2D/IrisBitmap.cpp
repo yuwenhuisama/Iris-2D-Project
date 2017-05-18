@@ -1,11 +1,15 @@
 #include "Iris2D/IrisBitmap.h"
 #include "Iris2D/IrisRect.h"
 #include "Iris2D/IrisColor.h"
+#include "Iris2D/IrisFont.h"
 #include "Iris2D Util/IrisTexture.h"
 #include "Iris2D/IrisD3DResourceManager.h"
 #include "Iris2D/IrisD2DResourceManager.h"
 #include "Iris2D Util/IrisDataConvertHelper.h"
+#include <limits>
 
+#undef max
+#undef DrawText
 
 namespace Iris2D
 {
@@ -272,15 +276,177 @@ namespace Iris2D
 		return true;
 	}
 
+	void IrisBitmap::SetFont(IrisFont *& pFont)
+	{
+		IrisFont::Release(m_pFont);
+		pFont->IncreamRefCount();
+
+		m_pFont = pFont;
+	}
+
+	IrisFont * IrisBitmap::GetFont() const
+	{
+		return m_pFont;
+	}
+
+	unsigned int IrisBitmap::TextSize(const IrisFont * pFont, const std::wstring & wstrText, IR_PARAM_RESULT_CT)
+	{
+		auto pTextFormat = CreateTextFormat(pFont);
+		auto pDWriteFactory = IrisD2DResourceManager::Instance()->GetDWriteFactory();
+
+		IDWriteTextLayout* pLayout = nullptr;
+		HRESULT hResult = S_OK;
+		if (pTextFormat) {
+			hResult = pDWriteFactory->CreateTextLayout(wstrText.c_str(), wstrText.size(), pTextFormat, std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), &pLayout);
+		}
+
+		DWRITE_TEXT_METRICS dtmTemp;
+		if (SUCCEEDED(hResult)) {
+			pLayout->GetMetrics(&dtmTemp);
+		}
+		
+		SafeCOMRelease(pTextFormat);
+		SafeCOMRelease(pLayout);
+
+		return static_cast<unsigned int>(ceil(dtmTemp.widthIncludingTrailingWhitespace));
+	}
+
+	bool IrisBitmap::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring& wstrText, IrisBitmap::AlignType nAlign, IR_PARAM_RESULT_CT)
+	{
+		auto pTextFormat = CreateTextFormat(m_pFont);
+		auto pDWriteFactory = IrisD2DResourceManager::Instance()->GetDWriteFactory();
+		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
+
+		HRESULT hResult = S_OK;
+		if (pTextFormat) {
+
+			switch (nAlign)
+			{
+			case Iris2D::IrisBitmap::AlignType::Left:
+				pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
+				break;
+			case Iris2D::IrisBitmap::AlignType::Center:
+				pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				break;
+			case Iris2D::IrisBitmap::AlignType::Right:
+				pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				break;
+			default:
+				break;
+			}
+			
+			m_pTexture->AquireSyncFromDx10Side();
+
+			pRenderTarget->BeginDraw();
+
+			auto pColor = m_pFont
+				? m_pFont->GetColor() ? m_pFont->GetColor() : IrisFont::GetDefaultColor()
+				: IrisFont::GetDefaultColor();
+
+			ID2D1SolidColorBrush* pBrush = nullptr;
+			hResult =  pRenderTarget->CreateSolidColorBrush(IrisDataConvertHelper::ConvertToD2DColor(pColor), &pBrush);
+			
+			IDWriteTextLayout* pLayout = nullptr;
+			if (SUCCEEDED(hResult)) {
+				pRenderTarget->DrawTextW(wstrText.c_str(),
+					wstrText.size(),
+					pTextFormat,
+					D2D1::RectF(nX, nY, nX + nWidth, nX + nHeight),
+					pBrush,
+					D2D1_DRAW_TEXT_OPTIONS_NONE,
+					DWRITE_MEASURING_MODE_NATURAL
+				);
+
+				if (m_pFont ? m_pFont->GetShadow() : IrisFont::GetDefaultShadow()) {
+					ID2D1SolidColorBrush* pShadowBrush = nullptr;
+					hResult = pRenderTarget->CreateSolidColorBrush(D2D1::ColorF(0, 1.0f), &pShadowBrush);
+
+					if (SUCCEEDED(hResult)) {
+						pRenderTarget->DrawTextW(wstrText.c_str(),
+							wstrText.size(),
+							pTextFormat,
+							D2D1::RectF(nX + 2.0f, nY + 2.0f, nX + nWidth, nX + nHeight),
+							pBrush,
+							D2D1_DRAW_TEXT_OPTIONS_NONE,
+							DWRITE_MEASURING_MODE_NATURAL
+						);
+					}
+
+					SafeCOMRelease(pShadowBrush);
+				}
+
+			}
+			
+			SafeCOMRelease(pBrush);
+			SafeCOMRelease(pLayout);
+
+			hResult = pRenderTarget->EndDraw();
+
+			m_pTexture->ReleaseSyncFromDx10Side();
+		}
+
+		SafeCOMRelease(pTextFormat);
+
+		return SUCCEEDED(hResult) ? true : false;
+	}
+
+	bool IrisBitmap::DrawText(const IrisRect* pRect, const std::wstring& wstrText, IrisBitmap::AlignType nAlign, IR_PARAM_RESULT_CT)
+	{
+		return DrawText(static_cast<float>(pRect->GetX()), static_cast<float>(pRect->GetY()), static_cast<float>(pRect->GetWidth()), static_cast<float>(pRect->GetHeight()), wstrText, nAlign, IR_PARAM);
+	}
+
 	bool IrisBitmap::Dispose()
 	{
 		IrisTexture::Release(m_pTexture);
+		IrisFont::Release(m_pFont);
 		return true;
 	}
 
 	IrisTexture * IrisBitmap::GetTexture() const
 	{
 		return m_pTexture;
+	}
+
+	IDWriteTextFormat * IrisBitmap::CreateTextFormat(const IrisFont * pFont)
+	{
+		IDWriteTextFormat* pTextFormat = nullptr;
+
+		auto pDWriteFactory = IrisD2DResourceManager::Instance()->GetDWriteFactory();
+
+		std::wstring wstrFontName;
+		DWRITE_FONT_WEIGHT dfwWeight;
+		DWRITE_FONT_STYLE dfsStyle;
+		unsigned int nSize;
+
+		if (pFont) {
+			wstrFontName = pFont->GetName();
+			dfwWeight = pFont->GetBold() ? DWRITE_FONT_WEIGHT_BOLD : DWRITE_FONT_WEIGHT_NORMAL;
+			dfsStyle = pFont->GetItalic() ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL;
+			nSize = pFont->GetSize();
+		}
+		else {
+			wstrFontName = IrisFont::GetDefaultName();
+			dfwWeight = IrisFont::GetDefaultBold() ? DWRITE_FONT_WEIGHT_BOLD : DWRITE_FONT_WEIGHT_NORMAL;
+			dfsStyle = IrisFont::GetDefaultItalic() ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL;
+			nSize = IrisFont::GetDefaultSize();
+		}
+
+		auto hResult = pDWriteFactory->CreateTextFormat(
+			wstrFontName.c_str(),
+			nullptr,
+			dfwWeight,
+			dfsStyle,
+			DWRITE_FONT_STRETCH_CONDENSED,
+			static_cast<float>(nSize),
+			L"zh-cn",
+			&pTextFormat
+		);
+
+		if (FAILED(hResult)) {
+			SafeCOMRelease(pTextFormat);
+		}
+
+		return pTextFormat;
 	}
 
 	unsigned int IrisBitmap::GetWidth() const
@@ -366,8 +532,6 @@ namespace Iris2D
 
 	IrisBitmap::~IrisBitmap()
 	{
-		if (m_pTexture) {
-			IrisTexture::Release(m_pTexture);
-		}
+		Dispose();
 	}
 }

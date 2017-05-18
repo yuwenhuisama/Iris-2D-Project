@@ -3,12 +3,16 @@
 
 #include "../IrisCommon.h"
 #include "Iris2D Util/IrisRefCounter.h"
+#include "Iris2D Util/IrisDataConvertHelper.h"
+
+#undef DrawText
 
 namespace Iris2D
 {
 	class IrisTexture;
 	class IrisRect;
 	class IrisColor;
+	class IrisFont;
 
 	/**
 	* \~english
@@ -30,6 +34,14 @@ namespace Iris2D
 	{
 	private:
 		IrisTexture* m_pTexture = nullptr;
+		IrisFont* m_pFont = nullptr;
+
+	public:
+		enum class AlignType {
+			Left,
+			Center,
+			Right,
+		};
 
 	public:
 
@@ -272,7 +284,6 @@ namespace Iris2D
 		* 使用 #00000000 这个颜色 清空当前 Bitmap 的一个 Rect 区域。
 		*
 		* @param pRect 用来描述区域的 Rect。
-		* @param pColor 用来填充区域的 Color。
 		* @return 如果清空操作成功，返回 true 否则返回 false。
 		* @see ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT)
 		*/
@@ -332,7 +343,6 @@ namespace Iris2D
 		*/
 		bool SaveToFile(const std::wstring& wstrFilePath);
 
-
 		/**
 		* \~english
 		* Change the hue value of current bitmap.
@@ -349,10 +359,20 @@ namespace Iris2D
 		*/
 		bool HueChange(float fHue, IR_PARAM_RESULT);
 
+		void SetFont(IrisFont*& pFont);
+		IrisFont* GetFont() const;
+
+		unsigned int TextSize(const IrisFont* pFont, const std::wstring& wstrText, IR_PARAM_RESULT);
+		bool DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring& wstrText, AlignType nAlign, IR_PARAM_RESULT);
+		bool DrawText(const IrisRect* pRect, const std::wstring& wstrText, AlignType nAlign, IR_PARAM_RESULT);
+
 		bool Dispose();
 
 		IrisTexture* GetTexture() const;
 	private:
+
+		IDWriteTextFormat* CreateTextFormat(const IrisFont * pFont);
+
 		IrisBitmap() = default;
 		~IrisBitmap();
 	};

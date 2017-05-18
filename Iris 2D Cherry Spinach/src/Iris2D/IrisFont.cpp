@@ -1,5 +1,6 @@
 #include "Iris2D/IrisFont.h"
 #include "Iris2D/IrisColor.h"
+#include <functional>
 
 #ifdef _H_IRISFONT_
 #define _H_IRISFONT_
@@ -12,6 +13,13 @@ namespace Iris2D
 	
 	IrisFont::~IrisFont() {
 		IrisColor::Release(m_pColor);
+	}
+
+	bool IrisFont::Existed(const std::wstring & wstrFontName)
+	{
+		LPARAM lp = 0;
+		lp = ::EnumFontsW(nullptr, wstrFontName.c_str(), [](const LOGFONT* lplf, const TEXTMETRIC* lptm, DWORD dwType, LPARAM lpData)-> int CALLBACK { return 1; }, lp);
+		return lp == 0 ? false : true;
 	}
 
 	IrisFont * IrisFont::Create(const std::wstring & wstrFontName)
@@ -48,7 +56,7 @@ namespace Iris2D
 
 	void IrisFont::SetSize(unsigned int nSize)
 	{
-		m_nSize = nSize;
+		m_nSize = nSize < 0 ? GetDefaultSize() : nSize;
 	}
 	
 	unsigned int IrisFont::GetSize() const
@@ -97,6 +105,37 @@ namespace Iris2D
 	IrisColor * IrisFont::GetColor() const
 	{
 		return m_pColor;
+	}
+
+	std::wstring IrisFont::GetDefaultName()
+	{
+		return L"ËÎÌו";
+	}
+
+	unsigned int IrisFont::GetDefaultSize()
+	{
+		return 20;
+	}
+
+	bool IrisFont::GetDefaultBold()
+	{
+		return false;
+	}
+
+	bool IrisFont::GetDefaultItalic()
+	{
+		return false;
+	}
+
+	bool IrisFont::GetDefaultShadow()
+	{
+		return false;
+	}
+
+	IrisColor * IrisFont::GetDefaultColor()
+	{
+		static IrisColor* pDefaultColor = IrisColor::Create(0, 0, 0, 255);
+		return pDefaultColor;
 	}
 }
 #endif // _H_IRISFONT_

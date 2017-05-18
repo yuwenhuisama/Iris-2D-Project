@@ -11,6 +11,7 @@ namespace Iris2D
 		ID2D1Factory1* m_pD2DFactory = nullptr;
 		ID2D1Device* m_pD2DDevice = nullptr;
 		ID2D1DeviceContext* m_pD2DDeviceContext = nullptr;
+		IDWriteFactory3* m_pDWriteFactory = nullptr;
 		//IWICImagingFactory2* m_pWICImagingFactory = nullptr;
 
 	public:
@@ -48,8 +49,9 @@ namespace Iris2D
 			IDXGIKeyedMutex*& pDX11Mutex
 		);
 
-		ID2D1Factory1* GetD2DFactory();
-		ID2D1DeviceContext* GetD2DDeviceContext();
+		ID2D1Factory1* GetD2DFactory() const;
+		ID2D1DeviceContext* GetD2DDeviceContext() const;
+		IDWriteFactory3* GetDWriteFactory() const;
 
 		bool Release();
 

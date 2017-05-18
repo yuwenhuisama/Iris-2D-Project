@@ -1,8 +1,8 @@
 #ifndef _H_IRISFONT_
 #define _H_IRISFONT_
 
-#include <string>
 #include "Iris2D Util/IrisRefCounter.h"
+#include "../IrisCommon.h"
 
 namespace Iris2D
 {
@@ -10,14 +10,16 @@ namespace Iris2D
 	class IrisFont : public IrisRefCounter
 	{
 	private:
-		std::wstring m_wstrFontName = L"";
-		unsigned int m_nSize = 9;
-		bool m_bBold = false;
-		bool m_bItalic = false;
-		bool m_bShadow = false;
+		std::wstring m_wstrFontName = GetDefaultName();
+		unsigned int m_nSize = GetDefaultSize();;
+		bool m_bBold = GetDefaultBold();
+		bool m_bItalic = GetDefaultItalic();
+		bool m_bShadow = GetDefaultShadow();
 		IrisColor* m_pColor = nullptr;
 
 	public:
+		static bool Existed(const std::wstring& wstrFontName);
+
 		static IrisFont* Create(const std::wstring& wstrFontName);
 		static void Release(IrisFont*& pFont);
 
@@ -38,6 +40,13 @@ namespace Iris2D
 
 		void SetColor(IrisColor*& pColor);
 		IrisColor* GetColor() const;
+
+		static std::wstring GetDefaultName();
+		static unsigned int GetDefaultSize();
+		static bool GetDefaultBold();
+		static bool GetDefaultItalic();
+		static bool GetDefaultShadow();
+		static IrisColor* GetDefaultColor();
 
 	private:
 		IrisFont();

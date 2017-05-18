@@ -68,8 +68,8 @@ namespace Iris2D
 		* Create a viewport with a rectangle area.
 		* @param fX The top left position of the area.
 		* @param fY The top left position of the area.
-		* @param fWidth The width of the area.
-		* @param fHeight The height of the area.
+		* @param nWidth The width of the area.
+		* @param nHeight The height of the area.
 		* @return If viewport has been created successfully pointer of IrisViewport will be returned otherwise nullptr.
 		* @ see Create(IrisRect* pRect, IR_PARAM_RESULT)
 		*/
@@ -78,8 +78,8 @@ namespace Iris2D
 		* 创建一个矩形区域的 Viewport。
 		* @param fX 区域的左上角 X 坐标.
 		* @param fY 区域的左上角 Y 坐标.
-		* @param fWidth 区域的宽度.
-		* @param fHeight 区域的高度.
+		* @param nWidth 区域的宽度.
+		* @param nHeight 区域的高度.
 		* @return 如果成功创建 Viewport ，那么将会返回该 IrisViewport 的指针，否则返回 nullptr。
 		* @see Create(IrisRect* pRect, IR_PARAM_RESULT)
 		*/
