@@ -37,12 +37,12 @@ aux_source_directory(./src/OpenGL DIR_SRCS_MAIN_OPENGL)
 # aux_source_directory(./src/OpenGL/Iris2D DIR_SRCS_MAIN_OPENGL_IRIS2D)
 
 aux_source_directory(./src/DirectX/Iris2D DIR_SRCS_MAIN_DIRECTX_IRIS2D)
-aux_source_directory(./src/DirectX/Iris2D/IrisShaders DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER)
-aux_source_directory(./src/DirectX/Iris2DUtil DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL)
+aux_source_directory(./src/DirectX/Iris2D/Shaders DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER)
+aux_source_directory(./src/DirectX/Util DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL)
 aux_source_directory(./src/DirectX/DxUtil DIR_SRCS_MAIN_DIRECTX_DX_UTIL)
 
 aux_source_directory(./src/Common/Iris2D DIR_SRCS_COMMON_IRIS2D)
-aux_source_directory(./src/Common/Iris2DUtil DIR_SRCS_COMMON_IRIS2D_UTIL)
+aux_source_directory(./src/Common/Util DIR_SRCS_COMMON_IRIS2D_UTIL)
 
 if (WIN32)
 add_executable(main

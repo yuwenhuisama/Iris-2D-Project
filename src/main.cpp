@@ -1,23 +1,24 @@
 #include "Common/Iris2D.h"
+
 using namespace Iris2D;
 
 bool GameCallBack() {
 
-	auto pGraphics = IrisGraphics::Instance();
-	auto pApp = IrisApplication::Instance();
+	auto pGraphics = GraphicsDX::Instance();
+	auto pApp = AppFactory::GetApplication();
 
-	//auto pViewport = IrisViewport::Create(20.0f, 20.0f, 600, 600);
-	auto pBitmap = IrisBitmap::Create(L"image\\kurumi.jpg");
+	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
+	auto pBitmap = BitmapDX::Create(L"image\\kurumi.jpg");
 	//pBitmap->HueChange(90.0f);
-	//auto pBitmap2 = IrisBitmap::Create(L"image\\leimu.jpg");
+	//auto pBitmap2 = BitmapDX::Create(L"image\\leimu.jpg");
 
 	pBitmap->TextSize(nullptr, L"Hello, World!");
 
-	//auto pSrcRect = IrisRect::Create2(10.0f, 10.0f, 300.0f, 300.0f);
+	//auto pSrcRect = RectDX::Create2(10.0f, 10.0f, 300.0f, 300.0f);
 	//pViewport->SetSrcRect(pSrcRect);
-	//IrisRect::Release(pSrcRect);
+	//RectDX::Release(pSrcRect);
 
-	//auto pColor = IrisColor::Create(0, 0, 255, 0);
+	//auto pColor = ColorDX::Create(0, 0, 255, 0);
 	//pViewport->SetTone(pColor);
 	//pBitmap->Blt(30, 320, pBitmap2, pSrcRect, 255);
 
@@ -28,14 +29,14 @@ bool GameCallBack() {
 	//auto pPixelColor = pBitmap->GetPixel(0, 0);
 	//pBitmap->SetPixel(0, 0, pColor);
 
-	pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", IrisBitmap::AlignType::Center);
+	pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", BitmapDX::AlignType::Center);
 
-	auto pSprite = IrisSprite::Create();
+	auto pSprite = SpriteDX::Create();
 	pSprite->SetBitmap(pBitmap);
-	IrisBitmap::Release(pBitmap);
+	BitmapDX::Release(pBitmap);
 
-	//IrisRect::Release(pSrcRect);
-	//IrisColor::Release(pColor);
+	//RectDX::Release(pSrcRect);
+	//ColorDX::Release(pColor);
 	//pSprite->SetX(800.0f);
 	//pSprite->SetY(450.0f);
 	//pSprite->SetAngle(0.5f);
@@ -46,8 +47,8 @@ bool GameCallBack() {
 	//pSprite->SetMirror(true);
 	//pSprite->SetOpacity(100.0f);
 
-	//pSprite->SetSrcRect(IrisRect::Create(30.0f, 30.0f, 300.0f, 600.0f));
-	//pSprite->SetTone(IrisTone::Create(128, 0, 128, 0));
+	//pSprite->SetSrcRect(RectDX::Create(30.0f, 30.0f, 300.0f, 600.0f));
+	//pSprite->SetTone(ToneDX::Create(128, 0, 128, 0));
 
 	auto angle = 0.0f;
 	while (!pApp->IsQuited()) {
@@ -58,7 +59,7 @@ bool GameCallBack() {
 	//BEGIN_SAFE_LOOP()
 	//	pSprite->SetAngle(angle += 1.0f);
 	//END_SAFE_LOOP()
-	IrisSprite::Release(pSprite);
+	SpriteDX::Release(pSprite);
 
 
 	return true;
@@ -69,9 +70,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
-	IrisApplication::IrisAppStartInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
 
-	auto pApp = IrisApplication::Instance(); 
+	// auto pApp = ApplicationDX::Instance(); 
+	AppFactory::InitApiType(ApiType::DirectX);
+	auto pApp = AppFactory::GetApplication();
 
 	if (!pApp->Initialize(&iasiStartInfo)) {
 		pApp->Release();

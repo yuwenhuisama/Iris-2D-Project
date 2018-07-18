@@ -2,8 +2,8 @@
 // Created by Huisama on 2018/6/26.
 //
 
-#ifndef _H_IRISCOMMON_
-#define _H_IRISCOMMON_
+#ifndef _H_IRISCOMMON_GL_
+#define _H_IRISCOMMON_GL_
 
 #include "Common/Iris2DCompileConfigure.h"
 #include "Common/Iris2DUtil/IrisResult.h"

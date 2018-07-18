@@ -1,20 +1,21 @@
 #ifndef _H_IRIS2D_
 #define _H_IRIS2D_
 
-#include "Common/IrisCommon.h"
+#include "Common/Common.h"
 
 #ifdef _WIN32
 
-#include "DirectX/Iris2D/IrisApp.h"
-#include "DirectX/Iris2D/IrisBitmap.h"
-#include "DirectX/Iris2D/IrisSprite.h"
-#include "DirectX/Iris2D/IrisViewport.h"
-#include "DirectX/Iris2D/IrisColor.h"
-#include "DirectX/Iris2D/IrisFont.h"
-#include "DirectX/Iris2D/IrisGraphics.h"
-#include "DirectX/Iris2D/IrisRect.h"
+#include "Common/Iris2D/AppFactory.h"
 
-#endif // _WIN32
+#include "DirectX/Iris2D/BitmapDX.h"
+#include "DirectX/Iris2D/SpriteDX.h"
+#include "DirectX/Iris2D/ViewportDX.h"
+#include "DirectX/Iris2D/ColorDX.h"
+#include "DirectX/Iris2D/FontDX.h"
+#include "DirectX/Iris2D/GraphicsDX.h"
+#include "DirectX/Iris2D/RectDX.h"
+
+#endif // _WIN32W
 
 
 #endif
