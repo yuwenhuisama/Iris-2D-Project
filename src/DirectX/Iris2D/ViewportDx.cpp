@@ -1,9 +1,17 @@
 #include "DirectX/Iris2D/ViewportDX.h"
-#include "DirectX/Iris2D/SpriteDX.h"
+#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Rect.h"
+#include "Common/Iris2D/Color.h"
+#include "Common/Iris2D/Viewport.h"
+#include "Common/Util/ProxyConvert.h"
+
 #include "DirectX/Iris2D/RectDX.h"
 #include "DirectX/Iris2D/ColorDX.h"
+#include "DirectX/Iris2D/SpriteDX.h"
+
 #include "DirectX/Util/TextureDX.h"
 #include "DirectX/Util/ViewportVertexDX.h"
+
 #include "DirectX/Iris2D/D3DResourceManager.h"
 #include "DirectX/Iris2D/GraphicsDX.h"
 #include "DirectX/Iris2D/Shaders/ViewportVertexShader.h"
@@ -13,7 +21,7 @@
 
 namespace Iris2D
 {
-	ViewportDX* ViewportDX::sm_pGlobalViewport = nullptr;
+	Viewport* ViewportDX::sm_pGlobalViewport = nullptr;
 
 	ViewportDX * ViewportDX::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
 	{
@@ -43,7 +51,7 @@ namespace Iris2D
 		return pNewViewport;
 	}
 
-	ViewportDX * ViewportDX::Create(const RectDX * pRect, IR_PARAM_RESULT_CT)
+	ViewportDX * ViewportDX::Create(const Rect * pRect, IR_PARAM_RESULT_CT)
 	{
 		return Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()), IR_PARAM);
 	}
@@ -56,24 +64,22 @@ namespace Iris2D
 
 		GraphicsDX::Instance()->RemoveViewport(pViewport);
 
-		if (sm_pGlobalViewport != pViewport) {
-			sm_pGlobalViewport->m_stSprits.insert(pViewport->m_stSprits.begin(), pViewport->m_stSprits.end());
+		if (GetProxied<ViewportDX*>(sm_pGlobalViewport) != pViewport) {
+			GetProxied<ViewportDX*>(sm_pGlobalViewport)->m_stSprits.insert(pViewport->m_stSprits.begin(), pViewport->m_stSprits.end());
 		}
 
 		delete pViewport;
 		pViewport = nullptr;
 	}
 
-	void ViewportDX::ManagedRelease(ViewportDX* pViewport)
-	{
-		delete pViewport;
-	}
-
-	void ViewportDX::InnerRelease(ViewportDX *& pViewport)
+	void ViewportDX::ForceRelease(ViewportDX *& pViewport)
 	{
 		for (auto& pSprite : pViewport->m_stSprits) {
-			SpriteDX::InnerRelease(pSprite);
+			SpriteDX::ForceRelease(pSprite);
 		}
+
+		auto pProxy = pViewport->GetProxy();
+		Viewport::Release(pProxy);
 
 		delete pViewport;
 		pViewport = nullptr;
@@ -81,16 +87,16 @@ namespace Iris2D
 
 	bool ViewportDX::InitGlobalViewport(unsigned int nWindowWidth, unsigned int nWindowHeight)
 	{
-		sm_pGlobalViewport = Create(0.0f, 0.0f, nWindowWidth, nWindowHeight);
+		sm_pGlobalViewport = Viewport::Create(0.0f, 0.0f, nWindowWidth, nWindowHeight);
 		return sm_pGlobalViewport != nullptr;
 	}
 
 	void ViewportDX::ReleaseGlobalViewport()
 	{
-		Release(sm_pGlobalViewport);
+		Viewport::Release(sm_pGlobalViewport);
 	}
 
-	ViewportDX * ViewportDX::GetGlobalViewport()
+	Viewport * ViewportDX::GetGlobalViewport()
 	{
 		return sm_pGlobalViewport;
 	}
@@ -115,32 +121,32 @@ namespace Iris2D
 		return m_ivvsVertexBuffer.m_f2OxOy.y;
 	}
 
-	void ViewportDX::SetSrcRect(RectDX *& pSrcRect)
+	void ViewportDX::SetSrcRect(Rect *& pSrcRect)
 	{
-		RectDX::Release(m_pSrcRect);
+		Rect::Release(m_pSrcRect);
 
-		pSrcRect->IncreamRefCount();
+		GetProxied<RectDX*>(pSrcRect)->IncreamRefCount();
 		m_pSrcRect = pSrcRect;
 
 		m_bSrcRectDirtyFlag = true;
 	}
 
-	RectDX * ViewportDX::GetSrcRect() const
+	Rect * ViewportDX::GetSrcRect() const
 	{
 		return m_pSrcRect;
 	}
 
-	void ViewportDX::SetTone(ToneDX *& pTone)
+	void ViewportDX::SetTone(Tone *& pTone)
 	{
-		ColorDX::Release(m_pTone);
+		Color::Release(m_pTone);
 
-		pTone->IncreamRefCount();
+		GetProxied<ColorDX*>(pTone)->IncreamRefCount();
 		m_pTone = pTone;
 
 		m_bToneDirtyFlag = true;
 	}
 
-	ToneDX * ViewportDX::GetTone() const
+	Tone * ViewportDX::GetTone() const
 	{
 		return m_pTone;
 	}
@@ -207,7 +213,7 @@ namespace Iris2D
 			m_bVertexBufferDirtyFlag = false;
 		}
 		
-		if (m_bToneDirtyFlag || (m_pTone && m_pTone->Modified())) {
+		if (m_bToneDirtyFlag || (m_pTone && GetProxied<ToneDX*>(m_pTone)->Modified())) {
 			if (m_pTone) {
 				m_ivpsPixelBuffer.m_f4Tone = { static_cast<float>(m_pTone->GetRed()), static_cast<float>(m_pTone->GetBlue()), static_cast<float>(m_pTone->GetGreen()), static_cast<float>(m_pTone->GetAlpha()) };
 			}
@@ -218,7 +224,7 @@ namespace Iris2D
 			m_bToneDirtyFlag = false;
 
 			if (m_pTone) {
-				m_pTone->ModifyDone();
+				GetProxied<ToneDX*>(m_pTone)->ModifyDone();
 			}
 		}
 
@@ -231,7 +237,7 @@ namespace Iris2D
 			}
 		};
 
-		if (m_bSrcRectDirtyFlag || (m_pSrcRect && m_pSrcRect->Modified())) {
+		if (m_bSrcRectDirtyFlag || (m_pSrcRect && GetProxied<RectDX*>(m_pSrcRect)->Modified())) {
 			if (m_pSrcRect) {
 				auto left = m_pSrcRect->GetLeft();
 				auto top = m_pSrcRect->GetTop();
@@ -259,7 +265,7 @@ namespace Iris2D
 			m_bSrcRectDirtyFlag = false;
 
 			if (m_pSrcRect) {
-				m_pSrcRect->ModifyDone();
+				GetProxied<RectDX*>(m_pSrcRect)->ModifyDone();
 			}
 		}
 		//----
@@ -293,14 +299,14 @@ namespace Iris2D
 		return true;
 	}
 
-	void ViewportDX::AddSprite(SpriteDX * pSprite)
+	void ViewportDX::AddSprite(Sprite * pSprite)
 	{
-		m_stSprits.insert(pSprite);
+		m_stSprits.insert(GetProxied<SpriteDX*>(pSprite));
 	}
 
-	void ViewportDX::RemoveSprite(SpriteDX * pSprite)
+	void ViewportDX::RemoveSprite(Sprite * pSprite)
 	{
-		m_stSprits.erase(pSprite);
+		m_stSprits.erase(GetProxied<SpriteDX*>(pSprite));
 	}
 
 	bool ViewportDX::CreateViewportVertexBuffer(unsigned int nWidth, unsigned int nHeight)
@@ -343,7 +349,7 @@ namespace Iris2D
 		TextureDX::Release(m_pTexture);
 		SafeCOMRelease(m_pTexture);
 
-		RectDX::Release(m_pSrcRect);
-		ColorDX::Release(m_pTone);
+		Rect::Release(m_pSrcRect);
+		Color::Release(m_pTone);
 	}
 }

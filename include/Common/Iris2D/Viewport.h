@@ -1,53 +1,33 @@
-#ifndef _H_VIEWPORT_DX_
-#define _H_VIEWPORT_DX_
+#ifndef _H_VIEWPORT_
+#define _H_VIEWPORT_
 
-#include "DirectX/Common.h"
-#include "DirectX/Util/ViewportShaderBuffersDX.h"
-#include "Common/Iris2D/IViewport.h"
-#include "Common/Iris2D/Proxied.h"
+#include "Proxy.h"
+#include "IViewport.h"
+#include "Common/Util/Result.h"
 
-namespace Iris2D
-{
-	class SpriteDX;
+namespace Iris2D {
 
-	class Sprite;
-	class Rect;
-	class TextureDX;
 	class Rect;
 	class Color;
-	class Viewport;
-	typedef ColorDX ToneDX;
+	typedef Color Tone;
 
-	__declspec(align(16))
-	class ViewportDX : public IViewport, public Proxied<Viewport>
-	{
-	private:
-		std::unordered_set<SpriteDX*> m_stSprits;
-
-		ID3D11Buffer* m_pVertexBuffer = nullptr;
-		TextureDX* m_pTexture = nullptr;
-
-		ViewportVertexShaderBufferDX m_ivvsVertexBuffer;
-		ViewportPixelShaderBufferDX m_ivpsPixelBuffer;
-
-		//DirectX::XMMATRIX m_mxViewProjMatrix = DirectX::XMMatrixIdentity();
-
-		float m_fX = 0.0f;
-		float m_fY = 0.0f;
-		float m_fZ = 1.0f;
-
-		bool m_bVertexBufferDirtyFlag = false;
-		bool m_bVisible = true;
-
-		Rect* m_pSrcRect = nullptr;
-		Tone* m_pTone = nullptr;
-
-		bool m_bSrcRectDirtyFlag = false;
-		bool m_bToneDirtyFlag = false;
-
-	public:
-		static Viewport* sm_pGlobalViewport;
-
+	/**
+	* \~english
+	* Viewport class of Iris 2D
+	*
+	* A viewport is an area that limit sprite to display in the screen.
+	*
+	* Defautly, every sprite not specified a viewport will be put into a global viewport whose'area equals to the whole screen.
+	*/
+	/**
+	* \~chinese
+	* Iris 2D Viewport 类
+	*
+	* 一个 Viewport 就是用来限制 Sprite 显示的区域。
+	*
+	* 如果一个 Sprite 没有被指定 Viewport，那么它会被默认放进一个全局的 Viewport 之中，这个 Viewport 表示的区域等同于整个画面。
+	*/
+	class Viewport : public Proxy<IViewport>, public IViewport {
 	public:
 		/**
 		* \~english
@@ -69,7 +49,7 @@ namespace Iris2D
 		* @return 如果成功创建 Viewport ，那么将会返回该 ViewportDX 的指针，否则返回 nullptr。
 		* @see Create(RectDX* pRect, IR_PARAM_RESULT)
 		*/
-		static ViewportDX* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
+		static Viewport* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
 
 		/**
 		* \~english
@@ -97,13 +77,9 @@ namespace Iris2D
 		* 释放一个 Viewport 。
 		* @param pViewport 指向将要被释放的 Viewport 的指针。当该函数被调用之后，传入的指针将会被设置成 nullptr 。
 		*/
-		static void Release(ViewportDX*& pViewport);
+		static void Release(Viewport*& pViewport);
 
-		static void ForceRelease(ViewportDX*& pViewport);
-
-		static bool InitGlobalViewport(unsigned int nWindowWidth, unsigned int nWindowHeight);
-		static void ReleaseGlobalViewport();
-		static Viewport* GetGlobalViewport();
+		static void ForceRelease(Viewport*& pViewport);
 
 	public:
 
@@ -234,29 +210,10 @@ namespace Iris2D
 		*/
 		Tone* GetTone() const;
 
-		bool Dispose();
-		bool RenderSprite();
-		bool RenderSelf();
-
-		void AddSprite(Sprite* pSprite);
-		void RemoveSprite(Sprite* pSprite);
-
-	private:
-		bool CreateViewportVertexBuffer(unsigned int nWidth, unsigned int nHeight);
-
-		ViewportDX() = default;
-		~ViewportDX();
-
-		void* operator new(size_t i)
-		{
-			return _mm_malloc(i, 16);
-		}
-
-		void operator delete(void* p)
-		{
-			_mm_free(p);
-		}
+		private:
+			Viewport(IViewport* pViewport);
+			~Viewport() = default;
 	};
 }
 
-#endif // !_H_VIEWPORT_DX_
+#endif // !_H_VIEWPORT_

@@ -1,5 +1,5 @@
-#ifndef _H_IRISAPP_DX_
-#define _H_IRISAPP_DX_
+#ifndef _H_APP_DX_
+#define _H_APP_DX_
 
 #include "Common/Iris2D/IApp.h"
 #include "Common/Iris2D/AppStartupInfo.h"
@@ -15,7 +15,7 @@
  */
 namespace Iris2D
 {
-	class ApplicationDX : public IApp
+	class ApplicationDX : public IApplication
 	{
 	private:
 		enum class AppState {

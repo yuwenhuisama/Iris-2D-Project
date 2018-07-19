@@ -1,5 +1,7 @@
 #include "DirectX/Iris2D/FontDX.h"
 #include "DirectX/Iris2D/ColorDX.h"
+#include "Common/Iris2D/Color.h"
+#include "Common/Util/ProxyConvert.h"
 #include <functional>
 
 namespace Iris2D
@@ -9,7 +11,7 @@ namespace Iris2D
 	}
 	
 	FontDX::~FontDX() {
-		ColorDX::Release(m_pColor);
+		Color::Release(m_pColor);
 	}
 
 	bool FontDX::Existed(const std::wstring & wstrFontName)
@@ -91,18 +93,19 @@ namespace Iris2D
 		return m_bShadow;
 	}
 
-	void FontDX::SetColor(ColorDX*& pColor)
-	{
-		ColorDX::Release(m_pColor);
-
-		pColor->IncreamRefCount();
-		m_pColor = pColor;
-	}
-
-	ColorDX * FontDX::GetColor() const
+	Color * FontDX::GetColor() const
 	{
 		return m_pColor;
 	}
+
+	void FontDX::SetColor(Color *& pColor) {
+		Color::Release(m_pColor);
+		
+		auto pTmp = GetProxied<ColorDX*>(pColor);
+		pTmp->IncreamRefCount();
+		m_pColor = pColor;
+	}
+
 
 	std::wstring FontDX::GetDefaultName()
 	{
@@ -129,9 +132,9 @@ namespace Iris2D
 		return false;
 	}
 
-	ColorDX * FontDX::GetDefaultColor()
+	Color * FontDX::GetDefaultColor()
 	{
-		static ColorDX* pDefaultColor = ColorDX::Create(0, 0, 0, 255);
+		static Color* pDefaultColor = Color::Create(0, 0, 0, 255);
 		return pDefaultColor;
 	}
 }

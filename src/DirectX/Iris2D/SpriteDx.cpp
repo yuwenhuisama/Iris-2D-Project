@@ -9,15 +9,24 @@
 #include "DirectX/Util/SpriteVertexDX.h"
 #include "DirectX/Iris2D/GraphicsDX.h"
 #include "DirectX/Util/TextureDX.h"
+
+#include "Common/Iris2D/Viewport.h"
+#include "Common/Iris2D/Bitmap.h"
+#include "Common/Iris2D/Rect.h"
+#include "Common/Iris2D/Color.h"
+#include "Common/Iris2D/Sprite.h"
+#include "Common/Util/ProxyConvert.h"
+
 #include <functional>
 
 namespace Iris2D
 {
-	SpriteDX * Iris2D::SpriteDX::Create(ViewportDX* pViewport)
+	SpriteDX * Iris2D::SpriteDX::Create(Viewport* pViewport)
 	{
 		auto pSprite = new SpriteDX();
 		pSprite->m_pViewport = pViewport == nullptr ? ViewportDX::GetGlobalViewport() : pViewport;
-		pSprite->m_pViewport->AddSprite(pSprite);;
+		
+		GetProxied<ViewportDX*>(pSprite->m_pViewport)->AddSprite(pSprite->GetProxy());
 
 		return pSprite;
 	}
@@ -27,24 +36,26 @@ namespace Iris2D
 		if (!pSprite) {
 			return;
 		}
-		pSprite->m_pViewport->RemoveSprite(pSprite);
-		InnerRelease(pSprite);
+		GetProxied<ViewportDX*>(pSprite->m_pViewport)->RemoveSprite(pSprite->GetProxy());
+		ForceRelease(pSprite);
 		pSprite = nullptr;
 	}
 
-	void SpriteDX::InnerRelease(SpriteDX * pSprite)
+	void SpriteDX::ForceRelease(SpriteDX * pSprite)
 	{
+		auto pProxy = pSprite->GetProxy();;
+		Sprite::ForceRelease(pProxy);
 		delete pSprite;
 	}
 
-	void SpriteDX::SetBitmap(BitmapDX*& pBitmap)
+	void SpriteDX::SetBitmap(Bitmap*& pBitmap)
 	{
 		if (m_pBitmap == pBitmap) {
 			return;
 		}
 
-		BitmapDX::Release(m_pBitmap);
-		pBitmap->IncreamRefCount();
+		Bitmap::Release(m_pBitmap);
+		GetProxied<BitmapDX*>(pBitmap)->IncreamRefCount();
 
 		m_pBitmap =  pBitmap;
 		CreateSpriteVertexBuffer();
@@ -52,7 +63,7 @@ namespace Iris2D
 		m_bfPixelShaderBuffer.m_f4SpriteRect = { 0.0f, 0.0f, 1.0f, 1.0f };
 	}
 
-	BitmapDX * SpriteDX::GetBitmap() const
+	Bitmap * SpriteDX::GetBitmap() const
 	{
 		return m_pBitmap;
 	}
@@ -203,32 +214,32 @@ namespace Iris2D
 		return m_bfPixelShaderBuffer.m_fOpacity;;
 	}
 
-	void SpriteDX::SetSrcRect(RectDX *& pSrcRect)
+	void SpriteDX::SetSrcRect(Rect *& pSrcRect)
 	{
-		RectDX::Release(m_pSrcRect);
-		pSrcRect->IncreamRefCount();
+		Rect::Release(m_pSrcRect);
+		GetProxied<RectDX*>(pSrcRect)->IncreamRefCount();
 
 		m_pSrcRect = pSrcRect;
 
 		m_bSrcRectDirtyFlag = true;
 	}
 
-	RectDX * SpriteDX::GetSrcRect() const
+	Rect* SpriteDX::GetSrcRect() const
 	{
 		return m_pSrcRect;
 	}
 
-	void SpriteDX::SetTone(ToneDX *& pTone)
+	void SpriteDX::SetTone(Tone *& pTone)
 	{
-		ColorDX::Release(m_pTone);
+		Color::Release(m_pTone);
 
-		pTone->IncreamRefCount();
+		GetProxied<ToneDX*>(pTone)->IncreamRefCount();
 		m_pTone = pTone;
 
 		m_bToneDirtyFlag = true;
 	}
 
-	ToneDX * SpriteDX::GetTone() const
+	Tone * SpriteDX::GetTone() const
 	{
 		return m_pTone;
 	}
@@ -258,7 +269,7 @@ namespace Iris2D
 			m_bZoomDirtyFlag = false;
 		}
 
-		if (m_bToneDirtyFlag || (m_pTone && m_pTone->Modified())) {
+		if (m_bToneDirtyFlag || (m_pTone && GetProxied<ToneDX*>(m_pTone)->Modified())) {
 			if (m_pTone) {
 				m_bfPixelShaderBuffer.m_f4Tone = { static_cast<float>(m_pTone->GetRed()), static_cast<float>(m_pTone->GetBlue()), static_cast<float>(m_pTone->GetGreen()), static_cast<float>(m_pTone->GetAlpha()) };
 			}
@@ -269,7 +280,7 @@ namespace Iris2D
 			m_bToneDirtyFlag = false;
 
 			if (m_pTone) {
-				m_pTone->ModifyDone();
+				GetProxied<ToneDX*>(m_pTone)->ModifyDone();
 			}
 		}
 
@@ -282,7 +293,7 @@ namespace Iris2D
 			}
 		};
 
-		if (m_bSrcRectDirtyFlag || (m_pSrcRect && m_pSrcRect->Modified())) {
+		if (m_bSrcRectDirtyFlag || (m_pSrcRect && GetProxied<RectDX*>(m_pSrcRect)->Modified())) {
 			if (m_pSrcRect) {
 				auto left = m_pSrcRect->GetLeft();
 				auto top = m_pSrcRect->GetTop();
@@ -307,7 +318,7 @@ namespace Iris2D
 			m_bSrcRectDirtyFlag = false;
 
 			if (m_pSrcRect) {
-				m_pSrcRect->ModifyDone();
+				GetProxied<RectDX*>(m_pSrcRect)->ModifyDone();
 			}
 		}
 
@@ -324,12 +335,12 @@ namespace Iris2D
 		pPixelShader->SetColorProcessInfo(m_bfPixelShaderBuffer);
 
 		pD3DManager->SetCurrentVertexBufferInfo(nStride, nOffset, m_pVertexBuffer);
-		pD3DManager->SetCurrentTexture(m_pBitmap->GetTexture());
+		pD3DManager->SetCurrentTexture(GetProxied<BitmapDX*>(m_pBitmap)->GetTexture());
 
 		pContex->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &nStride, &nOffset);
 		pContex->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		auto pTexture = m_pBitmap->GetTexture();
+		auto pTexture = GetProxied<BitmapDX*>(m_pBitmap)->GetTexture();
 
 		pTexture->AquireSyncFromDx11Side();
 
@@ -351,9 +362,9 @@ namespace Iris2D
 
 	bool SpriteDX::Dispose()
 	{
-		BitmapDX::Release(m_pBitmap);
-		RectDX::Release(m_pSrcRect);
-		ColorDX::Release(m_pTone);
+		Bitmap::Release(m_pBitmap);
+		Rect::Release(m_pSrcRect);
+		Color::Release(m_pTone);
 
 		SafeCOMRelease(m_pVertexBuffer);
 

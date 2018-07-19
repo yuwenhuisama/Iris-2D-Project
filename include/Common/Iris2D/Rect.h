@@ -1,20 +1,23 @@
-#ifndef _H_RECT_DX_
-#define _H_RECT_DX_
+#ifndef _H_RECT_
+#define _H_RECT_
 
-#include "DirectX/Common.h"
-#include "Common/Iris2D/IRect.h"
-#include "Common/Util/RefCounter.h"
-#include "Common/Iris2D/Proxied.h"
+#include "Proxy.h"
+#include "IRect.h"
 
-namespace Iris2D
-{
-	class Rect;
-	class RectDX : public Proxied<Rect>, public IRect, public RefCounter
-	{
-	private:
-		DirectX::XMFLOAT4 m_f4Rect{ 0.0f, 0.0f, 0.0f, 0.0f };
-		bool m_bModifyDirtyFlag = false;
-
+namespace Iris2D {
+	/**
+	* \~english
+	* Rect class of Iris 2D
+	*
+	* A rect represent a rectangle region of screen.
+	*/
+	/**
+	* \~chinese
+	* Iris 2D Rect 类
+	*
+	* 一个 Rect 代表了屏幕上的一个矩形区域。
+	*/
+	class Rect : public IRect, public Proxy<IRect> {
 	public:
 		/**
 		* \~english
@@ -37,7 +40,7 @@ namespace Iris2D
 		* @return 生成的 Rect 的指针。
 		* @see Create2(float fLeft, float fTop, float fRight, float fBottom)
 		*/
-		static RectDX* Create(float fX, float fY, float fWidth, float fHeight);
+		static Rect* Create(float fX, float fY, float fWidth, float fHeight);
 
 		/**
 		* \~english
@@ -60,7 +63,7 @@ namespace Iris2D
 		* @return 生成的 Rect 的指针。
 		* @see Create(float fX, float fY, float fWidth, float fHeight)
 		*/
-		static RectDX* Create2(float fLeft, float fTop, float fRight, float fBottom);
+		static Rect* Create2(float fLeft, float fTop, float fRight, float fBottom);
 
 		/**
 		* \~english
@@ -72,7 +75,7 @@ namespace Iris2D
 		* 释放一个 Rect 对象。
 		* @param pRect 指向将要被释放的 Rect 对象的指针。当该函数被调用之后，传入的指针将会被设置为 nullptr。
 		*/
-		static void Release(RectDX*& pRect);
+		static void Release(Rect*& pRect);
 
 	public:
 		/**
@@ -300,12 +303,10 @@ namespace Iris2D
 		*/
 		void Set2(float fLeft, float fTop, float fRight, float fBottom);
 
-		bool Modified();
-		void ModifyDone();
-
-	private:
-		RectDX() = default;
-		~RectDX() = default;
+		private:
+			Rect(IRect* pRect);
+			~Rect() = default;
 	};
 }
-#endif // !_H_RECT_DX_
+
+#endif // !_H_RECT_

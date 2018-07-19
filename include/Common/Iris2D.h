@@ -6,16 +6,16 @@
 #ifdef _WIN32
 
 #include "Common/Iris2D/AppFactory.h"
+#include "Common/Iris2D/App.h"
+#include "Common/Iris2D/Color.h"
+#include "Common/Iris2D/Rect.h"
+#include "Common/Iris2D/Bitmap.h"
+#include "Common/Iris2D/Font.h"
+#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Viewport.h"
+#include "Common/Iris2D/Graphics.h"
 
-#include "DirectX/Iris2D/BitmapDX.h"
-#include "DirectX/Iris2D/SpriteDX.h"
-#include "DirectX/Iris2D/ViewportDX.h"
-#include "DirectX/Iris2D/ColorDX.h"
-#include "DirectX/Iris2D/FontDX.h"
-#include "DirectX/Iris2D/GraphicsDX.h"
-#include "DirectX/Iris2D/RectDX.h"
-
-#endif // _WIN32W
+#endif // _WIN32
 
 
 #endif

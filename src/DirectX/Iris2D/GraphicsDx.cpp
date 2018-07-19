@@ -154,7 +154,7 @@ namespace Iris2D {
 	{
 		for (auto& pViewport : m_stViewports)
 		{
-			ViewportDX::InnerRelease(const_cast<ViewportDX*>(pViewport));
+			ViewportDX::ForceRelease(const_cast<ViewportDX*>(pViewport));
 		}
 	}
 

@@ -1,51 +1,27 @@
-#ifndef _H_GRAPHICS_DX_
-#define _H_GRAPHICS_DX_
+#ifndef _H_GRAPHICS_
+#define _H_GRAPHICS_
 
-#include "DirectX/Common.h"
-#include "Common/Iris2D/Proxied.h"
 #include "Common/Iris2D/IGraphics.h"
+#include "Proxy.h"
 
 namespace Iris2D {
-	class Graphics;
-	class ViewportDX;
-
-	class GraphicsDX : public Proxied<Graphics>, public IGraphics
-	{
-	private:
-
-		const float c_fDefaultFPS = 60.0f;
-
-		unsigned int m_nWidth = 0;
-		unsigned int m_nHeight = 0;
-		float m_fFrameRate = c_fDefaultFPS;
-		float m_fMsPerUpdate = 1000.0f / c_fDefaultFPS;
-
-		bool m_bUpdateLockFlag = false;
-
-		std::unordered_set<ViewportDX*> m_stViewports;
+	/**
+	* \~english
+	* Graphics class of Iris 2D
+	*
+	* This class provides a singleton instance to control updating of rendering, do other special effect for post-processing and do some operation to game window.
+	*/
+	/**
+	* \~chinese
+	* Iris 2D Graphcis 类
+	*
+	* 这个类提供了一个单例来控制画面渲染更新、完成其它特殊的后期特效处理，以及对游戏的的窗口完成一些操作。
+	*/
+	class Graphics : public Proxy<IGraphics>, public IGraphics {
+	public:
+		static Graphics* Instance();
 
 	public:
-		float m_fLag = 0.0f;
-		float m_fLastTime = 0.0f;
-		float m_fCurrentTime = 0;
-
-	public:
-		/**
-		* \~english
-		* Get the singleton pointer instance of GraphicsDX.
-		* @return The singleton pointer instance of GraphicsDX.
-		*/
-		/**
-		* \~chinese
-		* 获取 GraphicsDX 类的单例指针。
-		* @return GraphicsDX 类的单例指针。
-		*/
-		static GraphicsDX* Instance();
-
-	public:
-		void AddViewport(ViewportDX* pViewport);
-		void RemoveViewport(ViewportDX* pViewport);
-
 		/**
 		* \~english
 		* Do a update for rendering, in other words, set game 1 frame going forward.
@@ -61,7 +37,6 @@ namespace Iris2D {
 		* @see UpdateNoLock()
 		*/
 		void Update(IR_PARAM_RESULT);
-
 
 		/**
 		* \~english
@@ -107,15 +82,11 @@ namespace Iris2D {
 		void Release();
 
 		float GetMsPerUpdate();
-		//void SetLastTime(float fTime);
 
 	private:
-		GraphicsDX() = default;
-		bool Render();
-
-	public:
-		~GraphicsDX() = default;
+		Graphics();
+		~Graphics() = default;
 	};
 }
 
-#endif // !_H_GRAPHICS_DX_
+#endif // !_H_GRAPHICS_

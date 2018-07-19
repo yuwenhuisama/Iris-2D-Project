@@ -4,15 +4,15 @@ using namespace Iris2D;
 
 bool GameCallBack() {
 
-	auto pGraphics = GraphicsDX::Instance();
+	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
 
 	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
-	auto pBitmap = BitmapDX::Create(L"image\\kurumi.jpg");
+	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
 	//pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = BitmapDX::Create(L"image\\leimu.jpg");
 
-	pBitmap->TextSize(nullptr, L"Hello, World!");
+	// pBitmap->TextSize(nullptr, L"Hello, World!");
 
 	//auto pSrcRect = RectDX::Create2(10.0f, 10.0f, 300.0f, 300.0f);
 	//pViewport->SetSrcRect(pSrcRect);
@@ -29,11 +29,11 @@ bool GameCallBack() {
 	//auto pPixelColor = pBitmap->GetPixel(0, 0);
 	//pBitmap->SetPixel(0, 0, pColor);
 
-	pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", BitmapDX::AlignType::Center);
+	pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", AlignType::Center);
 
-	auto pSprite = SpriteDX::Create();
+	auto pSprite = Sprite::Create();
 	pSprite->SetBitmap(pBitmap);
-	BitmapDX::Release(pBitmap);
+	Bitmap::Release(pBitmap);
 
 	//RectDX::Release(pSrcRect);
 	//ColorDX::Release(pColor);
@@ -59,7 +59,7 @@ bool GameCallBack() {
 	//BEGIN_SAFE_LOOP()
 	//	pSprite->SetAngle(angle += 1.0f);
 	//END_SAFE_LOOP()
-	SpriteDX::Release(pSprite);
+	Sprite::Release(pSprite);
 
 
 	return true;

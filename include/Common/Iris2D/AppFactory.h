@@ -1,7 +1,6 @@
 #ifndef _H_APP_FACTORY_
 #define _H_APP_FACTORY_
 
-#include "IApp.h"
 #include "AppStartupInfo.h"
 
 namespace Iris2D {
@@ -10,13 +9,22 @@ namespace Iris2D {
 		DirectX,
 	};
 
+	class Application;
+	class Graphics;
+
 	class AppFactory {
 	private:
-		static IApp* sm_pApp;
+		static Application* sm_pApp;
+		static Graphics* sm_pGraphics;
+
+		static ApiType sm_eType;
 
 	public:
 		static void InitApiType(ApiType eType);
-		static IApp* GetApplication();
+		static Application* GetApplication();
+		static Graphics* GetGraphics();
+
+		static ApiType GetApiType();
 	};
 }
 

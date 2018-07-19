@@ -1,59 +1,29 @@
-#ifndef _H_SPRITE_DX_
-#define _H_SPRITE_DX_
+#ifndef _H_SPRITE_
+#define _H_SPRITE_
 
-#include "DirectX/Common.h"
-#include "DirectX/Util/SpriteShaderBuffersDX.h"
+#include "ISprite.h"
+#include "Proxy.h"
 
-#include "Common/Iris2D/ISprite.h"
-#include "Common/Iris2D/Proxied.h"
+namespace Iris2D {
 
-namespace Iris2D
-{
-	class Sprite;
-	class BitmapDX;
-	class RectDX;
-	class ColorDX;
-	class ViewportDX;
-
-	class Bitmap;
-	class Rect;
-	class Color;
 	class Viewport;
-
-	typedef ColorDX ToneDX;
-	__declspec(align(16))
-	class SpriteDX : public Proxied<Sprite>, public ISprite
-	{
-	private:
-
-		const float c_fPI = 3.14159f;
-		const float c_fArcUnit = c_fPI / 180.0f;
-
-		Bitmap* m_pBitmap = nullptr;
-		Rect* m_pSrcRect = nullptr;
-		Tone* m_pTone = nullptr;
-
-		ID3D11Buffer* m_pVertexBuffer = nullptr;
-
-		SpriteVertexShaderBufferDX m_bfVertexShaderBuffer;
-		SpritePixelShaderBufferDX  m_bfPixelShaderBuffer;
-
-		float m_fX = 0.0f;
-		float m_fY = 0.0f;
-		float m_fZ = 1.0f;
-		float m_fAngle = 0.0f;
-		float m_fZoomX = 1.0f;
-		float m_fZoomY = 1.0f;
-
-		bool m_bVisible = true;
-		Viewport* m_pViewport = nullptr;
-
-		bool m_bPositionDirtyFlag = false;
-		bool m_bAngleDirtyFlag = false;
-		bool m_bZoomDirtyFlag = false;
-		bool m_bSrcRectDirtyFlag = false;
-		bool m_bToneDirtyFlag = false;
-
+	/**
+	* \~english
+	* Sprite class of Iris 2D
+	*
+	* A sprite abustractly represents something displayed on screen, further more, a sprite usually needs a bitmap to get an image to display or sprite won't show anything.
+	*
+	* A sprite can control the position, the scaling size, the angle and other displaying properties for an image, and it's the most basic element of 2D games.
+	*/
+	/**
+	* \~chinese
+	* Iris 2D Sprite 类
+	*
+	* 一个 Sprite 抽象地表示了显示在屏幕上的任何东西，进一步地，一个 Sprite 一般都需要一个 Bitmap 来显示图片等，否则将不会展示任何东西。
+	*
+	* 一个精灵可以控制显示内容的位置、缩放尺寸、角度以及其他显示属性，它是 2D 游戏最基本的元素。
+	*/
+	class Sprite : public ISprite, Proxy<ISprite> {
 	public:
 		/**
 		* \~english
@@ -69,7 +39,7 @@ namespace Iris2D
 		* @param pViewport 该 Sprite 所处的 Viewport。如果设置为 nullptr 那么当前 Sprite 将会被放在全局 Viewport 之中。
 		* @return 如果 Sprite 对象创建成功那么返回它的指针否则返回 nullptr。
 		*/
-		static SpriteDX* Create(Viewport* pViewport = nullptr);
+		static Sprite* Create(Viewport* pViewport = nullptr);
 
 		/**
 		* \~english
@@ -81,9 +51,9 @@ namespace Iris2D
 		* 释放一个 Sprite 对象。
 		* @param pSprite 指向将要被释放的 Sprite 对象的指针。当该函数被调用之后，传入的指针将会被设置为 nullptr。
 		*/
-		static void Release(SpriteDX*& pSprite);
+		static void Release(Sprite*& pSprite);
 
-		static void ForceRelease(SpriteDX* pSprite);
+		static void ForceRelease(Sprite*& pSprite);
 
 	public:
 
@@ -458,26 +428,10 @@ namespace Iris2D
 		*/
 		void Update();
 
-		void Render();
-		bool Dispose();
-
-	private:
-		SpriteDX() = default;
-		~SpriteDX();
-
-		bool CreateSpriteVertexBuffer();
-
-		void* operator new(size_t i)
-		{
-			return _mm_malloc(i, 16);
-		}
-
-		void operator delete(void* p)
-		{
-			_mm_free(p);
-		}
-
+		private:
+			Sprite(ISprite* pSprite);
+			~Sprite() = default;
 	};
 }
 
-#endif // !_H_SPRITE_DX_
+#endif // !_H_SPRITE_
