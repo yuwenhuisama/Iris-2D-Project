@@ -148,7 +148,7 @@ namespace Iris2D {
 		* @param fOpacity 拷贝后像素的透明度，其值介于 [0.0f, 255.0f]。
 		* @return 如果拷贝操作成功，返回 true 否则返回 false。
 		*/
-		virtual bool Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap* pSrcBitmap, const IRect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
+		virtual bool Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap* pSrcBitmap, const Rect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
 
 		/**
 		* \~english
@@ -170,7 +170,7 @@ namespace Iris2D {
 		* @param fOpacity 拷贝后像素的透明度，其值介于 [0.0f, 255.0f]。
 		* @return 如果拷贝操作成功，返回 true 否则返回 false。
 		*/
-		virtual bool StretchBlt(const IRect* pDestRect, const Bitmap* pSrcBitmap, const IRect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
+		virtual bool StretchBlt(const Rect* pDestRect, const Bitmap* pSrcBitmap, const Rect* pSrcRect, float fOpacity, IR_PARAM_RESULT);
 
 		/**
 		* \~english
@@ -215,7 +215,7 @@ namespace Iris2D {
 		* @return 如果填充操作成功，返回 true 否则返回 false。
 		* @see FilleRect(RectDX* pRect, ColorDX* pColor, IR_PARAM_RESULT)
 		*/
-		virtual bool FillRect(const IRect* pRect, const Color* pColor, IR_PARAM_RESULT);
+		virtual bool FillRect(const Rect* pRect, const Color* pColor, IR_PARAM_RESULT) override;
 
 		/**
 		* \~english

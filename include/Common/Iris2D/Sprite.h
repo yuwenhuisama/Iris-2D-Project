@@ -23,7 +23,7 @@ namespace Iris2D {
 	*
 	* 一个精灵可以控制显示内容的位置、缩放尺寸、角度以及其他显示属性，它是 2D 游戏最基本的元素。
 	*/
-	class Sprite : public ISprite, Proxy<ISprite> {
+	class Sprite : public ISprite, public Proxy<ISprite> {
 	public:
 		/**
 		* \~english

@@ -7,7 +7,7 @@
 
 namespace Iris2D {
 
-	class AppStartupInfo;
+	struct AppStartupInfo;
 	typedef bool (*GameFunc)();
 
 	class IApplication {

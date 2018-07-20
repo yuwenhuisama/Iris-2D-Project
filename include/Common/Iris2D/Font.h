@@ -18,7 +18,7 @@ namespace Iris2D {
 		static bool GetDefaultBold();
 		static bool GetDefaultItalic();
 		static bool GetDefaultShadow();
-		static ColorDX* GetDefaultColor();
+		static Color* GetDefaultColor();
 
 	public:
 		// Í¨¹ý IFont ¼Ì³Ð

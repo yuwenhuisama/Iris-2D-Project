@@ -1,4 +1,5 @@
 #include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/AppFactory.h"
 
 #if _WIN32
 #include "DirectX/Iris2D/SpriteDX.h"
@@ -9,13 +10,15 @@ namespace Iris2D {
 	Sprite::Sprite(ISprite* pSprite) : Proxy(pSprite) {}
 
 	Sprite * Sprite::Create(Viewport * pViewport) {
-		ISprite* pProxied = nullptr;
+		Sprite* pSprite = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp = SpriteDX::Create(pViewport);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pSprite = new Sprite(pTmp);
+			pTmp->SetProxy(pSprite);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -24,16 +27,20 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Sprite(pProxied);
+		return pSprite;
 	}
 
 	void Sprite::Release(Sprite *& pSprite) {
+		if (!pSprite) {
+			return;
+		}
+
 		auto pProxied = pSprite->GetProxied();
 
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			SpriteDX::Release(static_cast<SpriteDX*>(pProxied));
+			SpriteDX::Release(reinterpret_cast<SpriteDX*&>(pProxied));
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -49,7 +56,7 @@ namespace Iris2D {
 		}
 	}
 
-	static void Sprite::ForceRelease(Sprite*& pSprite) {
+	void Sprite::ForceRelease(Sprite*& pSprite) {
 		delete pSprite;
 		pSprite = nullptr;
 	}

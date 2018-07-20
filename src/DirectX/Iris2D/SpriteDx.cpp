@@ -26,7 +26,7 @@ namespace Iris2D
 		auto pSprite = new SpriteDX();
 		pSprite->m_pViewport = pViewport == nullptr ? ViewportDX::GetGlobalViewport() : pViewport;
 		
-		GetProxied<ViewportDX*>(pSprite->m_pViewport)->AddSprite(pSprite->GetProxy());
+		GetProxied<ViewportDX*>(pSprite->m_pViewport)->AddSprite(pSprite);
 
 		return pSprite;
 	}
@@ -36,8 +36,8 @@ namespace Iris2D
 		if (!pSprite) {
 			return;
 		}
-		GetProxied<ViewportDX*>(pSprite->m_pViewport)->RemoveSprite(pSprite->GetProxy());
-		ForceRelease(pSprite);
+		GetProxied<ViewportDX*>(pSprite->m_pViewport)->RemoveSprite(pSprite);
+		delete pSprite;
 		pSprite = nullptr;
 	}
 

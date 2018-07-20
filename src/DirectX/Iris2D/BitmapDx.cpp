@@ -13,7 +13,7 @@
 #include "DirectX/Util/DataConvertHelperDX.h"
 #include <limits>
 
-#include "Common/Util/ProxyConvert.h";
+#include "Common/Util/ProxyConvert.h"
 
 #undef max
 #undef DrawText
@@ -59,6 +59,10 @@ namespace Iris2D
 		Rect::Release(pArea);
 
 		return pNewBitmap;
+	}
+
+	BitmapDX * BitmapDX::CopyFrom(Bitmap * pSrcBitmap, IR_PARAM_RESULT_CT) {
+		return BitmapDX::Create(pSrcBitmap, IR_PARAM);
 	}
 
 	void BitmapDX::Release(BitmapDX *& pBitmap)
@@ -347,7 +351,7 @@ namespace Iris2D
 				: Font::GetDefaultColor();
 
 			ID2D1SolidColorBrush* pBrush = nullptr;
-			hResult =  pRenderTarget->CreateSolidColorBrush(DataConvertHelperDX::ConvertToD2DColor(pColor), &pBrush);
+			hResult =  pRenderTarget->CreateSolidColorBrush(DataConvertHelperDX::ConvertToD2DColor(GetProxied<ColorDX*>(pColor)), &pBrush);
 			
 			IDWriteTextLayout* pLayout = nullptr;
 			if (SUCCEEDED(hResult)) {

@@ -1,4 +1,5 @@
 #include "Common/Iris2D/Viewport.h"
+#include "Common/Iris2D/AppFactory.h"
 
 #ifdef _WIN32
 #include "DirectX/Iris2D/ViewportDX.h"
@@ -8,13 +9,15 @@ namespace Iris2D {
 	Viewport::Viewport(IViewport* pViewport) : Proxy(pViewport) {}
 
 	Viewport * Viewport::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-		IViewport* pProxied = nullptr;
+		Viewport* pViewport = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			auto pTmp = ViewportDX::Create(fX, fY, nWidth, nHeight);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+		{
+			auto pTmp = ViewportDX::Create(fX, fY, nWidth, nHeight, IR_PARAM);
+			pViewport = new Viewport(pTmp);
+			pTmp->SetProxy(pViewport);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -23,17 +26,19 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Viewport(pProxied);
+		return pViewport;
 	}
 
-	ViewportDX * Viewport::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
-		IViewport* pProxied = nullptr;
+	Viewport * Viewport::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
+		Viewport* pViewport = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp = ViewportDX::Create(pRect, IR_PARAM);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pViewport = new Viewport(pTmp);
+			pTmp->SetProxy(pViewport);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -42,16 +47,20 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Viewport(pProxied);
+		return pViewport;
 	}
 
 	void Viewport::Release(Viewport *& pViewport) {
+		if (!pViewport) {
+			return;
+		}
+
 		auto pProxied = pViewport->GetProxied();
 
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			ViewportDX::Release(static_cast<ViewportDX*>(pProxied));
+			ViewportDX::Release(reinterpret_cast<ViewportDX*&>(pProxied));
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -62,12 +71,12 @@ namespace Iris2D {
 
 		// Delete proxy object when proxied object has been released.
 		if (!pProxied) {
-			delete pSprite;
-			pSprite = nullptr;
+			delete pViewport;
+			pViewport = nullptr;
 		}
 	}
 
-	static void Viewport::ForceRelease(Viewport*& pViewport) {
+	void Viewport::ForceRelease(Viewport*& pViewport) {
 		delete pViewport;
 		pViewport = nullptr;
 	}
@@ -93,7 +102,7 @@ namespace Iris2D {
 	}
 
 	Rect * Viewport::GetSrcRect() const {
-		return m_pProxied->GetSrcRect()
+		return m_pProxied->GetSrcRect();
 	}
 
 	void Viewport::SetTone(Tone *& pTone) {

@@ -1,4 +1,5 @@
 #include "Common/Iris2D/Rect.h"
+#include "Common/Iris2D/AppFactory.h"
 
 #ifdef _WIN32
 #include "DirectX/Iris2D/RectDX.h"
@@ -9,13 +10,15 @@ namespace Iris2D {
 	Rect::Rect(IRect* pRect) : Proxy(pRect) {}
 
 	Rect * Rect::Create(float fX, float fY, float fWidth, float fHeight) {
-		IRect* pProxied = nullptr;
+		Rect* pRect = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			auto pTmp = RectDX::Create(cRed, cGreen, cBlue, cAlpha);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+		{
+			auto pTmp = RectDX::Create(fX, fY, fWidth, fHeight);
+			pRect = new Rect(pTmp);
+			pTmp->SetProxy(pRect);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -24,17 +27,19 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Rect(pProxied);
+		return pRect;
 	}
 
 	Rect * Rect::Create2(float fLeft, float fTop, float fRight, float fBottom) {
-		IRect* pProxied = nullptr;
+		Rect* pRect = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			auto pTmp = pProxied = RectDX::Create2(fLeft, fTop, fRight, fBottom);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+		{
+			auto pTmp = RectDX::Create2(fLeft, fTop, fRight, fBottom);
+			pRect = new Rect(pTmp);
+			pTmp->SetProxy(pRect);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -43,16 +48,20 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Rect(pProxied);
+		return pRect;
 	}
 
 	void Rect::Release(Rect *& pRect) {
+		if (!pRect) {
+			return;
+		}
+
 		auto pProxied = pRect->GetProxied();
 
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			RectDX::Release(static_cast<RectDX*>(pProxied));
+			RectDX::Release(reinterpret_cast<RectDX*&>(pProxied));
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -81,7 +90,7 @@ namespace Iris2D {
 	}
 
 	float Rect::GetY() const {
-		return m_pProxied->GetY()
+		return m_pProxied->GetY();
 	}
 
 	void Rect::SetWidth(float fWidth) {
@@ -109,7 +118,7 @@ namespace Iris2D {
 	}
 
 	void Rect::SetTop(float fTop) {
-		m_pProxied->SetTop(fLeft);
+		m_pProxied->SetTop(fTop);
 	}
 
 	float Rect::GetTop() const {

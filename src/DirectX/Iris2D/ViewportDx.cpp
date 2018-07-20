@@ -299,15 +299,23 @@ namespace Iris2D
 		return true;
 	}
 
-	void ViewportDX::AddSprite(Sprite * pSprite)
-	{
-		m_stSprits.insert(GetProxied<SpriteDX*>(pSprite));
+	void ViewportDX::AddSprite(SpriteDX * pSprite) {
+		m_stSprits.insert(pSprite);
 	}
 
-	void ViewportDX::RemoveSprite(Sprite * pSprite)
-	{
-		m_stSprits.erase(GetProxied<SpriteDX*>(pSprite));
+	void ViewportDX::RemoveSprite(SpriteDX * pSprite) {
+		m_stSprits.insert(pSprite);
 	}
+
+	//void ViewportDX::AddSprite(Sprite * pSprite)
+	//{
+	//	m_stSprits.insert(GetProxied<SpriteDX*>(pSprite));
+	//}
+
+	//void ViewportDX::RemoveSprite(Sprite * pSprite)
+	//{
+	//	m_stSprits.erase(GetProxied<SpriteDX*>(pSprite));
+	//}
 
 	bool ViewportDX::CreateViewportVertexBuffer(unsigned int nWidth, unsigned int nHeight)
 	{

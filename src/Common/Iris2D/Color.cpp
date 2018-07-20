@@ -1,23 +1,24 @@
-#include "Common.h"
-#include "AppFactory.h"
+#include "Common/Iris2D/Color.h"
+#include "Common/Iris2D/AppFactory.h"
 
 #ifdef _WIN32
 #include "DirectX/Iris2D/ColorDX.h"
-#include "..\..\..\include\Common\Iris2D\Color.h"
-#endif // _WIN32
 
+#endif // _WIN32
 
 namespace Iris2D {
 	Color::Color(IColor * pProxied) : Proxy(pProxied) {}
 
 	Color * Color::Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha) {
-		IColor* pProxied = nullptr;
+		Color* pColor = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp = ColorDX::Create(cRed, cGreen, cBlue, cAlpha);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pColor = new Color(pTmp);
+			pTmp->SetProxy(pColor);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -26,16 +27,20 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Color(pProxied);
+		return pColor;
 	}
 
 	void Color::Release(Color *& pColor) {
+		if (!pColor) {
+			return;
+		}
+
 		auto* pProxied = pColor->GetProxied();
 
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			ColorDX::Release(static_cast<ColorDX*>(pProxied));
+			ColorDX::Release(reinterpret_cast<ColorDX*&>(pProxied));
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -60,7 +65,7 @@ namespace Iris2D {
 	}
 
 	void Color::SetGreen(unsigned char cGreen) {
-		m_pProxied->SetGreen(cGreen)
+		m_pProxied->SetGreen(cGreen);
 	}
 
 	unsigned char Color::GetGreen() const {
@@ -68,15 +73,15 @@ namespace Iris2D {
 	}
 
 	void Color::SetBlue(unsigned char cBlue) {
-		m_pProxied->SetBlue(cGreen)
+		m_pProxied->SetBlue(cBlue);
 	}
 
 	unsigned char Color::GetBlue() const {
-		m_pProxied->GetBlue()
+		return m_pProxied->GetBlue();
 	}
 
 	void Color::SetAlpha(unsigned char cAlpha) {
-		m_pProxied->SetAlpha(cAlpha)
+		m_pProxied->SetAlpha(cAlpha);
 	}
 
 	unsigned char Color::GetAlpha() const {

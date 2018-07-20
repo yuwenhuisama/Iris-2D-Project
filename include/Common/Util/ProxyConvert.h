@@ -6,7 +6,7 @@
 namespace Iris2D {
 	template<typename T1, typename T2>
 	inline T1 GetProxied(T2 pProxy) {
-		return static_cast<T1*>(pProxy->GetProxied());
+		return pProxy ? static_cast<T1>(pProxy->GetProxied()) : nullptr;
 	}
 }
 

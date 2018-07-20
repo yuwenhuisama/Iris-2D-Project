@@ -5,6 +5,7 @@
 
 namespace Iris2D {
 	class IGraphics {
+	public:
 		virtual void Update(IR_PARAM_RESULT) = 0;
 		virtual void UpdateNoLock(IR_PARAM_RESULT) = 0;
 

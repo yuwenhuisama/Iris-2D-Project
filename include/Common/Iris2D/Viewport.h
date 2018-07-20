@@ -65,7 +65,7 @@ namespace Iris2D {
 		* @return 如果成功创建 Viewport ，那么将会返回该 ViewportDX 的指针，否则返回 nullptr。
 		* @see Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
 		*/
-		static ViewportDX* Create(const Rect* pRect, IR_PARAM_RESULT);
+		static Viewport* Create(const Rect* pRect, IR_PARAM_RESULT);
 
 		/**
 		* \~english

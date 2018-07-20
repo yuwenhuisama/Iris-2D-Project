@@ -1,4 +1,5 @@
-#include "Commont/Iris2D/Bitmap.h"
+#include "Common/Iris2D/Bitmap.h"
+#include "Common/Iris2D/AppFactory.h"
 
 #ifdef _WIN32
 #include "DirectX/Iris2D/BitmapDX.h"
@@ -9,13 +10,15 @@ namespace Iris2D {
 	Bitmap::Bitmap(IBitmap* pBitmap) : Proxy(pBitmap) {}
 
 	Bitmap * Bitmap::Create(const std::wstring & wstrFileName, IR_PARAM_RESULT_CT) {
-		IBitmap* pProxied = nullptr;
+		Bitmap* pBitmap = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp = BitmapDX::Create(wstrFileName, IR_PARAM);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -23,17 +26,19 @@ namespace Iris2D {
 		default:
 			break;
 		}
-		return new Bitmap(pProxied);
+		return pBitmap;
 	}
 
 	Bitmap * Bitmap::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-		IBitmap* pProxied = nullptr;
+		Bitmap* pBitmap = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp = BitmapDX::Create(nWidth, nHeight, IR_PARAM);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -41,17 +46,19 @@ namespace Iris2D {
 		default:
 			break;
 		}
-		return new Bitmap(pProxied);
+		return pBitmap;
 	}
 
 	Bitmap * Bitmap::Create(Bitmap * pSrcBitmap, IR_PARAM_RESULT_CT) {
-		IBitmap* pProxied = nullptr;
+		Bitmap* pBitmap = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp = BitmapDX::Create(pSrcBitmap, IR_PARAM);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -59,34 +66,40 @@ namespace Iris2D {
 		default:
 			break;
 		}
-		return new Bitmap(pProxied);
+		return pBitmap;
 	}
 
 	Bitmap * Bitmap::CopyFrom(Bitmap * pSrcBitmap, IR_PARAM_RESULT_CT) {
-		IBitmap* pProxied = nullptr;
+		Bitmap* pBitmap = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
+		{
 			auto pTmp = BitmapDX::CopyFrom(pSrcBitmap, IR_PARAM);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
 		}
-		return new Bitmap(pProxied);
+		return pBitmap;
 	}
 
 	void Bitmap::Release(Bitmap *& pBitmap) {
+		if (!pBitmap) {
+			return;
+		}
+
 		auto* pProxied = pBitmap->GetProxied();
 
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			BitmapDX::Release(static_cast<BitmapDX*>(pProxied));
+			BitmapDX::Release(reinterpret_cast<BitmapDX*&>(pProxied));
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -110,19 +123,19 @@ namespace Iris2D {
 		return m_pProxied->GetHeight();
 	}
 
-	bool Bitmap::Blt(unsigned int nDestX, unsigned int nDestY, const IBitmap * pSrcBitmap, const IRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
+	bool Bitmap::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
 		return m_pProxied->Blt(nDestX, nDestY, pSrcBitmap, pSrcRect, fOpacity, IR_PARAM);
 	}
 
-	bool Bitmap::StretchBlt(const IRect * pDestRect, const IBitmap * pSrcBitmap, const IRect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
+	bool Bitmap::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
 		return m_pProxied->StretchBlt(pDestRect, pSrcBitmap, pSrcRect, fOpacity, IR_PARAM);
 	}
 
-	bool Bitmap::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const IColor * pColor, IR_PARAM_RESULT_CT) {
-		return m_pProxied->FillRect(nX, nY, nWidth, nHeight, pColor, IR_PARAM));
+	bool Bitmap::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const Color * pColor, IR_PARAM_RESULT_CT) {
+		return m_pProxied->FillRect(nX, nY, nWidth, nHeight, pColor, IR_PARAM);
 	}
 
-	bool Bitmap::FillRect(const IRect * pRect, const IColor * pColor, IR_PARAM_RESULT_CT) {
+	bool Bitmap::FillRect(const Rect * pRect, const Color * pColor, IR_PARAM_RESULT_CT) {
 		return m_pProxied->FillRect(pRect, pColor, IR_PARAM);
 	}
 
@@ -134,7 +147,7 @@ namespace Iris2D {
 		return m_pProxied->ClearRect(nX, nY, nWidth, nHeight, IR_PARAM);
 	}
 
-	bool Bitmap::ClearRect(const IRect * pRect, IR_PARAM_RESULT_CT) {
+	bool Bitmap::ClearRect(const Rect * pRect, IR_PARAM_RESULT_CT) {
 		return m_pProxied->ClearRect(pRect, IR_PARAM);
 	}
 
@@ -142,8 +155,8 @@ namespace Iris2D {
 		return m_pProxied->GetPixel(nX, nY, IR_PARAM);
 	}
 
-	bool Bitmap::SetPixel(unsigned int nX, unsigned int nY, const IColor * pColor, IR_PARAM_RESULT_CT) {
-		return m_pProxied->SetPixel(nX, nY, IR_PARAM);
+	bool Bitmap::SetPixel(unsigned int nX, unsigned int nY, const Color * pColor, IR_PARAM_RESULT_CT) {
+		return m_pProxied->SetPixel(nX, nY, pColor, IR_PARAM);
 	}
 
 	bool Bitmap::SaveToFile(const std::wstring & wstrFilePath) {
@@ -154,7 +167,7 @@ namespace Iris2D {
 		return m_pProxied->HueChange(fHue, IR_PARAM);
 	}
 
-	void Bitmap::SetFont(IFont *& pFont) {
+	void Bitmap::SetFont(Font *& pFont) {
 		m_pProxied->SetFont(pFont);
 	}
 
@@ -162,15 +175,15 @@ namespace Iris2D {
 		return m_pProxied->GetFont();
 	}
 
-	unsigned int Bitmap::TextSize(const IFont * pFont, const std::wstring & wstrText, IR_PARAM_RESULT_CT) {
+	unsigned int Bitmap::TextSize(const Font * pFont, const std::wstring & wstrText, IR_PARAM_RESULT_CT) {
 		return m_pProxied->TextSize(pFont, wstrText, IR_PARAM);
 	}
 
 	bool Bitmap::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT_CT) {
-		return m_pProxied->DrawText(nX, nY, nWidth, nHeight, wstrText, nAlign, IR_PARAMW);
+		return m_pProxied->DrawText(nX, nY, nWidth, nHeight, wstrText, nAlign, IR_PARAM);
 	}
 
-	bool Bitmap::DrawText(const IRect * pRect, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT_CT) {
+	bool Bitmap::DrawText(const Rect * pRect, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT_CT) {
 		return m_pProxied->DrawText(pRect, wstrText, nAlign, IR_PARAM);
 	}
 

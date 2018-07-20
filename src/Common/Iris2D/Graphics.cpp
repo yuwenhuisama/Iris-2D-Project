@@ -2,7 +2,7 @@
 
 namespace Iris2D {
 
-	void Graphics::Instance() {
+	Graphics* Graphics::Instance() {
 		static Graphics graph;
 		return &graph;
 	}

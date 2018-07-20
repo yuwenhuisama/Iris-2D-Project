@@ -16,7 +16,6 @@ namespace Iris2D
 	class Rect;
 	class Color;
 	class Viewport;
-	typedef ColorDX ToneDX;
 
 	__declspec(align(16))
 	class ViewportDX : public IViewport, public Proxied<Viewport>
@@ -238,8 +237,11 @@ namespace Iris2D
 		bool RenderSprite();
 		bool RenderSelf();
 
-		void AddSprite(Sprite* pSprite);
-		void RemoveSprite(Sprite* pSprite);
+		void AddSprite(SpriteDX* pSprite);
+		void RemoveSprite(SpriteDX* pSprite);
+
+		//void AddSprite(Sprite* pSprite);
+		//void RemoveSprite(Sprite* pSprite);
 
 	private:
 		bool CreateViewportVertexBuffer(unsigned int nWidth, unsigned int nHeight);

@@ -3,6 +3,8 @@
 #include "Common/Iris2D/Proxied.h"
 #include "Common/Iris2D/Color.h"
 
+#include "Common/Util/ProxyConvert.h"
+
 #ifdef _WIN32
 #include "DirectX/Iris2D/FontDX.h"
 #endif // _WIN32
@@ -52,21 +54,20 @@ namespace Iris2D {
 	}
 
 	void Font::SetColor(Color *& pColor) {
-		auto pProxied = pColor->GetProxied();
-		m_pProxied->SetColor(pProxied);
+		m_pProxied->SetColor(pColor);
 	}
 
 	Color * Font::GetColor() const {
-		return static_cast<Proxied<Color>*>(m_pProxied->GetColor())->GetProxy();
+		return m_pProxied->GetColor();
 	}
 
 	bool Font::Existed(const std::wstring & wstrFontName) {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::Existed(wstrFontName);
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
@@ -76,13 +77,15 @@ namespace Iris2D {
 	}
 
 	Font * Font::Create(const std::wstring & wstrFontName) {
-		IFont* pProxied = nullptr;
+		Font* pFont = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
+		{
 			auto pTmp= FontDX::Create(wstrFontName);
-			pTmp->SetProxy(this);
-			pProxied = pTmp;
+			pFont = new Font(pTmp);
+			pFont->SetProxied(pTmp);
+		}
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -91,16 +94,20 @@ namespace Iris2D {
 			break;
 		}
 
-		return new Font(pProxied);
+		return pFont;
 	}
 
 	void Font::Release(Font *& pFont) {
-		auto* pProxied = pFont->GetProxied();
+		if (!pFont) {
+			return;
+		}
+
+		auto pProxied = pFont->GetProxied();
 
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
-			FontDX::Release(static_cast<FontDX*>(pProxied));
+			FontDX::Release(reinterpret_cast<FontDX*&>(pProxied));
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
@@ -111,18 +118,18 @@ namespace Iris2D {
 
 		// Delete proxy object when proxied object has been released.
 		if (!pProxied) {
-			delete pColor;
-			pColor = nullptr;
+			delete pFont;
+			pFont = nullptr;
 		}
 	}
 
 	std::wstring Font::GetDefaultName() {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::GetDefaultName();
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
@@ -133,10 +140,10 @@ namespace Iris2D {
 	unsigned int Font::GetDefaultSize() {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::GetDefaultSize();
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
@@ -147,10 +154,10 @@ namespace Iris2D {
 	bool Font::GetDefaultBold() {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::GetDefaultBold();
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
@@ -161,10 +168,10 @@ namespace Iris2D {
 	bool Font::GetDefaultItalic() {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::GetDefaultItalic();
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
@@ -175,10 +182,10 @@ namespace Iris2D {
 	bool Font::GetDefaultShadow() {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::GetDefaultShadow();
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
@@ -189,10 +196,10 @@ namespace Iris2D {
 	Color * Font::GetDefaultColor() {
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
-		case: ApiType::DirectX :
+		case ApiType::DirectX:
 			return FontDX::GetDefaultColor();
 #endif // _WIN32
-		case: ApiType::OpenGL :
+		case ApiType::OpenGL:
 			break;
 		default:
 			break;
