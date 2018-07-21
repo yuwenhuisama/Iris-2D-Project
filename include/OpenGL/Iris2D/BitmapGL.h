@@ -6,8 +6,14 @@
 #include "Common/Util/RefCounter.h"
 
 namespace Iris2D {
-	class Bitmap : public RefCounter, public IBitmap, public Proxied<Bitmap> {
+	class BitmapGL : public RefCounter, public IBitmap, public Proxied<Bitmap> {
 	public:
+		static BitmapGL* Create(const std::wstring& wstrFileName, IR_PARAM_RESULT);
+		static BitmapGL* Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
+		static BitmapGL* Create(Bitmap* pSrcBitmap, IR_PARAM_RESULT);
+		static BitmapGL* CopyFrom(Bitmap* pSrcBitmap, IR_PARAM_RESULT);
+
+		static void Release(BitmapGL*& pBitmap);
 
 	private:
 		Font* m_pFont = nullptr;
