@@ -1,6 +1,7 @@
 #include "OpenGL/Iris2D/AppGL.h"
 #include "OpenGL/Iris2D/OpenGLHelper.h"
 #include "Common/Iris2D/AppStartupInfo.h"
+#include "OpenGL/OpenGLUtil/TextureGL.h"
 
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
@@ -33,6 +34,10 @@ namespace Iris2D {
 		}
 
 		if (!pHelper->InitializeWindow(pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, pInfo->m_wstrTitle)) {
+			return false;
+		}
+
+		if (!TextureGL::Initialize()) {
 			return false;
 		}
 

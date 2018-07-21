@@ -355,7 +355,7 @@ namespace Iris2D
 	ViewportDX::~ViewportDX()
 	{
 		TextureDX::Release(m_pTexture);
-		SafeCOMRelease(m_pTexture);
+		// SafeCOMRelease(m_pTexture);
 
 		Rect::Release(m_pSrcRect);
 		Color::Release(m_pTone);

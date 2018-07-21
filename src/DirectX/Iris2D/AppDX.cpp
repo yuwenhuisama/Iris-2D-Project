@@ -120,11 +120,11 @@ namespace Iris2D
 	{
 		D3DResourceManager::Instance()->Release();
 		D2DResourceManager::Instance()->Release();
-		//TextureDX::Release();
-		//ViewportDX::ReleaseGlobalViewport();
-		//GraphicsDX::Instance()->Release();
-		//SpritePixelShader::Instance()->Release();
-		//SpriteVertexShader::Instance()->Release();
+		TextureDX::Release();
+		ViewportDX::ReleaseGlobalViewport();
+		GraphicsDX::Instance()->Release();
+		SpritePixelShader::Instance()->Release();
+		SpriteVertexShader::Instance()->Release();
 	}
 
 	bool ApplicationDX::IsUninitialized() const

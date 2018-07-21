@@ -23,6 +23,10 @@ namespace Iris2D {
 		Rect* m_pSrcRect = nullptr;
 		Tone* m_pTone = nullptr;
 
+		float m_fX = 0.0f;
+		float m_fY = 0.0f;
+		float m_fZ = 1.0f;
+
 	public:
 		// Í¨¹ý IViewport ¼Ì³Ð
 		virtual void SetOX(float fOX) override;

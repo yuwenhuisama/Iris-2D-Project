@@ -14,6 +14,8 @@
 #include <glew.h>
 #include <glfw3.h>
 
+typedef unsigned int GLUnit;
+
 /*
 
 #define BEGIN_SAFE_LOOP() \

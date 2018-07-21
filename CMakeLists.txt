@@ -63,6 +63,7 @@ find_package(OpenGL REQUIRED)
 aux_source_directory(./src DIR_SRCS_MAIN)
 aux_source_directory(./src/OpenGL DIR_SRCS_MAIN_OPENGL)
 aux_source_directory(./src/OpenGL/Iris2D DIR_SRCS_MAIN_OPENGL_IRIS2D)
+aux_source_directory(./src/OpenGL/Util DIR_SRCS_MAIN_OPENGL_UTIL)
 
 aux_source_directory(./src/DirectX/Iris2D DIR_SRCS_MAIN_DIRECTX_IRIS2D)
 aux_source_directory(./src/DirectX/Iris2D/Shaders DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER)
@@ -79,6 +80,7 @@ add_executable(main
         
 		${DIR_SRCS_MAIN_OPENGL}
         ${DIR_SRCS_MAIN_OPENGL_IRIS2D}
+		${DIR_SRCS_MAIN_OPENGL_UTIL}
 		
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER}

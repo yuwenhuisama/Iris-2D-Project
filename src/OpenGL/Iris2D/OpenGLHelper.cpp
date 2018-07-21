@@ -3,6 +3,7 @@
 //
 
 #include "OpenGL/Iris2D/OpenGLHelper.h"
+#include "OpenGL/Common.h"
 
 #include <iostream>
 #include <codecvt>
@@ -15,10 +16,6 @@
 #include <glfw3native.h>
 #include <Windows.h>
 #endif // _WIN32
-
-
-#define STB_IMAGE_IMPLEMENTATION
-#include "OpenGL/OpenGLUtil/stb_image.h"
 
 namespace Iris2D {
 	OpenGLHelper * OpenGLHelper::Instance() {
@@ -35,9 +32,6 @@ namespace Iris2D {
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-
-		stbi_set_flip_vertically_on_load(true);
-
 		return true;
 	}
 

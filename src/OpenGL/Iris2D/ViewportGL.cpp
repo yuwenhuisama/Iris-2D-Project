@@ -6,6 +6,7 @@ namespace Iris2D {
 	ViewportGL * ViewportGL::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
 		return nullptr;
 	}
+
 	ViewportGL * ViewportGL::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
 		return nullptr;
 	}
