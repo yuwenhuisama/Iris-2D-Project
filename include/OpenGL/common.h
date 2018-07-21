@@ -5,8 +5,8 @@
 #ifndef _H_IRISCOMMON_GL_
 #define _H_IRISCOMMON_GL_
 
-#include "Common/Iris2DCompileConfigure.h"
-#include "Common/Iris2DUtil/IrisResult.h"
+#include "Common/CompileConfigure.h"
+#include "Common/Util/Result.h"
 
 #include <string>
 #include <unordered_set>

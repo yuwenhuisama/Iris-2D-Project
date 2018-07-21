@@ -1,5 +1,8 @@
 #include "Common/Iris2D/AppFactory.h"
 
+#include "OpenGL/Iris2D/AppGL.h"
+#include "OpenGL/Iris2D/GraphicsGL.h"
+
 #ifdef _WIN32
 #include "DirectX/Iris2D/AppDX.h"
 #include "DirectX/Iris2D/GraphicsDX.h"
@@ -27,7 +30,11 @@ namespace Iris2D {
 
 	void AppFactory::InitApiType(ApiType eType) {
 		if (eType == ApiType::OpenGL) {
+			sm_pApp = Application::Instance();
+			sm_pApp->SetProxied(ApplicationGL::Instance());
 
+			sm_pGraphics = Graphics::Instance();
+			sm_pGraphics->SetProxied(GraphicsGL::Instance());
 		}
 #ifdef _WIN32
 		else if (eType == ApiType::DirectX) {

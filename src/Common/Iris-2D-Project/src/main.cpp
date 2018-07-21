@@ -7,7 +7,6 @@ bool GameCallBack() {
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
 
-	/*
 	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
 	//pBitmap->HueChange(90.0f);
@@ -51,7 +50,6 @@ bool GameCallBack() {
 	//pSprite->SetSrcRect(RectDX::Create(30.0f, 30.0f, 300.0f, 600.0f));
 	//pSprite->SetTone(ToneDX::Create(128, 0, 128, 0));
 
-	*/
 	auto angle = 0.0f;
 	while (!pApp->IsQuited()) {
 		//pSprite->SetAngle(angle += 2.0f);
@@ -61,10 +59,8 @@ bool GameCallBack() {
 	//BEGIN_SAFE_LOOP()
 	//	pSprite->SetAngle(angle += 1.0f);
 	//END_SAFE_LOOP()
-
-	/*
 	Sprite::Release(pSprite);
-	*/
+
 
 	return true;
 }
@@ -77,7 +73,7 @@ int main(int argc, char* argv[]) {
 	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
 
 	// auto pApp = ApplicationDX::Instance(); 
-	AppFactory::InitApiType(ApiType::OpenGL);
+	AppFactory::InitApiType(ApiType::DirectX);
 	auto pApp = AppFactory::GetApplication();
 
 	if (!pApp->Initialize(&iasiStartInfo)) {
