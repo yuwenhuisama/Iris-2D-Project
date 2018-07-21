@@ -6,7 +6,8 @@
 #define _H_COMMON_C_
 
 #include "Common/CompileConfigure.h"
-// #include "OpenGL/IrisCommon.h"
+
+#include "OpenGL/Common.h"
 
 #ifdef _WIN32
 #include "DirectX/Common.h"

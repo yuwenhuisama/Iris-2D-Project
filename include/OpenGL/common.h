@@ -2,8 +2,8 @@
 // Created by Huisama on 2018/6/26.
 //
 
-#ifndef _H_IRISCOMMON_GL_
-#define _H_IRISCOMMON_GL_
+#ifndef _H_COMMON_GL_
+#define _H_COMMON_GL_
 
 #include "Common/CompileConfigure.h"
 #include "Common/Util/Result.h"
@@ -13,6 +13,8 @@
 
 #include <glew.h>
 #include <glfw3.h>
+
+/*
 
 #define BEGIN_SAFE_LOOP() \
 	auto __pGraphics__ = IrisGraphics::Instance(); \
@@ -29,5 +31,7 @@
 		} \
 		__pGraphics__->UpdateNoLock(); \
 	}
+
+*/
 
 #endif

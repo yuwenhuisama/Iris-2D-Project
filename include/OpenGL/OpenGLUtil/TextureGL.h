@@ -3,7 +3,9 @@
 
 namespace Iris2D {
 	class TextureGL {
-
+	public:
+		static TextureGL* Create(const std::wstring& wstrTexturePath);
+		static TextureGL* Create(unsigned int nWidth, unsigned int nHeight);
 	};
 }
 

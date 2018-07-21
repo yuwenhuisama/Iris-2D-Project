@@ -37,6 +37,7 @@
 //#pragma comment(lib, "Dxguid.lib")
 //#endif
 
+/*
 #define BEGIN_SAFE_LOOP() \
 	auto __pGraphics__ = GraphicsDX::Instance(); \
 	auto __pApp__ = ApplicationDX::Instance(); \
@@ -52,7 +53,7 @@
 		} \
 		__pGraphics__->UpdateNoLock(); \
 	}
-
+*/
 
 namespace Iris2D {
 	template <class T>

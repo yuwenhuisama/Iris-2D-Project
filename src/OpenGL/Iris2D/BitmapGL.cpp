@@ -9,11 +9,11 @@ namespace Iris2D {
 		return nullptr;
 	}
 
-	BitmapGL * BitmapGL::Create(BitmapGL * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
+	BitmapGL * BitmapGL::Create(Bitmap * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
 		return nullptr;
 	}
 
-	BitmapGL * BitmapGL::CopyFrom(BitmapGL * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
+	BitmapGL * BitmapGL::CopyFrom(Bitmap * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
 		return nullptr;
 	}
 
@@ -28,11 +28,11 @@ namespace Iris2D {
 		return 0;
 	}
 
-	bool BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const BitmapGL * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
+	bool BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
 		return false;
 	}
 
-	bool BitmapGL::StretchBlt(const Rect * pDestRect, const BitmapGL * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
+	bool BitmapGL::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
 		return false;
 	}
 

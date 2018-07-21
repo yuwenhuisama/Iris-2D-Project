@@ -6,6 +6,7 @@
 
 namespace Iris2D {
 	class Viewport;
+	class Sprite;
 
 	class SpriteGL : public ISprite, public Proxied<Sprite> {
 	private:

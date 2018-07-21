@@ -1,9 +1,10 @@
-#include "DirectX/Iris2D/BitmapDX.h"
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/Color.h"
 #include "Common/Iris2D/Font.h"
 #include "Common/Iris2D/Bitmap.h"
 
+#include "DirectX/Common.h"
+#include "DirectX/Iris2D/BitmapDX.h"
 #include "DirectX/Iris2D/ColorDX.h"
 #include "DirectX/Iris2D/FontDX.h"
 

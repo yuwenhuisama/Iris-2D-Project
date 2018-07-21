@@ -1,12 +1,13 @@
 #ifndef _H_BITMAP_DX_
 #define _H_BITMAP_DX_
 
-#include "Common/Common.h"
 #include "Common/Iris2D/Proxied.h"
 #include "Common/Util/RefCounter.h"
 #include "Common/Iris2D/IBitmap.h"
 
 #undef DrawText
+
+struct IDWriteTextFormat;
 
 namespace Iris2D
 {
