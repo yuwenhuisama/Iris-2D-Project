@@ -12,13 +12,9 @@
 
 # Build results
 [Dd]ebug/
-!**/lib/Debug/
-!**/lib/Debug/DirectXTex.lib
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
-!**/lib/Release/
-!**/lib/Release/DirectXTex.lib
 x64/
 x86/
 build/
@@ -216,3 +212,24 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 Iris 2D Cerise-A.VC.opendb
+
+!lib/x86
+!lib/x64
+!lib/x86/Release
+!lib/x86/Debug
+!lib/x64/Release
+!lib/x64/Debug
+
+!lib/glfw/x86
+!lib/glfw/x64
+!lib/glfw/x86/Debug
+!lib/glfw/x86/Release
+!lib/glfw/x64/Debug
+!lib/glfw/x64/Release
+
+!lib/glew/x86
+!lib/glew/x64
+!lib/glew/x86/Debug
+!lib/glew/x86/Release
+!lib/glew/x64/Debug
+!lib/glew/x64/Release
