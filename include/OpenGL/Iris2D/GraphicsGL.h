@@ -4,9 +4,15 @@
 #include "Common/Iris2D/IGraphics.h"
 #include "Common/Iris2D/Proxied.h"
 
+#include <unordered_set>
+
 namespace Iris2D {
+	class ViewportGL;
 	class Graphics;
 	class GraphicsGL : public IGraphics, public Proxied<Graphics> {
+	private:
+		std::unordered_set<ViewportGL*> m_stViewports;
+
 	public:
 		static GraphicsGL* Instance();
 
@@ -32,6 +38,9 @@ namespace Iris2D {
 		virtual float GetFrameRate() const override;
 		virtual void Release() override;
 		virtual float GetMsPerUpdate() override;
+
+		void AddViewport(ViewportGL*& pViewport);
+		void RemoveViewport(ViewportGL*& pViewport);
 
 	private:
 		GraphicsGL() = default;

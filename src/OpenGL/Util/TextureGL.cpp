@@ -12,10 +12,29 @@ namespace Iris2D {
 			return pObject;
 		}
 
+		delete pObject;
 		return nullptr;
 	}
 
 	TextureGL * TextureGL::Create(unsigned int nWidth, unsigned int nHeight) {
+		auto pObject = new TextureGL();
+
+		if (!pObject->CreateBlankTexture(nWidth, nHeight)) {
+			return pObject;
+		}
+
+		delete pObject;
+		return nullptr;
+	}
+
+	TextureGL * TextureGL::CreateFrameBuffer(unsigned int nWidth, unsigned int nHeight) {
+		auto pObject = new TextureGL();
+
+		if (!pObject->AsFrameBuffer(nWidth, nHeight)) {
+			return pObject;
+		}
+
+		delete pObject;
 		return nullptr;
 	}
 
@@ -47,6 +66,14 @@ namespace Iris2D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	unsigned int TextureGL::GetWidth() const {
+		return m_nWidth;
+	}
+
+	unsigned int TextureGL::GetHeight() const {
+		return m_nHeight;
+	}
+
 	bool TextureGL::LoadTexture(const std::wstring & wstrTexturePath) {
 		// load texture data
 		using convert_type = std::codecvt_utf8<wchar_t>;
@@ -75,6 +102,9 @@ namespace Iris2D {
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
+		m_nWidth = nWidth;
+		m_nHeight = nHeight;
+
 		return true;
 	}
 
@@ -88,10 +118,53 @@ namespace Iris2D {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		m_nWidth = nWidth;
+		m_nHeight = nHeight;
+		return true;
+	}
+
+	bool TextureGL::AsFrameBuffer(unsigned int nWidth, unsigned int nHeight) {
+
+		// generate frame buffer
+		GLuint FBO = 0;
+		glGenFramebuffers(1, &FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+		// generate texture
+		GLuint nTexture;
+		glGenTextures(1, &nTexture);
+		glBindTexture(GL_TEXTURE_2D, nTexture);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, nTexture, 0);
+
+		m_nTextureID = nTexture;
+
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			return false;
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+		// restore
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 		return true;
 	}
 
 	TextureGL::~TextureGL() {
-		glDeleteTextures(1, &this->m_nTextureID);
+		if (m_nTextureID) {
+			glDeleteTextures(1, &m_nTextureID);
+		}
+
+		if (m_nFBO) {
+			glDeleteFramebuffers(1, &m_nFBO);
+		}
 	}
 }

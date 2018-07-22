@@ -1,0 +1,7 @@
+#ifndef _H_SPRITE_SHADER_BUFFERS_GL_
+#define _H_SPRITE_SHADER_BUFFERS_GL_
+
+namespace Iris2D {
+}
+
+#endif // !_H_SPRITE_SHADER_BUFFERS_GL_

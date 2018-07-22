@@ -13,6 +13,10 @@ namespace Iris2D {
 		Bitmap* m_pBitmap = nullptr;
 		Rect* m_pSrcRect = nullptr;
 
+		GLuint m_nVBO = 0;
+		GLuint m_nVAO = 0;
+		GLuint m_nEBO = 0;
+
 	public:
 		SpriteGL * Create(Viewport* pViewport = nullptr);
 		static void Release(SpriteGL*& pSprite);
@@ -64,6 +68,10 @@ namespace Iris2D {
 		virtual Tone * GetTone() const override;
 
 		virtual void Update() override;
+
+	public:
+		bool CreateVertexBuffer();
+		bool Render();
 	};
 }
 

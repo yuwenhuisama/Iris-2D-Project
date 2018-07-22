@@ -1,12 +1,35 @@
 #include "OpenGL/Iris2D/BitmapGL.h"
+#include "OpenGL/OpenGLUtil/TextureGL.h"
 
 namespace Iris2D {
 	BitmapGL * BitmapGL::Create(const std::wstring & wstrFileName, IR_PARAM_RESULT_CT) {
-		return nullptr;
+		auto pTexture = TextureGL::Create(wstrFileName);
+
+		if (!pTexture) {
+			return nullptr;
+		}
+
+		auto pBitmap = new BitmapGL();
+		pBitmap->IncreamRefCount();
+
+		pBitmap->m_pTexture = pTexture;
+
+		return pBitmap;
 	}
 
 	BitmapGL * BitmapGL::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-		return nullptr;
+		auto pTexture = TextureGL::Create(nWidth, nHeight);
+
+		if (!pTexture) {
+			return nullptr;
+		}
+
+		auto pBitmap = new BitmapGL();
+		pBitmap->IncreamRefCount();
+
+		pBitmap->m_pTexture = pTexture;
+
+		return pBitmap;
 	}
 
 	BitmapGL * BitmapGL::Create(Bitmap * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
@@ -17,15 +40,25 @@ namespace Iris2D {
 		return nullptr;
 	}
 
-	void BitmapGL::Release(BitmapGL *& pBitmapGL) {
+	void BitmapGL::Release(BitmapGL *& pBitmap) {
+
+		if (!pBitmap) {
+			return;
+		}
+
+		pBitmap->DecreamRefCount();
+		if (pBitmap->GetRefCount() == 0) {
+			delete pBitmap;
+			pBitmap = nullptr;
+		}
 	}
 
 	unsigned int BitmapGL::GetWidth() const {
-		return 0;
+		return m_pTexture->GetWidth();
 	}
 
 	unsigned int BitmapGL::GetHeight() const {
-		return 0;
+		return m_pTexture->GetHeight();
 	}
 
 	bool BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
@@ -92,6 +125,10 @@ namespace Iris2D {
 	}
 
 	bool BitmapGL::Dispose() {
-		return false;
+		TextureGL::Release(m_pTexture);
+		return true;
+	}
+	TextureGL * BitmapGL::GetTexture() {
+		return m_pTexture;
 	}
 }

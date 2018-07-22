@@ -54,6 +54,10 @@ namespace Iris2D
 			return;
 		}
 
+		if (!pBitmap) {
+			return;
+		}
+
 		Bitmap::Release(m_pBitmap);
 		GetProxied<BitmapDX*>(pBitmap)->IncreamRefCount();
 

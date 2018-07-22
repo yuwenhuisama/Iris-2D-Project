@@ -6,6 +6,7 @@
 #include "Common/Util/RefCounter.h"
 
 namespace Iris2D {
+	class TextureGL;
 	class BitmapGL : public RefCounter, public IBitmap, public Proxied<Bitmap> {
 	public:
 		static BitmapGL* Create(const std::wstring& wstrFileName, IR_PARAM_RESULT);
@@ -17,6 +18,7 @@ namespace Iris2D {
 
 	private:
 		Font* m_pFont = nullptr;
+		TextureGL* m_pTexture = nullptr;
 
 	public:
 		// Í¨¹ý IBitmap ¼Ì³Ð
@@ -39,6 +41,8 @@ namespace Iris2D {
 		virtual bool DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT) override;
 		virtual bool DrawText(const Rect * pRect, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT) override;
 		virtual bool Dispose() override;
+
+		TextureGL* GetTexture();
 	};
 }
 

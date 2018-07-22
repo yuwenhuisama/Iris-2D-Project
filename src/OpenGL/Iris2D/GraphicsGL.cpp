@@ -78,4 +78,12 @@ namespace Iris2D {
 	float GraphicsGL::GetMsPerUpdate() {
 		return 0.0f;
 	}
+
+	void GraphicsGL::AddViewport(ViewportGL*& pViewport) {
+		m_stViewports.insert(pViewport);
+	}
+
+	void GraphicsGL::RemoveViewport(ViewportGL* & pViewport) {
+		m_stViewports.erase(pViewport);
+	}
 }
