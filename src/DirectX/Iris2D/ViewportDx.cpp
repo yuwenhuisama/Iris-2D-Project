@@ -62,10 +62,9 @@ namespace Iris2D
 			return;
 		}
 
-		GraphicsDX::Instance()->RemoveViewport(pViewport);
-
 		if (GetProxied<ViewportDX*>(sm_pGlobalViewport) != pViewport) {
 			GetProxied<ViewportDX*>(sm_pGlobalViewport)->m_stSprits.insert(pViewport->m_stSprits.begin(), pViewport->m_stSprits.end());
+			GraphicsDX::Instance()->RemoveViewport(pViewport);
 		}
 
 		delete pViewport;

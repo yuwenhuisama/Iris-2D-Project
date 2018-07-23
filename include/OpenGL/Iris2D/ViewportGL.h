@@ -27,7 +27,7 @@ namespace Iris2D {
 		bool InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight);
 		bool ReleaseGlobalViewport();
 
-		Viewport* GetGlobalViewport();
+		static Viewport* GetGlobalViewport();
 
 	private:
 		static Viewport* sm_pGlobalViewport;
@@ -58,6 +58,10 @@ namespace Iris2D {
 		virtual Rect * GetSrcRect() const override;
 		virtual void SetTone(Tone *& pTone) override;
 		virtual Tone * GetTone() const override;
+
+	public:
+		void RenderSprites();
+		void Render();
 
 	private:
 		void AddSprite(SpriteGL*& pSprite);

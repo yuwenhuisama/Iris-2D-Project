@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(include)
 
 set(CompileType "Debug")
-set(CompileArchitecture "x86")
+set(CompileArchitecture "x64")
 
 if(WIN32)
 	set(GLEW_H E:/OpenMetalMax/Iris-2D-Project/lib/glew/include/GL)
@@ -63,6 +63,7 @@ find_package(OpenGL REQUIRED)
 aux_source_directory(./src DIR_SRCS_MAIN)
 aux_source_directory(./src/OpenGL DIR_SRCS_MAIN_OPENGL)
 aux_source_directory(./src/OpenGL/Iris2D DIR_SRCS_MAIN_OPENGL_IRIS2D)
+aux_source_directory(./src/OpenGL/Iris2D/Shaders DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER)
 aux_source_directory(./src/OpenGL/Util DIR_SRCS_MAIN_OPENGL_UTIL)
 
 aux_source_directory(./src/DirectX/Iris2D DIR_SRCS_MAIN_DIRECTX_IRIS2D)
@@ -80,6 +81,7 @@ add_executable(main
         
 		${DIR_SRCS_MAIN_OPENGL}
         ${DIR_SRCS_MAIN_OPENGL_IRIS2D}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_OPENGL_UTIL}
 		
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
@@ -95,10 +97,9 @@ add_executable(main
         
 		${DIR_SRCS_MAIN_OPENGL}
         ${DIR_SRCS_MAIN_OPENGL_IRIS2D}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
+		${DIR_SRCS_MAIN_OPENGL_UTIL}
 
-		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
-		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER}
-		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL}
         ${DIR_SRCS_COMMON_IRIS2D}
         ${DIR_SRCS_COMMON_IRIS2D_UTIL}
 		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}

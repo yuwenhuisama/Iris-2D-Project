@@ -21,7 +21,7 @@ namespace Iris2D {
 		SpriteGL * Create(Viewport* pViewport = nullptr);
 		static void Release(SpriteGL*& pSprite);
 
-		static void ForceRelease(SpriteGL*& pSprite);
+		static void ForceRelease(SpriteGL* pSprite);
 
 	public:
 		// Í¨¹ý ISprite ¼Ì³Ð

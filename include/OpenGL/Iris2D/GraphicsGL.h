@@ -42,6 +42,8 @@ namespace Iris2D {
 		void AddViewport(ViewportGL*& pViewport);
 		void RemoveViewport(ViewportGL*& pViewport);
 
+		bool Intialize();
+
 	private:
 		GraphicsGL() = default;
 		~GraphicsGL() = default;

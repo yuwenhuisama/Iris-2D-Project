@@ -2,6 +2,8 @@
 #include "OpenGL/Iris2D/OpenGLHelper.h"
 #include "OpenGL/Common.h"
 
+#include "OpenGL/Iris2D/ViewportGL.h"
+
 namespace Iris2D {
 	GraphicsGL* GraphicsGL::Instance() {
 		static GraphicsGL graphics;
@@ -11,6 +13,14 @@ namespace Iris2D {
 	void GraphicsGL::Update(IR_PARAM_RESULT_CT) {
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		for (auto& pViewport : m_stViewports) {
+			pViewport->RenderSprites();
+		}
+
+		for (auto& pViewport : m_stViewports) {
+			pViewport->Render();
+		}
 
 		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 		glfwPollEvents();
@@ -85,5 +95,9 @@ namespace Iris2D {
 
 	void GraphicsGL::RemoveViewport(ViewportGL* & pViewport) {
 		m_stViewports.erase(pViewport);
+	}
+
+	bool GraphicsGL::Intialize() {
+		return true;
 	}
 }

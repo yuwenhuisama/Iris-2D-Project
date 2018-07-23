@@ -8,6 +8,10 @@
 #include "OpenGL/OpenGLUtil/ViewportVertexGL.h"
 
 #include "OpenGL/OpenGLUtil/TextureGL.h"
+#include "OpenGL/Iris2D/GraphicsGL.h"
+#include "OpenGL/Iris2D/SpriteGL.h"
+
+#include "Common/Util/ProxyConvert.h"
 
 
 namespace Iris2D {
@@ -20,6 +24,8 @@ namespace Iris2D {
 			delete pViewport;
 			return nullptr;
 		}
+
+		GraphicsGL::Instance()->AddViewport(pViewport);
 
 		pViewport->m_fX = fX;
 		pViewport->m_fY = fY;
@@ -36,11 +42,31 @@ namespace Iris2D {
 			return;
 		}
 
+		GraphicsGL::Instance()->RemoveViewport(pViewport);
+
+		if (pViewport != GetProxied<ViewportGL*>(sm_pGlobalViewport)) {
+			GraphicsGL::Instance()->RemoveViewport(pViewport);
+			GetProxied<ViewportGL*>(sm_pGlobalViewport)->m_stSprites.insert(pViewport->m_stSprites.begin(), pViewport->m_stSprites.end());
+		}
+
 		delete pViewport;
 		pViewport = nullptr;
 	}
 
 	void ViewportGL::ForceRelease(ViewportGL *& pViewport) {
+		if (!pViewport) {
+			return;
+		}
+
+		for (auto& pSprite : pViewport->m_stSprites) {
+			SpriteGL::ForceRelease(pSprite);
+		}
+
+		auto pProxy = pViewport->GetProxy();
+		Viewport::Release(pProxy);
+
+		delete pViewport;
+		pViewport = nullptr;
 	}
 
 	bool ViewportGL::InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight) {
@@ -82,6 +108,12 @@ namespace Iris2D {
 
 	Tone * ViewportGL::GetTone() const {
 		return nullptr;
+	}
+
+	void ViewportGL::RenderSprites() {
+	}
+
+	void ViewportGL::Render() {
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {

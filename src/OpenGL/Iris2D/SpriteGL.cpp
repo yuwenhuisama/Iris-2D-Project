@@ -2,7 +2,10 @@
 #include "OpenGL/Iris2D/SpriteGL.h"
 #include "OpenGL/Iris2D/BitmapGL.h"
 #include "Common/Iris2D/Viewport.h"
+#include "Common/Iris2D/Sprite.h"
 #include <glm/glm.hpp>
+
+#include "Common/Iris2D/Bitmap.h"
 
 #include "Common/Util/ProxyConvert.h"
 
@@ -22,12 +25,15 @@ namespace Iris2D {
 		}
 	}
 
-	void SpriteGL::ForceRelease(SpriteGL *& pSprite) {
+	void SpriteGL::ForceRelease(SpriteGL * pSprite) {
+		auto pProxy = pSprite->GetProxy();;
+		Sprite::ForceRelease(pProxy);
+		delete pSprite;
 	}
 
 	void SpriteGL::SetBitmap(Bitmap *& pBitmap) {
 		if (m_pBitmap) {
-			delete m_pBitmap;
+			Bitmap::Release(m_pBitmap);
 		}
 
 		if (!pBitmap || pBitmap == m_pBitmap) {
