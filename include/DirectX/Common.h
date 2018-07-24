@@ -3,8 +3,9 @@
 
 #include "Common/CompileConfigure.h"
 #include "Common/Util/Result.h"
-#include "DxUtil/DirectXTex.h"
+// #include "DxUtil/DirectXTex.h"
 #include "DxUtil/WICTextureLoader.h"
+#include <DirectXTex.h>
 
 #include <Windows.h>
 #include <string>

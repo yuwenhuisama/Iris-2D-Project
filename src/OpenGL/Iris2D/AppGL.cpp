@@ -2,6 +2,7 @@
 #include "OpenGL/Iris2D/OpenGLHelper.h"
 #include "Common/Iris2D/AppStartupInfo.h"
 #include "OpenGL/OpenGLUtil/TextureGL.h"
+#include "OpenGL/Iris2D/GraphicsGL.h"
 
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
@@ -39,6 +40,11 @@ namespace Iris2D {
 
 		if (!TextureGL::Initialize()) {
 			return false;
+		}
+
+		if (!GraphicsGL::Instance()->Intialize()) {
+			GraphicsGL::Instance()->SetWidth(pInfo->m_nWidth);
+			GraphicsGL::Instance()->SetWidth(pInfo->m_nHeight);
 		}
 
 		m_pfGameFunc = pInfo->m_pfFunc;

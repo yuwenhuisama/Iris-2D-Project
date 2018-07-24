@@ -7,6 +7,6 @@ namespace Iris2D {
 	}
 
 	bool ViewportShaderGL::Initialize() {
-		return result = ShaderGL::Initialize("shaders/GLSL/viewport_vertex_shader.vert", "viewport_fragment_shader.frag");
+		return ShaderGL::Initialize("shaders/GLSL/viewport_vertex_shader.vert", "viewport_fragment_shader.frag");
 	}
 }

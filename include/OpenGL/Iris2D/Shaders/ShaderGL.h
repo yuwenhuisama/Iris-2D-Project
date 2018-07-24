@@ -21,7 +21,7 @@ namespace Iris2D {
 		ShaderGL() = default;
 		virtual ~ShaderGL();
 
-		void Initialize(const std::string &strVertexShaderPath, const std::string &strFragmentShaderPath);
+		virtual bool Initialize(const std::string &strVertexShaderPath, const std::string &strFragmentShaderPath);
 
 		void Use();
 		void SetBool(const std::string& strUniformName, bool bValue) const;

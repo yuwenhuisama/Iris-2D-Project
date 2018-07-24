@@ -13,6 +13,8 @@
 
 #include "Common/Util/ProxyConvert.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Iris2D {
 	Viewport* ViewportGL::sm_pGlobalViewport = nullptr;
@@ -114,6 +116,8 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::Render() {
+		// static glm::mat4 mt4Projection = glm::ortho(0, m_)
+
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {

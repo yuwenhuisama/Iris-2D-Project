@@ -267,7 +267,7 @@ namespace Iris2D
 		pTmpTexture->ReleaseSyncFromDx11Side();
 		m_pTexture->ReleaseSyncFromDx11Side();
 
-		if (FAILED(pTmpTexture)) {
+		if (FAILED(hResult)) {
 			SafeCOMRelease(pBitmap);
 			SafeCOMRelease(pBitmap2);
 			SafeCOMRelease(pEffectHueRotate);

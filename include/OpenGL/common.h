@@ -11,8 +11,8 @@
 #include <string>
 #include <unordered_set>
 
-#include <glew.h>
-#include <glfw3.h>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 typedef unsigned int GLUnit;
 

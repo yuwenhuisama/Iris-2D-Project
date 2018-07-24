@@ -54,7 +54,7 @@ namespace Iris2D {
 		return strContents;
 	}
 
-	void ShaderGL::Initialize(const std::string &strVertexShaderPath, const std::string &strFragmentShaderPath) {
+	bool ShaderGL::Initialize(const std::string &strVertexShaderPath, const std::string &strFragmentShaderPath) {
 		auto nVertexShader = this->LoadShader(strVertexShaderPath, []() -> GLuint {
 			return glCreateShader(GL_VERTEX_SHADER);
 		});
@@ -78,12 +78,16 @@ namespace Iris2D {
 		if (!nSuccess) {
 			glGetProgramInfoLog(nShaderProgram, 512, nullptr, szLog);
 			std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << szLog << std::endl;
+
+			return false;
 		}
 
 		glDeleteShader(nVertexShader);
 		glDeleteShader(nFragmentShader);
 
 		m_nID = nShaderProgram;
+
+		return true;
 	}
 
 	void ShaderGL::SetFloat4(const std::string &strUniformName, float fR, float fG, float fB, float fA) {

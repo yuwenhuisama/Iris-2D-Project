@@ -1,7 +1,7 @@
 #ifndef _H_SPRITE_SHADER_GL_
 #define _H_SPRITE_SHADER_GL_
 
-#include "ShaderGL.h";
+#include "ShaderGL.h"
 
 namespace Iris2D {
 	class SpriteShaderGL : public ShaderGL{
@@ -9,7 +9,7 @@ namespace Iris2D {
 		static SpriteShaderGL* Instance();
 
 	public:
-		bool Initialize() override;
+		bool Initialize();
 
 	public:
 		SpriteShaderGL() = default;

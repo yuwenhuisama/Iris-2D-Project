@@ -9,7 +9,7 @@ namespace Iris2D {
 		static ViewportShaderGL* Instance();
 
 	public:
-		bool Initialize() override;
+		bool Initialize();
 
 	};
 }
