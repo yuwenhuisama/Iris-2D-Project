@@ -113,11 +113,20 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::RenderSprites() {
+		//for (auto& pSprite : m_stSprites)
+		//{
+		//	pSprite->Render();
+		//}
 	}
 
 	void ViewportGL::Render() {
-		// static glm::mat4 mt4Projection = glm::ortho(0, m_)
+		static auto mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 1.0f);
+		m_pTexture->UseTextureAsFrameBuffer();
 
+		glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		m_pTexture->RestoreFrameBuffer();
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {
@@ -170,11 +179,7 @@ namespace Iris2D {
 
 		m_pTexture = TextureGL::CreateFrameBuffer(nWidth, nHeight);
 
-		if (!m_pTexture) {
-			return false;
-		}
-
-		return true;
+		return m_pTexture != nullptr;
 	}
 
 	ViewportGL::~ViewportGL() {

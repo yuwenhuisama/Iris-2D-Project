@@ -9,6 +9,7 @@ namespace Iris2D {
 	private:
 		GLUnit m_nTextureID = 0;
 		GLUnit m_nFBO = 0;
+		GLUnit m_nRBO = 0;
 
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;
@@ -24,6 +25,9 @@ namespace Iris2D {
 	public:
 		void UseTexture();
 		void UnuseTexture();
+
+		void UseTextureAsFrameBuffer();
+		void RestoreFrameBuffer();
 
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;

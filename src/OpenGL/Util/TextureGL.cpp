@@ -66,6 +66,15 @@ namespace Iris2D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	void TextureGL::UseTextureAsFrameBuffer() {
+		glBindFramebuffer(GL_FRAMEBUFFER, m_nFBO);
+	}
+
+	void TextureGL::RestoreFrameBuffer()
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
 	unsigned int TextureGL::GetWidth() const {
 		return m_nWidth;
 	}
@@ -136,7 +145,7 @@ namespace Iris2D {
 		glGenTextures(1, &nTexture);
 		glBindTexture(GL_TEXTURE_2D, nTexture);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -149,11 +158,22 @@ namespace Iris2D {
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			return false;
 
+		unsigned int RBO = 0;
+		glGenRenderbuffers(1, &RBO);
+		glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, nWidth, nHeight);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		// restore
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		m_nFBO = FBO;
+		m_nRBO = RBO;
 
 		return true;
 	}

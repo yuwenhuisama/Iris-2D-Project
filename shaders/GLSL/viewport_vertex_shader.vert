@@ -4,8 +4,11 @@ layout (location = 1) in vec2 textureCoord;
 
 out vec2 texCoord;
 
+uniform mat4 modelMat;
+uniform mat4 projectionMat;
+
 void main() {
-    gl_Position = position;
+    gl_Position = projectionMat * modelMat * position;
 
 	texCoord = textureCoord;
 }

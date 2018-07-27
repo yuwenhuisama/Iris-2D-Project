@@ -7,6 +7,6 @@ namespace Iris2D {
 	}
 
 	bool SpriteShaderGL::Initialize() {
-		return ShaderGL::Initialize("", "");
+		return ShaderGL::Initialize("shaders/glsl/sprite_vertex_shader.vert", "shaders/glsl/sprite_fragment_shader.frag");
 	}
 }
