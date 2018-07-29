@@ -13,6 +13,8 @@
 
 #include "Common/Util/ProxyConvert.h"
 
+#include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -77,7 +79,7 @@ namespace Iris2D {
 	}
 
 	bool ViewportGL::ReleaseGlobalViewport() {
-		return false;
+		return true;
 	}
 
 	Viewport * ViewportGL::GetGlobalViewport() {
@@ -113,20 +115,43 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::RenderSprites() {
-		//for (auto& pSprite : m_stSprites)
-		//{
-		//	pSprite->Render();
-		//}
+		for (auto& pSprite : m_stSprites) {
+			m_pTexture->UseTextureAsFrameBuffer();
+			//pSprite->Render();
+
+			glClearColor(0.5f, 0.5f, 0.5f, 1.f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			m_pTexture->RestoreFrameBuffer();
+		}
+
+		glClearColor(0.5f, 1.f, 1.f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	}
 
 	void ViewportGL::Render() {
-		static auto mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 1.0f);
-		m_pTexture->UseTextureAsFrameBuffer();
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 1.0f);
 
-		glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		auto pShader = ViewportShaderGL::Instance();
 
-		m_pTexture->RestoreFrameBuffer();
+		//TODO: Optimize for dirty check
+		pShader->SetProjectMatrix(c_mt4Projection);
+
+		glm::mat4 mtTrans(1.0f);
+		mtTrans = glm::translate(mtTrans, {m_fX, m_fY, m_fZ});
+
+		pShader->SetModelMatrix(mtTrans);
+
+		pShader->Use();
+
+		glBindVertexArray(m_nVAO);
+
+		m_pTexture->UseTexture();
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_nEBO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, static_cast<void*>(nullptr));
+
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {

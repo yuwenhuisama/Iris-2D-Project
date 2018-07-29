@@ -42,7 +42,7 @@ namespace Iris2D {
 		m_pProxied->SetWidth(nWidth);
 	}
 
-	unsigned int Graphics::GetWidth() {
+	unsigned int Graphics::GetWidth() const {
 		return m_pProxied->GetWidth();
 	}
 
@@ -50,7 +50,7 @@ namespace Iris2D {
 		m_pProxied->SetHeight(nHeight);
 	}
 
-	unsigned int Graphics::GetHeight() {
+	unsigned int Graphics::GetHeight() const {
 		return m_pProxied->GetHeight();
 	}
 

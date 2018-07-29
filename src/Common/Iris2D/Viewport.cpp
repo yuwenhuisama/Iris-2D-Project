@@ -1,6 +1,8 @@
 #include "Common/Iris2D/Viewport.h"
 #include "Common/Iris2D/AppFactory.h"
 
+#include "OpenGL/Iris2D/ViewportGL.h"
+
 #ifdef _WIN32
 #include "DirectX/Iris2D/ViewportDX.h"
 #endif // !_WIN32
@@ -21,6 +23,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = ViewportGL::Create(fX, fY, nWidth, nHeight, IR_PARAM);
+			pViewport = new Viewport(pTmp);
+			pTmp->SetProxy(pViewport);
+		}
 			break;
 		default:
 			break;
@@ -42,6 +49,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = ViewportGL::Create(pRect, IR_PARAM);
+			pViewport = new Viewport(pTmp);
+			pTmp->SetProxy(pViewport);
+		}
 			break;
 		default:
 			break;
@@ -64,6 +76,7 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+			ViewportGL::Release(reinterpret_cast<ViewportGL*&>(pProxied));
 			break;
 		default:
 			break;

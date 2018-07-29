@@ -4,6 +4,8 @@
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include "OpenGL/Iris2D/GraphicsGL.h"
 
+#include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
+
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
 		static ApplicationGL application;
@@ -42,9 +44,15 @@ namespace Iris2D {
 			return false;
 		}
 
-		if (!GraphicsGL::Instance()->Intialize()) {
-			GraphicsGL::Instance()->SetWidth(pInfo->m_nWidth);
-			GraphicsGL::Instance()->SetWidth(pInfo->m_nHeight);
+		GraphicsGL::Instance()->SetWidth(pInfo->m_nWidth);
+		GraphicsGL::Instance()->SetHeight(pInfo->m_nHeight);
+
+		if (GraphicsGL::Instance()->Intialize()) {
+			return false;
+		}
+
+		if (!ViewportShaderGL::Instance()->Initialize()) {
+			return false;
 		}
 
 		m_pfGameFunc = pInfo->m_pfFunc;

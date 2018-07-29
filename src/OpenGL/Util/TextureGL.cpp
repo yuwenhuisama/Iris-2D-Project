@@ -30,7 +30,7 @@ namespace Iris2D {
 	TextureGL * TextureGL::CreateFrameBuffer(unsigned int nWidth, unsigned int nHeight) {
 		auto pObject = new TextureGL();
 
-		if (!pObject->AsFrameBuffer(nWidth, nHeight)) {
+		if (pObject->AsFrameBuffer(nWidth, nHeight)) {
 			return pObject;
 		}
 

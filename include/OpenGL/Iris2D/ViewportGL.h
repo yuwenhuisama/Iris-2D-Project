@@ -24,8 +24,8 @@ namespace Iris2D {
 
 		static void ForceRelease(ViewportGL*& pViewport);
 
-		bool InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight);
-		bool ReleaseGlobalViewport();
+		static bool InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight);
+		static bool ReleaseGlobalViewport();
 
 		static Viewport* GetGlobalViewport();
 

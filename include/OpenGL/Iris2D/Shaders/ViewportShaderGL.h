@@ -10,7 +10,12 @@ namespace Iris2D {
 
 	public:
 		bool Initialize();
+		void SetProjectMatrix(const glm::mat4& mtMat);
+		void SetModelMatrix(const glm::mat4& mtMat);
 
+	private:
+		ViewportShaderGL() = default;
+		~ViewportShaderGL() = default;
 	};
 }
 

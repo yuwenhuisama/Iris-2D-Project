@@ -13,6 +13,9 @@ namespace Iris2D {
 	private:
 		std::unordered_set<ViewportGL*> m_stViewports;
 
+		unsigned int m_nWidth = 0;
+		unsigned int m_nHeight = 0;
+
 	public:
 		static GraphicsGL* Instance();
 
@@ -28,9 +31,9 @@ namespace Iris2D {
 		virtual void FrameReset() override;
 		virtual void ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT) override;
 		virtual void SetWidth(unsigned int nWidth) override;
-		virtual unsigned int GetWidth() override;
+		virtual unsigned int GetWidth() const override;
 		virtual void SetHeight(unsigned int nHeight) override;
-		virtual unsigned int GetHeight() override;
+		virtual unsigned int GetHeight() const override;
 		virtual unsigned int GetFrameCount() override;
 		virtual unsigned int GetBrightness() override;
 		virtual void SetBrightness(unsigned int nBrightness) override;

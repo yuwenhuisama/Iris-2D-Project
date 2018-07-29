@@ -110,7 +110,7 @@ namespace Iris2D {
 		m_nWidth = nWidth;
 	}
 
-	unsigned int GraphicsDX::GetWidth()
+	unsigned int GraphicsDX::GetWidth() const
 	{
 		return m_nWidth;
 	}
@@ -120,7 +120,7 @@ namespace Iris2D {
 		m_nHeight = nHeight;
 	}
 
-	unsigned int GraphicsDX::GetHeight()
+	unsigned int GraphicsDX::GetHeight() const
 	{
 		return m_nHeight;
 	}
@@ -154,7 +154,7 @@ namespace Iris2D {
 	{
 		for (auto& pViewport : m_stViewports)
 		{
-			ViewportDX::ForceRelease(const_cast<ViewportDX*>(pViewport));
+			ViewportDX::ForceRelease(const_cast<ViewportDX*&>(pViewport));
 		}
 	}
 

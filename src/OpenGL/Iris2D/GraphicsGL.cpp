@@ -51,17 +51,19 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::SetWidth(unsigned int nWidth) {
+		m_nWidth = nWidth;
 	}
 
-	unsigned int GraphicsGL::GetWidth() {
-		return 0;
+	unsigned int GraphicsGL::GetWidth() const {
+		return m_nWidth;
 	}
 
 	void GraphicsGL::SetHeight(unsigned int nHeight) {
+		m_nHeight = nHeight;
 	}
 
-	unsigned int GraphicsGL::GetHeight() {
-		return 0;
+	unsigned int GraphicsGL::GetHeight() const {
+		return m_nHeight;
 	}
 
 	unsigned int GraphicsGL::GetFrameCount() {
@@ -98,6 +100,6 @@ namespace Iris2D {
 	}
 
 	bool GraphicsGL::Intialize() {
-		return true;
+		return ViewportGL::InitializeGlobalViewport(0, 0, GetWidth(), GetHeight());
 	}
 }

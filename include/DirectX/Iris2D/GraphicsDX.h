@@ -93,9 +93,9 @@ namespace Iris2D {
 		void ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
 
 		void SetWidth(unsigned int nWidth);
-		unsigned int GetWidth();
+		unsigned int GetWidth() const;
 		void SetHeight(unsigned int nHeight);
-		unsigned int GetHeight();
+		unsigned int GetHeight() const;
 		unsigned int GetFrameCount();
 
 		unsigned int GetBrightness();
