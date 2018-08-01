@@ -1,6 +1,8 @@
 #include "Common/Iris2D/Sprite.h"
 #include "Common/Iris2D/AppFactory.h"
 
+#include "OpenGL/Iris2D/SpriteGL.h"
+
 #if _WIN32
 #include "DirectX/Iris2D/SpriteDX.h"
 #endif // _WIN32
@@ -22,6 +24,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = SpriteGL::Create(pViewport);
+			pSprite = new Sprite(pTmp);
+			pTmp->SetProxy(pSprite);
+		}
 			break;
 		default:
 			break;
@@ -44,6 +51,7 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+			SpriteGL::Release(reinterpret_cast<SpriteGL*&>(pProxied));
 			break;
 		default:
 			break;

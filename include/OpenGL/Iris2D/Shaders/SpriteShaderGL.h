@@ -11,7 +11,10 @@ namespace Iris2D {
 	public:
 		bool Initialize();
 
-	public:
+		void SetTranslationMatrix(const glm::mat4& mtTranspose);
+		void SetProjectionMatrix(const glm::mat4& mtProjection);
+
+	private:
 		SpriteShaderGL() = default;
 		~SpriteShaderGL() = default;
 	};

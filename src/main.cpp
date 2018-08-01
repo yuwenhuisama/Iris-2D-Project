@@ -6,10 +6,10 @@ bool GameCallBack() {
 
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
-
-	/*
+	
 	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
+	//auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
 	//pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = BitmapDX::Create(L"image\\leimu.jpg");
 
@@ -30,11 +30,11 @@ bool GameCallBack() {
 	//auto pPixelColor = pBitmap->GetPixel(0, 0);
 	//pBitmap->SetPixel(0, 0, pColor);
 
-	pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", AlignType::Center);
+	// pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", AlignType::Center);
 
 	auto pSprite = Sprite::Create();
 	pSprite->SetBitmap(pBitmap);
-	Bitmap::Release(pBitmap);
+	// Bitmap::Release(pBitmap);
 
 	//RectDX::Release(pSrcRect);
 	//ColorDX::Release(pColor);
@@ -51,7 +51,6 @@ bool GameCallBack() {
 	//pSprite->SetSrcRect(RectDX::Create(30.0f, 30.0f, 300.0f, 600.0f));
 	//pSprite->SetTone(ToneDX::Create(128, 0, 128, 0));
 
-	*/
 	auto angle = 0.0f;
 	while (!pApp->IsQuited()) {
 		//pSprite->SetAngle(angle += 2.0f);
@@ -62,9 +61,7 @@ bool GameCallBack() {
 	//	pSprite->SetAngle(angle += 1.0f);
 	//END_SAFE_LOOP()
 
-	/*
 	Sprite::Release(pSprite);
-	*/
 
 	return true;
 }

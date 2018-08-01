@@ -8,6 +8,9 @@ namespace Iris2D {
 	class Color;
 	typedef Color Tone;
 	class ISprite {
+	protected:
+		virtual ~ISprite() = default;
+
 	public:
 		virtual void SetBitmap(Bitmap*& pBitmap) = 0;
 		virtual Bitmap* GetBitmap() const = 0;

@@ -3,6 +3,10 @@
 
 #include "Common/Iris2D/ISprite.h"
 #include "Common/Iris2D/Proxied.h"
+#include <glm/glm.hpp>
+
+#include "OpenGL/Common.h"
+#include "OpenGL/OpenGLUtil/SpriteShaderBuffersGL.h"
 
 namespace Iris2D {
 	class Viewport;
@@ -13,12 +17,25 @@ namespace Iris2D {
 		Bitmap* m_pBitmap = nullptr;
 		Rect* m_pSrcRect = nullptr;
 
+		Viewport* m_pViewport = nullptr;
+
 		GLuint m_nVBO = 0;
 		GLuint m_nVAO = 0;
 		GLuint m_nEBO = 0;
 
+		SpriteVertexBufferGL m_svbfBuffer;
+
+		glm::vec3 m_v3Position { 0.f, 0.f, 0.f };
+		glm::vec2 m_v2Zoom{ 0.f, 0.f };
+		glm::vec2 m_v2OrgPosition { 0.f, 0.f };
+
+		float m_fAngle = 0.f;
+		float m_fOpacity = 0.f;
+		bool m_bMirror = false;
+		bool m_bVisible = true;
+
 	public:
-		SpriteGL * Create(Viewport* pViewport = nullptr);
+		static SpriteGL * Create(Viewport* pViewport = nullptr);
 		static void Release(SpriteGL*& pSprite);
 
 		static void ForceRelease(SpriteGL* pSprite);
@@ -72,6 +89,10 @@ namespace Iris2D {
 	public:
 		bool CreateVertexBuffer();
 		bool Render();
+
+	private:
+		SpriteGL() = default;
+		~SpriteGL();
 	};
 }
 

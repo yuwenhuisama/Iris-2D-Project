@@ -9,4 +9,12 @@ namespace Iris2D {
 	bool SpriteShaderGL::Initialize() {
 		return ShaderGL::Initialize("shaders/glsl/sprite_vertex_shader.vert", "shaders/glsl/sprite_fragment_shader.frag");
 	}
+
+	void SpriteShaderGL::SetTranslationMatrix(const glm::mat4& mtTranspose) {
+		SetMatrix("spriteInfo.translateMat", mtTranspose);
+	}
+
+	void SpriteShaderGL::SetProjectionMatrix(const glm::mat4& mtProjection) {
+		SetMatrix("projectionMat", mtProjection);
+	}
 }

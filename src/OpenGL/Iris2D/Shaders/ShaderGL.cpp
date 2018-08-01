@@ -9,9 +9,15 @@
 #include "OpenGL/Common.h"
 #include <glm/gtc/type_ptr.hpp>
 
+#include <limits>
+
 namespace Iris2D {
 	void ShaderGL::Use() {
 		glUseProgram(m_nID);
+	}
+
+	void ShaderGL::Unuse() {
+		glUseProgram(0);
 	}
 
 	void ShaderGL::SetBool(const std::string &strUniformName, bool bValue) const {
@@ -28,9 +34,14 @@ namespace Iris2D {
 
 	GLuint ShaderGL::LoadShader(const std::string &strPath, std::function<GLuint()> fGenerate) const {
 		auto strCode = this->GetShaderCode(strPath);
+
+		if (strCode.empty()) {
+			return std::numeric_limits<unsigned int>::max();
+		}
+
 		auto szCode = strCode.c_str();
 
-		auto nShader = fGenerate();
+		const auto nShader = fGenerate();
 		glShaderSource(nShader, 1, &szCode, nullptr);
 		glCompileShader(nShader);
 
@@ -55,17 +66,23 @@ namespace Iris2D {
 	}
 
 	bool ShaderGL::Initialize(const std::string &strVertexShaderPath, const std::string &strFragmentShaderPath) {
-		auto nVertexShader = this->LoadShader(strVertexShaderPath, []() -> GLuint {
+		const auto nVertexShader = this->LoadShader(strVertexShaderPath, []() -> GLuint {
 			return glCreateShader(GL_VERTEX_SHADER);
 		});
 
-		auto nFragmentShader = this->LoadShader(strFragmentShaderPath, []() -> GLuint {
+		if (nVertexShader == std::numeric_limits<unsigned int>::max()) {
+			return false;
+		}
+
+		const auto nFragmentShader = this->LoadShader(strFragmentShaderPath, []() -> GLuint {
 			return glCreateShader(GL_FRAGMENT_SHADER);
 		});
 
-		// generate shader object
-		unsigned int nShaderProgram;
-		nShaderProgram = glCreateProgram();
+		if (nFragmentShader == std::numeric_limits<unsigned int>::max()) {
+			return false;
+		}
+
+		const unsigned int nShaderProgram = glCreateProgram();
 
 		glAttachShader(nShaderProgram, nVertexShader);
 		glAttachShader(nShaderProgram, nFragmentShader);
@@ -91,7 +108,7 @@ namespace Iris2D {
 	}
 
 	void ShaderGL::SetFloat4(const std::string &strUniformName, float fR, float fG, float fB, float fA) {
-		glUniform4f(glGetUniformLocation(this->m_nID, strUniformName.c_str()), fR, fG, fB, fA);
+		glUniform4f(glGetUniformLocation(m_nID, strUniformName.c_str()), fR, fG, fB, fA);
 	}
 
 	GLuint ShaderGL::GetID() const {
@@ -100,19 +117,20 @@ namespace Iris2D {
 
 	ShaderGL::~ShaderGL() {
 		if (m_nID) {
-			glDeleteProgram(this->m_nID);
+			glDeleteProgram(m_nID);
 		}
 	}
 
 	void ShaderGL::SetMatrix(const std::string &strUniformName, const glm::mat4 &mtMatrix) {
-		glUniformMatrix4fv(glGetUniformLocation(this->m_nID, strUniformName.c_str()), 1, GL_FALSE, glm::value_ptr(mtMatrix));
+		auto id = glGetUniformLocation(m_nID, strUniformName.c_str());
+		glUniformMatrix4fv(glGetUniformLocation(m_nID, strUniformName.c_str()), 1, GL_FALSE, glm::value_ptr(mtMatrix));
 	}
 
 	void ShaderGL::SetFloat3(const std::string &strUniformName, float fR, float fG, float fB) {
-		glUniform3f(glGetUniformLocation(this->m_nID, strUniformName.c_str()), fR, fG, fB);
+		glUniform3f(glGetUniformLocation(m_nID, strUniformName.c_str()), fR, fG, fB);
 	}
 
 	void ShaderGL::SetFloat3(const std::string &strUniformName, const glm::vec3 &v3Vector) {
-		glUniform3f(glGetUniformLocation(this->m_nID, strUniformName.c_str()), v3Vector.x, v3Vector.y, v3Vector.z);
+		glUniform3f(glGetUniformLocation(m_nID, strUniformName.c_str()), v3Vector.x, v3Vector.y, v3Vector.z);
 	}
 }

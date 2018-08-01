@@ -7,14 +7,14 @@ namespace Iris2D {
 	}
 
 	bool ViewportShaderGL::Initialize() {
-		return ShaderGL::Initialize("shaders/GLSL/viewport_vertex_shader.vert", "viewport_fragment_shader.frag");
+		return ShaderGL::Initialize("shaders/GLSL/viewport_vertex_shader.vert", "shaders/GLSL/viewport_fragment_shader.frag");
 	}
 
-	void ViewportShaderGL::SetProjectMatrix(const glm::mat4& mtMat) {
-		SetMatrix("modelMat", mtMat);
+	void ViewportShaderGL::SetProjectionMatrix(const glm::mat4& mtMat) {
+		SetMatrix("projectionMat", mtMat);
 	}
 
 	void ViewportShaderGL::SetModelMatrix(const glm::mat4& mtMat) {
-		SetMatrix("projectionMat", mtMat);
+		SetMatrix("modelMat", mtMat);
 	}
 }

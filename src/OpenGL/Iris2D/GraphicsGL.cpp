@@ -13,7 +13,6 @@ namespace Iris2D {
 	void GraphicsGL::Update(IR_PARAM_RESULT_CT) {
 		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		for (auto& pViewport : m_stViewports) {
 			pViewport->RenderSprites();
 		}

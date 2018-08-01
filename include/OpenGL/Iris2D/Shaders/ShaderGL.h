@@ -14,7 +14,7 @@
 
 namespace Iris2D {
 	class ShaderGL {
-	private:
+	protected:
 		GLuint m_nID = 0;
 
 	public:
@@ -24,6 +24,7 @@ namespace Iris2D {
 		virtual bool Initialize(const std::string &strVertexShaderPath, const std::string &strFragmentShaderPath);
 
 		void Use();
+		void Unuse();
 		void SetBool(const std::string& strUniformName, bool bValue) const;
 		void SetInt(const std::string& strUniformName, int nValue) const;
 		void SetFloat(const std::string& strUniformName, float fValue) const;

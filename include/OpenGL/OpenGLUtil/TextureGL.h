@@ -32,6 +32,8 @@ namespace Iris2D {
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
 
+		bool SaveToFile(const std::wstring& wstrFilePath);
+
 	private:
 		bool LoadTexture(const std::wstring& wstrTexturePath);
 		bool CreateBlankTexture(unsigned int nWidth, unsigned int nHeight);

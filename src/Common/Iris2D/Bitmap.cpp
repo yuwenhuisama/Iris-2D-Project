@@ -1,6 +1,8 @@
 #include "Common/Iris2D/Bitmap.h"
 #include "Common/Iris2D/AppFactory.h"
 
+#include "OpenGL/Iris2D/BitmapGL.h"
+
 #ifdef _WIN32
 #include "DirectX/Iris2D/BitmapDX.h"
 #endif // _WIN32
@@ -22,6 +24,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = BitmapGL::Create(wstrFileName, IR_PARAM);
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 		default:
 			break;
@@ -42,6 +49,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = BitmapGL::Create(nWidth, nHeight, IR_PARAM);
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 		default:
 			break;
@@ -62,6 +74,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = BitmapGL::Create(pSrcBitmap, IR_PARAM);
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 		default:
 			break;
@@ -82,6 +99,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = BitmapGL::CopyFrom(pSrcBitmap, IR_PARAM);
+			pBitmap = new Bitmap(pTmp);
+			pTmp->SetProxy(pBitmap);
+		}
 			break;
 		default:
 			break;
@@ -103,6 +125,7 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+			BitmapGL::Release(reinterpret_cast<BitmapGL*&>(pProxied));
 			break;
 		default:
 			break;

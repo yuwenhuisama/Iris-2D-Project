@@ -5,6 +5,7 @@
 #include "OpenGL/Iris2D/GraphicsGL.h"
 
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
@@ -52,6 +53,10 @@ namespace Iris2D {
 		}
 
 		if (!ViewportShaderGL::Instance()->Initialize()) {
+			return false;
+		}
+
+		if (!SpriteShaderGL::Instance()->Initialize()) {
 			return false;
 		}
 

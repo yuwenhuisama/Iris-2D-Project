@@ -38,7 +38,7 @@ namespace Iris2D {
 	}
 
 	ViewportGL * ViewportGL::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
-		return ViewportGL::Create(pRect->GetX(), pRect->GetY(), pRect->GetWidth(), pRect->GetHeight(), IR_PARAM);
+		return ViewportGL::Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()), IR_PARAM);
 	}
 
 	void ViewportGL::Release(ViewportGL *& pViewport) {
@@ -117,41 +117,36 @@ namespace Iris2D {
 	void ViewportGL::RenderSprites() {
 		for (auto& pSprite : m_stSprites) {
 			m_pTexture->UseTextureAsFrameBuffer();
-			//pSprite->Render();
 
-			glClearColor(0.5f, 0.5f, 0.5f, 1.f);
+			glClearColor(0.f, 0.f, 0.f, 0.f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			pSprite->Render();
 
 			m_pTexture->RestoreFrameBuffer();
 		}
-
-		glClearColor(0.5f, 1.f, 1.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	}
 
 	void ViewportGL::Render() {
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 1.0f);
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
 
 		auto pShader = ViewportShaderGL::Instance();
 
 		//TODO: Optimize for dirty check
-		pShader->SetProjectMatrix(c_mt4Projection);
+		pShader->Use();
+		pShader->SetProjectionMatrix(c_mt4Projection);
 
 		glm::mat4 mtTrans(1.0f);
 		mtTrans = glm::translate(mtTrans, {m_fX, m_fY, m_fZ});
 
 		pShader->SetModelMatrix(mtTrans);
 
-		pShader->Use();
-
-		glBindVertexArray(m_nVAO);
-
+		// m_pTexture->SaveToFile(L"temp/output.png");
 		m_pTexture->UseTexture();
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_nEBO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, static_cast<void*>(nullptr));
-
+		glBindVertexArray(m_nVAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(0);
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {
@@ -164,10 +159,10 @@ namespace Iris2D {
 
 	bool ViewportGL::CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight) {
 		ViewportVertexGL arrBuffers[] = {
-			{ glm::vec4(static_cast<float>(nWidth), 0.0f,						 1.0f, 1.0f), glm::vec2(1.0f, 0.0f) },
-			{ glm::vec4(static_cast<float>(nWidth), static_cast<float>(nHeight), 1.0f, 1.0f), glm::vec2(1.0f, 1.0f) },
-			{ glm::vec4(0.0f,					    static_cast<float>(nHeight), 1.0f, 1.0f), glm::vec2(0.0f, 1.0f) },
-			{ glm::vec4(0.0f,					    0.0f,						 1.0f, 1.0f), glm::vec2(0.0f, 0.0f) },
+			{ {static_cast<float>(nWidth),  static_cast<float>(nHeight),  0.0f, 1.0f}, {1.0f, 1.0f} },
+			{ {static_cast<float>(nWidth),  0.0f,						 0.0f, 1.0f}, {1.0f, 0.0f} },
+			{ {0.0f,					    0.0f,						 0.0f, 1.0f}, {0.0f, 0.0f} },
+			{ {0.0f,					    static_cast<float>(nHeight), 0.0f, 1.0f}, {0.0f, 1.0f} },
 		};
 
 		static unsigned int arrIndiecs[] = {
@@ -178,9 +173,9 @@ namespace Iris2D {
 		GLuint VAO, VBO, EBO;
 
 		glGenVertexArrays(1, &VAO);
-			glGenBuffers(1, &VBO);
+		glGenBuffers(1, &VBO);
 
-			glBindVertexArray(VAO);
+		glBindVertexArray(VAO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(arrBuffers), arrBuffers, GL_STATIC_DRAW);
 
@@ -188,14 +183,12 @@ namespace Iris2D {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(arrIndiecs), arrIndiecs, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ViewportVertexGL), (void*)offsetof(ViewportVertexGL, m_v4Position));
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ViewportVertexGL), reinterpret_cast<void*>(offsetof(ViewportVertexGL, m_v4Position)));
 			glEnableVertexAttribArray(0);
 
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ViewportVertexGL), (void*)offsetof(ViewportVertexGL, m_v2Texture));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ViewportVertexGL), reinterpret_cast<void*>(offsetof(ViewportVertexGL, m_v2Texture)));
 			glEnableVertexAttribArray(1);
 
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 
 		m_nVAO = VAO;

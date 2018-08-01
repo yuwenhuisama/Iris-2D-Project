@@ -4,11 +4,16 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "OpenGL/OpenGLUtil/stb_image.h"
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "OpenGL/OpenGLUtil/stb_image_write.h"
+
+#include "OpenGL/Iris2D/GraphicsGL.h"
+
 namespace Iris2D {
 	TextureGL * TextureGL::Create(const std::wstring & wstrTexturePath) {
 		auto pObject = new TextureGL();
 
-		if (!pObject->LoadTexture(wstrTexturePath)) {
+		if (pObject->LoadTexture(wstrTexturePath)) {
 			return pObject;
 		}
 
@@ -83,6 +88,49 @@ namespace Iris2D {
 		return m_nHeight;
 	}
 
+	bool TextureGL::SaveToFile(const std::wstring& wstrFilePath) {
+
+		GLint nRestore = 0;
+
+		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &nRestore);
+
+		GLuint nFrameBuffer = 0;
+		glGenFramebuffers(1, &nFrameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, nFrameBuffer);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_nTextureID, 0);
+
+		GLenum eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (eStatus != GL_FRAMEBUFFER_COMPLETE) {
+			printf("failed to make complete framebuffer object %x", eStatus);
+			return false;
+		}
+		
+		const auto nWidth = m_nWidth;
+		const auto nHeight = m_nHeight;
+
+		glViewport(0, 0, nWidth, nHeight);
+
+		auto pPixels = new GLubyte[nWidth * nHeight * sizeof(GLubyte) * 4];
+
+		glReadPixels(0, 0, nWidth, nHeight, GL_RGBA, GL_UNSIGNED_BYTE, pPixels);
+
+		using convert_type = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_type, wchar_t> converter;
+
+		auto strConverted = converter.to_bytes(wstrFilePath);
+
+		stbi_write_png(strConverted.c_str(), nWidth, nHeight, STBI_rgb_alpha, pPixels, nWidth * 4);
+
+		delete[] pPixels;
+
+		glDeleteFramebuffers(1, &nFrameBuffer);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, nRestore);
+
+		return true;
+	}
+
 	bool TextureGL::LoadTexture(const std::wstring & wstrTexturePath) {
 		// load texture data
 		using convert_type = std::codecvt_utf8<wchar_t>;
@@ -91,19 +139,14 @@ namespace Iris2D {
 		auto strConverted = converter.to_bytes(wstrTexturePath);
 
 		int nWidth, nHeight, nChannels;
-		auto pData = stbi_load(strConverted.c_str(), &nWidth, &nHeight, &nChannels, 0);
+		auto pData = stbi_load(strConverted.c_str(), &nWidth, &nHeight, &nChannels, STBI_rgb_alpha);
 
 		GLuint nTextureID = 0;
 		glGenTextures(1, &nTextureID);
 
 		glBindTexture(GL_TEXTURE_2D, nTextureID);
 
-		if (nChannels == 3) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
-		}
-		else if (nChannels == 4) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pData);
-		}
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pData);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -113,6 +156,8 @@ namespace Iris2D {
 
 		m_nWidth = nWidth;
 		m_nHeight = nHeight;
+
+		m_nTextureID = nTextureID;
 
 		return true;
 	}
@@ -174,6 +219,9 @@ namespace Iris2D {
 
 		m_nFBO = FBO;
 		m_nRBO = RBO;
+
+		m_nWidth = nWidth;
+		m_nHeight = nHeight;
 
 		return true;
 	}

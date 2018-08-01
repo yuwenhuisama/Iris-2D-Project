@@ -63,10 +63,10 @@ namespace Iris2D {
 		void RenderSprites();
 		void Render();
 
-	private:
 		void AddSprite(SpriteGL*& pSprite);
 		void RemoveSprite(SpriteGL*& pSprite);
 
+	private:
 		bool CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight);
 
 		ViewportGL() = default;
