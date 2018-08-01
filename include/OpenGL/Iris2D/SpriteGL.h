@@ -30,7 +30,7 @@ namespace Iris2D {
 		glm::vec2 m_v2OrgPosition { 0.f, 0.f };
 
 		float m_fAngle = 0.f;
-		float m_fOpacity = 0.f;
+		float m_fOpacity = 1.f;
 		bool m_bMirror = false;
 		bool m_bVisible = true;
 

@@ -177,10 +177,10 @@ namespace Iris2D {
 		const auto nHeight = pBitmap->GetHeight();
 
 		SpriteVertexGL arrBuffers[] = {
-			{ {static_cast<float>(nWidth),  static_cast<float>(nHeight),  0.0f, 1.0f}, {1.0f, 1.0f} },
-			{ {static_cast<float>(nWidth),  0.0f,						 0.0f, 1.0f}, {1.0f, 0.0f} },
-			{ {0.0f,					    0.0f,						 0.0f, 1.0f}, {0.0f, 0.0f} },
-			{ {0.0f,					    static_cast<float>(nHeight), 0.0f, 1.0f}, {0.0f, 1.0f} },
+			{ { static_cast<float>(nWidth),  static_cast<float>(nHeight),  0.0f, 1.0f },{ 1.0f, 1.0f } },
+			{ { static_cast<float>(nWidth),  0.0f,						   0.0f, 1.0f },{ 1.0f, 0.0f } },
+			{ { 0.0f,					     0.0f,						   0.0f, 1.0f },{ 0.0f, 0.0f } },
+			{ { 0.0f,					     static_cast<float>(nHeight),  0.0f, 1.0f },{ 0.0f, 1.0f } },
 		};
 
 		static unsigned int arrIndiecs[] = {
@@ -217,23 +217,22 @@ namespace Iris2D {
 
 	bool SpriteGL::Render() {
 
-		if (!m_bVisible || !m_pBitmap) {
+		if (!m_bVisible || !m_pBitmap || m_fOpacity == 0.0f) {
 			return true;
 		}
 
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), 0.0f, static_cast<float>(GraphicsGL::Instance()->GetHeight()), -1.0f, 1.0f);
+
+		/* glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight()); */
 
 		auto pShader = SpriteShaderGL::Instance();
 
-		m_svbfBuffer.m_mt4Translate = glm::translate(m_svbfBuffer.m_mt4Translate, m_v3Position);
+		m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4 {1.0f, }, m_v3Position);
 
 		//TODO: Optimize for dirty check
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetTranslationMatrix(m_svbfBuffer.m_mt4Translate);
-
-		// pShader->Unuse();
-		// GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->SaveToFile(L"temp/a.png");
 
 		GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->UseTexture();
 

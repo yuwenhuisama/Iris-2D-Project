@@ -8,7 +8,7 @@ bool GameCallBack() {
 	auto pApp = AppFactory::GetApplication();
 	
 	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
-	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
+	auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
 	//auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
 	//pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = BitmapDX::Create(L"image\\leimu.jpg");
@@ -34,6 +34,8 @@ bool GameCallBack() {
 
 	auto pSprite = Sprite::Create();
 	pSprite->SetBitmap(pBitmap);
+	pSprite->SetX(20.f);
+	pSprite->SetY(20.f);
 	// Bitmap::Release(pBitmap);
 
 	//RectDX::Release(pSrcRect);

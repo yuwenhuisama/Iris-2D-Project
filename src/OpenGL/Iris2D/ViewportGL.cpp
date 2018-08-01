@@ -205,8 +205,6 @@ namespace Iris2D {
 
 		if (m_nVAO) {
 			glDeleteVertexArrays(1, &m_nVAO);
-			glDeleteBuffers(1, &m_nEBO);
-			glDeleteBuffers(1, &m_nVBO);
 		}
 	}
 }

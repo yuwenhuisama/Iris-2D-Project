@@ -17,7 +17,7 @@ uniform mat4 projectionMat;
 uniform SpriteInfo spriteInfo;
 
 void main() {
-    gl_Position = projectionMat * position;
+    gl_Position = projectionMat * spriteInfo.translateMat * position;
 
 	texCoord = textureCoord;
 }
