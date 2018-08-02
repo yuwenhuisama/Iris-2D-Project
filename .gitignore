@@ -233,3 +233,5 @@ Iris 2D Cerise-A.VC.opendb
 !lib/glew/x86/Release
 !lib/glew/x64/Debug
 !lib/glew/x64/Release
+
+CMakeSettings.json
