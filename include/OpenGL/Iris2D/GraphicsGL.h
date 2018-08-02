@@ -3,10 +3,12 @@
 
 #include "Common/Iris2D/IGraphics.h"
 #include "Common/Iris2D/Proxied.h"
+#include "OpenGL/Common.h"
 
 #include <unordered_set>
 
 namespace Iris2D {
+	class TextureGL;
 	class ViewportGL;
 	class Graphics;
 	class GraphicsGL : public IGraphics, public Proxied<Graphics> {
@@ -15,6 +17,11 @@ namespace Iris2D {
 
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;
+
+		TextureGL* m_pBackBuffer = nullptr;
+		GLuint m_nVAO = 0;
+		GLuint m_nVBO = 0;
+		GLuint m_nEBO = 0;
 
 	public:
 		static GraphicsGL* Instance();
@@ -48,6 +55,9 @@ namespace Iris2D {
 		bool Intialize();
 
 	private:
+
+		bool CreateVertexBackBuffer();
+
 		GraphicsGL() = default;
 		~GraphicsGL() = default;
 	};

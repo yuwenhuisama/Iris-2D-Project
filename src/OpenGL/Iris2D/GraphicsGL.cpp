@@ -1,8 +1,12 @@
 #include "OpenGL/Iris2D/GraphicsGL.h"
 #include "OpenGL/Iris2D/OpenGLHelper.h"
 #include "OpenGL/Common.h"
-
 #include "OpenGL/Iris2D/ViewportGL.h"
+#include "OpenGL/OpenGLUtil/TextureGL.h"
+#include "OpenGL/OpenGLUtil/BackBufferVertexGL.h"
+#include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace Iris2D {
 	GraphicsGL* GraphicsGL::Instance() {
@@ -11,15 +15,38 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::Update(IR_PARAM_RESULT_CT) {
-		glClearColor(0.f, 0.f, 0.f, 0.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		for (auto& pViewport : m_stViewports) {
 			pViewport->RenderSprites();
 		}
 
+		m_pBackBuffer->UseTextureAsFrameBuffer();
+
+		glClearColor(0.5f, 1.f, 1.f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		for (auto& pViewport : m_stViewports) {
 			pViewport->Render();
 		}
+
+		m_pBackBuffer->RestoreFrameBuffer();
+
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, -1.0f, 1.0f);
+
+		const auto pShader = BackShaderGL::Instance();
+
+		// m_pBackBuffer->SaveToFile(L"temp\\a.png");
+
+		pShader->Use();
+		pShader->SetProjectionMatrix(c_mt4Projection);
+		m_pBackBuffer->UseTexture();
+
+		glClearColor(0.f, 0.f, 0.f, 0.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glBindVertexArray(m_nVAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(0);
 
 		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 		glfwPollEvents();
@@ -99,6 +126,55 @@ namespace Iris2D {
 	}
 
 	bool GraphicsGL::Intialize() {
-		return ViewportGL::InitializeGlobalViewport(0, 0, GetWidth(), GetHeight());
+		if (!ViewportGL::InitializeGlobalViewport(0, 0, GetWidth(), GetHeight())) {
+			return false;
+		}
+
+		return CreateVertexBackBuffer();
+	}
+
+	bool GraphicsGL::CreateVertexBackBuffer() {
+
+		BackBufferVertexGL arrBuffers[] = {
+			{ { static_cast<float>(m_nWidth),  static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 1.0f, 1.0f } },
+			{ { static_cast<float>(m_nWidth),  0.0f,						   0.0f, 1.0f }, { 1.0f, 0.0f } },
+			{ { 0.0f,						   0.0f,						   0.0f, 1.0f }, { 0.0f, 0.0f } },
+			{ { 0.0f,					       static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 0.0f, 1.0f } },
+		};
+
+		static unsigned int arrIndiecs[] = {
+			0, 1, 3,
+			1, 2, 3,
+		};
+
+		GLuint VAO, VBO, EBO;
+
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(arrBuffers), arrBuffers, GL_STATIC_DRAW);
+
+		glGenBuffers(1, &EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(arrIndiecs), arrIndiecs, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(BackBufferVertexGL), reinterpret_cast<void*>(offsetof(BackBufferVertexGL, m_v4Position)));
+		glEnableVertexAttribArray(0);
+
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(BackBufferVertexGL), reinterpret_cast<void*>(offsetof(BackBufferVertexGL, m_v2Texture)));
+		glEnableVertexAttribArray(1);
+
+
+		glBindVertexArray(0);
+
+		m_nVAO = VAO;
+		m_nVBO = VBO;
+		m_nEBO = EBO;
+
+		m_pBackBuffer = TextureGL::CreateFrameBuffer(m_nWidth, m_nHeight);
+
+		return m_pBackBuffer != nullptr;
 	}
 }
