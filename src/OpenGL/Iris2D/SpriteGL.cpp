@@ -221,9 +221,7 @@ namespace Iris2D {
 			return true;
 		}
 
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), 0.0f, static_cast<float>(GraphicsGL::Instance()->GetHeight()), -1.0f, 1.0f);
-
-		/* glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight()); */
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
 
 		auto pShader = SpriteShaderGL::Instance();
 

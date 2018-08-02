@@ -75,7 +75,7 @@ namespace Iris2D {
 
 	bool ViewportGL::InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight) {
 		sm_pGlobalViewport = Viewport::Create(fX, fY, nWindowWidth, nWindowHeight);
-		return sm_pGlobalViewport == nullptr;
+		return sm_pGlobalViewport != nullptr;
 	}
 
 	bool ViewportGL::ReleaseGlobalViewport() {
@@ -115,16 +115,16 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::RenderSprites() {
+		m_pTexture->UseTextureAsFrameBuffer();
+
+		glClearColor(0.f, 0.f, 0.f, 0.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		for (auto& pSprite : m_stSprites) {
-			m_pTexture->UseTextureAsFrameBuffer();
-
-			glClearColor(0.f, 0.f, 0.f, 0.f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 			pSprite->Render();
-
-			m_pTexture->RestoreFrameBuffer();
 		}
+
+		m_pTexture->RestoreFrameBuffer();
 	}
 
 	void ViewportGL::Render() {

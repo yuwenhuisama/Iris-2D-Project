@@ -6,6 +6,7 @@
 
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
 
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
@@ -48,7 +49,7 @@ namespace Iris2D {
 		GraphicsGL::Instance()->SetWidth(pInfo->m_nWidth);
 		GraphicsGL::Instance()->SetHeight(pInfo->m_nHeight);
 
-		if (GraphicsGL::Instance()->Intialize()) {
+		if (!GraphicsGL::Instance()->Intialize()) {
 			return false;
 		}
 
@@ -57,6 +58,10 @@ namespace Iris2D {
 		}
 
 		if (!SpriteShaderGL::Instance()->Initialize()) {
+			return false;
+		}
+
+		if (!BackShaderGL::Instance()->Initialize()) {
 			return false;
 		}
 
