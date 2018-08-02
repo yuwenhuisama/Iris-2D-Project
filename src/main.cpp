@@ -97,7 +97,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
-	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 800, 600, GameCallBack, L"My Iris App" };
 
 	// auto pApp = ApplicationDX::Instance(); 
 	AppFactory::InitApiType(ApiType::OpenGL);
