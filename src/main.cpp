@@ -8,7 +8,7 @@ bool GameCallBack() {
 	auto pApp = AppFactory::GetApplication();
 	
 	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
-	auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
+	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
 	//auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
 	//pBitmap->HueChange(90.0f);
 	//auto pBitmap2 = BitmapDX::Create(L"image\\leimu.jpg");
@@ -34,8 +34,10 @@ bool GameCallBack() {
 
 	auto pSprite = Sprite::Create();
 	pSprite->SetBitmap(pBitmap);
-	pSprite->SetX(20.f);
-	pSprite->SetY(20.f);
+	pSprite->SetX(400.f);
+	pSprite->SetY(300.f);
+	pSprite->SetMirror(true);
+	//pSprite->SetOpacity(0.5f);
 	// Bitmap::Release(pBitmap);
 
 	//RectDX::Release(pSrcRect);
@@ -53,9 +55,31 @@ bool GameCallBack() {
 	//pSprite->SetSrcRect(RectDX::Create(30.0f, 30.0f, 300.0f, 600.0f));
 	//pSprite->SetTone(ToneDX::Create(128, 0, 128, 0));
 
-	auto angle = 0.0f;
+	auto fAngle = 0.0f;
+	auto fOpacity = 0.5f;
+	auto bUp = true;
+
 	while (!pApp->IsQuited()) {
-		//pSprite->SetAngle(angle += 2.0f);
+		pSprite->SetAngle(fAngle += 2.0f);
+
+		if (bUp) {
+			if (fOpacity < 1.0f) {
+				fOpacity += 0.01f;
+			} else {
+				bUp = false;
+			}
+		} else {
+			if (fOpacity > 0.0f) {
+				fOpacity -= 0.01f;
+			} else {
+				bUp = true;
+			}
+		}
+
+		pSprite->SetZoomX(fOpacity * 2.f);
+		pSprite->SetZoomY(fOpacity * 2.f);
+		pSprite->SetOpacity(fOpacity);
+
 		pGraphics->Update();
 	}
 

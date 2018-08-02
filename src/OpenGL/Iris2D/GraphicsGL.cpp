@@ -16,13 +16,18 @@ namespace Iris2D {
 
 	void GraphicsGL::Update(IR_PARAM_RESULT_CT) {
 
+		if (!m_bVsync) {
+			m_bVsync = true;
+			glfwSwapInterval(1);
+		}
+
 		for (auto& pViewport : m_stViewports) {
 			pViewport->RenderSprites();
 		}
 
 		m_pBackBuffer->UseTextureAsFrameBuffer();
 
-		glClearColor(0.5f, 1.f, 1.f, 1.f);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		for (auto& pViewport : m_stViewports) {
@@ -53,6 +58,10 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::UpdateNoLock(IR_PARAM_RESULT_CT) {
+		if (m_bVsync) {
+			m_bVsync = false;
+			glfwSwapInterval(0);
+		}
 	}
 
 	void GraphicsGL::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT) {

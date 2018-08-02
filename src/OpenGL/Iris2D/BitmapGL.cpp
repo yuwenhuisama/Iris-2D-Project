@@ -3,7 +3,7 @@
 
 namespace Iris2D {
 	BitmapGL * BitmapGL::Create(const std::wstring & wstrFileName, IR_PARAM_RESULT_CT) {
-		auto pTexture = TextureGL::Create(wstrFileName);
+		const auto pTexture = TextureGL::Create(wstrFileName);
 
 		if (!pTexture) {
 			return nullptr;
@@ -18,7 +18,7 @@ namespace Iris2D {
 	}
 
 	BitmapGL * BitmapGL::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-		auto pTexture = TextureGL::Create(nWidth, nHeight);
+		const auto pTexture = TextureGL::Create(nWidth, nHeight);
 
 		if (!pTexture) {
 			return nullptr;
@@ -128,7 +128,8 @@ namespace Iris2D {
 		TextureGL::Release(m_pTexture);
 		return true;
 	}
-	TextureGL * BitmapGL::GetTexture() {
+
+	TextureGL * BitmapGL::GetTexture() const {
 		return m_pTexture;
 	}
 }

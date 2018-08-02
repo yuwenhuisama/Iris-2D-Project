@@ -9,8 +9,8 @@ namespace Iris2D {
 		glm::mat4 m_mtRotation { 1.f, };
 		glm::mat4 m_mtZoom { 1.f, };
 		glm::vec2 m_v2OrgPosition { 0.f, 0.f };
-		glm::vec1 m_v1Opacity { 1.f };
-		glm::ivec1 m_v1Mirror { 1 };
+		glm::float32 m_f32Opacity { 1.f };
+		glm::int32 m_i32Mirror { 1 };
 	};
 }
 

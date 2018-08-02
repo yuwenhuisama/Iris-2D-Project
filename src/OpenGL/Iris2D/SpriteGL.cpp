@@ -18,6 +18,8 @@
 
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 
+#include "Common/Util/Util.h"
+
 namespace Iris2D {
 	SpriteGL * SpriteGL::Create(Viewport * pViewport) {
 		auto pSprite = new SpriteGL();
@@ -44,11 +46,14 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetBitmap(Bitmap *& pBitmap) {
-		if (m_pBitmap) {
-			Bitmap::Release(m_pBitmap);
+		if (pBitmap == m_pBitmap) {
+			return;
 		}
 
-		if (!pBitmap || pBitmap == m_pBitmap) {
+		Bitmap::Release(m_pBitmap);
+
+		if (!pBitmap) {
+			m_pBitmap = nullptr;
 			return;
 		}
 
@@ -56,9 +61,7 @@ namespace Iris2D {
 
 		m_pBitmap = pBitmap;
 
-		if (!CreateVertexBuffer()) {
-			return;
-		}
+		CreateVertexBuffer();
 	}
 
 	Bitmap * SpriteGL::GetBitmap() const {
@@ -66,31 +69,35 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetX(float fX) {
-		m_v3Position[0] = fX;
+		// m_v3Position.x = fX;
+		m_dcDirtyChecker.Assign(m_v3Position.x, fX, m_hTranslate);
 	}
 
 	float SpriteGL::GetX() const {
-		return m_v3Position[0];
+		return m_v3Position.x;
 	}
 
 	void SpriteGL::SetY(float fY) {
-		m_v3Position[1] = fY;
+		// m_v3Position.y = fY;
+		m_dcDirtyChecker.Assign(m_v3Position.y, fY, m_hTranslate);
 	}
 
 	float SpriteGL::GetY() const {
-		return m_v3Position[1];
+		return m_v3Position.y;
 	}
 
 	void SpriteGL::SetZ(float fZ) {
-		m_v3Position[2] = fZ;
+		// m_v3Position.z = fZ;
+		m_dcDirtyChecker.Assign(m_v3Position.z, fZ, m_hTranslate);
 	}
 
 	float SpriteGL::GetZ() const {
-		return m_v3Position[2];
+		return m_v3Position.z;
 	}
 
 	void SpriteGL::SetAngle(float fAngle) {
-		m_fAngle = fAngle;
+		// m_fAngle = fAngle;
+		m_dcDirtyChecker.Assign(m_fAngle, fAngle, m_hRotate);
 	}
 
 	float SpriteGL::GetAngle() const {
@@ -98,39 +105,44 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetZoomX(float fZoomX) {
-		m_v2Zoom[0] = fZoomX;
+		//m_v2Zoom.x = fZoomX;
+		m_dcDirtyChecker.Assign(m_v2Zoom.x, fZoomX, m_hZoom);
 	}
 
 	float SpriteGL::GetZoomX() const {
-		return m_v2Zoom[0];
+		return m_v2Zoom.x;
 	}
 
 	void SpriteGL::SetZoomY(float fZoomY) {
-		m_v2Zoom[1] = fZoomY;
+		//m_v2Zoom.y = fZoomY;
+		m_dcDirtyChecker.Assign(m_v2Zoom.y, fZoomY, m_hZoom);
 	}
 
 	float SpriteGL::GetZoomY() const {
-		return m_v2Zoom[1];
+		return m_v2Zoom.y;
 	}
 
 	void SpriteGL::SetOX(float fOX) {
-		m_v2OrgPosition[0] = fOX;
+		//m_v2OrgPosition.x = fOX;
+		m_dcDirtyChecker.Assign(m_v2OrgPosition.x, fOX, m_hOrgPos);
 	}
 
 	float SpriteGL::GetOX() {
-		return m_v2OrgPosition[0];
+		return m_v2OrgPosition.x;
 	}
 
 	void SpriteGL::SetOY(float fOY) {
-		m_v2OrgPosition[1] = fOY;
+		// m_v2OrgPosition.y = fOY;
+		m_dcDirtyChecker.Assign(m_v2OrgPosition.y, fOY, m_hOrgPos);
 	}
 
 	float SpriteGL::GetOY() {
-		return m_v2OrgPosition[1];
+		return m_v2OrgPosition.y;
 	}
 
 	void SpriteGL::SetMirror(bool bMirror) {
-		m_bMirror = bMirror;
+		// m_bMirror = bMirror;
+		m_dcDirtyChecker.Assign(m_bMirror, bMirror, m_hMirror);
 	}
 
 	bool SpriteGL::GetMirror() {
@@ -146,7 +158,9 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetOpacity(float fOpacity) {
-		m_fOpacity = fOpacity;
+		// m_f32Opacity = fOpacity;
+		fOpacity = clip(fOpacity, 0.0f, 1.0f);
+		m_dcDirtyChecker.Assign(m_fOpacity, fOpacity, m_hOpacity);
 	}
 
 	float SpriteGL::GetOpacity() {
@@ -225,12 +239,34 @@ namespace Iris2D {
 
 		auto pShader = SpriteShaderGL::Instance();
 
-		m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4 {1.0f, }, m_v3Position);
+		m_dcDirtyChecker.DoIfDirty(m_hTranslate, [&]() -> void {
+			m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, m_v3Position);
+		});
+		
+		m_dcDirtyChecker.DoIfDirty(m_hRotate, [&]() -> void {
+			m_svbfBuffer.m_mtRotation = glm::rotate(glm::mat4{ 1.0f }, m_fAngle * glm::pi<float>() / 180.0f, glm::vec3{ 0.0f, 0.0f, 1.0f });
+		});
+
+		m_dcDirtyChecker.DoIfDirty(m_hZoom, [&]() -> void {
+			m_svbfBuffer.m_mtZoom = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ m_v2Zoom.x, m_v2Zoom.y, 1.0f });
+		});
+
+		m_dcDirtyChecker.DoIfDirty(m_hOpacity, [&]() -> void {
+			m_svbfBuffer.m_f32Opacity = m_fOpacity;
+		});
+
+		m_dcDirtyChecker.DoIfDirty(m_hMirror, [&]() -> void {
+			m_svbfBuffer.m_i32Mirror = m_bMirror ? 1 : 0;
+		});
 
 		//TODO: Optimize for dirty check
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetTranslationMatrix(m_svbfBuffer.m_mt4Translate);
+		pShader->SetRotationMatrix(m_svbfBuffer.m_mtRotation);
+		pShader->SetZoomMatrix(m_svbfBuffer.m_mtZoom);
+		pShader->SetOpacity(m_svbfBuffer.m_f32Opacity);
+		pShader->SetMirror(m_svbfBuffer.m_i32Mirror);
 
 		GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->UseTexture();
 
@@ -239,6 +275,15 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		return true;
+	}
+
+	SpriteGL::SpriteGL() {
+		m_hTranslate = m_dcDirtyChecker.Register();
+		m_hZoom = m_dcDirtyChecker.Register();
+		m_hOrgPos = m_dcDirtyChecker.Register();
+		m_hRotate = m_dcDirtyChecker.Register();
+		m_hMirror = m_dcDirtyChecker.Register();
+		m_hOpacity = m_dcDirtyChecker.Register();
 	}
 
 	SpriteGL::~SpriteGL() {

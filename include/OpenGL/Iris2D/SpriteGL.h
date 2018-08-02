@@ -8,6 +8,8 @@
 #include "OpenGL/Common.h"
 #include "OpenGL/OpenGLUtil/SpriteShaderBuffersGL.h"
 
+#include "Common/Util/DirtyChecker.h"
+
 namespace Iris2D {
 	class Viewport;
 	class Sprite;
@@ -26,13 +28,21 @@ namespace Iris2D {
 		SpriteVertexBufferGL m_svbfBuffer;
 
 		glm::vec3 m_v3Position { 0.f, 0.f, 0.f };
-		glm::vec2 m_v2Zoom{ 0.f, 0.f };
+		glm::vec2 m_v2Zoom{ 1.f, 1.f };
 		glm::vec2 m_v2OrgPosition { 0.f, 0.f };
 
 		float m_fAngle = 0.f;
 		float m_fOpacity = 1.f;
 		bool m_bMirror = false;
 		bool m_bVisible = true;
+
+		DirtyChecker m_dcDirtyChecker;
+		DirtyChecker::DirtyCheckerHandler m_hTranslate = 0;
+		DirtyChecker::DirtyCheckerHandler m_hZoom = 0;
+		DirtyChecker::DirtyCheckerHandler m_hOrgPos = 0;
+		DirtyChecker::DirtyCheckerHandler m_hRotate = 0;
+		DirtyChecker::DirtyCheckerHandler m_hMirror = 0;
+		DirtyChecker::DirtyCheckerHandler m_hOpacity = 0;
 
 	public:
 		static SpriteGL * Create(Viewport* pViewport = nullptr);
@@ -91,7 +101,7 @@ namespace Iris2D {
 		bool Render();
 
 	private:
-		SpriteGL() = default;
+		SpriteGL();
 		~SpriteGL();
 	};
 }
