@@ -23,6 +23,8 @@ namespace Iris2D {
 		GLuint m_nVBO = 0;
 		GLuint m_nEBO = 0;
 
+		bool m_bVsync = true;
+
 	public:
 		static GraphicsGL* Instance();
 

@@ -1,0 +1,13 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "currentDir": "${workspaceRoot}",
+      "name": "main.exe (Debug\\main.exe)",
+      "project": "CMakeLists.txt",
+      "projectTarget": "main.exe (Debug\\main.exe)",
+      "type": "default"
+    }
+  ]
+}

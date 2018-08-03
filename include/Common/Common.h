@@ -6,6 +6,7 @@
 #define _H_COMMON_C_
 
 #include "Common/CompileConfigure.h"
+#include "Common/Util/DebugUtil.h"
 
 #include "OpenGL/Common.h"
 

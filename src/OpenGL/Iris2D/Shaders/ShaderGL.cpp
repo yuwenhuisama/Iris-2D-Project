@@ -21,7 +21,7 @@ namespace Iris2D {
 	}
 
 	void ShaderGL::SetBool(const std::string &strUniformName, bool bValue) const {
-		glUniform1i(glGetUniformLocation(m_nID, strUniformName.c_str()), static_cast<int>(bValue));
+		glUniform1i(glGetUniformLocation(m_nID, strUniformName.c_str()), bValue ? 1 : 0);
 	}
 
 	void ShaderGL::SetInt(const std::string &strUniformName, int nValue) const {
@@ -29,7 +29,8 @@ namespace Iris2D {
 	}
 
 	void ShaderGL::SetFloat(const std::string &strUniformName, float fValue) const {
-		glUniform1f(glGetUniformLocation(m_nID, strUniformName.c_str()), fValue);
+		auto id = glGetUniformLocation(m_nID, strUniformName.c_str());
+		glUniform1f(id, fValue);
 	}
 
 	GLuint ShaderGL::LoadShader(const std::string &strPath, std::function<GLuint()> fGenerate) const {

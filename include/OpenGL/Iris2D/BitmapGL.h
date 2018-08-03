@@ -46,7 +46,7 @@ namespace Iris2D {
 		virtual bool DrawText(const Rect * pRect, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT) override;
 		virtual bool Dispose() override;
 
-		TextureGL* GetTexture();
+		TextureGL* GetTexture() const;
 	};
 }
 
