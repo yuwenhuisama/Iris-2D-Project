@@ -27,17 +27,37 @@ namespace Iris2D {
 
 	bool ShaderGL::SetBool(const std::string &strUniformName, bool bValue) {
 		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ? glUniform1i(nID, bValue ? 1 : 0), true : false;
+		return nID >= 0 ? glUniform1i(nID, bValue ? 1 : 0), true : false;
 	}
 
 	bool ShaderGL::SetInt(const std::string &strUniformName, int nValue) {
 		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ? glUniform1i(nID, nValue), true : false;
+		return nID >= 0 ? glUniform1i(nID, nValue), true : false;
 	}
 
 	bool ShaderGL::SetFloat(const std::string &strUniformName, float fValue) {
 		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ? glUniform1f(nID, fValue), true : false;
+		return nID >= 0 ? glUniform1f(nID, fValue), true : false;
+	}
+
+	bool ShaderGL::SetFloat4(const std::string &strUniformName, float fR, float fG, float fB, float fA) {
+		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
+		return nID < 0 ?  glUniform4f(nID, fR, fG, fB, fA), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
+	}
+
+	bool ShaderGL::SetMatrix(const std::string &strUniformName, const glm::mat4 &mtMatrix) {
+		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
+		return nID >= 0 ? glUniformMatrix4fv(nID, 1, GL_FALSE, glm::value_ptr(mtMatrix)), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
+	}
+
+	bool ShaderGL::SetFloat3(const std::string &strUniformName, float fR, float fG, float fB) {
+		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
+		return nID >= 0 ? glUniform3f(nID, fR, fG, fB), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
+	}
+
+	bool ShaderGL::SetFloat3(const std::string &strUniformName, const glm::vec3 &v3Vector) {
+		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
+		return nID >= 0 ? glUniform3f(nID, v3Vector.x, v3Vector.y, v3Vector.z), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
 	}
 
 	GLuint ShaderGL::LoadShader(const std::string &strPath, std::function<GLuint()> fGenerate) const {
@@ -67,26 +87,6 @@ namespace Iris2D {
 		}
 
 		return nShader;
-	}
-
-	bool ShaderGL::SetFloat4(const std::string &strUniformName, float fR, float fG, float fB, float fA) {
-		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ?  glUniform4f(nID, fR, fG, fB, fA), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
-	}
-
-	bool ShaderGL::SetMatrix(const std::string &strUniformName, const glm::mat4 &mtMatrix) {
-		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ? glUniformMatrix4fv(nID, 1, GL_FALSE, glm::value_ptr(mtMatrix)), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
-	}
-
-	bool ShaderGL::SetFloat3(const std::string &strUniformName, float fR, float fG, float fB) {
-		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ? glUniform3f(nID, fR, fG, fB), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
-	}
-
-	bool ShaderGL::SetFloat3(const std::string &strUniformName, const glm::vec3 &v3Vector) {
-		const auto nID = glGetUniformLocation(m_nID, strUniformName.c_str());
-		return nID ? glUniform3f(nID, v3Vector.x, v3Vector.y, v3Vector.z), true : PrintFormatDebugMessageA("Name of \"%1%\" not found in shader", strUniformName), false;
 	}
 
 	std::string ShaderGL::GetShaderCode(const std::string &strPath) const {

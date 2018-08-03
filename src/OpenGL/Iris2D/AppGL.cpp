@@ -8,7 +8,7 @@
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
 
-#include "Common/Util/DebugUtil.h";
+#include "Common/Util/DebugUtil.h"
 
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
