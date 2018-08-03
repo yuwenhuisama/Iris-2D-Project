@@ -8,6 +8,8 @@
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
 
+#include "Common/Util/DebugUtil.h";
+
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
 		static ApplicationGL application;
@@ -34,15 +36,22 @@ namespace Iris2D {
 	bool ApplicationGL::Initialize(const AppStartupInfo * pInfo) {
 		auto pHelper = OpenGLHelper::Instance();
 
+#ifdef _DEBUG
+		PrintDebugMessageW(L"Iris 2D is currently running under Debug mode.");
+#endif
+
 		if (!pHelper->Initialze()) {
+			PrintDebugMessageW(L"Error when initializing OpenGL.");
 			return false;
 		}
 
 		if (!pHelper->InitializeWindow(pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, pInfo->m_wstrTitle)) {
+			PrintDebugMessageW(L"Error when initializing glfw window.");
 			return false;
 		}
 
 		if (!TextureGL::Initialize()) {
+			PrintDebugMessageW(L"Error when initializing Texture settings.");
 			return false;
 		}
 
@@ -50,18 +59,22 @@ namespace Iris2D {
 		GraphicsGL::Instance()->SetHeight(pInfo->m_nHeight);
 
 		if (!GraphicsGL::Instance()->Intialize()) {
+			PrintDebugMessageW(L"Error when initializing Graphics settings.");
 			return false;
 		}
 
 		if (!ViewportShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing viewport shader.");
 			return false;
 		}
 
 		if (!SpriteShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing sprite shader.");
 			return false;
 		}
 
 		if (!BackShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing back shader.");
 			return false;
 		}
 

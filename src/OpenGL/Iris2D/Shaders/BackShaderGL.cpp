@@ -1,4 +1,5 @@
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
+#include "Common/Util/DebugUtil.h"
 
 namespace Iris2D {
 
