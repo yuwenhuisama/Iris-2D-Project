@@ -27,8 +27,9 @@ namespace Iris2D
 
 	void ColorDX::SetRed(unsigned char cRed)
 	{
-		m_n4Color.x = cRed;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_n4Color.x, cRed, m_hModified);
+		//m_n4Color.x = cRed;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	unsigned char ColorDX::GetRed() const
@@ -38,8 +39,9 @@ namespace Iris2D
 
 	void ColorDX::SetGreen(unsigned char cGreen)
 	{
-		m_n4Color.y = cGreen;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_n4Color.x, cGreen, m_hModified);
+		//m_n4Color.y = cGreen;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	unsigned char ColorDX::GetGreen() const
@@ -49,8 +51,9 @@ namespace Iris2D
 
 	void ColorDX::SetBlue(unsigned char cBlue)
 	{
-		m_n4Color.z = cBlue;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_n4Color.z, cBlue, m_hModified);
+		//m_n4Color.z = cBlue;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	unsigned char ColorDX::GetBlue() const
@@ -60,8 +63,9 @@ namespace Iris2D
 
 	void ColorDX::SetAlpha(unsigned char cAlpha)
 	{
-		m_n4Color.w = cAlpha;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_n4Color.w, cAlpha, m_hModified);
+		//m_n4Color.w = cAlpha;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	unsigned char ColorDX::GetAlpha() const
@@ -79,11 +83,14 @@ namespace Iris2D
 
 	bool ColorDX::Modified()
 	{
-		return m_bModifyDirtyFlag;
+		return m_dcChecker.IsDirty(m_hModified);
 	}
 
 	void ColorDX::ModifyDone()
 	{
-		m_bModifyDirtyFlag = false;
+		m_dcChecker.ResetDirty(m_hModified);
+	}
+	ColorDX::ColorDX() {
+		m_hModified = m_dcChecker.Register();
 	}
 }

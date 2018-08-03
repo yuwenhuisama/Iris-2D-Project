@@ -16,14 +16,13 @@ namespace Iris2D {
 		void ResetDirty(DirtyCheckerHandler hHandler);
 		bool IsDirty(DirtyCheckerHandler hHandler) const;
 
-		template<typename T>
-		void Assign(T& a, T& b, DirtyCheckerHandler hHandler) {
+		template<typename T1, typename T2>
+		void Assign(T1& a, T2& b, DirtyCheckerHandler hHandler) {
 			if (a != b) {
 				SetDirty(hHandler);
 				a = b;
 			}
 		}
-
 	private:
 		std::vector<bool> m_vcSlot;
 

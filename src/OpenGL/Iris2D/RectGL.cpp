@@ -1,7 +1,5 @@
 #include "OpenGL/Iris2D/RectGL.h"
 
-
-
 namespace Iris2D
 {
 	RectGL * RectGL::Create(float fX, float fY, float fWidth, float fHeight)
@@ -53,8 +51,10 @@ namespace Iris2D
 
 	void RectGL::SetX(float fX)
 	{
-		m_f4Rect.x = fX;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_f4Rect.x, fX, m_hModified);
+
+		//m_f4Rect.x = fX;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetX() const
@@ -64,8 +64,9 @@ namespace Iris2D
 
 	void RectGL::SetY(float fY)
 	{
-		m_f4Rect.y = fY;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_f4Rect.y, fY, m_hModified);
+		//m_f4Rect.y = fY;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetY() const
@@ -75,8 +76,10 @@ namespace Iris2D
 
 	void RectGL::SetWidth(float fWidth)
 	{
-		m_f4Rect.z = fWidth;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_f4Rect.z, fWidth, m_hModified);
+
+		//m_f4Rect.z = fWidth;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetWidth() const
@@ -86,8 +89,10 @@ namespace Iris2D
 
 	void RectGL::SetHeight(float fHeight)
 	{
-		m_f4Rect.w = fHeight;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_f4Rect.w, fHeight, m_hModified);
+
+		//m_f4Rect.w = fHeight;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetHeight() const
@@ -97,9 +102,13 @@ namespace Iris2D
 
 	void RectGL::SetLeft(float fLeft)
 	{
-		m_f4Rect.z = m_f4Rect.x + m_f4Rect.z - fLeft;
-		m_f4Rect.x = fLeft;
-		m_bModifyDirtyFlag = true;
+		SetWidth(m_f4Rect.x + m_f4Rect.z - fLeft);
+		m_dcChecker.Assign(m_f4Rect.x, fLeft, m_hModified);
+		//SetX(fLeft);
+
+		//m_f4Rect.z = m_f4Rect.x + m_f4Rect.z - fLeft;
+		//m_f4Rect.x = fLeft;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetLeft() const
@@ -109,8 +118,9 @@ namespace Iris2D
 
 	void RectGL::SetRight(float fRight)
 	{
-		m_f4Rect.z = m_f4Rect.x + fRight - m_f4Rect.x;
-		m_bModifyDirtyFlag = true;
+		m_dcChecker.Assign(m_f4Rect.z, fRight, m_hModified);
+		//m_f4Rect.z = m_f4Rect.x + fRight - m_f4Rect.x;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetRight() const
@@ -120,9 +130,13 @@ namespace Iris2D
 
 	void RectGL::SetTop(float fTop)
 	{
-		m_f4Rect.w = m_f4Rect.y + m_f4Rect.w - fTop;
-		m_f4Rect.y = fTop;
-		m_bModifyDirtyFlag = true;
+		SetHeight(m_f4Rect.y + m_f4Rect.w - fTop);
+		m_dcChecker.Assign(m_f4Rect.y, fTop, m_hModified);
+		//SetY(fTop);
+
+		//m_f4Rect.w = m_f4Rect.y + m_f4Rect.w - fTop;
+		//m_f4Rect.y = fTop;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetTop() const
@@ -132,8 +146,9 @@ namespace Iris2D
 
 	void RectGL::SetBottom(float fBottom)
 	{
-		m_f4Rect.w = m_f4Rect.y + fBottom - m_f4Rect.y;
-		m_bModifyDirtyFlag = true;
+		SetHeight(m_f4Rect.y + fBottom - m_f4Rect.y);
+		//m_f4Rect.w = m_f4Rect.y + fBottom - m_f4Rect.y;
+		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectGL::GetBottom() const
@@ -159,12 +174,18 @@ namespace Iris2D
 
 	bool RectGL::Modified()
 	{
-		return m_bModifyDirtyFlag;
+		m_dcChecker.ResetDirty(m_hModified);
+		//return m_bModifyDirtyFlag;
 	}
 
 	void RectGL::ModifyDone()
 	{
-		m_bModifyDirtyFlag = false;
+		m_hModified = m_dcChecker.Register();
+		//m_bModifyDirtyFlag = false;
+	}
+
+	RectGL::RectGL() {
+		m_hModified = m_dcChecker.Register();
 	}
 
 }

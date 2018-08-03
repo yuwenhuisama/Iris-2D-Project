@@ -10,6 +10,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Common/Util/DirtyChecker.h"
+
 namespace Iris2D
 {
 	class Rect;
@@ -18,8 +20,9 @@ namespace Iris2D
 	private:
 		glm::vec4 m_f4Rect{ 0.0f, 0.0f, 0.0f, 0.0f };
 
-
-		bool m_bModifyDirtyFlag = false;
+		DirtyChecker m_dcChecker;
+		DirtyChecker::DirtyCheckerHandler m_hModified = 0;
+		//bool m_bModifyDirtyFlag = false;
 
 	public:
 		static RectGL* Create(float fX, float fY, float fWidth, float fHeight);
@@ -71,7 +74,8 @@ namespace Iris2D
 		void ModifyDone();
 
 	private:
-		RectGL() = default;
+		//RectGL() = default;
+		 RectGL();
 		~RectGL() = default;
 	};
 }

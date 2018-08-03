@@ -6,23 +6,21 @@
 #include "Common/Util/RefCounter.h"
 #include "Common/Iris2D/Proxied.h"
 
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "Common/Util/DirtyChecker.h"
+
 namespace Iris2D
 {
-
-	glm::vec4 m_f4Rect{ 1.0f, 0.0f, 0.0f, 1.0f };
-
 
 	class Color;
 	class ColorGL : public Proxied<Color>, public IColor, public RefCounter
 	{
 	private:
-		//DirectX::XMINT4 m_n4Color{ 0, 0, 0, 0 };
-		glm::vec4 m_n4Color{ 0, 0, 0, 0 };
-		bool m_bModifyDirtyFlag = false;
+		glm::ivec4 m_n4Color{ 0, 0, 0, 0 };
+		DirtyChecker m_dcChecker;
+		DirtyChecker::DirtyCheckerHandler m_hModified = 0;
 
 	public:
 		static ColorGL* Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);
@@ -49,7 +47,7 @@ namespace Iris2D
 		void ModifyDone();
 
 	private:
-		ColorGL() = default;
+		ColorGL();
 		~ColorGL() = default;
 	};
 

@@ -6,6 +6,8 @@
 #include "Common/Util/RefCounter.h"
 #include "Common/Iris2D/Proxied.h"
 
+#include "Common/Util/DirtyChecker.h"
+
 
 namespace Iris2D
 {	
@@ -14,11 +16,15 @@ namespace Iris2D
 	{
 	private:
 		DirectX::XMINT4 m_n4Color{ 0, 0, 0, 0 };
-		bool m_bModifyDirtyFlag = false;
+		DirtyChecker m_dcChecker;
+		DirtyChecker::DirtyCheckerHandler m_hModified = 0;
+	//	bool m_bModifyDirtyFlag = false;
 
 	public:
 		static ColorDX* Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);
 		static void Release(ColorDX*& pColor);
+
+
 
 	public:
 
@@ -41,7 +47,10 @@ namespace Iris2D
 		void ModifyDone();
 
 	private:
-		ColorDX() = default;
+
+		//ColorDX() = default;
+
+		ColorDX();
 		~ColorDX() = default;
 	};
 
