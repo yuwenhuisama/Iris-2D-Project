@@ -97,6 +97,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
+
+	// PrintFormatDebugMessage(L"%1%, %2%", "str1", "str2");
+	PrintDebugMessage(L"Debug");
+
 	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 800, 600, GameCallBack, L"My Iris App" };
 
 	// auto pApp = ApplicationDX::Instance(); 
