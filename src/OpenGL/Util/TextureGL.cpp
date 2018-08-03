@@ -9,6 +9,8 @@
 
 #include "OpenGL/Iris2D/GraphicsGL.h"
 
+#include "Common/Util/DebugUtil.h"
+
 namespace Iris2D {
 	TextureGL * TextureGL::Create(const std::wstring & wstrTexturePath) {
 		auto pObject = new TextureGL();
@@ -16,6 +18,8 @@ namespace Iris2D {
 		if (pObject->LoadTexture(wstrTexturePath)) {
 			return pObject;
 		}
+
+		PrintDebugMessageW(L"Failed to create TextureGL.");
 
 		delete pObject;
 		return nullptr;
@@ -28,6 +32,8 @@ namespace Iris2D {
 			return pObject;
 		}
 
+		PrintDebugMessageW(L"Failed to create TextureGL.");
+
 		delete pObject;
 		return nullptr;
 	}
@@ -38,6 +44,8 @@ namespace Iris2D {
 		if (pObject->AsFrameBuffer(nWidth, nHeight)) {
 			return pObject;
 		}
+
+		PrintDebugMessageW(L"Failed to create TextureGL as framebuffer .");
 
 		delete pObject;
 		return nullptr;
@@ -100,9 +108,9 @@ namespace Iris2D {
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_nTextureID, 0);
 
-		GLenum eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		const auto eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (eStatus != GL_FRAMEBUFFER_COMPLETE) {
-			printf("failed to make complete framebuffer object %x", eStatus);
+			PrintFormatDebugMessageW(L"Failed to make complete framebuffer object %x", eStatus);
 			return false;
 		}
 		
@@ -111,7 +119,7 @@ namespace Iris2D {
 
 		glViewport(0, 0, nWidth, nHeight);
 
-		auto pPixels = new GLubyte[nWidth * nHeight * sizeof(GLubyte) * 4];
+		const auto pPixels = new GLubyte[nWidth * nHeight * sizeof(GLubyte) * 4];
 
 		glReadPixels(0, 0, nWidth, nHeight, GL_RGBA, GL_UNSIGNED_BYTE, pPixels);
 
@@ -139,19 +147,15 @@ namespace Iris2D {
 		auto strConverted = converter.to_bytes(wstrTexturePath);
 
 		int nWidth, nHeight, nChannels;
-		auto pData = stbi_load(strConverted.c_str(), &nWidth, &nHeight, &nChannels, STBI_rgb_alpha);
+		const auto pData = stbi_load(strConverted.c_str(), &nWidth, &nHeight, &nChannels, STBI_rgb_alpha);
 
 		GLuint nTextureID = 0;
 		glGenTextures(1, &nTextureID);
-
 		glBindTexture(GL_TEXTURE_2D, nTextureID);
-
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pData);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
-
 		stbi_image_free(pData);
-
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		m_nWidth = nWidth;
@@ -168,9 +172,7 @@ namespace Iris2D {
 		glGenTextures(1, &nTextureID);
 
 		glBindTexture(GL_TEXTURE_2D, nTextureID);
-
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		m_nWidth = nWidth;
@@ -179,7 +181,6 @@ namespace Iris2D {
 	}
 
 	bool TextureGL::AsFrameBuffer(unsigned int nWidth, unsigned int nHeight) {
-
 		// generate frame buffer
 		GLuint FBO = 0;
 		glGenFramebuffers(1, &FBO);
@@ -200,8 +201,11 @@ namespace Iris2D {
 
 		m_nTextureID = nTexture;
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		const auto eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			PrintFormatDebugMessageW(L"Failed to make complete framebuffer object %x", eStatus);
 			return false;
+		}
 
 		unsigned int RBO = 0;
 		glGenRenderbuffers(1, &RBO);
@@ -233,6 +237,10 @@ namespace Iris2D {
 
 		if (m_nFBO) {
 			glDeleteFramebuffers(1, &m_nFBO);
+		}
+
+		if (m_nRBO) {
+			glDeleteRenderbuffers(1, &m_nRBO);
 		}
 	}
 }

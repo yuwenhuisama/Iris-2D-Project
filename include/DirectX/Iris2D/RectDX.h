@@ -28,47 +28,38 @@ namespace Iris2D
 
 		static void Release(RectDX*& pRect);
 
-		void SetX(float fX);
+		void SetX(float fX) override;
+		float GetX() const override;
+	
+		void SetY(float fY) override;
+		float GetY() const override;
+
+		void SetWidth(float fWidth) override;
+		float GetWidth() const override;
+
+		void SetHeight(float fHeight) override;
+		float GetHeight() const override;
+
+		void SetLeft(float fLeft) override;
+		float GetLeft() const override;
+
+		void SetRight(float fRight) override;
+		float GetTop() const override;
+
+		void SetBottom(float fBottom) override;
+		float GetRight() const override;
+
+		void SetTop(float fTop) override;
+		float GetBottom() const override;
 		
-		float GetX() const;
-	
-		void SetY(float fY);
-		
-		float GetY() const;
+		void Set(float fX, float fY, float fWidth, float fHeight) override;
+		void Set2(float fLeft, float fTop, float fRight, float fBottom) override;
 
-		void SetWidth(float fWidth);
-	
-		float GetWidth() const;
-
-		void SetHeight(float fHeight);
-		
-		float GetHeight() const;
-
-		void SetLeft(float fLeft);
-
-		float GetLeft() const;
-
-		void SetRight(float fRight);
-
-		float GetTop() const;
-
-		void SetBottom(float fBottom);
-	
-		float GetRight() const;
-
-		void SetTop(float fTop);
-	
-		float GetBottom() const;
-		
-		void Set(float fX, float fY, float fWidth, float fHeight);
-	
-		void Set2(float fLeft, float fTop, float fRight, float fBottom);
-
-		bool Modified();
+		bool Modified() const;
 		void ModifyDone();
 
 	private:
-		RectDX() = default;
+		RectDX();
 		~RectDX() = default;
 	};
 }

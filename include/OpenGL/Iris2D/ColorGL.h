@@ -27,23 +27,21 @@ namespace Iris2D
 		static void Release(ColorGL*& pColor);
 
 	public:
+		void SetRed(unsigned char cRed) override;
+		unsigned char GetRed() const override;
 
+		void SetGreen(unsigned char cGreen) override;
+		unsigned char GetGreen() const override;
 
-		void SetRed(unsigned char cRed);
-		unsigned char GetRed() const;
+		void SetBlue(unsigned char cBlue) override;
+		unsigned char GetBlue() const override;
 
-		void SetGreen(unsigned char cGreen);
-		unsigned char GetGreen() const;
+		void SetAlpha(unsigned char cAlpha) override;
+		unsigned char GetAlpha() const override;
 
-		void SetBlue(unsigned char cBlue);
-		unsigned char GetBlue() const;
+		void Set(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha) override;
 
-		void SetAlpha(unsigned char cAlpha);
-		unsigned char GetAlpha() const;
-
-		void Set(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);
-
-		bool Modified();
+		bool Modified() const;
 		void ModifyDone();
 
 	private:
@@ -51,6 +49,6 @@ namespace Iris2D
 		~ColorGL() = default;
 	};
 
-	typedef ColorGL ToneDX;
+	typedef ColorGL ToneGL;
 }
 #endif // !_H_COLOR_GL_

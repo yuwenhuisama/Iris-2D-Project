@@ -6,7 +6,6 @@
 #include "Common/Util/RefCounter.h"
 #include "Common/Iris2D/Proxied.h"
 
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -26,55 +25,42 @@ namespace Iris2D
 
 	public:
 		static RectGL* Create(float fX, float fY, float fWidth, float fHeight);
-
 		static RectGL* Create2(float fLeft, float fTop, float fRight, float fBottom);
-
 		static void Release(RectGL*& pRect);
 
 	public:
 		
-		void SetX(float fX);
-		
-		float GetX() const;
+		void SetX(float fX) override;
+		float GetX() const override;
 
-		void SetY(float fY);
-		
-		float GetY() const;
+		void SetY(float fY) override;
+		float GetY() const override;
 
-		void SetWidth(float fWidth);
+		void SetWidth(float fWidth) override;
+		float GetWidth() const override;
+
+		void SetHeight(float fHeight) override;
+		float GetHeight() const override;
 	
-		float GetWidth() const;
+		void SetLeft(float fLeft) override;
+		float GetLeft() const override;
 
-		void SetHeight(float fHeight);
-	
-		float GetHeight() const;
+		void SetTop(float fTop) override;
+		float GetTop() const override;
 
-		
-		void SetLeft(float fLeft);
-	
-		float GetLeft() const;
+		void SetRight(float fRight) override;
+		float GetRight() const override;
 
-		void SetTop(float fTop);
-	
-		float GetTop() const;
+		void SetBottom(float fBottom) override;
+		float GetBottom() const override;
 
-		void SetRight(float fRight);
-	
-		float GetRight() const;
+		void Set(float fX, float fY, float fWidth, float fHeight) override;
+		void Set2(float fLeft, float fTop, float fRight, float fBottom) override;
 
-		void SetBottom(float fBottom);
-	
-		float GetBottom() const;
-
-		void Set(float fX, float fY, float fWidth, float fHeight);
-	
-		void Set2(float fLeft, float fTop, float fRight, float fBottom);
-
-		bool Modified();
+		bool Modified() const;
 		void ModifyDone();
 
 	private:
-		//RectGL() = default;
 		 RectGL();
 		~RectGL() = default;
 	};

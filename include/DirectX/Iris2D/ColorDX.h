@@ -18,38 +18,31 @@ namespace Iris2D
 		DirectX::XMINT4 m_n4Color{ 0, 0, 0, 0 };
 		DirtyChecker m_dcChecker;
 		DirtyChecker::DirtyCheckerHandler m_hModified = 0;
-	//	bool m_bModifyDirtyFlag = false;
 
 	public:
 		static ColorDX* Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);
 		static void Release(ColorDX*& pColor);
 
-
-
 	public:
 
+		void SetRed(unsigned char cRed) override;
+		unsigned char GetRed() const override;
 
-		void SetRed(unsigned char cRed);
-		unsigned char GetRed() const;
+		void SetGreen(unsigned char cGreen) override;
+		unsigned char GetGreen() const override;
 
-		void SetGreen(unsigned char cGreen);
-		unsigned char GetGreen() const;
+		void SetBlue(unsigned char cBlue) override;
+		unsigned char GetBlue() const override;
 
-		void SetBlue(unsigned char cBlue);
-		unsigned char GetBlue() const;
+		void SetAlpha(unsigned char cAlpha) override;
+		unsigned char GetAlpha() const override;
 
-		void SetAlpha(unsigned char cAlpha);
-		unsigned char GetAlpha() const;
-
-		void Set(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);
+		void Set(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha) override;
 
 		bool Modified();
 		void ModifyDone();
 
 	private:
-
-		//ColorDX() = default;
-
 		ColorDX();
 		~ColorDX() = default;
 	};

@@ -1,6 +1,8 @@
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/AppFactory.h"
 
+#include "OpenGL/Iris2D/RectGL.h"
+
 #ifdef _WIN32
 #include "DirectX/Iris2D/RectDX.h"
 #endif // _WIN32
@@ -22,6 +24,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = RectGL::Create(fX, fY, fWidth, fHeight);
+			pRect = new Rect(pTmp);
+			pTmp->SetProxy(pRect);
+		}
 			break;
 		default:
 			break;
@@ -43,6 +50,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = RectGL::Create2(fLeft, fTop, fRight, fBottom);
+			pRect = new Rect(pTmp);
+			pTmp->SetProxy(pRect);
+		}
 			break;
 		default:
 			break;
@@ -65,6 +77,7 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+			RectGL::Release(reinterpret_cast<RectGL*&>(pProxied));
 			break;
 		default:
 			break;

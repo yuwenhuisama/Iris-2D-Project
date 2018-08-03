@@ -9,11 +9,11 @@ namespace Iris2D
 		auto pRect = new RectDX();
 		pRect->IncreamRefCount();
 
-		if (fWidth <= 0) {
+		if (fWidth <= 0.0f) {
 			fWidth = 1.0f;
 		}
 
-		if (fHeight <= 0) {
+		if (fHeight <= 0.0f) {
 			fHeight = 1.0f;
 		}
 
@@ -27,11 +27,11 @@ namespace Iris2D
 		pRect->IncreamRefCount();
 
 		if (fBottom <= fTop) {
-			fBottom = fTop + 1;
+			fBottom = fTop + 1.0f;
 		}
 
 		if (fRight <= fLeft) {
-			fRight = fLeft + 1;
+			fRight = fLeft + 1.0f;
 		}
 
 		pRect->m_f4Rect = { fLeft, fTop, fRight - fLeft, fBottom - fTop };
@@ -54,8 +54,6 @@ namespace Iris2D
 	void RectDX::SetX(float fX)
 	{
 		m_dcChecker.Assign(m_f4Rect.x, fX, m_hModified);
-		//m_f4Rect.x = fX;
-		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectDX::GetX() const
@@ -66,8 +64,6 @@ namespace Iris2D
 	void RectDX::SetY(float fY)
 	{
 		m_dcChecker.Assign(m_f4Rect.y, fY, m_hModified);
-		//m_f4Rect.y = fY;
-		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectDX::GetY() const
@@ -77,9 +73,10 @@ namespace Iris2D
 
 	void RectDX::SetWidth(float fWidth)
 	{
+		if (fWidth <= 0) {
+			return;
+		}
 		m_dcChecker.Assign(m_f4Rect.z, fWidth, m_hModified);
-		//m_f4Rect.z = fWidth;
-		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectDX::GetWidth() const
@@ -89,9 +86,10 @@ namespace Iris2D
 
 	void RectDX::SetHeight(float fHeight)
 	{
+		if (fHeight <= 0) {
+			return;
+		}
 		m_dcChecker.Assign(m_f4Rect.w, fHeight, m_hModified);
-		//m_f4Rect.w = fHeight;
-		//m_bModifyDirtyFlag = true;
 	}
 
 	float RectDX::GetHeight() const
@@ -101,12 +99,11 @@ namespace Iris2D
 
 	void RectDX::SetLeft(float fLeft)
 	{
+		if (fLeft >= GetRight()) {
+			return;
+		}
 		SetWidth(m_f4Rect.x + m_f4Rect.z - fLeft);
-		m_dcChecker.Assign(m_f4Rect.x, fLeft, m_hModified);
-
-		//m_f4Rect.z = m_f4Rect.x + m_f4Rect.z - fLeft;
-		//m_f4Rect.x = fLeft;
-		//m_bModifyDirtyFlag = true;
+		m_f4Rect.x = fLeft;
 	}
 
 	float RectDX::GetLeft() const
@@ -116,9 +113,10 @@ namespace Iris2D
 
 	void RectDX::SetRight(float fRight)
 	{
-		m_dcChecker.Assign(m_f4Rect.z, fRight, m_hModified);
-		//m_f4Rect.z = m_f4Rect.x + fRight - m_f4Rect.x;
-		//m_bModifyDirtyFlag = true;
+		if (fRight <= GetLeft()) {
+			return;
+		}
+		SetWidth(fRight - m_f4Rect.x);
 	}
 
 	float RectDX::GetRight() const
@@ -128,12 +126,11 @@ namespace Iris2D
 
 	void RectDX::SetTop(float fTop)
 	{
+		if (fTop >= GetBottom()) {
+			return;
+		}
 		SetHeight(m_f4Rect.y + m_f4Rect.w - fTop);
-		m_dcChecker.Assign(m_f4Rect.y, fTop, m_hModified);
-
-		//m_f4Rect.w = m_f4Rect.y + m_f4Rect.w - fTop;
-		//m_f4Rect.y = fTop;
-		//m_bModifyDirtyFlag = true;
+		m_f4Rect.y = fTop;
 	}
 
 	float RectDX::GetTop() const
@@ -143,9 +140,10 @@ namespace Iris2D
 
 	void RectDX::SetBottom(float fBottom)
 	{
-		SetHeight(m_f4Rect.y + fBottom - m_f4Rect.y);
-		//m_f4Rect.w = m_f4Rect.y + fBottom - m_f4Rect.y;
-		//m_bModifyDirtyFlag = true;
+		if (fBottom <= GetTop()) {
+			return;
+		}
+		SetHeight(fBottom - m_f4Rect.y);
 	}
 
 	float RectDX::GetBottom() const
@@ -155,6 +153,10 @@ namespace Iris2D
 
 	void RectDX::Set(float fX, float fY, float fWidth, float fHeight)
 	{
+		if (fWidth <= 0 || fHeight <= 0) {
+			return;
+		}
+
 		SetX(fX);
 		SetY(fY);
 		SetWidth(fWidth);
@@ -163,26 +165,28 @@ namespace Iris2D
 
 	void RectDX::Set2(float fLeft, float fTop, float fRight, float fBottom)
 	{
+		if (fLeft >= fRight || fRight <= fLeft || fTop >= fBottom || fBottom <= fTop) {
+			return;
+		}
+
 		SetLeft(fLeft);
 		SetTop(fTop);
 		SetRight(fRight);
 		SetBottom(fBottom);
 	}
 
-	bool RectDX::Modified()
+	bool RectDX::Modified() const
 	{
-		m_dcChecker.ResetDirty(m_hModified);
-		//return m_bModifyDirtyFlag;
+		return m_dcChecker.IsDirty(m_hModified);
 	}
 
 	void RectDX::ModifyDone()
 	{
-		m_hModified = m_dcChecker.Register();
-		//m_bModifyDirtyFlag = false;
+		m_dcChecker.ResetDirty(m_hModified);
 	}
+
 	RectDX::RectDX() {
 		m_hModified = m_dcChecker.Register();
 	}
-
 
 }

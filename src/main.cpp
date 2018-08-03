@@ -99,7 +99,7 @@ int main(int argc, char* argv[]) {
 #endif
 
 	// PrintFormatDebugMessage(L"%1%, %2%", "str1", "str2");
-	PrintDebugMessage(L"Debug");
+	// PrintDebugMessage(L"Debug");
 
 	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 800, 600, GameCallBack, L"My Iris App" };
 

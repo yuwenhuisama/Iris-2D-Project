@@ -1,6 +1,8 @@
 #include "Common/Iris2D/Color.h"
 #include "Common/Iris2D/AppFactory.h"
 
+#include "OpenGL/Iris2D/ColorGL.h"
+
 #ifdef _WIN32
 #include "DirectX/Iris2D/ColorDX.h"
 
@@ -22,6 +24,11 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+		{
+			auto pTmp = ColorGL::Create(cRed, cGreen, cBlue, cAlpha);
+			pColor = new Color(pTmp);
+			pTmp->SetProxy(pColor);
+		}
 			break;
 		default:
 			break;
@@ -44,6 +51,7 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+			ColorGL::Release(reinterpret_cast<ColorGL*&>(pProxied));
 			break;
 		default:
 			break;

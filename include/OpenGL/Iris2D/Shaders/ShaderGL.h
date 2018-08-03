@@ -25,13 +25,13 @@ namespace Iris2D {
 
 		void Use();
 		void Unuse();
-		void SetBool(const std::string& strUniformName, bool bValue) const;
-		void SetInt(const std::string& strUniformName, int nValue) const;
-		void SetFloat(const std::string& strUniformName, float fValue) const;
-		void SetFloat4(const std::string& strUniformName, float fR, float fG, float fB, float fA);
-		void SetMatrix(const std::string& strUniformName, const glm::mat4& mtMatrix);
-		void SetFloat3(const std::string& strUniformName, float fR, float fG, float fB);
-		void SetFloat3(const std::string& strUniformName, const glm::vec3& v3Vector);
+		bool SetBool(const std::string& strUniformName, bool bValue);
+		bool SetInt(const std::string& strUniformName, int nValue);
+		bool SetFloat(const std::string& strUniformName, float fValue);
+		bool SetFloat4(const std::string& strUniformName, float fR, float fG, float fB, float fA);
+		bool SetMatrix(const std::string& strUniformName, const glm::mat4& mtMatrix);
+		bool SetFloat3(const std::string& strUniformName, float fR, float fG, float fB);
+		bool SetFloat3(const std::string& strUniformName, const glm::vec3& v3Vector);
 
 		GLUnit GetID() const;
 

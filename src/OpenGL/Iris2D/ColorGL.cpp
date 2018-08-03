@@ -24,7 +24,6 @@ namespace Iris2D {
 
 	void ColorGL::SetRed(unsigned char cRed) {
 		m_dcChecker.Assign(m_n4Color.x, cRed, m_hModified);
-
 	}
 
 	unsigned char ColorGL::GetRed() const {
@@ -62,7 +61,7 @@ namespace Iris2D {
 		SetAlpha(cAlpha);
 	}
 
-	bool ColorGL::Modified() {
+	bool ColorGL::Modified() const {
 		return m_dcChecker.IsDirty(m_hModified);
 	}
 
