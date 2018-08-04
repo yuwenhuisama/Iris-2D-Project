@@ -26,11 +26,23 @@ namespace Iris2D {
 		SetMatrix("projectionMat", mtProjection);
 	}
 
+	void SpriteShaderGL::SetOrgPosition(const glm::vec2 & v2OrgPosition) {
+		SetFloat2("spriteVertexInfo.orgPos", v2OrgPosition);
+	}
+
 	void SpriteShaderGL::SetOpacity(const glm::float32& f32Opacity) {
 		SetFloat("spriteFragmentInfo.opacity", f32Opacity);
 	}
 
 	void SpriteShaderGL::SetMirror(const glm::int32& nMirror) {
 		SetInt("spriteFragmentInfo.mirror", nMirror);
+	}
+
+	void SpriteShaderGL::SetRect(const glm::vec4& v4Rect) {
+		SetFloat4("spriteFragmentInfo.rect", v4Rect.x, v4Rect.y, v4Rect.z, v4Rect.w);
+	}
+
+	void SpriteShaderGL::SetTone(const glm::ivec4& v4Tone) {
+		SetInt4("spriteFragmentInfo.tone", v4Tone.x, v4Tone.y, v4Tone.z, v4Tone.w);
 	}
 }

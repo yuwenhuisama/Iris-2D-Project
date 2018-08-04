@@ -4,6 +4,8 @@
 #include "OpenGL/Iris2D/ViewportGL.h"
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include "OpenGL/OpenGLUtil/BackBufferVertexGL.h"
+#include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,6 +23,7 @@ namespace Iris2D {
 			glfwSwapInterval(1);
 		}
 
+		SpriteShaderGL::Instance()->Use();
 		for (auto& pViewport : m_stViewports) {
 			pViewport->RenderSprites();
 		}
@@ -29,6 +32,8 @@ namespace Iris2D {
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		ViewportShaderGL::Instance()->Use();
 
 		for (auto& pViewport : m_stViewports) {
 			pViewport->Render();

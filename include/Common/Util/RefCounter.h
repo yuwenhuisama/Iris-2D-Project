@@ -9,13 +9,13 @@ namespace Iris2D
 		unsigned int m_nRefCount = 0;
 
 	public:
-		unsigned int GetRefCount();
+		unsigned int GetRefCount() const;
 		void IncreamRefCount();
 		void DecreamRefCount();
 
 	public:
 		RefCounter() = default;
-		virtual ~RefCounter() = 0;
+		virtual ~RefCounter() = default;
 	};
 }
 #endif // _H_REF_COUNTER_

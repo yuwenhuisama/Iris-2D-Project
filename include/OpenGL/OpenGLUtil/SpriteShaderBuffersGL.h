@@ -11,6 +11,8 @@ namespace Iris2D {
 		glm::vec2 m_v2OrgPosition { 0.f, 0.f };
 		glm::float32 m_f32Opacity { 1.f };
 		glm::int32 m_i32Mirror { 1 };
+		glm::vec4 m_v4Rect { 0.0f, };
+		glm::ivec4 m_v4Tone { 0, };
 	};
 }
 

@@ -37,6 +37,14 @@ bool GameCallBack() {
 	pSprite->SetX(400.f);
 	pSprite->SetY(300.f);
 	pSprite->SetMirror(true);
+	// pSprite->SetOX(pBitmap->GetWidth() / 2);
+	// pSprite->SetOY(pBitmap->GetHeight() / 2);
+	 auto pRect = Rect::Create(150.0f, 150.0f, 3000.0f, 3000.0f);
+	// pSprite->SetSrcRect(pRect);
+
+	auto pTone = Tone::Create(0, 0, 0, 255);
+	pSprite->SetTone(pTone);
+
 	//pSprite->SetOpacity(0.5f);
 	// Bitmap::Release(pBitmap);
 
@@ -57,37 +65,37 @@ bool GameCallBack() {
 
 	auto fAngle = 0.0f;
 	auto fOpacity = 0.5f;
+	unsigned char nRed = 0;
 	auto bUp = true;
 
 	while (!pApp->IsQuited()) {
-		pSprite->SetAngle(fAngle += 2.0f);
+		// pSprite->SetAngle(fAngle += 2.0f);
 
 		if (bUp) {
-			if (fOpacity < 1.0f) {
-				fOpacity += 0.01f;
+			if (nRed < 255) {
+				nRed += 1;
 			} else {
 				bUp = false;
 			}
 		} else {
-			if (fOpacity > 0.0f) {
-				fOpacity -= 0.01f;
+			if (nRed > 0) {
+				nRed -= 1;
 			} else {
 				bUp = true;
 			}
 		}
 
-		pSprite->SetZoomX(fOpacity * 2.f);
-		pSprite->SetZoomY(fOpacity * 2.f);
-		pSprite->SetOpacity(fOpacity);
+		// pSprite->SetZoomX(fOpacity * 2.f);
+		// pSprite->SetZoomY(fOpacity * 2.f);
+		// pSprite->SetOpacity(fOpacity);
+		pSprite->GetTone()->SetRed(nRed);
 
 		pGraphics->Update();
 	}
 
-	//BEGIN_SAFE_LOOP()
-	//	pSprite->SetAngle(angle += 1.0f);
-	//END_SAFE_LOOP()
-
 	Sprite::Release(pSprite);
+	Rect::Release(pRect);
+	Bitmap::Release(pBitmap);
 
 	return true;
 }
@@ -97,13 +105,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
 
-	// PrintFormatDebugMessage(L"%1%, %2%", "str1", "str2");
-	// PrintDebugMessage(L"Debug");
-
-	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 800, 600, GameCallBack, L"My Iris App" };
-
-	// auto pApp = ApplicationDX::Instance(); 
 	AppFactory::InitApiType(ApiType::OpenGL);
 	auto pApp = AppFactory::GetApplication();
 

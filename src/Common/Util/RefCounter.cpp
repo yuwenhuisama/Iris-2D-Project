@@ -2,7 +2,7 @@
 
 namespace Iris2D
 {
-	unsigned int RefCounter::GetRefCount()
+	unsigned int RefCounter::GetRefCount() const
 	{
 		return m_nRefCount;
 	}
@@ -16,10 +16,4 @@ namespace Iris2D
 	{
 		--m_nRefCount;
 	}
-
-	RefCounter::~RefCounter()
-	{
-
-	}
-
 }

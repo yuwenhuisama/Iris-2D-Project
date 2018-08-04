@@ -15,7 +15,10 @@ uniform mat4 projectionMat;
 uniform SpriteVertexInfo spriteVertexInfo;
 
 void main() {
-    gl_Position = projectionMat * spriteVertexInfo.translateMat * spriteVertexInfo.rotationMat* spriteVertexInfo.zoomMat * position;
+	vec4 posTmp = position;
+	posTmp.xy -= spriteVertexInfo.orgPos;
+
+    gl_Position = projectionMat * spriteVertexInfo.translateMat * spriteVertexInfo.rotationMat* spriteVertexInfo.zoomMat * posTmp;
 
 	texCoord = textureCoord;
 }

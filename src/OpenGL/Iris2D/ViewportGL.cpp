@@ -14,6 +14,7 @@
 #include "Common/Util/ProxyConvert.h"
 
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -134,7 +135,7 @@ namespace Iris2D {
 		auto pShader = ViewportShaderGL::Instance();
 
 		//TODO: Optimize for dirty check
-		pShader->Use();
+		//pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 
 		glm::mat4 mtTrans(1.0f);

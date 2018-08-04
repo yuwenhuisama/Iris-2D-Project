@@ -13,11 +13,14 @@
 namespace Iris2D {
 	class Viewport;
 	class Sprite;
+	class Color;
+	typedef Color Tone;
 
 	class SpriteGL : public ISprite, public Proxied<Sprite> {
 	private:
 		Bitmap* m_pBitmap = nullptr;
 		Rect* m_pSrcRect = nullptr;
+		Tone* m_pTone = nullptr;
 
 		Viewport* m_pViewport = nullptr;
 
@@ -29,7 +32,7 @@ namespace Iris2D {
 
 		glm::vec3 m_v3Position { 0.f, 0.f, 0.f };
 		glm::vec2 m_v2Zoom{ 1.f, 1.f };
-		glm::vec2 m_v2OrgPosition { 0.f, 0.f };
+		//glm::vec2 m_v2OrgPosition { 0.f, 0.f };
 
 		float m_fAngle = 0.f;
 		float m_fOpacity = 1.f;

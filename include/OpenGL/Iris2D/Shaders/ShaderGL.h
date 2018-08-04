@@ -27,7 +27,9 @@ namespace Iris2D {
 		void Unuse();
 		bool SetBool(const std::string& strUniformName, bool bValue);
 		bool SetInt(const std::string& strUniformName, int nValue);
+		bool SetInt4(const std::string& strUniformName, int nR, int nG, int nB, int nA);
 		bool SetFloat(const std::string& strUniformName, float fValue);
+		bool SetFloat2(const std::string& strUniformName, const glm::vec2& v2Vector);
 		bool SetFloat4(const std::string& strUniformName, float fR, float fG, float fB, float fA);
 		bool SetMatrix(const std::string& strUniformName, const glm::mat4& mtMatrix);
 		bool SetFloat3(const std::string& strUniformName, float fR, float fG, float fB);

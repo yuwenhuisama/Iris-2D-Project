@@ -3,6 +3,8 @@
 #include "OpenGL/Iris2D/BitmapGL.h"
 #include "Common/Iris2D/Viewport.h"
 #include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Rect.h"
+#include "Common/Iris2D/Color.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -19,6 +21,9 @@
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 
 #include "Common/Util/Util.h"
+
+#include "OpenGL/Iris2D/ColorGL.h"
+#include "OpenGL/Iris2D/RectGL.h"
 
 namespace Iris2D {
 	SpriteGL * SpriteGL::Create(Viewport * pViewport) {
@@ -124,20 +129,20 @@ namespace Iris2D {
 
 	void SpriteGL::SetOX(float fOX) {
 		//m_v2OrgPosition.x = fOX;
-		m_dcDirtyChecker.Assign(m_v2OrgPosition.x, fOX, m_hOrgPos);
+		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.x, fOX, m_hOrgPos);
 	}
 
 	float SpriteGL::GetOX() {
-		return m_v2OrgPosition.x;
+		return m_svbfBuffer.m_v2OrgPosition.x;
 	}
 
 	void SpriteGL::SetOY(float fOY) {
 		// m_v2OrgPosition.y = fOY;
-		m_dcDirtyChecker.Assign(m_v2OrgPosition.y, fOY, m_hOrgPos);
+		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.y, fOY, m_hOrgPos);
 	}
 
 	float SpriteGL::GetOY() {
-		return m_v2OrgPosition.y;
+		return m_svbfBuffer.m_v2OrgPosition.y;
 	}
 
 	void SpriteGL::SetMirror(bool bMirror) {
@@ -168,17 +173,45 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetSrcRect(Rect *& pSrcRect) {
+		if (pSrcRect == m_pSrcRect) {
+			return;
+		}
+
+		Rect::Release(m_pSrcRect);
+
+		if (!pSrcRect) {
+			m_pSrcRect = nullptr;
+			return;
+		}
+
+		GetProxied<RectGL*>(pSrcRect)->IncreamRefCount();
+
+		m_pSrcRect = pSrcRect;
 	}
 
 	Rect * SpriteGL::GetSrcRect() const {
-		return nullptr;
+		return m_pSrcRect;
 	}
 
 	void SpriteGL::SetTone(Tone *& pTone) {
+		if (pTone == m_pTone) {
+			return;
+		}
+
+		Tone::Release(m_pTone);
+
+		if (!pTone) {
+			m_pTone = nullptr;
+			return;
+		}
+
+		GetProxied<ToneGL*>(pTone)->IncreamRefCount();
+
+		m_pTone = pTone;
 	}
 
 	Tone * SpriteGL::GetTone() const {
-		return nullptr;
+		return m_pTone;
 	}
 
 	void SpriteGL::Update() {
@@ -259,14 +292,48 @@ namespace Iris2D {
 			m_svbfBuffer.m_i32Mirror = m_bMirror ? 1 : 0;
 		});
 
+		if (m_pSrcRect && GetProxied<RectGL*>(m_pSrcRect)->Modified()) {
+			const auto fLeft = m_pSrcRect->GetLeft() / m_pBitmap->GetWidth();
+			const auto fTop = m_pSrcRect->GetTop() / m_pBitmap->GetHeight();
+			const auto fRight = m_pSrcRect->GetRight() / m_pBitmap->GetWidth();
+			const auto fBottom = m_pSrcRect->GetBottom() / m_pBitmap->GetHeight();
+
+			m_svbfBuffer.m_v4Rect = {
+				clip(fLeft, 0.0f, 1.0f),
+				clip(fTop, 0.0f, 1.0f),
+				clip(fRight, 0.0f, 1.0f),
+				clip(fBottom, 0.0f, 1.0f),
+			};
+
+			GetProxied<RectGL*>(m_pSrcRect)->ModifyDone();
+		} else if (!m_pSrcRect){
+			m_svbfBuffer.m_v4Rect = { 0.0f, 0.0f, 1.0f, 1.0f };
+		}
+
+		if (m_pTone && GetProxied<ToneGL*>(m_pTone)->Modified()) {
+
+			m_svbfBuffer.m_v4Tone = {
+				m_pTone->GetRed(),
+				m_pTone->GetGreen(),
+				m_pTone->GetBlue(),
+				m_pTone->GetAlpha(),
+			};
+
+			GetProxied<ToneGL*>(m_pTone)->ModifyDone();
+		} else if (!m_pTone) {
+			m_svbfBuffer.m_v4Tone = { 0, 0, 0, 0 };
+		}
+
 		//TODO: Optimize for dirty check
-		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetTranslationMatrix(m_svbfBuffer.m_mt4Translate);
 		pShader->SetRotationMatrix(m_svbfBuffer.m_mtRotation);
 		pShader->SetZoomMatrix(m_svbfBuffer.m_mtZoom);
 		pShader->SetOpacity(m_svbfBuffer.m_f32Opacity);
 		pShader->SetMirror(m_svbfBuffer.m_i32Mirror);
+		pShader->SetOrgPosition(m_svbfBuffer.m_v2OrgPosition);
+		pShader->SetRect(m_svbfBuffer.m_v4Rect);
+		pShader->SetTone(m_svbfBuffer.m_v4Tone);
 
 		GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->UseTexture();
 
@@ -288,5 +355,7 @@ namespace Iris2D {
 
 	SpriteGL::~SpriteGL() {
 		Bitmap::Release(m_pBitmap);
+		Rect::Release(m_pSrcRect);
+		Tone::Release(m_pTone);
 	}
 }
