@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <string>
+#include <GL/glew.h>
 
 struct GLFWwindow;
 
@@ -38,6 +39,8 @@ namespace Iris2D {
 
 		void SetCursorEventCallback(GLFWcursorposfun fCallbacks);
 		void SetScrollEventCallback(GLFWscrollfun fCallback);
+
+		bool CreateVertextBuffer(void* pVertexBuffer, unsigned nBufferSize, GLuint& nVAO, GLuint& nVBO, GLuint& nEBO, const std::function<void()>& fCallback);
 	};
 }
 

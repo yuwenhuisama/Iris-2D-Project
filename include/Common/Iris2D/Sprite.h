@@ -5,6 +5,9 @@
 #include "Proxy.h"
 
 namespace Iris2D {
+	namespace Effect {
+		class EffectBase;
+	}
 
 	class Viewport;
 	/**
@@ -71,8 +74,9 @@ namespace Iris2D {
 		* 如果在设置 Bitmap 之前该 Sprite 已经存在 Bitmap ，那么用户应该手动释放之前的 Bitmap ，Iris 2D 不会自动释放之前的 Bitmap 。此项特性出于对于共享 Bitmap 的考虑。
 		* @param pBitmap 一个 BitmapDX 对象的指针。
 		*/
-		void SetBitmap(Bitmap*& pBitmap);
-		Bitmap* GetBitmap() const;
+		void SetBitmap(Bitmap*& pBitmap) override;
+		
+		Bitmap* GetBitmap() const override;
 
 		/**
 		* \~english
@@ -84,7 +88,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 的像素 X 坐标。（基于 GDI 坐标系）
 		* @param fX 当前 Sprite 的像素 X 坐标。
 		*/
-		void SetX(float fX);
+		void SetX(float fX) override;
 		/**
 		* \~english
 		* Get the pixel x position of current sprite. (Under the GDI coordinate system)
@@ -95,7 +99,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的像素 X 坐标。（基于 GDI 坐标系）
 		* @return 当前 Sprite 的像素 X 坐标。
 		*/
-		float GetX() const;
+		float GetX() const override;
 
 		/**
 		* \~english
@@ -107,7 +111,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 的像素 Y 坐标。（基于 GDI 坐标系）
 		* @param fY 当前 Sprite 的像素 Y 坐标。
 		*/
-		void SetY(float fY);
+		void SetY(float fY) override;
 		/**
 		* \~english
 		* Get the pixel y position of current sprite. (Under the GDI coordinate system)
@@ -118,7 +122,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的像素 Y 坐标。（基于 GDI 坐标系）
 		* @return 当前 Sprite 的像素 Y 坐标。
 		*/
-		float GetY() const;
+		float GetY() const override;
 
 		/**
 		* \~english
@@ -134,7 +138,7 @@ namespace Iris2D {
 		* Z 的范围为 [0.0f, 9999.0f]
 		* @param fZ 当前 Sprite 的 Z 深度。
 		*/
-		void SetZ(float fZ);
+		void SetZ(float fZ) override;
 		/**
 		* \~english
 		* Get the Z depth of current sprite.
@@ -145,7 +149,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 的 Z 深度。
 		* @return 当前 Sprite 的 Z 深度。
 		*/
-		float GetZ() const;
+		float GetZ() const override;
 
 		/**
 		* \~english
@@ -157,7 +161,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 的角度。（角度制）
 		* @param fAngle 当前 Sprite 的角度。
 		*/
-		void SetAngle(float fAngle);
+		void SetAngle(float fAngle) override;
 		/**
 		* \~english
 		* Get the angle of current sprite. ( Angle Degree )
@@ -168,7 +172,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的角度。（角度制）
 		* @return 当前 Sprite 的角度。
 		*/
-		float GetAngle() const;
+		float GetAngle() const override;
 
 		/**
 		* \~english
@@ -180,7 +184,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 的横向拉伸率。
 		* @param fZoomX 当前 Sprite 的横向拉伸率。
 		*/
-		void SetZoomX(float fZoomX);
+		void SetZoomX(float fZoomX) override;
 		/**
 		* \~english
 		* Get the horizental scalling rate of current sprite.
@@ -191,7 +195,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的横向拉伸率。
 		* @return 当前 Sprite 的横向拉伸率。
 		*/
-		float GetZoomX() const;
+		float GetZoomX() const override;
 
 		/**
 		* \~english
@@ -203,7 +207,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 的纵向拉伸率。
 		* @param fZoomY 当前 Sprite 的纵向拉伸率。
 		*/
-		void SetZoomY(float fZoomY);
+		void SetZoomY(float fZoomY) override;
 		/**
 		* \~english
 		* Get the vertical scalling rate of current sprite.
@@ -214,7 +218,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的纵向拉伸率。
 		* @return 当前 Sprite 的纵向拉伸率。
 		*/
-		float GetZoomY() const;
+		float GetZoomY() const override;
 
 		/**
 		* \~english
@@ -234,7 +238,7 @@ namespace Iris2D {
 		* 这个属性在以任意点为旋转中心进行旋转的时候相当有用。
 		* @param fOX 当前 Sprite 传送原点的 X 坐标。
 		*/
-		void SetOX(float fOX);
+		void SetOX(float fOX) override;
 		/**
 		* \~english
 		* Get X position of origin transfer position of current sprite.
@@ -245,7 +249,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的传送原点的 X 坐标。
 		* @return 当前 Sprite 的传送原点的 X 坐标。
 		*/
-		float GetOX();
+		float GetOX() override;
 
 		/**
 		* \~english
@@ -265,7 +269,7 @@ namespace Iris2D {
 		* 这个属性在以任意点为旋转中心进行旋转的时候相当有用。
 		* @param fOY 当前 Sprite 传送原点的 Y 坐标。
 		*/
-		void SetOY(float fOY);
+		void SetOY(float fOY) override;
 		/**
 		* \~english
 		* Get Y position of origin transfer position of current sprite.
@@ -276,7 +280,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的传送原点的 Y 坐标。
 		* @return 当前 Sprite 的传送原点的 Y 坐标。
 		*/
-		float GetOY();
+		float GetOY() override;
 
 		/**
 		* \~english
@@ -288,7 +292,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 是否以镜像显示。
 		* @param bMirror 如果设置为 true ，那么将会以镜像显示，否则正常显示。
 		*/
-		void SetMirror(bool bMirror);
+		void SetMirror(bool bMirror) override;
 		/**
 		* \~english
 		* Get if current sprite displays mirrorly.
@@ -299,7 +303,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 是否以镜像显示。
 		* @return 如果是镜像显示返回 true ，否则返回 false 。
 		*/
-		bool GetMirror();
+		bool GetMirror() override;
 
 		/**
 		* \~english
@@ -311,7 +315,7 @@ namespace Iris2D {
 		* 设置当前 Sprite 是否可见。
 		* @param bVisible 如果传入 true ，那么当前 Sprite 可见否则不可见。
 		*/
-		void SetVisible(bool bVisible);
+		void SetVisible(bool bVisible) override;
 		/**
 		* \~english
 		* Get if current sprite is visible.
@@ -322,7 +326,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 是否可见。
 		* @return 如果当前 Sprite 可见那么返回 true ，否则返回 false 。
 		*/
-		bool GetVisible();
+		bool GetVisible() override;
 
 		/**
 		* \~english
@@ -340,7 +344,7 @@ namespace Iris2D {
 		*
 		* @return 当前 Sprite 的透明值。
 		*/
-		void SetOpacity(float fOpacity);
+		void SetOpacity(float fOpacity) override;
 		/**
 		* \~english
 		* Get opacity value of current sprite.
@@ -351,7 +355,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的透明值。
 		* @return 当前 Sprite 的透明值。
 		*/
-		float GetOpacity();
+		float GetOpacity() override;
 
 		/**
 		* \~english
@@ -367,7 +371,7 @@ namespace Iris2D {
 		* 当前 Sprite 的 Bitmap 的 (0, 0)  即是传入的 Rect 的原点。这个函数便于让 Sprite 只显示它的 Bitmap 的一部分。
 		* @param pSrcRect 指向限制 Rect 对象的指针。
 		*/
-		void SetSrcRect(Rect*& pSrcRect);
+		void SetSrcRect(Rect*& pSrcRect) override;
 		/**
 		* \~english
 		* Get the limit rect of current sprite.
@@ -378,7 +382,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的限制 Rect 的指针。
 		* @return 当前 Sprite 的限制 Rect 的指针。
 		*/
-		Rect* GetSrcRect() const;
+		Rect* GetSrcRect() const override;
 
 		/**
 		* \~english
@@ -405,7 +409,7 @@ namespace Iris2D {
 		*
 		* @param pTone 指向 Tone 对象的指针。
 		*/
-		void SetTone(Tone*& pTone);
+		void SetTone(Tone*& pTone) override;
 		/**
 		* \~english
 		* Get the tone object of current sprite.
@@ -416,7 +420,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的 Tone 的指针。
 		* @return 当前 Sprite 的 Tone 的指针。
 		*/
-		Tone* GetTone() const;
+		Tone* GetTone() const override;
 
 		/**
 		* \~english
@@ -426,7 +430,20 @@ namespace Iris2D {
 		* \~chinese
 		* 对当前的 Sprite 更新一帧。如果当前的 Sprite 被设置了动画，那么调用该函数将会让当前 Sprite 的动画前进一帧。
 		*/
-		void Update();
+		void Update() override;
+
+		
+		/**
+		 * \~english
+		 * \brief Set effect to current sprite.
+		 * \param pEffect A pointer to an effect object.
+		 */
+		 /**
+		 * \~chinese
+		 * \brief 对当前 Sprite 设置一个特效。
+		 * \param pEffect 指向 Effect 对象的指针
+		 */
+		void SetEffect(Effect::EffectBase* pEffect) override;
 
 		private:
 			Sprite(ISprite* pSprite);

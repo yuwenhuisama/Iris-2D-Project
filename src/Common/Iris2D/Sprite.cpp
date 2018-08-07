@@ -184,4 +184,8 @@ namespace Iris2D {
 	void Sprite::Update() {
 		m_pProxied->Update();
 	}
+
+	void Sprite::SetEffect(Effect::EffectBase* pEffect) {
+		m_pProxied->SetEffect(pEffect);
+	}
 }

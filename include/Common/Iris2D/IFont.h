@@ -8,6 +8,7 @@ namespace Iris2D {
 	class Color;
 	class IFont {
 	public:
+		virtual ~IFont() = default;
 		virtual void SetName(const std::wstring& wstrFontName) = 0;
 		virtual const std::wstring& GetName() const = 0;
 

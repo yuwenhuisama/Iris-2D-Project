@@ -11,6 +11,8 @@ namespace Iris2D {
 		GLUnit m_nFBO = 0;
 		GLUnit m_nRBO = 0;
 
+		GLint m_nStoredFrameBuffer = 0;
+
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;
 
@@ -23,16 +25,16 @@ namespace Iris2D {
 		static void Release(TextureGL*& pTexture);
 
 	public:
-		void UseTexture();
-		void UnuseTexture();
+		void UseTexture() const;
+		void UnuseTexture() const;
 
 		void UseTextureAsFrameBuffer();
-		void RestoreFrameBuffer();
+		void RestoreFrameBuffer() const;
 
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
 
-		bool SaveToFile(const std::wstring& wstrFilePath);
+		bool SaveToFile(const std::wstring& wstrFilePath) const;
 
 	private:
 		bool LoadTexture(const std::wstring& wstrTexturePath);

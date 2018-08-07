@@ -18,6 +18,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "OpenGL/Iris2D/OpenGLHelper.h"
 
 
 namespace Iris2D {
@@ -167,35 +168,15 @@ namespace Iris2D {
 			{ {0.0f,					    static_cast<float>(nHeight), 0.0f, 1.0f}, {0.0f, 1.0f} },
 		};
 
-		static unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
-
-		GLuint VAO, VBO, EBO;
-
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-
-		glBindVertexArray(VAO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(arrBuffers), arrBuffers, GL_STATIC_DRAW);
-
-			glGenBuffers(1, &EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(arrIndiecs), arrIndiecs, GL_STATIC_DRAW);
-
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, []()-> void {
 			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(ViewportVertexGL), reinterpret_cast<void*>(offsetof(ViewportVertexGL, m_v4Position)));
 			glEnableVertexAttribArray(0);
 
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(ViewportVertexGL), reinterpret_cast<void*>(offsetof(ViewportVertexGL, m_v2Texture)));
 			glEnableVertexAttribArray(1);
-
-		glBindVertexArray(0);
-
-		m_nVAO = VAO;
-		m_nVBO = VBO;
-		m_nEBO = EBO;
+		})) {
+			return false;
+		}
 
 		m_pTexture = TextureGL::CreateFrameBuffer(nWidth, nHeight);
 
@@ -204,9 +185,20 @@ namespace Iris2D {
 
 	ViewportGL::~ViewportGL() {
 		TextureGL::Release(m_pTexture);
+		Rect::Release(m_pSrcRect);
+		Tone::Release(m_pTone);
 
 		if (m_nVAO) {
 			glDeleteVertexArrays(1, &m_nVAO);
 		}
+
+		if (m_nVBO) {
+			glDeleteBuffers(1, &m_nVBO);
+		}
+
+		if (m_nEBO) {
+			glDeleteBuffers(1, &m_nEBO);
+		}
+
 	}
 }

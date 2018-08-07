@@ -252,6 +252,9 @@ namespace Iris2D
 	{
 	}
 
+	void SpriteDX::SetEffect(Effect::EffectBase* pEffect) {
+	}
+
 	void SpriteDX::Render()
 	{
 		if (!m_pBitmap || !m_bVisible || m_bfPixelShaderBuffer.m_fOpacity == 0.0f) {

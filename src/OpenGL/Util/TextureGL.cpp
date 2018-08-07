@@ -71,21 +71,21 @@ namespace Iris2D {
 		}
 	}
 
-	void TextureGL::UseTexture() {
+	void TextureGL::UseTexture() const {
 		glBindTexture(GL_TEXTURE_2D, m_nTextureID);
 	}
 
-	void TextureGL::UnuseTexture() {
+	void TextureGL::UnuseTexture() const {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	void TextureGL::UseTextureAsFrameBuffer() {
+		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_nStoredFrameBuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_nFBO);
 	}
 
-	void TextureGL::RestoreFrameBuffer()
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	void TextureGL::RestoreFrameBuffer() const {
+		glBindFramebuffer(GL_FRAMEBUFFER, m_nStoredFrameBuffer);
 	}
 
 	unsigned int TextureGL::GetWidth() const {
@@ -96,7 +96,7 @@ namespace Iris2D {
 		return m_nHeight;
 	}
 
-	bool TextureGL::SaveToFile(const std::wstring& wstrFilePath) {
+	bool TextureGL::SaveToFile(const std::wstring& wstrFilePath) const {
 
 		GLint nRestore = 0;
 

@@ -25,6 +25,11 @@
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "OpenGL/Iris2D/RectGL.h"
 
+#include "OpenGL/Iris2D/OpenGLHelper.h"
+
+#include "OpenGL/Iris2D/Effects/EffectBaseGL.h"
+#include "Common/Iris2D/Effects/EffectBase.h"
+
 namespace Iris2D {
 	SpriteGL * SpriteGL::Create(Viewport * pViewport) {
 		auto pSprite = new SpriteGL();
@@ -215,6 +220,32 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::Update() {
+		if(m_pEffect) {
+			m_pEffect->Update(GetProxy());
+		}
+	}
+
+	void SpriteGL::SetEffect(Effect::EffectBase* pEffect) {
+
+		if (pEffect == m_pEffect) {
+			return;
+		}
+
+		if (m_pEffect) {
+			m_pEffect->AutoRelease();
+		}
+
+		if (!pEffect) {
+			m_pEffect = nullptr;
+			return;
+		}
+
+		const auto pEffectGL = GetProxied<Effect::EffectBaseGL*>(pEffect);
+		pEffectGL->IncreamRefCount();
+
+		pEffectGL->Initialize(m_pBitmap->GetWidth(), m_pBitmap->GetHeight());
+
+		m_pEffect = pEffect;
 	}
 
 	bool SpriteGL::CreateVertexBuffer() {
@@ -230,36 +261,13 @@ namespace Iris2D {
 			{ { 0.0f,					     static_cast<float>(nHeight),  0.0f, 1.0f },{ 0.0f, 1.0f } },
 		};
 
-		static unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
-
-		GLuint VAO, VBO, EBO;
-
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-
-		glBindVertexArray(VAO);
-			glBindBuffer(GL_ARRAY_BUFFER, VBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(arrBuffers), arrBuffers, GL_STATIC_DRAW);
-
-			glGenBuffers(1, &EBO);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(arrIndiecs), arrIndiecs, GL_STATIC_DRAW);
-
+		return OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, [&]() -> void {
 			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(SpriteVertexGL), reinterpret_cast<void*>(offsetof(SpriteVertexGL, m_v4Position)));
 			glEnableVertexAttribArray(0);
 
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(SpriteVertexGL), reinterpret_cast<void*>(offsetof(SpriteVertexGL, m_v2Texture)));
 			glEnableVertexAttribArray(1);
-		glBindVertexArray(0);
-
-		m_nVAO = VAO;
-		m_nVBO = VBO;
-		m_nEBO = EBO;
-
-		return true;
+		});
 	}
 
 	bool SpriteGL::Render() {
@@ -268,9 +276,16 @@ namespace Iris2D {
 			return true;
 		}
 
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
-
+		TextureGL* pEffectTexture = nullptr;
 		auto pShader = SpriteShaderGL::Instance();
+
+		if (m_pEffect) {
+			auto pEffect = GetProxied<Effect::EffectBaseGL*>(m_pEffect);
+			const auto pTexture = GetProxied<BitmapGL*>(m_pBitmap)->GetTexture();
+			pEffectTexture = pEffect->Render(pTexture);
+
+			pShader->Use();
+		}
 
 		m_dcDirtyChecker.DoIfDirty(m_hTranslate, [&]() -> void {
 			m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, m_v3Position);
@@ -311,7 +326,6 @@ namespace Iris2D {
 		}
 
 		if (m_pTone && GetProxied<ToneGL*>(m_pTone)->Modified()) {
-
 			m_svbfBuffer.m_v4Tone = {
 				m_pTone->GetRed(),
 				m_pTone->GetGreen(),
@@ -324,7 +338,8 @@ namespace Iris2D {
 			m_svbfBuffer.m_v4Tone = { 0, 0, 0, 0 };
 		}
 
-		//TODO: Optimize for dirty check
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
+
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetTranslationMatrix(m_svbfBuffer.m_mt4Translate);
 		pShader->SetRotationMatrix(m_svbfBuffer.m_mtRotation);
@@ -335,7 +350,11 @@ namespace Iris2D {
 		pShader->SetRect(m_svbfBuffer.m_v4Rect);
 		pShader->SetTone(m_svbfBuffer.m_v4Tone);
 
-		GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->UseTexture();
+		if (!m_pEffect) {
+			GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->UseTexture();
+		} else {
+			pEffectTexture->UseTexture();
+		}
 
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -357,5 +376,18 @@ namespace Iris2D {
 		Bitmap::Release(m_pBitmap);
 		Rect::Release(m_pSrcRect);
 		Tone::Release(m_pTone);
+		m_pEffect->AutoRelease();
+
+		if (m_nVAO) {
+			glDeleteVertexArrays(1, &m_nVAO);
+		}
+
+		if (m_nVBO) {
+			glDeleteBuffers(1, &m_nVBO);
+		}
+
+		if (m_nEBO) {
+			glDeleteBuffers(1, &m_nEBO);
+		}
 	}
 }

@@ -107,6 +107,8 @@ namespace Iris2D
 
 		void Update();
 
+		void SetEffect(Effect::EffectBase* pEffect) override;
+
 		void Render();
 		bool Dispose();
 
@@ -125,7 +127,6 @@ namespace Iris2D
 		{
 			_mm_free(p);
 		}
-
 	};
 }
 

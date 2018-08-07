@@ -34,16 +34,22 @@ bool GameCallBack() {
 
 	auto pSprite = Sprite::Create();
 	pSprite->SetBitmap(pBitmap);
-	pSprite->SetX(400.f);
-	pSprite->SetY(300.f);
-	pSprite->SetMirror(true);
+
+	auto pColor = Color::Create(255, 255, 255, 255);
+	auto pEffect = Effect::EffectFlash::Create(pColor, 5, true);
+
+	pSprite->SetEffect(pEffect);
+
+	// pSprite->SetX(400.f);
+	// pSprite->SetY(300.f);
+	// pSprite->SetMirror(true);
 	// pSprite->SetOX(pBitmap->GetWidth() / 2);
 	// pSprite->SetOY(pBitmap->GetHeight() / 2);
-	 auto pRect = Rect::Create(150.0f, 150.0f, 3000.0f, 3000.0f);
+	 // auto pRect = Rect::Create(150.0f, 150.0f, 3000.0f, 3000.0f);
 	// pSprite->SetSrcRect(pRect);
 
-	auto pTone = Tone::Create(0, 0, 0, 255);
-	pSprite->SetTone(pTone);
+	// auto pTone = Tone::Create(0, 0, 0, 255);
+	// pSprite->SetTone(pTone);
 
 	//pSprite->SetOpacity(0.5f);
 	// Bitmap::Release(pBitmap);
@@ -71,31 +77,34 @@ bool GameCallBack() {
 	while (!pApp->IsQuited()) {
 		// pSprite->SetAngle(fAngle += 2.0f);
 
-		if (bUp) {
-			if (nRed < 255) {
-				nRed += 1;
-			} else {
-				bUp = false;
-			}
-		} else {
-			if (nRed > 0) {
-				nRed -= 1;
-			} else {
-				bUp = true;
-			}
-		}
+		//if (bUp) {
+		//	if (nRed < 255) {
+		//		nRed += 1;
+		//	} else {
+		//		bUp = false;
+		//	}
+		//} else {
+		//	if (nRed > 0) {
+		//		nRed -= 1;
+		//	} else {
+		//		bUp = true;
+		//	}
+		//}
 
 		// pSprite->SetZoomX(fOpacity * 2.f);
 		// pSprite->SetZoomY(fOpacity * 2.f);
 		// pSprite->SetOpacity(fOpacity);
-		pSprite->GetTone()->SetRed(nRed);
+		// pSprite->GetTone()->SetRed(nRed);
 
+		pSprite->Update();
 		pGraphics->Update();
 	}
 
 	Sprite::Release(pSprite);
-	Rect::Release(pRect);
+	//Rect::Release(pRect);
 	Bitmap::Release(pBitmap);
+	Effect::EffectFlash::Release(pEffect);
+	Color::Release(pColor);
 
 	return true;
 }

@@ -7,6 +7,7 @@
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
+#include "OpenGL/Iris2D/OpenGLHelper.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -156,36 +157,15 @@ namespace Iris2D {
 			{ { 0.0f,					       static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 0.0f, 1.0f } },
 		};
 
-		static unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, []() -> void {
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(BackBufferVertexGL), reinterpret_cast<void*>(offsetof(BackBufferVertexGL, m_v4Position)));
+			glEnableVertexAttribArray(0);
 
-		GLuint VAO, VBO, EBO;
-
-		glGenVertexArrays(1, &VAO);
-		glGenBuffers(1, &VBO);
-
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(arrBuffers), arrBuffers, GL_STATIC_DRAW);
-
-		glGenBuffers(1, &EBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(arrIndiecs), arrIndiecs, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(BackBufferVertexGL), reinterpret_cast<void*>(offsetof(BackBufferVertexGL, m_v4Position)));
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(BackBufferVertexGL), reinterpret_cast<void*>(offsetof(BackBufferVertexGL, m_v2Texture)));
-		glEnableVertexAttribArray(1);
-
-
-		glBindVertexArray(0);
-
-		m_nVAO = VAO;
-		m_nVBO = VBO;
-		m_nEBO = EBO;
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(BackBufferVertexGL), reinterpret_cast<void*>(offsetof(BackBufferVertexGL, m_v2Texture)));
+			glEnableVertexAttribArray(1);
+		})) {
+			return false;
+		}
 
 		m_pBackBuffer = TextureGL::CreateFrameBuffer(m_nWidth, m_nHeight);
 

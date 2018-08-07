@@ -12,4 +12,6 @@
 #include "Common/Iris2D/Viewport.h"
 #include "Common/Iris2D/Graphics.h"
 
+#include "Common/Iris2D/Effects/EffectFlash.h"
+
 #endif

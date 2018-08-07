@@ -16,6 +16,11 @@ namespace Iris2D {
 	class Color;
 	typedef Color Tone;
 
+	namespace Effect{
+		class EffectBase;
+		class EffectBaseGL;
+	}
+
 	class SpriteGL : public ISprite, public Proxied<Sprite> {
 	private:
 		Bitmap* m_pBitmap = nullptr;
@@ -23,6 +28,8 @@ namespace Iris2D {
 		Tone* m_pTone = nullptr;
 
 		Viewport* m_pViewport = nullptr;
+
+		Effect::EffectBase* m_pEffect = nullptr;
 
 		GLuint m_nVBO = 0;
 		GLuint m_nVAO = 0;
@@ -98,6 +105,8 @@ namespace Iris2D {
 		virtual Tone * GetTone() const override;
 
 		virtual void Update() override;
+
+		virtual void SetEffect(Effect::EffectBase* pEffect) override;
 
 	public:
 		bool CreateVertexBuffer();

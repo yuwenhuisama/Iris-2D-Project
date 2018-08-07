@@ -3,6 +3,10 @@
 
 namespace Iris2D {
 
+	namespace Effect {
+		class EffectBase;
+	}
+
 	class Bitmap;
 	class Rect;
 	class Color;
@@ -55,6 +59,7 @@ namespace Iris2D {
 		virtual Tone* GetTone() const = 0;
 
 		virtual void Update() = 0;
+		virtual void SetEffect(Effect::EffectBase* pEffect) = 0;
 	};
 }
 
