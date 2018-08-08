@@ -6,6 +6,8 @@
 #include "Common/Util/Result.h"
 
 #include <unordered_set>
+#include "OpenGL/OpenGLUtil/ViewportShaderBuffersGL.h"
+#include "Common/Util/DirtyChecker.h"
 
 namespace Iris2D {
 	class Viewport;
@@ -48,6 +50,11 @@ namespace Iris2D {
 
 		TextureGL* m_pTexture = nullptr;
 
+		ViewportVertexBufferGL m_vvbBuffer;
+
+		DirtyChecker m_dcChecker;
+		DirtyChecker::DirtyCheckerHandler m_hPosHandler = 0;
+
 	public:
 		// Í¨¹ý IViewport ¼Ì³Ð
 		virtual void SetOX(float fOX) override;
@@ -58,6 +65,8 @@ namespace Iris2D {
 		virtual Rect * GetSrcRect() const override;
 		virtual void SetTone(Tone *& pTone) override;
 		virtual Tone * GetTone() const override;
+		virtual void SetZ(float fZ) override;
+		virtual float GetZ() override;
 
 	public:
 		void RenderSprites();
@@ -69,7 +78,7 @@ namespace Iris2D {
 	private:
 		bool CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight);
 
-		ViewportGL() = default;
+		ViewportGL();
 		~ViewportGL();
 	};
 }

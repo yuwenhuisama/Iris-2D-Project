@@ -14,6 +14,15 @@ namespace Iris2D {
 		SetMatrix("projectionMat", mtMat);
 	}
 
+	void ViewportShaderGL::SetOrgPosition(const glm::vec2& v2OrgPosition) {
+	}
+
+	void ViewportShaderGL::SetRect(const glm::vec4& v4Rect) {
+	}
+
+	void ViewportShaderGL::SetTone(const glm::ivec4& v4Tone) {
+	}
+
 	void ViewportShaderGL::SetModelMatrix(const glm::mat4& mtMat) {
 		SetMatrix("modelMat", mtMat);
 	}

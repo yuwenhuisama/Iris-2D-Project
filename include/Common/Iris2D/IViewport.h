@@ -19,6 +19,9 @@ namespace Iris2D {
 
 		virtual void SetTone(Tone*& pTone) = 0;
 		virtual Tone* GetTone() const = 0;
+
+		virtual void SetZ(float fZ) = 0;
+		virtual float GetZ() = 0;
 	};
 }
 

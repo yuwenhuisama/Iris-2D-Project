@@ -210,6 +210,30 @@ namespace Iris2D {
 		*/
 		Tone* GetTone() const;
 
+		/**
+		 * \~english
+		 * \brief Set Z order of current viewport.
+		 * \param fOZ Z order of current viewport.
+		 */
+		 /**
+		 * \~chinese
+		 * \brief 设置当前 Viewport 的 Z 坐标。
+		 * \param fOZ 当前 Viewport 的 Z 坐标。
+		 */
+		void SetZ(float fZ) override;
+
+		/**
+		 * \~english
+		 * \brief Get Z order of current viewport.
+		 * \return Z order of current viewport.
+		 */
+		 /**
+		 * \~chinese
+		 * \brief 获取当前 Viewport 的 Z 坐标。
+		 * \return 当前 Viewport 的 Z 坐标。
+		 */
+		float GetZ() override;
+
 		private:
 			Viewport(IViewport* pViewport);
 			~Viewport() = default;

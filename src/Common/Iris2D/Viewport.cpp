@@ -125,4 +125,12 @@ namespace Iris2D {
 	Tone * Viewport::GetTone() const {
 		return m_pProxied->GetTone();
 	}
+
+	void Viewport::SetZ(float fZ) {
+		m_pProxied->SetZ(fZ);
+	}
+
+	float Viewport::GetZ() {
+		return m_pProxied->GetZ();
+	}
 }

@@ -306,6 +306,12 @@ namespace Iris2D
 		m_stSprits.insert(pSprite);
 	}
 
+	void ViewportDX::SetZ(float fOZ) {
+	}
+
+	float ViewportDX::GetZ() {
+	}
+
 	//void ViewportDX::AddSprite(Sprite * pSprite)
 	//{
 	//	m_stSprits.insert(GetProxied<SpriteDX*>(pSprite));

@@ -12,6 +12,9 @@ namespace Iris2D {
 		bool Initialize();
 		void SetProjectionMatrix(const glm::mat4& mtMat);
 		void SetModelMatrix(const glm::mat4& mtMat);
+		void SetOrgPosition(const glm::vec2& v2OrgPosition);
+		void SetRect(const glm::vec4& v4Rect);
+		void SetTone(const glm::ivec4& v4Tone);
 
 	private:
 		ViewportShaderGL() = default;

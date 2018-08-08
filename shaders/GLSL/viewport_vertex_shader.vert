@@ -6,9 +6,13 @@ out vec2 texCoord;
 
 uniform mat4 modelMat;
 uniform mat4 projectionMat;
+uniform vec2 orgPos;
 
 void main() {
-    gl_Position = projectionMat * modelMat * position;
+	vec4 posTmp = position;
+	posTmp.xy -= orgPos;
+
+    gl_Position = projectionMat * modelMat * posTmp;
 
 	texCoord = textureCoord;
 }
