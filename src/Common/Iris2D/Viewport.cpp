@@ -133,4 +133,12 @@ namespace Iris2D {
 	float Viewport::GetZ() {
 		return m_pProxied->GetZ();
 	}
+
+	unsigned int Viewport::GetWidth() const {
+		return m_pProxied->GetWidth();
+	}
+
+	unsigned int Viewport::GetHeight() const {
+		return m_pProxied->GetHeight();
+	}
 }

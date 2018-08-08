@@ -310,6 +310,15 @@ namespace Iris2D
 	}
 
 	float ViewportDX::GetZ() {
+		return 0.0f;
+	}
+
+	unsigned int ViewportDX::GetWidth() const {
+		return 0;
+	}
+
+	unsigned int ViewportDX::GetHeight() const {
+		return 0;
 	}
 
 	//void ViewportDX::AddSprite(Sprite * pSprite)

@@ -234,6 +234,30 @@ namespace Iris2D {
 		 */
 		float GetZ() override;
 
+		/**
+		 * \~english
+		 * \brief Get width of current viewport.
+		 * \return Width of current viewport.
+		 */
+		 /**
+		 * \~chinese
+		 * \brief 获取当前 Viewport 的宽度。
+		 * \return 当前 Viewport 的宽度。
+		 */
+		unsigned int GetWidth() const override;
+
+		/**
+		 * \~english
+		 * \brief Get height of current viewport.
+		 * \return Height of current viewport.
+		 */
+		/**
+		 * \~chinese
+		 * \brief 获取当前 Viewport 的高度。
+		 * \return 当前 Viewport 的高度。
+		 */
+		unsigned int GetHeight() const override;
+
 		private:
 			Viewport(IViewport* pViewport);
 			~Viewport() = default;

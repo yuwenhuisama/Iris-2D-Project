@@ -31,7 +31,7 @@ namespace Iris2D {
 
 		m_pBackBuffer->UseTextureAsFrameBuffer();
 
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(1.f, 1.f, 1.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		ViewportShaderGL::Instance()->Use();
@@ -52,7 +52,7 @@ namespace Iris2D {
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		m_pBackBuffer->UseTexture();
 
-		glClearColor(0.f, 0.f, 0.f, 0.f);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glBindVertexArray(m_nVAO);
@@ -151,10 +151,10 @@ namespace Iris2D {
 	bool GraphicsGL::CreateVertexBackBuffer() {
 
 		BackBufferVertexGL arrBuffers[] = {
-			{ { static_cast<float>(m_nWidth),  static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 1.0f, 1.0f } },
-			{ { static_cast<float>(m_nWidth),  0.0f,						   0.0f, 1.0f }, { 1.0f, 0.0f } },
-			{ { 0.0f,						   0.0f,						   0.0f, 1.0f }, { 0.0f, 0.0f } },
-			{ { 0.0f,					       static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 0.0f, 1.0f } },
+			{ { static_cast<float>(m_nWidth),  static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 1.0f, 0.0f } },
+			{ { static_cast<float>(m_nWidth),  0.0f,						   0.0f, 1.0f }, { 1.0f, 1.0f } },
+			{ { 0.0f,						   0.0f,						   0.0f, 1.0f }, { 0.0f, 1.0f } },
+			{ { 0.0f,					       static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 0.0f, 0.0f } },
 		};
 
 		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, []() -> void {

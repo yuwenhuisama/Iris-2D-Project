@@ -24,5 +24,4 @@ void main()
 	}
 
 	fragColor = outputColor;
-
 }

@@ -144,7 +144,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<RectGL*>(pTone)->IncreamRefCount();
+		GetProxied<ToneGL*>(pTone)->IncreamRefCount();
 
 		m_pTone = pTone;
 	}
@@ -159,6 +159,14 @@ namespace Iris2D {
 
 	float ViewportGL::GetZ() {
 		return m_fZ;
+	}
+
+	unsigned int ViewportGL::GetWidth() const {
+		return m_pTexture->GetWidth();
+	}
+
+	unsigned int ViewportGL::GetHeight() const {
+		return m_pTexture->GetHeight();
 	}
 
 	void ViewportGL::RenderSprites() {
@@ -223,6 +231,7 @@ namespace Iris2D {
 		pShader->SetTone(m_vvbBuffer.m_v4Tone);
 
 		m_pTexture->UseTexture();
+		//m_pTexture->SaveToFile(L"temp/4212.png");
 
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -239,10 +248,10 @@ namespace Iris2D {
 
 	bool ViewportGL::CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight) {
 		ViewportVertexGL arrBuffers[] = {
-			{ {static_cast<float>(nWidth),  static_cast<float>(nHeight),  0.0f, 1.0f}, {1.0f, 1.0f} },
-			{ {static_cast<float>(nWidth),  0.0f,						 0.0f, 1.0f}, {1.0f, 0.0f} },
-			{ {0.0f,					    0.0f,						 0.0f, 1.0f}, {0.0f, 0.0f} },
-			{ {0.0f,					    static_cast<float>(nHeight), 0.0f, 1.0f}, {0.0f, 1.0f} },
+			{ {static_cast<float>(nWidth),  static_cast<float>(nHeight),  0.0f, 1.0f}, {1.0f, 0.0f} },
+			{ {static_cast<float>(nWidth),  0.0f,						 0.0f, 1.0f}, {1.0f, 1.0f} },
+			{ {0.0f,					    0.0f,						 0.0f, 1.0f}, {0.0f, 1.0f} },
+			{ {0.0f,					    static_cast<float>(nHeight), 0.0f, 1.0f}, {0.0f, 0.0f} },
 		};
 
 		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, []()-> void {

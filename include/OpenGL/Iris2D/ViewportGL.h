@@ -40,7 +40,7 @@ namespace Iris2D {
 
 		float m_fX = 0.0f;
 		float m_fY = 0.0f;
-		float m_fZ = 1.0f;
+		float m_fZ = 0.0f;
 
 		std::unordered_set<SpriteGL*> m_stSprites;
 
@@ -67,6 +67,8 @@ namespace Iris2D {
 		virtual Tone * GetTone() const override;
 		virtual void SetZ(float fZ) override;
 		virtual float GetZ() override;
+		virtual unsigned int GetWidth() const override;
+		virtual unsigned int GetHeight() const override;
 
 	public:
 		void RenderSprites();

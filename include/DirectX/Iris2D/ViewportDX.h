@@ -83,6 +83,9 @@ namespace Iris2D
 		void SetZ(float fOZ) override;
 		float GetZ() override;
 
+		unsigned int GetWidth() const override;
+		unsigned int GetHeight() const override;
+
 	private:
 		bool CreateViewportVertexBuffer(unsigned int nWidth, unsigned int nHeight);
 

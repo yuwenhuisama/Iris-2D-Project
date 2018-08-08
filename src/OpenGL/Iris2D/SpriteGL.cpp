@@ -338,7 +338,10 @@ namespace Iris2D {
 			m_svbfBuffer.m_v4Tone = { 0, 0, 0, 0 };
 		}
 
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
+		//static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_pViewport->GetWidth()), static_cast<float>(m_pViewport->GetHeight()), 0.0f, -1.0f, 1.0f);
+
+		glViewport(0, 0, m_pViewport->GetWidth(), m_pViewport->GetHeight());
 
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetTranslationMatrix(m_svbfBuffer.m_mt4Translate);
@@ -359,6 +362,8 @@ namespace Iris2D {
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
+
+		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
 
 		return true;
 	}

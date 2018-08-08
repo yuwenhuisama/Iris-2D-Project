@@ -7,7 +7,8 @@ bool GameCallBack() {
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
 	
-	//auto pViewport = ViewportDX::Create(20.0f, 20.0f, 600, 600);
+	auto pViewport = Viewport::Create(20.0f, 20.0f, 300, 300);
+	pViewport->SetZ(0.5f);
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
 	//auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
 	//pBitmap->HueChange(90.0f);
@@ -32,7 +33,7 @@ bool GameCallBack() {
 
 	// pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", AlignType::Center);
 
-	auto pSprite = Sprite::Create();
+	auto pSprite = Sprite::Create(pViewport);
 	pSprite->SetBitmap(pBitmap);
 
 	auto pColor = Color::Create(255, 255, 255, 255);
@@ -105,6 +106,7 @@ bool GameCallBack() {
 	Bitmap::Release(pBitmap);
 	Effect::EffectFlash::Release(pEffect);
 	Color::Release(pColor);
+	Viewport::Release(pViewport);
 
 	return true;
 }

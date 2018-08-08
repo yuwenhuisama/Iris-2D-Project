@@ -22,6 +22,9 @@ namespace Iris2D {
 
 		virtual void SetZ(float fZ) = 0;
 		virtual float GetZ() = 0;
+
+		virtual unsigned int GetWidth() const = 0;
+		virtual unsigned int GetHeight() const = 0;
 	};
 }
 
