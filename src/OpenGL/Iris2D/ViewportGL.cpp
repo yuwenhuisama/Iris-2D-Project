@@ -71,7 +71,7 @@ namespace Iris2D {
 		}
 
 		for (auto& pSprite : pViewport->m_stSprites) {
-			SpriteGL::ForceRelease(pSprite);
+			SpriteGL::ForceRelease(pSprite.second);
 		}
 
 		auto pProxy = pViewport->GetProxy();
@@ -83,7 +83,10 @@ namespace Iris2D {
 
 	bool ViewportGL::InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight) {
 		sm_pGlobalViewport = Viewport::Create(fX, fY, nWindowWidth, nWindowHeight);
-		return sm_pGlobalViewport != nullptr;
+		if (!sm_pGlobalViewport) {
+			return false;
+		}
+		return true;
 	}
 
 	bool ViewportGL::ReleaseGlobalViewport() {
@@ -173,17 +176,17 @@ namespace Iris2D {
 		m_pTexture->UseTextureAsFrameBuffer();
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
 		for (auto& pSprite : m_stSprites) {
-			pSprite->Render();
+			pSprite.second->Render();
 		}
 
 		m_pTexture->RestoreFrameBuffer();
 	}
 
 	void ViewportGL::Render() {
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
+		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
 
 		auto pShader = ViewportShaderGL::Instance();
 
@@ -222,7 +225,7 @@ namespace Iris2D {
 		}
 
 		m_dcChecker.DoIfDirty(m_hPosHandler, [&]() -> void {
-			m_vvbBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0 }, glm::vec3{ m_fX, m_fY, m_fZ });
+			m_vvbBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0 }, glm::vec3{ m_fX, m_fY, 0.0f });
 		});
 
 		pShader->SetModelMatrix(m_vvbBuffer.m_mt4Translate);
@@ -239,11 +242,18 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {
-		m_stSprites.insert(pSprite);
+		m_stSprites.insert(std::pair<unsigned int, SpriteGL*>(pSprite->GetZ(), pSprite));
 	}
 
 	void ViewportGL::RemoveSprite(SpriteGL *& pSprite) {
-		m_stSprites.erase(pSprite);
+		auto iterRange = m_stSprites.equal_range(pSprite->GetZ());
+		while (iterRange.first != iterRange.second) {
+			if (iterRange.first->second == pSprite) {
+				m_stSprites.erase(iterRange.first);
+				break;
+			}
+			++iterRange.first;
+		}
 	}
 
 	bool ViewportGL::CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight) {

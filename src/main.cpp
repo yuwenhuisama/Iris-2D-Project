@@ -7,68 +7,24 @@ bool GameCallBack() {
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
 	
-	auto pViewport = Viewport::Create(20.0f, 20.0f, 300, 300);
-	pViewport->SetZ(0.5f);
+	auto pViewport = Viewport::Create(20.0f, 20.0f, 1000, 1000);
+	pViewport->SetZ(1.0f);
+
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
-	//auto pBitmap = Bitmap::Create(L"image\\awesomeface.png");
-	//pBitmap->HueChange(90.0f);
-	//auto pBitmap2 = BitmapDX::Create(L"image\\leimu.jpg");
-
-	// pBitmap->TextSize(nullptr, L"Hello, World!");
-
-	//auto pSrcRect = RectDX::Create2(10.0f, 10.0f, 300.0f, 300.0f);
-	//pViewport->SetSrcRect(pSrcRect);
-	//RectDX::Release(pSrcRect);
-
-	//auto pColor = ColorDX::Create(0, 0, 255, 0);
-	//pViewport->SetTone(pColor);
-	//pBitmap->Blt(30, 320, pBitmap2, pSrcRect, 255);
-
-	//pBitmap->FillRect(pSrcRect, pColor);
-
-	//pBitmap->Clear();
-
-	//auto pPixelColor = pBitmap->GetPixel(0, 0);
-	//pBitmap->SetPixel(0, 0, pColor);
-
-	// pBitmap->DrawText(0, 0, 200, 200, L"Hello, World!", AlignType::Center);
-
 	auto pSprite = Sprite::Create(pViewport);
 	pSprite->SetBitmap(pBitmap);
+	pSprite->SetZ(4.0f);
+
+	auto pBitmap2 = Bitmap::Create(L"image\\leimu.jpg");
+	auto pSprite2 = Sprite::Create(pViewport);
+	pSprite2->SetX(50.0f);
+	pSprite2->SetBitmap(pBitmap2);
+	pSprite2->SetZ(5.0f);
 
 	auto pColor = Color::Create(255, 255, 255, 255);
 	auto pEffect = Effect::EffectFlash::Create(pColor, 5, true);
 
 	pSprite->SetEffect(pEffect);
-
-	// pSprite->SetX(400.f);
-	// pSprite->SetY(300.f);
-	// pSprite->SetMirror(true);
-	// pSprite->SetOX(pBitmap->GetWidth() / 2);
-	// pSprite->SetOY(pBitmap->GetHeight() / 2);
-	 // auto pRect = Rect::Create(150.0f, 150.0f, 3000.0f, 3000.0f);
-	// pSprite->SetSrcRect(pRect);
-
-	// auto pTone = Tone::Create(0, 0, 0, 255);
-	// pSprite->SetTone(pTone);
-
-	//pSprite->SetOpacity(0.5f);
-	// Bitmap::Release(pBitmap);
-
-	//RectDX::Release(pSrcRect);
-	//ColorDX::Release(pColor);
-	//pSprite->SetX(800.0f);
-	//pSprite->SetY(450.0f);
-	//pSprite->SetAngle(0.5f);
-	//pSprite->SetZoomX(0.5f);
-	//pSprite->SetZoomY(0.5f);
-	//pSprite->SetOX(pBitmap->GetWidth() / 2);
-	//pSprite->SetOY(pBitmap->GetHeight() / 2);
-	//pSprite->SetMirror(true);
-	//pSprite->SetOpacity(100.0f);
-
-	//pSprite->SetSrcRect(RectDX::Create(30.0f, 30.0f, 300.0f, 600.0f));
-	//pSprite->SetTone(ToneDX::Create(128, 0, 128, 0));
 
 	auto fAngle = 0.0f;
 	auto fOpacity = 0.5f;
@@ -102,8 +58,10 @@ bool GameCallBack() {
 	}
 
 	Sprite::Release(pSprite);
+	Sprite::Release(pSprite2);
 	//Rect::Release(pRect);
 	Bitmap::Release(pBitmap);
+	Bitmap::Release(pBitmap2);
 	Effect::EffectFlash::Release(pEffect);
 	Color::Release(pColor);
 	Viewport::Release(pViewport);

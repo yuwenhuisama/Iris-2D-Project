@@ -5,7 +5,8 @@
 #include "Common/Iris2D/Proxied.h"
 #include "OpenGL/Common.h"
 
-#include <unordered_set>
+//#include <unordered_set>
+#include <map>
 
 namespace Iris2D {
 	class TextureGL;
@@ -13,7 +14,8 @@ namespace Iris2D {
 	class Graphics;
 	class GraphicsGL : public IGraphics, public Proxied<Graphics> {
 	private:
-		std::unordered_set<ViewportGL*> m_stViewports;
+		//std::unordered_set<ViewportGL*> m_stViewports;
+		std::multimap<float, ViewportGL*, std::less<float>> m_stViewports;
 
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;

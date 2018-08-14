@@ -129,14 +129,14 @@ namespace Iris2D {
 		* Set the Z depth of current sprite. The depth of sprite decides the rending order of current sprite, the bigger Z is and the later sprite will be renderd.
 		*
 		* Range of Z is [0.0f, 9999.0f]
-		* @param fZ depth of current sprite.
+		* @param nZ depth of current sprite.
 		*/
 		/**
 		* \~chinese
-		* 设置当前 Sprite 的 Z 深度。 Sprite 的深度决定了它的渲染次序， Z 越大渲染越靠后。
+		* 设置当前 Sprite 的 Z 深度。 Sprite 的深度决定了它的渲染次序，Z 越大渲染越靠后。
 		*
 		* Z 的范围为 [0.0f, 9999.0f]
-		* @param fZ 当前 Sprite 的 Z 深度。
+		* @param nZ 当前 Sprite 的 Z 深度。
 		*/
 		void SetZ(float fZ) override;
 		/**

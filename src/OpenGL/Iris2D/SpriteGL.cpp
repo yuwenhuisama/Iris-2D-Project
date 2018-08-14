@@ -288,7 +288,7 @@ namespace Iris2D {
 		}
 
 		m_dcDirtyChecker.DoIfDirty(m_hTranslate, [&]() -> void {
-			m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, m_v3Position);
+			m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, { m_v3Position.x, m_v3Position.y, 0.0f});
 		});
 		
 		m_dcDirtyChecker.DoIfDirty(m_hRotate, [&]() -> void {
@@ -339,7 +339,7 @@ namespace Iris2D {
 		}
 
 		//static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_pViewport->GetWidth()), static_cast<float>(m_pViewport->GetHeight()), 0.0f, -1.0f, 1.0f);
+		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_pViewport->GetWidth()), static_cast<float>(m_pViewport->GetHeight()), 0.0f, 0.0f, 9999.0f);
 
 		glViewport(0, 0, m_pViewport->GetWidth(), m_pViewport->GetHeight());
 
@@ -381,7 +381,9 @@ namespace Iris2D {
 		Bitmap::Release(m_pBitmap);
 		Rect::Release(m_pSrcRect);
 		Tone::Release(m_pTone);
-		m_pEffect->AutoRelease();
+		if (m_pEffect) {
+			m_pEffect->AutoRelease();
+		}
 
 		if (m_nVAO) {
 			glDeleteVertexArrays(1, &m_nVAO);

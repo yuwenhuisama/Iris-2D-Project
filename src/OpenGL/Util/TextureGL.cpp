@@ -203,17 +203,17 @@ namespace Iris2D {
 
 		const auto eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			PrintFormatDebugMessageW(L"Failed to make complete framebuffer object %x", eStatus);
+			PrintFormatDebugMessageW(L"Failed to make complete framebuffer object %1%", eStatus);
 			return false;
 		}
 
-		unsigned int RBO = 0;
-		glGenRenderbuffers(1, &RBO);
-		glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, nWidth, nHeight);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		//unsigned int RBO = 0;
+		//glGenRenderbuffers(1, &RBO);
+		//glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+		//glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, nWidth, nHeight);
+		//glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+		//glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -222,7 +222,7 @@ namespace Iris2D {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		m_nFBO = FBO;
-		m_nRBO = RBO;
+		//m_nRBO = RBO;
 
 		m_nWidth = nWidth;
 		m_nHeight = nHeight;

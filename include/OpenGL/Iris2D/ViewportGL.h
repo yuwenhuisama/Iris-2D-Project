@@ -5,7 +5,8 @@
 #include "Common/Iris2D/Proxied.h"
 #include "Common/Util/Result.h"
 
-#include <unordered_set>
+//#include <unordered_set>
+#include <map>
 #include "OpenGL/OpenGLUtil/ViewportShaderBuffersGL.h"
 #include "Common/Util/DirtyChecker.h"
 
@@ -42,7 +43,7 @@ namespace Iris2D {
 		float m_fY = 0.0f;
 		float m_fZ = 0.0f;
 
-		std::unordered_set<SpriteGL*> m_stSprites;
+		std::multimap<unsigned int, SpriteGL*, std::less<float>> m_stSprites;
 
 		unsigned int m_nVAO = 0;
 		unsigned int m_nVBO = 0;

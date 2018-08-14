@@ -26,34 +26,35 @@ namespace Iris2D {
 
 		SpriteShaderGL::Instance()->Use();
 		for (auto& pViewport : m_stViewports) {
-			pViewport->RenderSprites();
+			pViewport.second->RenderSprites();
 		}
 
 		m_pBackBuffer->UseTextureAsFrameBuffer();
 
 		glClearColor(1.f, 1.f, 1.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
 		ViewportShaderGL::Instance()->Use();
 
 		for (auto& pViewport : m_stViewports) {
-			pViewport->Render();
+			pViewport.second->Render();
+			//m_pBackBuffer->SaveToFile(L"temp\\a.png");
 		}
 
 		m_pBackBuffer->RestoreFrameBuffer();
 
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, -1.0f, 1.0f);
+		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
 
 		const auto pShader = BackShaderGL::Instance();
 
-		// m_pBackBuffer->SaveToFile(L"temp\\a.png");
+		//m_pBackBuffer->SaveToFile(L"temp\\a.png");
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		m_pBackBuffer->UseTexture();
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -133,11 +134,19 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::AddViewport(ViewportGL*& pViewport) {
-		m_stViewports.insert(pViewport);
+		m_stViewports.insert(std::pair<float, ViewportGL*>(pViewport->GetZ(), pViewport));
 	}
 
 	void GraphicsGL::RemoveViewport(ViewportGL* & pViewport) {
-		m_stViewports.erase(pViewport);
+		//m_stViewports.erase(pViewport);
+		auto iterRange = m_stViewports.equal_range(pViewport->GetZ());
+		while (iterRange.first != iterRange.second) {
+			if (iterRange.first->second == pViewport) {
+				m_stViewports.erase(iterRange.first);
+				break;
+			}
+			++iterRange.first;
+		}
 	}
 
 	bool GraphicsGL::Intialize() {
