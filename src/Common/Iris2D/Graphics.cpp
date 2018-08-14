@@ -18,6 +18,7 @@ namespace Iris2D {
 	}
 
 	void Graphics::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+		m_pProxied->Wait(nDuration, IR_PARAM);
 	}
 
 	void Graphics::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
@@ -54,15 +55,16 @@ namespace Iris2D {
 		return m_pProxied->GetHeight();
 	}
 
-	unsigned int Graphics::GetFrameCount() {
-		return 0;
+	unsigned int Graphics::GetFrameCount() const {
+		return m_pProxied->GetFrameCount();
 	}
 
-	unsigned int Graphics::GetBrightness() {
-		return 0;
+	unsigned int Graphics::GetBrightness() const {
+		return m_pProxied->GetBrightness();
 	}
 
 	void Graphics::SetBrightness(unsigned int nBrightness) {
+		m_pProxied->SetBrightness(nBrightness);
 	}
 
 	void Graphics::SetFrameRate(float fFrameRate) {

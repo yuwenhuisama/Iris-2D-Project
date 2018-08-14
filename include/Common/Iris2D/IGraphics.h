@@ -22,9 +22,9 @@ namespace Iris2D {
 		virtual unsigned int GetWidth() const = 0;
 		virtual void SetHeight(unsigned int nHeight) = 0;
 		virtual unsigned int GetHeight() const = 0;
-		virtual unsigned int GetFrameCount() = 0;
+		virtual unsigned int GetFrameCount() const = 0;
 
-		virtual unsigned int GetBrightness() = 0;
+		virtual unsigned int GetBrightness() const = 0;
 		virtual void SetBrightness(unsigned int nBrightness) = 0;
 
 		virtual void SetFrameRate(float fFrameRate) = 0;

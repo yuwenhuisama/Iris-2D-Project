@@ -11,6 +11,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "Common/Common.h"
+
 namespace Iris2D {
 	GraphicsGL* GraphicsGL::Instance() {
 		static GraphicsGL graphics;
@@ -24,6 +26,186 @@ namespace Iris2D {
 			glfwSwapInterval(1);
 		}
 
+		Render();
+		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
+		glfwPollEvents();
+
+		m_bUpdateLockFlag = false;
+
+#ifdef _DEBUG
+		static unsigned int  nCount = 0;
+
+		if (nCount < 60) {
+			++nCount;
+		}
+		else {
+			auto pWindow = OpenGLHelper::Instance()->GetWindow();
+
+			boost::format format("Fps: %1%, Frame count: %2%");
+			format % (1000.0f / m_fMsPerUpdate);
+			format % m_nFrameCount;
+
+			glfwSetWindowTitle(pWindow, format.str().c_str());
+			nCount = 0;
+		}
+
+#endif // _DEBUG
+
+		++m_nFrameCount;
+	}
+
+	void GraphicsGL::UpdateNoLock(IR_PARAM_RESULT_CT) {
+		if (m_bVsync) {
+			m_bVsync = false;
+			glfwSwapInterval(0);
+		}
+
+		static float fTmp = 0.0f;
+
+		while (!m_bUpdateLockFlag) {
+#ifdef _WIN32
+			fTmp = m_dCurrentTime;
+			m_dCurrentTime = ::timeGetTime();
+#else
+			// TODO: time get on Unix
+#endif // _WIN32
+			if (m_dCurrentTime >= m_dLastTime) {
+				m_fTimeDelta = (m_dCurrentTime - fTmp);
+				m_dLastTime = m_dCurrentTime + m_fMsPerUpdate;
+				m_bUpdateLockFlag = true;
+			}
+			Render();
+
+			glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
+			glfwPollEvents();
+		}
+		m_bUpdateLockFlag = false;
+
+#ifdef _DEBUG
+		static unsigned int  nCount = 0;
+
+		if (nCount < 60) {
+			++nCount;
+		}
+		else {
+			auto pWindow = OpenGLHelper::Instance()->GetWindow();
+
+			boost::format format("Fps: %1%, Frame count: %2%");
+			format % (1000.0f / m_fMsPerUpdate);
+			format % m_nFrameCount;
+
+			glfwSetWindowTitle(pWindow, format.str().c_str());
+			nCount = 0;
+		}
+
+#endif // _DEBUG
+
+		++m_nFrameCount;
+	}
+
+	void GraphicsGL::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+		if (m_bVsync) {
+			for (size_t i = 0; i < nDuration; i++) {
+				Update(IR_PARAM);
+			}
+		}
+		else {
+			for (size_t i = 0; i < nDuration; i++) {
+				UpdateNoLock(IR_PARAM);
+			}
+		}
+		++m_nFrameCount;
+	}
+
+	void GraphicsGL::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+	}
+
+	void GraphicsGL::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+	}
+
+	void GraphicsGL::Freeze(IR_PARAM_RESULT_CT) {
+	}
+
+	void GraphicsGL::Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+	}
+
+	void GraphicsGL::FrameReset() {
+		m_nFrameCount = 0;
+	}
+
+	void GraphicsGL::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+	}
+
+	void GraphicsGL::SetWidth(unsigned int nWidth) {
+		m_nWidth = nWidth;
+	}
+
+	unsigned int GraphicsGL::GetWidth() const {
+		return m_nWidth;
+	}
+
+	void GraphicsGL::SetHeight(unsigned int nHeight) {
+		m_nHeight = nHeight;
+	}
+
+	unsigned int GraphicsGL::GetHeight() const {
+		return m_nHeight;
+	}
+
+	unsigned int GraphicsGL::GetFrameCount() const {
+		return m_nFrameCount;
+	}
+
+	unsigned int GraphicsGL::GetBrightness()  const {
+		return 0;
+	}
+
+	void GraphicsGL::SetBrightness(unsigned int nBrightness) {
+	}
+
+	void GraphicsGL::SetFrameRate(float fFrameRate) {
+		m_fFrameRate = fFrameRate;
+		m_fMsPerUpdate = 1000.0f / fFrameRate;
+	}
+
+	float GraphicsGL::GetFrameRate() const {
+		return m_fFrameRate;
+	}
+
+	void GraphicsGL::Release() {
+	}
+
+	float GraphicsGL::GetMsPerUpdate() {
+		return m_fTimeDelta;
+	}
+
+	void GraphicsGL::AddViewport(ViewportGL*& pViewport) {
+		m_stViewports.insert(std::pair<float, ViewportGL*>(pViewport->GetZ(), pViewport));
+	}
+
+	void GraphicsGL::RemoveViewport(ViewportGL* & pViewport) {
+		//m_stViewports.erase(pViewport);
+		auto iterRange = m_stViewports.equal_range(pViewport->GetZ());
+		while (iterRange.first != iterRange.second) {
+			if (iterRange.first->second == pViewport) {
+				m_stViewports.erase(iterRange.first);
+				break;
+			}
+			++iterRange.first;
+		}
+	}
+
+	bool GraphicsGL::Intialize() {
+		if (!ViewportGL::InitializeGlobalViewport(0, 0, GetWidth(), GetHeight())) {
+			return false;
+		}
+
+		SetFrameRate(60.0f);
+
+		return CreateVertexBackBuffer();
+	}
+
+	void GraphicsGL::Render() {
 		SpriteShaderGL::Instance()->Use();
 		for (auto& pViewport : m_stViewports) {
 			pViewport.second->RenderSprites();
@@ -59,102 +241,6 @@ namespace Iris2D {
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
-
-		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
-		glfwPollEvents();
-	}
-
-	void GraphicsGL::UpdateNoLock(IR_PARAM_RESULT_CT) {
-		if (m_bVsync) {
-			m_bVsync = false;
-			glfwSwapInterval(0);
-		}
-	}
-
-	void GraphicsGL::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT) {
-	}
-
-	void GraphicsGL::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
-	}
-
-	void GraphicsGL::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT) {
-	}
-
-	void GraphicsGL::Freeze(IR_PARAM_RESULT_CT) {
-	}
-
-	void GraphicsGL::Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
-	}
-
-	void GraphicsGL::FrameReset() {
-	}
-
-	void GraphicsGL::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-	}
-
-	void GraphicsGL::SetWidth(unsigned int nWidth) {
-		m_nWidth = nWidth;
-	}
-
-	unsigned int GraphicsGL::GetWidth() const {
-		return m_nWidth;
-	}
-
-	void GraphicsGL::SetHeight(unsigned int nHeight) {
-		m_nHeight = nHeight;
-	}
-
-	unsigned int GraphicsGL::GetHeight() const {
-		return m_nHeight;
-	}
-
-	unsigned int GraphicsGL::GetFrameCount() {
-		return 0;
-	}
-
-	unsigned int GraphicsGL::GetBrightness() {
-		return 0;
-	}
-
-	void GraphicsGL::SetBrightness(unsigned int nBrightness) {
-	}
-
-	void GraphicsGL::SetFrameRate(float fFrameRate) {
-	}
-
-	float GraphicsGL::GetFrameRate() const {
-		return 0.0f;
-	}
-
-	void GraphicsGL::Release() {
-	}
-
-	float GraphicsGL::GetMsPerUpdate() {
-		return 0.0f;
-	}
-
-	void GraphicsGL::AddViewport(ViewportGL*& pViewport) {
-		m_stViewports.insert(std::pair<float, ViewportGL*>(pViewport->GetZ(), pViewport));
-	}
-
-	void GraphicsGL::RemoveViewport(ViewportGL* & pViewport) {
-		//m_stViewports.erase(pViewport);
-		auto iterRange = m_stViewports.equal_range(pViewport->GetZ());
-		while (iterRange.first != iterRange.second) {
-			if (iterRange.first->second == pViewport) {
-				m_stViewports.erase(iterRange.first);
-				break;
-			}
-			++iterRange.first;
-		}
-	}
-
-	bool GraphicsGL::Intialize() {
-		if (!ViewportGL::InitializeGlobalViewport(0, 0, GetWidth(), GetHeight())) {
-			return false;
-		}
-
-		return CreateVertexBackBuffer();
 	}
 
 	bool GraphicsGL::CreateVertexBackBuffer() {

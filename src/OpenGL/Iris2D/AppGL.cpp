@@ -89,6 +89,8 @@ namespace Iris2D {
 		m_eAppState = AppState::Running;
 		OpenGLHelper::Instance()->ShowWindow();
 
+		GraphicsGL::Instance()->m_dLastTime = ::timeGetTime();
+
 		return m_pfGameFunc();
 	}
 

@@ -22,7 +22,7 @@ bool GameCallBack() {
 	pSprite2->SetZ(5.0f);
 
 	auto pColor = Color::Create(255, 255, 255, 255);
-	auto pEffect = Effect::EffectFlash::Create(pColor, 5, true);
+	auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
 
 	pSprite->SetEffect(pEffect);
 
@@ -32,7 +32,7 @@ bool GameCallBack() {
 	auto bUp = true;
 
 	while (!pApp->IsQuited()) {
-		// pSprite->SetAngle(fAngle += 2.0f);
+		 pSprite->SetAngle(fAngle += 2.0f);
 
 		//if (bUp) {
 		//	if (nRed < 255) {

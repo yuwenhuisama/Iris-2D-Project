@@ -53,6 +53,7 @@ namespace Iris2D {
 			}
 		}
 		m_bUpdateLockFlag = false;
+		++m_nFrameCount;
 	}
 
 	void GraphicsDX::UpdateNoLock(IR_PARAM_RESULT_CT)
@@ -74,7 +75,7 @@ namespace Iris2D {
 			Render();
 			pD3DManager->GetSwapChain()->Present(0, 0);
 		}
-
+		++m_nFrameCount;
 	}
 
 	void GraphicsDX::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT)
@@ -99,6 +100,7 @@ namespace Iris2D {
 
 	void GraphicsDX::FrameReset()
 	{
+		m_nFrameCount = 0;
 	}
 
 	void GraphicsDX::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
@@ -125,12 +127,12 @@ namespace Iris2D {
 		return m_nHeight;
 	}
 
-	unsigned int GraphicsDX::GetFrameCount()
+	unsigned int GraphicsDX::GetFrameCount() const
 	{
 		return 0;
 	}
 
-	unsigned int GraphicsDX::GetBrightness()
+	unsigned int GraphicsDX::GetBrightness() const
 	{
 		return 0;
 	}

@@ -27,6 +27,18 @@ namespace Iris2D {
 
 		bool m_bVsync = true;
 
+		float m_fFrameRate = 60.0f;
+		float m_fMsPerUpdate = 0.0f;
+
+		unsigned int m_nFrameCount = 0;
+
+		double long m_dCurrentTime = 0;
+		double m_dLastTime = 0;
+
+		float m_fTimeDelta = 0.0f;
+
+		bool m_bUpdateLockFlag = false;
+
 	public:
 		static GraphicsGL* Instance();
 
@@ -45,8 +57,8 @@ namespace Iris2D {
 		virtual unsigned int GetWidth() const override;
 		virtual void SetHeight(unsigned int nHeight) override;
 		virtual unsigned int GetHeight() const override;
-		virtual unsigned int GetFrameCount() override;
-		virtual unsigned int GetBrightness() override;
+		virtual unsigned int GetFrameCount() const override;
+		virtual unsigned int GetBrightness() const override;
 		virtual void SetBrightness(unsigned int nBrightness) override;
 		virtual void SetFrameRate(float fFrameRate) override;
 		virtual float GetFrameRate() const override;
@@ -57,6 +69,7 @@ namespace Iris2D {
 		void RemoveViewport(ViewportGL*& pViewport);
 
 		bool Intialize();
+		void Render();
 
 	private:
 
@@ -64,6 +77,9 @@ namespace Iris2D {
 
 		GraphicsGL() = default;
 		~GraphicsGL() = default;
+
+	public:
+		friend class ApplicationGL;
 	};
 }
 

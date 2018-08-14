@@ -71,9 +71,9 @@ namespace Iris2D {
 		unsigned int GetWidth() const;
 		void SetHeight(unsigned int nHeight);
 		unsigned int GetHeight() const;
-		unsigned int GetFrameCount();
+		unsigned int GetFrameCount() const;
 
-		unsigned int GetBrightness();
+		unsigned int GetBrightness() const;
 		void SetBrightness(unsigned int nBrightness);
 
 		void SetFrameRate(float fFrameRate);
