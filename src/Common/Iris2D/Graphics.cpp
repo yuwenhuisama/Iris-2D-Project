@@ -59,12 +59,12 @@ namespace Iris2D {
 		return m_pProxied->GetFrameCount();
 	}
 
-	unsigned int Graphics::GetBrightness() const {
+	float Graphics::GetBrightness() const {
 		return m_pProxied->GetBrightness();
 	}
 
-	void Graphics::SetBrightness(unsigned int nBrightness) {
-		m_pProxied->SetBrightness(nBrightness);
+	void Graphics::SetBrightness(float fBrightness) {
+		m_pProxied->SetBrightness(fBrightness);
 	}
 
 	void Graphics::SetFrameRate(float fFrameRate) {

@@ -27,26 +27,25 @@ bool GameCallBack() {
 	pSprite->SetEffect(pEffect);
 
 	auto fAngle = 0.0f;
-	auto fOpacity = 0.5f;
-	unsigned char nRed = 0;
+	auto fBrightness = 0.0f;
 	auto bUp = true;
 
 	while (!pApp->IsQuited()) {
-		 pSprite->SetAngle(fAngle += 2.0f);
+		pSprite->SetAngle(fAngle += 2.0f);
 
-		//if (bUp) {
-		//	if (nRed < 255) {
-		//		nRed += 1;
-		//	} else {
-		//		bUp = false;
-		//	}
-		//} else {
-		//	if (nRed > 0) {
-		//		nRed -= 1;
-		//	} else {
-		//		bUp = true;
-		//	}
-		//}
+		if (bUp) {
+			if (fBrightness < 1.0f) {
+				fBrightness += 0.01f;
+			} else {
+				bUp = false;
+			}
+		} else {
+			if (fBrightness > 0.0f) {
+				fBrightness -= 0.01f;
+			} else {
+				bUp = true;
+			}
+		}
 
 		// pSprite->SetZoomX(fOpacity * 2.f);
 		// pSprite->SetZoomY(fOpacity * 2.f);
@@ -54,6 +53,7 @@ bool GameCallBack() {
 		// pSprite->GetTone()->SetRed(nRed);
 
 		pSprite->Update();
+		pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
 	}
 

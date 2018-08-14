@@ -7,11 +7,11 @@
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
-#include "OpenGL/Iris2D/OpenGLHelper.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "Common/Common.h"
+#include "Common/Util/Util.h"
 
 namespace Iris2D {
 	GraphicsGL* GraphicsGL::Instance() {
@@ -39,7 +39,7 @@ namespace Iris2D {
 			++nCount;
 		}
 		else {
-			auto pWindow = OpenGLHelper::Instance()->GetWindow();
+			const auto pWindow = OpenGLHelper::Instance()->GetWindow();
 
 			boost::format format("Fps: %1%, Frame count: %2%");
 			format % (1000.0f / m_fMsPerUpdate);
@@ -60,7 +60,7 @@ namespace Iris2D {
 			glfwSwapInterval(0);
 		}
 
-		static float fTmp = 0.0f;
+		static double fTmp = 0.0;
 
 		while (!m_bUpdateLockFlag) {
 #ifdef _WIN32
@@ -88,7 +88,7 @@ namespace Iris2D {
 			++nCount;
 		}
 		else {
-			auto pWindow = OpenGLHelper::Instance()->GetWindow();
+			const auto pWindow = OpenGLHelper::Instance()->GetWindow();
 
 			boost::format format("Fps: %1%, Frame count: %2%");
 			format % (1000.0f / m_fMsPerUpdate);
@@ -124,6 +124,7 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::Freeze(IR_PARAM_RESULT_CT) {
+
 	}
 
 	void GraphicsGL::Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
@@ -156,11 +157,12 @@ namespace Iris2D {
 		return m_nFrameCount;
 	}
 
-	unsigned int GraphicsGL::GetBrightness()  const {
-		return 0;
+	float GraphicsGL::GetBrightness()  const {
+		return m_fBrightness;
 	}
 
-	void GraphicsGL::SetBrightness(unsigned int nBrightness) {
+	void GraphicsGL::SetBrightness(float fBrightness) {
+		m_fBrightness = clip(fBrightness, 0.0f, 1.0f);
 	}
 
 	void GraphicsGL::SetFrameRate(float fFrameRate) {
@@ -173,6 +175,19 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::Release() {
+		TextureGL::Release(m_pBackBuffer);
+
+		if (m_nVAO) {
+			glDeleteVertexArrays(1, &m_nVAO);
+		}
+
+		if (m_nVBO) {
+			glDeleteBuffers(1, &m_nVBO);
+		}
+
+		if (m_nEBO) {
+			glDeleteBuffers(1, &m_nEBO);
+		}
 	}
 
 	float GraphicsGL::GetMsPerUpdate() {
@@ -233,6 +248,7 @@ namespace Iris2D {
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
+		pShader->SetBrightness(m_fBrightness - 0.5f);
 		m_pBackBuffer->UseTexture();
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);

@@ -15,4 +15,8 @@ namespace Iris2D {
 	void BackShaderGL::SetProjectionMatrix(const glm::mat4& mt4Projection) {
 		SetMatrix("projectionMat", mt4Projection);
 	}
+
+	void BackShaderGL::SetBrightness(float fBrightness) {
+		SetFloat("brightness", fBrightness);
+	}
 }

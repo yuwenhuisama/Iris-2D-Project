@@ -132,12 +132,12 @@ namespace Iris2D {
 		return 0;
 	}
 
-	unsigned int GraphicsDX::GetBrightness() const
+	float GraphicsDX::GetBrightness() const
 	{
 		return 0;
 	}
 
-	void GraphicsDX::SetBrightness(unsigned int nBrightness)
+	void GraphicsDX::SetBrightness(float fBrightness)
 	{
 	}
 

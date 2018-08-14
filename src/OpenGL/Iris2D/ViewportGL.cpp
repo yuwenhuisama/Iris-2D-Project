@@ -242,7 +242,7 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {
-		m_stSprites.insert(std::pair<unsigned int, SpriteGL*>(pSprite->GetZ(), pSprite));
+		m_stSprites.insert(std::pair<float, SpriteGL*>(pSprite->GetZ(), pSprite));
 	}
 
 	void ViewportGL::RemoveSprite(SpriteGL *& pSprite) {

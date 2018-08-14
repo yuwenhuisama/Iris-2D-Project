@@ -15,7 +15,7 @@ namespace Iris2D {
 	class GraphicsGL : public IGraphics, public Proxied<Graphics> {
 	private:
 		//std::unordered_set<ViewportGL*> m_stViewports;
-		std::multimap<float, ViewportGL*, std::less<float>> m_stViewports;
+		std::multimap<float, ViewportGL*, std::less<>> m_stViewports;
 
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;
@@ -32,12 +32,14 @@ namespace Iris2D {
 
 		unsigned int m_nFrameCount = 0;
 
-		double long m_dCurrentTime = 0;
+		double m_dCurrentTime = 0;
 		double m_dLastTime = 0;
 
 		float m_fTimeDelta = 0.0f;
 
 		bool m_bUpdateLockFlag = false;
+
+		float m_fBrightness = 0.5;
 
 	public:
 		static GraphicsGL* Instance();
@@ -58,8 +60,8 @@ namespace Iris2D {
 		virtual void SetHeight(unsigned int nHeight) override;
 		virtual unsigned int GetHeight() const override;
 		virtual unsigned int GetFrameCount() const override;
-		virtual unsigned int GetBrightness() const override;
-		virtual void SetBrightness(unsigned int nBrightness) override;
+		virtual float GetBrightness() const override;
+		virtual void SetBrightness(float fBrightness) override;
 		virtual void SetFrameRate(float fFrameRate) override;
 		virtual float GetFrameRate() const override;
 		virtual void Release() override;
