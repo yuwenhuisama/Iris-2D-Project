@@ -20,6 +20,7 @@ namespace Iris2D {
 		static TextureGL* Create(const std::wstring& wstrTexturePath);
 		static TextureGL* Create(unsigned int nWidth, unsigned int nHeight);
 		static TextureGL* CreateFrameBuffer(unsigned int nWidth, unsigned int nHeight);
+		static TextureGL* CopyFrom(const TextureGL* pTexture);
 
 		static bool Initialize();
 		static void Release(TextureGL*& pTexture);
@@ -33,11 +34,13 @@ namespace Iris2D {
 
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
+		unsigned char* GetPixels(unsigned int nWidth, unsigned int nHeight) const;
 
 		bool SaveToFile(const std::wstring& wstrFilePath) const;
 
 	private:
 		bool LoadTexture(const std::wstring& wstrTexturePath);
+		bool LoadTexture(unsigned char* pPixels, unsigned int nWidth, unsigned int nHeight);
 		bool CreateBlankTexture(unsigned int nWidth, unsigned int nHeight);
 		bool AsFrameBuffer(unsigned int nWidth, unsigned int nHeight);
 

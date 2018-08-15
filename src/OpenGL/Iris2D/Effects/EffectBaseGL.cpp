@@ -2,7 +2,7 @@
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include "OpenGL/Iris2D/Shaders/ShaderGL.h"
 #include "OpenGL/OpenGLUtil/EffectFrameBufferVertexGL.h"
-#include "OpenGL/Iris2D/OpenGLHelper.h"
+#include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "OpenGL/Iris2D/GraphicsGL.h"
 
 namespace Iris2D {

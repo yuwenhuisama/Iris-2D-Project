@@ -1,5 +1,5 @@
 #include "OpenGL/Iris2D/GraphicsGL.h"
-#include "OpenGL/Iris2D/OpenGLHelper.h"
+#include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "OpenGL/Common.h"
 #include "OpenGL/Iris2D/ViewportGL.h"
 #include "OpenGL/OpenGLUtil/TextureGL.h"
@@ -114,20 +114,54 @@ namespace Iris2D {
 				UpdateNoLock(IR_PARAM);
 			}
 		}
-		++m_nFrameCount;
 	}
 
 	void GraphicsGL::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+		// (r, g, b, a) -> (0, 0, 0, 0)
+		m_bFading = true;
+		m_nDuration = nDuration;
+		for (size_t i = nDuration; i > 0; --i) {
+			m_nCurrentDuration = i;
+			if (m_bVsync) {
+				Update(IR_PARAM);
+			}
+			else {
+				UpdateNoLock(IR_PARAM);
+			}
+		}
+		m_bFading = false;
 	}
 
 	void GraphicsGL::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+		// (0, 0, 0, 0) -> (r, g, b, a)
+		m_bFading = true;
+		m_nDuration = nDuration;
+		for (size_t i = 0; i < nDuration; ++i) {
+			m_nCurrentDuration = i;
+			if (m_bVsync) {
+				Update(IR_PARAM);
+			}
+			else {
+				UpdateNoLock(IR_PARAM);
+			}
+		}
+		m_bFading = false;
 	}
 
 	void GraphicsGL::Freeze(IR_PARAM_RESULT_CT) {
+		m_bFreezing = true;
+
+		TextureGL::Release(m_pFreezedBackBuffer);
+
+		// Freeze current back buffer preparing for transition
+		m_pFreezedBackBuffer = TextureGL::CopyFrom(m_pBackBuffer);
 
 	}
 
-	void GraphicsGL::Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+	void GraphicsGL::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+		if (!m_bFreezing) {
+			return;
+		}
 	}
 
 	void GraphicsGL::FrameReset() {
@@ -135,6 +169,9 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+		const auto pWindow = OpenGLHelper::Instance()->GetWindow();
+
+		glfwSetWindowSize(pWindow, nWidth, nHeight);
 	}
 
 	void GraphicsGL::SetWidth(unsigned int nWidth) {
@@ -228,7 +265,7 @@ namespace Iris2D {
 
 		m_pBackBuffer->UseTextureAsFrameBuffer();
 
-		glClearColor(1.f, 1.f, 1.f, 1.f);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
 		ViewportShaderGL::Instance()->Use();
@@ -249,7 +286,18 @@ namespace Iris2D {
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetBrightness(m_fBrightness - 0.5f);
-		m_pBackBuffer->UseTexture();
+
+		if (m_bFading) {
+			pShader->SetFadeInfo(glm::vec2{ m_nCurrentDuration, m_nDuration });
+		} else {
+			pShader->SetFadeInfo(glm::vec2{ 1.0f, 1.0f });
+		}
+
+		if (!m_bFreezing) {
+			m_pBackBuffer->UseTexture();
+		} else {
+			m_pFreezedBackBuffer->UseTexture();
+		}
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);

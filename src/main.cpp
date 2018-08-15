@@ -30,6 +30,9 @@ bool GameCallBack() {
 	auto fBrightness = 0.0f;
 	auto bUp = true;
 
+	pGraphics->FadeIn(50);
+	pGraphics->FadeOut(50);
+
 	while (!pApp->IsQuited()) {
 		pSprite->SetAngle(fAngle += 2.0f);
 
@@ -53,7 +56,7 @@ bool GameCallBack() {
 		// pSprite->GetTone()->SetRed(nRed);
 
 		pSprite->Update();
-		pGraphics->SetBrightness(fBrightness);
+		//pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
 	}
 

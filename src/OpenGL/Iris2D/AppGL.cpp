@@ -1,5 +1,5 @@
 #include "OpenGL/Iris2D/AppGL.h"
-#include "OpenGL/Iris2D/OpenGLHelper.h"
+#include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "Common/Iris2D/AppStartupInfo.h"
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include "OpenGL/Iris2D/GraphicsGL.h"
@@ -7,6 +7,7 @@
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/BackTransitionShaderGL.h"
 
 #include "Common/Util/DebugUtil.h"
 
@@ -75,6 +76,11 @@ namespace Iris2D {
 
 		if (!BackShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing back shader.");
+			return false;
+		}
+
+		if (!BackTransitionShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing back transition shader.");
 			return false;
 		}
 

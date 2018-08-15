@@ -22,15 +22,17 @@ namespace Iris2D {
 	}
 
 	void Graphics::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+		m_pProxied->FadeIn(nDuration, IR_PARAM);
 	}
 
 	void Graphics::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+		m_pProxied->FadeOut(nDuration, IR_PARAM);
 	}
 
 	void Graphics::Freeze(IR_PARAM_RESULT_CT) {
 	}
 
-	void Graphics::Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+	void Graphics::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
 	}
 
 	void Graphics::FrameReset() {

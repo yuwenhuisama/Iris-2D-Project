@@ -51,6 +51,25 @@ namespace Iris2D {
 		return nullptr;
 	}
 
+	TextureGL* TextureGL::CopyFrom(const TextureGL* pTexture) {
+		const auto nWidth = pTexture->m_nWidth;
+		const auto nHeight = pTexture->m_nHeight;
+
+		const auto pPixels = pTexture->GetPixels(nWidth, nHeight);
+
+		if (!pPixels) {
+			return nullptr;
+		}
+
+		auto pObject = new TextureGL();
+
+		pObject->LoadTexture(pPixels, pTexture->GetWidth(), pTexture->GetHeight());
+
+		delete[] pPixels;
+
+		return pObject;
+	}
+
 	bool TextureGL::Initialize() {
 		// Wrap
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
@@ -96,7 +115,7 @@ namespace Iris2D {
 		return m_nHeight;
 	}
 
-	bool TextureGL::SaveToFile(const std::wstring& wstrFilePath) const {
+	unsigned char* TextureGL::GetPixels(unsigned nWidth, unsigned nHeight) const {
 
 		GLint nRestore = 0;
 
@@ -111,11 +130,8 @@ namespace Iris2D {
 		const auto eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (eStatus != GL_FRAMEBUFFER_COMPLETE) {
 			PrintFormatDebugMessageW(L"Failed to make complete framebuffer object %x", eStatus);
-			return false;
+			return nullptr;
 		}
-		
-		const auto nWidth = m_nWidth;
-		const auto nHeight = m_nHeight;
 
 		glViewport(0, 0, nWidth, nHeight);
 
@@ -123,18 +139,31 @@ namespace Iris2D {
 
 		glReadPixels(0, 0, nWidth, nHeight, GL_RGBA, GL_UNSIGNED_BYTE, pPixels);
 
+		glDeleteFramebuffers(1, &nFrameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, nRestore);
+
+		return pPixels;
+	}
+
+	bool TextureGL::SaveToFile(const std::wstring& wstrFilePath) const {
+
 		using convert_type = std::codecvt_utf8<wchar_t>;
 		std::wstring_convert<convert_type, wchar_t> converter;
 
 		auto strConverted = converter.to_bytes(wstrFilePath);
 
+		const auto nWidth = m_nWidth;
+		const auto nHeight = m_nHeight;
+
+		const auto pPixels = GetPixels(nWidth, nHeight);
+
+		if (!pPixels) {
+			return false;
+		}
+
 		stbi_write_png(strConverted.c_str(), nWidth, nHeight, STBI_rgb_alpha, pPixels, nWidth * 4);
 
 		delete[] pPixels;
-
-		glDeleteFramebuffers(1, &nFrameBuffer);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, nRestore);
 
 		return true;
 	}
@@ -156,6 +185,23 @@ namespace Iris2D {
 
 		glGenerateMipmap(GL_TEXTURE_2D);
 		stbi_image_free(pData);
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		m_nWidth = nWidth;
+		m_nHeight = nHeight;
+
+		m_nTextureID = nTextureID;
+
+		return true;
+	}
+
+	bool TextureGL::LoadTexture(unsigned char* pPixels, unsigned nWidth, unsigned nHeight) {
+		GLuint nTextureID = 0;
+		glGenTextures(1, &nTextureID);
+		glBindTexture(GL_TEXTURE_2D, nTextureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, nWidth, nHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pPixels);
+
+		glGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		m_nWidth = nWidth;

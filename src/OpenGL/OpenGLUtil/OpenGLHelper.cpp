@@ -2,7 +2,7 @@
 // Created by Huisama on 2018/4/20.
 //
 
-#include "OpenGL/Iris2D/OpenGLHelper.h"
+#include "OpenGL/OpenGLUtil//OpenGLHelper.h"
 #include "OpenGL/Common.h"
 
 #include <iostream>

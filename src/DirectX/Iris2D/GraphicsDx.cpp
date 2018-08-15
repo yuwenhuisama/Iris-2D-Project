@@ -94,7 +94,7 @@ namespace Iris2D {
 	{
 	}
 
-	void GraphicsDX::Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT)
+	void GraphicsDX::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT)
 	{
 	}
 

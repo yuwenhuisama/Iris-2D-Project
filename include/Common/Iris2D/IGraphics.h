@@ -13,7 +13,7 @@ namespace Iris2D {
 		virtual void FadeOut(unsigned int nDuration, IR_PARAM_RESULT) = 0;
 		virtual void FadeIn(unsigned int nDuration, IR_PARAM_RESULT) = 0;
 		virtual void Freeze(IR_PARAM_RESULT) = 0;
-		virtual void Transition(unsigned int nDuration, std::wstring wstrFilename, unsigned int nVague, IR_PARAM_RESULT) = 0;
+		virtual void Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT) = 0;
 		//void Snap2Bitmap(IIrisBitmap *bitmap, IR_PARAM_RESULT);
 		virtual void FrameReset() = 0;
 		virtual void ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT) = 0;

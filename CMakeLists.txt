@@ -33,7 +33,7 @@ aux_source_directory(./src/OpenGL DIR_SRCS_MAIN_OPENGL)
 aux_source_directory(./src/OpenGL/Iris2D DIR_SRCS_MAIN_OPENGL_IRIS2D)
 aux_source_directory(./src/OpenGL/Iris2D/Shaders DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER)
 aux_source_directory(./src/OpenGL/Iris2D/Effects DIR_SRCS_MAIN_OPENGL_IRIS2D_EFFECT)
-aux_source_directory(./src/OpenGL/Util DIR_SRCS_MAIN_OPENGL_UTIL)
+aux_source_directory(./src/OpenGL/OpenGLUtil DIR_SRCS_MAIN_OPENGL_UTIL)
 
 aux_source_directory(./src/DirectX/Iris2D DIR_SRCS_MAIN_DIRECTX_IRIS2D)
 aux_source_directory(./src/DirectX/Iris2D/Shaders DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER)

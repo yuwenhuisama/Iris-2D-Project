@@ -18,10 +18,10 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "OpenGL/Iris2D/OpenGLHelper.h"
+#include "OpenGL/OpenGLUtil/OpenGLHelper.h"
+#include "OpenGL/Iris2D/ColorGL.h"
 #include "OpenGL/Iris2D/RectGL.h"
 #include "Common/Util/Util.h"
-#include "OpenGL/Iris2D/ColorGL.h"
 
 
 namespace Iris2D {
@@ -186,7 +186,8 @@ namespace Iris2D {
 	}
 
 	void ViewportGL::Render() {
-		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
+		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
+		glViewport(0, 0, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()));
 
 		auto pShader = ViewportShaderGL::Instance();
 

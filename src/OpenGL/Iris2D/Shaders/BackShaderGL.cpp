@@ -19,4 +19,8 @@ namespace Iris2D {
 	void BackShaderGL::SetBrightness(float fBrightness) {
 		SetFloat("brightness", fBrightness);
 	}
+
+	void BackShaderGL::SetFadeInfo(const glm::vec2& v2FadInfo) {
+		SetFloat2("fadeInfo", v2FadInfo);
+	}
 }
