@@ -12,6 +12,7 @@
 
 #include "Common/Common.h"
 #include "Common/Util/Util.h"
+#include "OpenGL/Iris2D/Shaders/BackTransitionShaderGL.h"
 
 namespace Iris2D {
 	GraphicsGL* GraphicsGL::Instance() {
@@ -162,6 +163,44 @@ namespace Iris2D {
 		if (!m_bFreezing) {
 			return;
 		}
+
+		m_bFreezing = false;
+		m_bTransition = true;
+
+		m_pMaskBuffer = TextureGL::Create(wstrFilename);
+
+		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
+
+		auto pShader = BackTransitionShaderGL::Instance();
+
+		pShader->Use();
+
+		m_pFreezedBackBuffer->UseTexture(0);
+		m_pMaskBuffer->UseTexture(1);
+		m_pBackBuffer->UseTexture(2);
+
+		pShader->SetProjectionMatrix(c_mt4Projection);
+		pShader->SetBrightness(m_fBrightness - 0.5f);
+
+		pShader->SetInt("texturePreSampler", 0);
+		pShader->SetInt("textureMaskSampler", 1);
+		pShader->SetInt("texturePostSampler", 2);
+
+		float fCompare = 1.0f;
+		const float fStep = fCompare / nDuration;
+		while (fCompare >= 0) {
+
+			pShader->SetCompare(1 - fCompare);
+			pShader->SetVague(nVague / 256.0f);
+
+			Update(IR_PARAM);
+			fCompare -= fStep;
+		}
+
+		TextureGL::Release(m_pFreezedBackBuffer);
+		TextureGL::Release(m_pMaskBuffer);
+
+		m_bTransition = false;
 	}
 
 	void GraphicsGL::FrameReset() {
@@ -258,53 +297,66 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::Render() {
-		SpriteShaderGL::Instance()->Use();
-		for (auto& pViewport : m_stViewports) {
-			pViewport.second->RenderSprites();
+		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
+
+		if (m_bTransition) {
+			glClearColor(0.f, 0.f, 0.f, 1.f);
+			glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
+
+			glBindVertexArray(m_nVAO);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
 		}
+		else {
+			SpriteShaderGL::Instance()->Use();
+			for (auto& pViewport : m_stViewports) {
+				pViewport.second->RenderSprites();
+			}
 
-		m_pBackBuffer->UseTextureAsFrameBuffer();
+			m_pBackBuffer->UseTextureAsFrameBuffer();
 
-		glClearColor(0.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
+			glClearColor(0.f, 0.f, 0.f, 1.f);
+			glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
-		ViewportShaderGL::Instance()->Use();
+			ViewportShaderGL::Instance()->Use();
 
-		for (auto& pViewport : m_stViewports) {
-			pViewport.second->Render();
+			for (auto& pViewport : m_stViewports) {
+				pViewport.second->Render();
+				//m_pBackBuffer->SaveToFile(L"temp\\a.png");
+			}
+
+			m_pBackBuffer->RestoreFrameBuffer();
+
+			const auto pShader = BackShaderGL::Instance();
+
 			//m_pBackBuffer->SaveToFile(L"temp\\a.png");
+
+			pShader->Use();
+			pShader->SetProjectionMatrix(c_mt4Projection);
+			pShader->SetBrightness(m_fBrightness - 0.5f);
+
+			if (m_bFading) {
+				pShader->SetFadeInfo(glm::vec2{ m_nCurrentDuration, m_nDuration });
+			}
+			else {
+				pShader->SetFadeInfo(glm::vec2{ 1.0f, 1.0f });
+			}
+
+			if (!m_bFreezing) {
+				m_pBackBuffer->UseTexture();
+			}
+			else {
+				m_pFreezedBackBuffer->UseTexture();
+			}
+
+			glClearColor(0.f, 0.f, 0.f, 1.f);
+			glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
+
+			glBindVertexArray(m_nVAO);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+			glBindVertexArray(0);
 		}
 
-		m_pBackBuffer->RestoreFrameBuffer();
-
-		static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
-
-		const auto pShader = BackShaderGL::Instance();
-
-		//m_pBackBuffer->SaveToFile(L"temp\\a.png");
-
-		pShader->Use();
-		pShader->SetProjectionMatrix(c_mt4Projection);
-		pShader->SetBrightness(m_fBrightness - 0.5f);
-
-		if (m_bFading) {
-			pShader->SetFadeInfo(glm::vec2{ m_nCurrentDuration, m_nDuration });
-		} else {
-			pShader->SetFadeInfo(glm::vec2{ 1.0f, 1.0f });
-		}
-
-		if (!m_bFreezing) {
-			m_pBackBuffer->UseTexture();
-		} else {
-			m_pFreezedBackBuffer->UseTexture();
-		}
-
-		glClearColor(0.f, 0.f, 0.f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
-
-		glBindVertexArray(m_nVAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
 	}
 
 	bool GraphicsGL::CreateVertexBackBuffer() {

@@ -18,4 +18,12 @@ namespace Iris2D {
 	void BackTransitionShaderGL::SetBrightness(float fBrightness) {
 		SetFloat("brightness", fBrightness);
 	}
+
+	void BackTransitionShaderGL::SetVague(float fVague) {
+		SetFloat("vague", fVague);
+	}
+
+	void BackTransitionShaderGL::SetCompare(float fCompare) {
+		SetFloat("compare", fCompare);
+	}
 }

@@ -12,6 +12,8 @@ namespace Iris2D {
 		bool Initialize();
 		void SetProjectionMatrix(const glm::mat4& mt4Projection);
 		void SetBrightness(float fBrightness);
+		void SetVague(float fVague);
+		void SetCompare(float fCompare);
 
 	private:
 		BackTransitionShaderGL() = default;

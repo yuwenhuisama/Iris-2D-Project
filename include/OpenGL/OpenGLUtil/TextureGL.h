@@ -26,8 +26,8 @@ namespace Iris2D {
 		static void Release(TextureGL*& pTexture);
 
 	public:
-		void UseTexture() const;
-		void UnuseTexture() const;
+		void UseTexture(unsigned int nUnit = 0) const;
+		void UnuseTexture(unsigned int nUnit = 0) const;
 
 		void UseTextureAsFrameBuffer();
 		void RestoreFrameBuffer() const;

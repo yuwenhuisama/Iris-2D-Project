@@ -23,6 +23,7 @@ namespace Iris2D {
 
 		TextureGL* m_pBackBuffer = nullptr;
 		TextureGL* m_pFreezedBackBuffer = nullptr;
+		TextureGL* m_pMaskBuffer = nullptr;
 
 		GLuint m_nVAO = 0;
 		GLuint m_nVBO = 0;
@@ -49,6 +50,7 @@ namespace Iris2D {
 		unsigned int m_nCurrentDuration = 0;
 
 		bool m_bFreezing = false;
+		bool m_bTransition = false;
 
 	public:
 		static GraphicsGL* Instance();

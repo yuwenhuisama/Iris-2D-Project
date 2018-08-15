@@ -90,11 +90,13 @@ namespace Iris2D {
 		}
 	}
 
-	void TextureGL::UseTexture() const {
+	void TextureGL::UseTexture(unsigned int nUnit) const {
+		glActiveTexture(GL_TEXTURE0 + nUnit);
 		glBindTexture(GL_TEXTURE_2D, m_nTextureID);
 	}
 
-	void TextureGL::UnuseTexture() const {
+	void TextureGL::UnuseTexture(unsigned int nUnit) const {
+		glActiveTexture(GL_TEXTURE0 + nUnit);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
