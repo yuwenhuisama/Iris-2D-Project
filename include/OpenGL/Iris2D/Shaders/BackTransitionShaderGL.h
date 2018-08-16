@@ -14,6 +14,7 @@ namespace Iris2D {
 		void SetBrightness(float fBrightness);
 		void SetVague(float fVague);
 		void SetCompare(float fCompare);
+		void SetType(int nType);
 
 	private:
 		BackTransitionShaderGL() = default;

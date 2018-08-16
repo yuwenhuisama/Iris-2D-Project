@@ -30,15 +30,19 @@ namespace Iris2D {
 	}
 
 	void Graphics::Freeze(IR_PARAM_RESULT_CT) {
+		m_pProxied->Freeze(IR_PARAM);
 	}
 
 	void Graphics::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+		m_pProxied->Transition(nDuration, wstrFilename, nVague, IR_PARAM);
 	}
 
 	void Graphics::FrameReset() {
+		m_pProxied->FrameReset();
 	}
 
 	void Graphics::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+		m_pProxied->ResizeScreen(nWidth, nHeight, IR_PARAM);
 	}
 
 	void Graphics::SetWidth(unsigned int nWidth) {

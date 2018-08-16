@@ -26,4 +26,8 @@ namespace Iris2D {
 	void BackTransitionShaderGL::SetCompare(float fCompare) {
 		SetFloat("compare", fCompare);
 	}
+
+	void BackTransitionShaderGL::SetType(int nType) {
+		SetInt("type", nType);
+	}
 }

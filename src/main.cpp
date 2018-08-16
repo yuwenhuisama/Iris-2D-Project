@@ -29,26 +29,29 @@ bool GameCallBack() {
 	auto fAngle = 0.0f;
 	auto fBrightness = 0.0f;
 	auto bUp = true;
+	auto nCounter = 0;
 
-	pGraphics->FadeIn(50);
-	pGraphics->FadeOut(50);
+	//pGraphics->FadeIn(50);
+	//pGraphics->FadeOut(50);
 
 	while (!pApp->IsQuited()) {
-		pSprite->SetAngle(fAngle += 2.0f);
+		//fAngle += 2.0f;
+		//pSprite->SetAngle(fAngle);
+		//pSprite2->SetAngle(-fAngle);
 
-		if (bUp) {
-			if (fBrightness < 1.0f) {
-				fBrightness += 0.01f;
-			} else {
-				bUp = false;
-			}
-		} else {
-			if (fBrightness > 0.0f) {
-				fBrightness -= 0.01f;
-			} else {
-				bUp = true;
-			}
-		}
+		//if (bUp) {
+		//	if (fBrightness < 1.0f) {
+		//		fBrightness += 0.01f;
+		//	} else {
+		//		bUp = false;
+		//	}
+		//} else {
+		//	if (fBrightness > 0.0f) {
+		//		fBrightness -= 0.01f;
+		//	} else {
+		//		bUp = true;
+		//	}
+		//}
 
 		// pSprite->SetZoomX(fOpacity * 2.f);
 		// pSprite->SetZoomY(fOpacity * 2.f);
@@ -58,6 +61,24 @@ bool GameCallBack() {
 		pSprite->Update();
 		//pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
+
+		//if (nCounter == 10) {
+		//	pGraphics->Freeze();
+		//}
+
+		//if (nCounter == 20) {
+		//	pGraphics->Transition(240, L"", 10);
+		//}
+
+		if (nCounter == 60) {
+			pGraphics->ResizeScreen(300, 300);
+		} else if (nCounter == 120) {
+			pGraphics->ResizeScreen(600, 600);
+		} else if (nCounter == 180) {
+			pGraphics->ResizeScreen(1200, 1200);
+		}
+
+		++nCounter;
 	}
 
 	Sprite::Release(pSprite);

@@ -5,6 +5,8 @@
 #include "OpenGL/OpenGLUtil//OpenGLHelper.h"
 #include "OpenGL/Common.h"
 
+#include "OpenGL/Iris2D/GraphicsGL.h"
+
 #include <iostream>
 #include <codecvt>
 
@@ -74,12 +76,6 @@ namespace Iris2D {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(arrIndiecs), arrIndiecs, GL_STATIC_DRAW);
 
-		//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(SpriteVertexGL), reinterpret_cast<void*>(offsetof(SpriteVertexGL, m_v4Position)));
-		//glEnableVertexAttribArray(0);
-
-		//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(SpriteVertexGL), reinterpret_cast<void*>(offsetof(SpriteVertexGL, m_v2Texture)));
-		//glEnableVertexAttribArray(1);
-
 		fCallback();
 
 		glBindVertexArray(0);
@@ -116,8 +112,10 @@ namespace Iris2D {
 		// set pWindow to context
 		glfwMakeContextCurrent(pWindow);
 
-		glfwSetFramebufferSizeCallback(pWindow, [](GLFWwindow* window, int width, int height) -> void {
-			glViewport(0, 0, width, height);
+		glfwSetFramebufferSizeCallback(pWindow, [](GLFWwindow* pWindow, int nWidth, int nHeight) -> void {
+			if (!GraphicsGL::Instance()->IsManualResize()) {
+				GraphicsGL::Instance()->AutoResize(nWidth, nHeight);
+			}
 		});
 
 		m_pWindow = pWindow;

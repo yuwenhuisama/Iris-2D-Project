@@ -156,7 +156,6 @@ namespace Iris2D {
 
 		// Freeze current back buffer preparing for transition
 		m_pFreezedBackBuffer = TextureGL::CopyFrom(m_pBackBuffer);
-
 	}
 
 	void GraphicsGL::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
@@ -167,7 +166,14 @@ namespace Iris2D {
 		m_bFreezing = false;
 		m_bTransition = true;
 
-		m_pMaskBuffer = TextureGL::Create(wstrFilename);
+		TextureGL* pMaskBuffer = nullptr;
+
+		if (!wstrFilename.empty()) {
+			pMaskBuffer = TextureGL::Create(wstrFilename);
+			if (!pMaskBuffer) {
+				return;
+			}
+		}
 
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
 
@@ -176,7 +182,12 @@ namespace Iris2D {
 		pShader->Use();
 
 		m_pFreezedBackBuffer->UseTexture(0);
-		m_pMaskBuffer->UseTexture(1);
+		if (pMaskBuffer) {
+			pMaskBuffer->UseTexture(1);
+			pShader->SetType(1);
+		} else {
+			pShader->SetType(0);
+		}
 		m_pBackBuffer->UseTexture(2);
 
 		pShader->SetProjectionMatrix(c_mt4Projection);
@@ -198,7 +209,7 @@ namespace Iris2D {
 		}
 
 		TextureGL::Release(m_pFreezedBackBuffer);
-		TextureGL::Release(m_pMaskBuffer);
+		TextureGL::Release(pMaskBuffer);
 
 		m_bTransition = false;
 	}
@@ -208,9 +219,19 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+		m_bManualResize = true;
+
 		const auto pWindow = OpenGLHelper::Instance()->GetWindow();
 
 		glfwSetWindowSize(pWindow, nWidth, nHeight);
+
+		Release();
+
+		m_nWidth = nWidth;
+		m_nHeight = nHeight;
+		CreateVertexBackBuffer();
+
+		m_bManualResize = false;
 	}
 
 	void GraphicsGL::SetWidth(unsigned int nWidth) {
@@ -357,6 +378,18 @@ namespace Iris2D {
 			glBindVertexArray(0);
 		}
 
+	}
+
+	bool GraphicsGL::IsManualResize() const {
+		return m_bManualResize;
+	}
+
+	void GraphicsGL::AutoResize(unsigned nWidth, unsigned nHeight) {
+		Release();
+
+		m_nWidth = nWidth;
+		m_nHeight = nHeight;
+		CreateVertexBackBuffer();
 	}
 
 	bool GraphicsGL::CreateVertexBackBuffer() {

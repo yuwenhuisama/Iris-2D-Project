@@ -23,7 +23,6 @@ namespace Iris2D {
 
 		TextureGL* m_pBackBuffer = nullptr;
 		TextureGL* m_pFreezedBackBuffer = nullptr;
-		TextureGL* m_pMaskBuffer = nullptr;
 
 		GLuint m_nVAO = 0;
 		GLuint m_nVBO = 0;
@@ -51,6 +50,8 @@ namespace Iris2D {
 
 		bool m_bFreezing = false;
 		bool m_bTransition = false;
+
+		bool m_bManualResize = false;
 
 	public:
 		static GraphicsGL* Instance();
@@ -83,6 +84,9 @@ namespace Iris2D {
 
 		bool Intialize();
 		void Render();
+
+		bool IsManualResize() const;
+		void AutoResize(unsigned int nWidth, unsigned int nHeight);
 
 	private:
 
