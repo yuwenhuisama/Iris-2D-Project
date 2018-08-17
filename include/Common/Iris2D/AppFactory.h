@@ -5,7 +5,7 @@
 
 namespace Iris2D {
 	enum class ApiType {
-		OpenGL,
+		OpenGL = 0,
 		DirectX,
 	};
 

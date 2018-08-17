@@ -187,7 +187,7 @@ namespace Iris2D {
 
 	void ViewportGL::Render() {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
-		glViewport(0, 0, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()));
+		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
 
 		auto pShader = ViewportShaderGL::Instance();
 

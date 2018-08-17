@@ -7,9 +7,9 @@
 namespace Iris2D {
 	class TextureGL {
 	private:
-		GLUnit m_nTextureID = 0;
-		GLUnit m_nFBO = 0;
-		GLUnit m_nRBO = 0;
+		GLuint m_nTextureID = 0;
+		GLuint m_nFBO = 0;
+		GLuint m_nRBO = 0;
 
 		GLint m_nStoredFrameBuffer = 0;
 

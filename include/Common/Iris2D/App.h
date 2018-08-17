@@ -61,9 +61,9 @@ namespace Iris2D {
 		* @see GameFunc
 		*/
 #ifdef _WIN32
-		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle);
+		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
 #else
-		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle);
+		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
 #endif
 
 		/**
@@ -86,7 +86,7 @@ namespace Iris2D {
 		* @see Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle)
 		* @see AppStartupInfo
 		*/
-		virtual bool Initialize(const AppStartupInfo* pInfo);
+		virtual bool Initialize(const AppStartupInfo* pInfo) override;
 
 		/**
 		* \~english
@@ -100,7 +100,7 @@ namespace Iris2D {
 		* @see Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle)
 		* @see Initialize(const AppStartupInfo* pInfo)
 		*/
-		virtual bool Run();
+		virtual bool Run() override;
 
 		/**
 		* \~english
@@ -110,7 +110,7 @@ namespace Iris2D {
 		* \~chinese
 		* 释放所有由 Iris 2D 维护的资源（如 Sprite/Viewport/Bitmap ），以及其他和 DirectX 相关的资源。
 		*/
-		virtual void Release();
+		virtual void Release() override;
 
 		/**
 		* \~english
@@ -122,7 +122,7 @@ namespace Iris2D {
 		* 检查当前应用状态是否为未初始化。
 		* @return 如果 Initialize() 没有被调用或者 Iris 2D 初始化失败，那么将会返回 false ，否则返回 true 。
 		*/
-		virtual bool IsUninitialized() const;
+		virtual bool IsUninitialized() const override;
 
 		/**
 		* \~english
@@ -138,7 +138,7 @@ namespace Iris2D {
 		* @see Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle)
 		* @see Initialize(const AppStartupInfo* pInfo)
 		*/
-		virtual bool IsInitiatlize() const;
+		virtual bool IsInitiatlize() const override;
 
 		/**
 		* \~english
@@ -150,7 +150,7 @@ namespace Iris2D {
 		* 检查当前应用状态是否为正在运行。
 		* @return 如果 Run() 被调用，那么将会返回 true 否则返回 false。
 		*/
-		virtual bool IsRunning() const;
+		virtual bool IsRunning() const override;
 
 		/**
 		* \~english
@@ -168,7 +168,7 @@ namespace Iris2D {
 		* @return 如果 Iris 2D 程序的窗口被关闭，那么返回 true 否则返回 false 。
 		* @see Quite()
 		*/
-		virtual bool IsQuited() const;
+		virtual bool IsQuited() const override;
 
 		/**
 		* \~english
@@ -180,7 +180,7 @@ namespace Iris2D {
 		* 手动设置当前 IrisApplication 的状态为 Quite 。
 		* @see IsQuited()
 		*/
-		virtual void Quite();
+		virtual void Quite() override;
 
 		/**
 		* \~english
@@ -196,7 +196,7 @@ namespace Iris2D {
 		* 该方法有助于用户确定游戏速度。
 		* @return 以毫秒为单位的时间间隔。
 		*/
-		virtual float GetTimeDelta() const;
+		virtual float GetTimeDelta() const override;
 
 		private:
 			Application(); 

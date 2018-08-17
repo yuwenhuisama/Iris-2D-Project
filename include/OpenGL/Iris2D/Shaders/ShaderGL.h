@@ -35,10 +35,10 @@ namespace Iris2D {
 		bool SetFloat3(const std::string& strUniformName, float fR, float fG, float fB);
 		bool SetFloat3(const std::string& strUniformName, const glm::vec3& v3Vector);
 
-		GLUnit GetID() const;
+		GLuint GetID() const;
 
 	private:
-		GLUnit LoadShader(const std::string& strPath, std::function<GLuint()> fGenerate) const;
+		GLuint LoadShader(const std::string& strPath, std::function<GLuint()> fGenerate) const;
 		std::string GetShaderCode(const std::string &strPath) const;
 
 	};

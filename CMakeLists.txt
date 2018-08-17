@@ -4,6 +4,7 @@ project(Iris2D_Cherry_Spinach)
 set(CMAKE_CXX_STANDARD 11)
 
 include_directories(include)
+include_directories(api-wrapper)
 
 if (APPLE)
 	set(GLEW_H /usr/local/Cellar/glew/2.1.0/include/)
@@ -18,7 +19,6 @@ if (WIN32)
 	find_package(glm CONFIG REQUIRED)
 
 	find_library(DIRECTXTEX DirectXTex.lib)
-
 	link_libraries(${DIRECTXTEX})
 elseif (APPLE)
 	set(GLEW_LINK /usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.dylib)
@@ -44,8 +44,28 @@ aux_source_directory(./src/Common/Iris2D DIR_SRCS_COMMON_IRIS2D)
 aux_source_directory(./src/Common/Iris2D/Effects DIR_SRCS_COMMON_IRIS2D_EFFECT)
 aux_source_directory(./src/Common/Util DIR_SRCS_COMMON_IRIS2D_UTIL)
 
+aux_source_directory(./api-wrapper DIR_WRAPPER)
+
 if (WIN32)
-add_executable(main
+		add_library(iris2d SHARED
+		${DIR_WRAPPER}		
+		${DIR_SRCS_MAIN_OPENGL}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D_EFFECT}
+		${DIR_SRCS_MAIN_OPENGL_UTIL}
+		
+		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
+		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER}
+		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL}
+
+		${DIR_SRCS_COMMON_IRIS2D}
+		${DIR_SRCS_COMMON_IRIS2D_UTIL}
+		${DIR_SRCS_COMMON_IRIS2D_EFFECT}
+		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
+		)
+
+		add_executable(main
 		WIN32
 		${DIR_SRCS_MAIN}
 		
@@ -65,7 +85,7 @@ add_executable(main
 		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
 	  )
 elseif (APPLE)
-add_executable(main
+		add_executable(main
 		${DIR_SRCS_MAIN}
 		
 		${DIR_SRCS_MAIN_OPENGL}
@@ -78,10 +98,26 @@ add_executable(main
 		${DIR_SRCS_COMMON_IRIS2D_UTIL}
 		${DIR_SRCS_COMMON_IRIS2D_EFFECT}
 		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
-	  )
+		)
+
+	  add_library(iris2d SHARED ${DIR_WRAPPER}
+	  	${DIR_SRCS_MAIN}
+		
+		${DIR_SRCS_MAIN_OPENGL}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
+		${DIR_SRCS_MAIN_OPENGL_IRIS2D_EFFECT}
+		${DIR_SRCS_MAIN_OPENGL_UTIL}
+
+		${DIR_SRCS_COMMON_IRIS2D}
+		${DIR_SRCS_COMMON_IRIS2D_UTIL}
+		${DIR_SRCS_COMMON_IRIS2D_EFFECT}
+		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
+		)
 endif ()
 
 if (WIN32)
+	target_link_libraries(iris2d PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm)
 	target_link_libraries(main PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm)
 elseif (APPLE)
 	target_link_libraries(main PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY})

@@ -4,18 +4,18 @@
 #include <string>
 #include "Common/CompileConfigure.h"
 
-#define IR_SUCCESS(r) ((r).resultType == ResultType.SUCCESS) 
-#define IR_FAILD(r) ((r).resultType != ResultType.SUCCESS)
-#define IR_MEM_ERROR(r) ((r).resultType == ResultType.MEM_ERROR)
+#define IR_SUCCESS(r) ((r)->m_resultType == IR_SUCCESS) 
+#define IR_FAILD(r) ((r)->m_resultType != IR_SUCCESS)
+#define IR_MEM_ERROR(r) ((r)->m_resultType == IR_MEM_ERROR)
 #ifdef _WIN32
-#define IR_SHOW_ERROR(r) ::MessageBoxW(nullptr, L"Error!", (r).wstrResultMsg.c_str(), nullptr);
+#define IR_SHOW_ERROR(r) ::MessageBoxW(NULL, L"Error!", (r)->wstrResultMsg, NULL);
 #else
 #define IR_SHOW_ERROR(r)
 #endif
 
 #define IR_PARAM _rParam
-#define IR_PARAM_RESULT Result* IR_PARAM = nullptr
-#define IR_PARAM_RESULT_CT Result* IR_PARAM
+#define IR_PARAM_RESULT IR_Result* IR_PARAM = NULL
+#define IR_PARAM_RESULT_CT IR_Result* IR_PARAM
 #define IR_PARAM_SET_RESULT(res, msg) \
 	do { \
 		if(_rParam){ \
@@ -24,19 +24,17 @@
 		} \
 	} while (0); \
 
-namespace Iris2D {
-	enum class ResultType {
-		SUCCESS = 0,
-		FAILED,
-		MEM_ERROR,
-	};
+enum IR_ResultType {
+	IR_SUCCESS = 0,
+	IR_FAILED,
+	IR_MEM_ERROR,
+};
 
-	struct Result {
-	public:
-		ResultType irResultType = ResultType::SUCCESS;
-		std::wstring wstrResultMsg = L"";
-	};
-}
+struct IR_Result {
+public:
+	IR_ResultType m_irResultType;
+	wchar_t* m_wstrResultMsg;
+};
+
 
 #endif // !_H_RESULT_
-
