@@ -12,7 +12,7 @@ extern "C" {
 
 	EXPORT_API void Graphics_Wait(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
 
-	EXPORT_API void Graphics_FadOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
+	EXPORT_API void Graphics_FadeOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
 	EXPORT_API void Graphics_FadeIn(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
 
 	EXPORT_API void Graphics_Freeze(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT);

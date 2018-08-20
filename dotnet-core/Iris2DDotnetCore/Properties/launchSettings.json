@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Iris2D": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

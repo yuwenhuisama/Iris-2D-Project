@@ -47,7 +47,7 @@ aux_source_directory(./src/Common/Util DIR_SRCS_COMMON_IRIS2D_UTIL)
 aux_source_directory(./api-wrapper DIR_WRAPPER)
 
 if (WIN32)
-		add_library(iris2d SHARED
+		add_library(libiris2d SHARED
 		${DIR_WRAPPER}		
 		${DIR_SRCS_MAIN_OPENGL}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D}
@@ -100,7 +100,7 @@ elseif (APPLE)
 		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
 		)
 
-	  add_library(iris2d SHARED ${DIR_WRAPPER}
+	  add_library(libiris2d SHARED ${DIR_WRAPPER}
 	  	${DIR_SRCS_MAIN}
 		
 		${DIR_SRCS_MAIN_OPENGL}
@@ -117,7 +117,7 @@ elseif (APPLE)
 endif ()
 
 if (WIN32)
-	target_link_libraries(iris2d PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm)
+	target_link_libraries(libiris2d PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm)
 	target_link_libraries(main PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm)
 elseif (APPLE)
 	target_link_libraries(main PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY})

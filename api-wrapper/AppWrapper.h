@@ -8,6 +8,7 @@
 extern "C" {
 	typedef BOOL(*App_GameFunc)();
 
+#pragma pack(push, 8)  
 	struct App_AppStartupInfo {
 
 #ifdef _WIN32
@@ -37,7 +38,7 @@ extern "C" {
 		/**< \~english Initial title of the window of Iris 2D application. */
 		/**< \~chinese Iris 2D 窗口的初始化标题。 */
 	};
-
+#pragma pack(pop)
 
 	EXPORT_API APP_HANDLE App_GetInstance();
 	EXPORT_API BOOL App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);

@@ -20,7 +20,7 @@ EXPORT_API void Graphics_Wait(GRAPHICS_HANDLE hGraphics, unsigned int nDuration,
 	pGraphics->Wait(nDuration, IR_PARAM);
 }
 
-EXPORT_API void Graphics_FadOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT) {
+EXPORT_API void Graphics_FadeOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	pGraphics->FadeOut(nDuration, IR_PARAM);
 }

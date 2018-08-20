@@ -11,7 +11,7 @@ EXPORT_API BOOL App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigne
 }
 
 EXPORT_API BOOL App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo) {
-	Iris2D::AppStartupInfo asiInfo(pInfo->m_hInstance, pInfo->nShowCmd, pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, reinterpret_cast<Iris2D::GameFunc>(pInfo->m_pfFunc()), pInfo->m_wstrTitle);
+	Iris2D::AppStartupInfo asiInfo(pInfo->m_hInstance, pInfo->nShowCmd, pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, reinterpret_cast<Iris2D::GameFunc>(pInfo->m_pfFunc), pInfo->m_wstrTitle);
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
 	return pApplication->Initialize(&asiInfo);
 }
