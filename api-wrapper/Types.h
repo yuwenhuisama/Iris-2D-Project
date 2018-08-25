@@ -3,5 +3,9 @@
 
 typedef void* APP_HANDLE;
 typedef void* GRAPHICS_HANDLE;
+typedef void* BITMAP_HANDLE;
+typedef void* RECT_HANDLE;
+typedef void* COLOR_HANDLE;
+typedef void* FONT_HANDLE;
 
 #endif
