@@ -1,7 +1,7 @@
 #define LIBRARY_EXPORTS
 #include "BitmapWrapper.h"
 
-EXPORT_API BITMAP_HANDLE Create1(const std::wstring& wstrFileName) {
+EXPORT_API BITMAP_HANDLE Create1(const wchar_t*& wstrFileName) {
 	return Iris2D::Bitmap::Create(wstrFileName);
 }
 
@@ -97,7 +97,7 @@ EXPORT_API bool SetPixel(BITMAP_HANDLE hHandle, unsigned int nX, unsigned int nY
 	return pBitmap->SetPixel(nX, nY, pCastedColor);
 }
 
-EXPORT_API bool SaveToFile(BITMAP_HANDLE hHandle, const std::wstring & wstrFilePath) {
+EXPORT_API bool SaveToFile(BITMAP_HANDLE hHandle, const wchar_t* & wstrFilePath) {
 	auto pBitmap = reinterpret_cast<Iris2D::Bitmap*>(hHandle);
 
 	return pBitmap->SaveToFile(wstrFilePath);
@@ -121,20 +121,20 @@ EXPORT_API FONT_HANDLE GetFont(BITMAP_HANDLE hHandle) {
 	return pBitmap->GetFont();
 }
 
-EXPORT_API unsigned int TextSize(BITMAP_HANDLE hHandle, const FONT_HANDLE pFont, const std::wstring & wstrText) {
+EXPORT_API unsigned int TextSize(BITMAP_HANDLE hHandle, const FONT_HANDLE pFont, const wchar_t* & wstrText) {
 	auto pBitmap = reinterpret_cast<Iris2D::Bitmap*>(hHandle);
 	auto pCastedFont = reinterpret_cast<Iris2D::Font*>(pFont);
 
 	return pBitmap->TextSize(pCastedFont, wstrText);
 }
 
-EXPORT_API bool DrawText1(BITMAP_HANDLE hHandle, unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType nAlign) {
+EXPORT_API bool DrawText1(BITMAP_HANDLE hHandle, unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const wchar_t* & wstrText, AlignType nAlign) {
 	auto pBitmap = reinterpret_cast<Iris2D::Bitmap*>(hHandle);
 
 	return pBitmap->DrawText(nX, nY, nWidth, nHeight, wstrText, nAlign);
 }
 
-EXPORT_API bool DrawText2(BITMAP_HANDLE hHandle, const RECT_HANDLE pRect, const std::wstring & wstrText, AlignType nAlign) {
+EXPORT_API bool DrawText2(BITMAP_HANDLE hHandle, const RECT_HANDLE pRect, const wchar_t* & wstrText, AlignType nAlign) {
 	auto pBitmap = reinterpret_cast<Iris2D::Bitmap*>(hHandle);
 	auto pCastedRect = reinterpret_cast<Iris2D::Rect*>(pRect);
 
