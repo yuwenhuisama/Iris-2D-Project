@@ -58,32 +58,32 @@ namespace Iris2D {
 
 	public:
 		// Í¨¹ý IGraphics ¼Ì³Ð
-		virtual void Update(IR_PARAM_RESULT) override;
-		virtual void UpdateNoLock(IR_PARAM_RESULT) override;
-		virtual void Wait(unsigned int nDuration, IR_PARAM_RESULT) override;
-		virtual void FadeOut(unsigned int nDuration, IR_PARAM_RESULT) override;
-		virtual void FadeIn(unsigned int nDuration, IR_PARAM_RESULT) override;
-		virtual void Freeze(IR_PARAM_RESULT) override;
-		virtual void Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT) override;
-		virtual void FrameReset() override;
-		virtual void ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT) override;
-		virtual void SetWidth(unsigned int nWidth) override;
-		virtual unsigned int GetWidth() const override;
-		virtual void SetHeight(unsigned int nHeight) override;
-		virtual unsigned int GetHeight() const override;
-		virtual unsigned int GetFrameCount() const override;
-		virtual float GetBrightness() const override;
-		virtual void SetBrightness(float fBrightness) override;
-		virtual void SetFrameRate(float fFrameRate) override;
-		virtual float GetFrameRate() const override;
-		virtual void Release() override;
-		virtual float GetMsPerUpdate() override;
+		ResultCode Update() override;
+		ResultCode UpdateNoLock() override;
+		ResultCode Wait(unsigned int nDuration) override;
+		ResultCode FadeOut(unsigned int nDuration) override;
+		ResultCode FadeIn(unsigned int nDuration) override;
+		ResultCode Freeze() override;
+		ResultCode Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague) override;
+		void FrameReset() override;
+		ResultCode ResizeScreen(unsigned int nWidth, unsigned int nHeight) override;
+		void SetWidth(unsigned int nWidth) override;
+		unsigned int GetWidth() const override;
+		void SetHeight(unsigned int nHeight) override;
+		unsigned int GetHeight() const override;
+		unsigned int GetFrameCount() const override;
+		float GetBrightness() const override;
+		void SetBrightness(float fBrightness) override;
+		void SetFrameRate(float fFrameRate) override;
+		float GetFrameRate() const override;
+		void Release() override;
+		float GetMsPerUpdate() override;
 
 		void AddViewport(ViewportGL*& pViewport);
 		void RemoveViewport(ViewportGL*& pViewport);
 
 		bool Intialize();
-		void Render(IR_PARAM_RESULT);
+		ResultCode Render();
 
 		bool IsManualResize() const;
 		void AutoResize(unsigned int nWidth, unsigned int nHeight);

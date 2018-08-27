@@ -67,7 +67,7 @@ namespace Iris2D {
 		* 设置当前对象的 Red 属性。
 		* @param cRed Red 属性的值。
 		*/
-		virtual void SetRed(unsigned char cRed);
+		void SetRed(unsigned char cRed) override;
 		/**
 		* \~english
 		* Get the red property of current color.
@@ -78,7 +78,7 @@ namespace Iris2D {
 		* 获取当前 Color 的 Red 值。
 		* @return 当前 Color 的 Red 值。
 		*/
-		virtual unsigned char GetRed() const;
+		unsigned char GetRed() const override;
 
 		/**
 		* \~english
@@ -90,7 +90,7 @@ namespace Iris2D {
 		* 设置当前对象的 Green 属性。
 		* @param cGreen Green 属性的值。
 		*/
-		virtual void SetGreen(unsigned char cGreen);
+		void SetGreen(unsigned char cGreen) override;
 		/**
 		* \~english
 		* Get the green property of current color.
@@ -101,7 +101,7 @@ namespace Iris2D {
 		* 获取当前 Color 的 Green 值。
 		* @return 当前 Color 的 Green 值。
 		*/
-		virtual unsigned char GetGreen() const;
+		unsigned char GetGreen() const override;
 
 		/**
 		* \~english
@@ -113,7 +113,7 @@ namespace Iris2D {
 		* 设置当前对象的 Blue 属性。
 		* @param cBlue Blue 属性的值。
 		*/
-		virtual void SetBlue(unsigned char cBlue);
+		void SetBlue(unsigned char cBlue) override;
 		/**
 		* \~english
 		* Get the blue property of current color.
@@ -124,7 +124,7 @@ namespace Iris2D {
 		* 获取当前 Color 的 Blue 值。
 		* @return 当前 Color 的 Blue 值。
 		*/
-		virtual unsigned char GetBlue() const;
+		unsigned char GetBlue() const override;
 
 		/**
 		* \~english
@@ -136,7 +136,7 @@ namespace Iris2D {
 		* 设置当前对象的 Alpha 属性。
 		* @param cAlpha Alpha 属性的值。
 		*/
-		virtual void SetAlpha(unsigned char cAlpha);
+		void SetAlpha(unsigned char cAlpha) override;
 		/**
 		* \~english
 		* Get the alpha property of current color.
@@ -147,7 +147,7 @@ namespace Iris2D {
 		* 获取当前 Color 的 Alpha 值。
 		* @return 当前 Color 的 Alpha 值。
 		*/
-		virtual unsigned char GetAlpha() const;
+		unsigned char GetAlpha() const override;
 
 		/**
 		* \~english
@@ -165,11 +165,9 @@ namespace Iris2D {
 		* @param cBlue Blue 属性的值。
 		* @param cAlpha Alpha 属性的值。
 		*/
-		virtual void Set(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);
+		void Set(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha) override;
 
 		private:
-			Color() = delete;
-
 			Color(IColor* pProxied);
 			~Color() = default;
 	};

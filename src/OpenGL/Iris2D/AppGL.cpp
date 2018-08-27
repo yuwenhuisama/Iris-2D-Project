@@ -18,9 +18,9 @@ namespace Iris2D {
 	}
 
 #ifdef _WIN32
-	bool ApplicationGL::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle, IR_PARAM_RESULT_CT) {
+	ResultCode ApplicationGL::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 #else
-	bool ApplicationGL::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
+	ResultCode ApplicationGL::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 #endif // _WIN32_
 		AppStartupInfo iasiInfo;
 #ifdef _WIN32
@@ -31,10 +31,10 @@ namespace Iris2D {
 		iasiInfo.m_pfFunc = pfGameFunc;
 		iasiInfo.m_wstrTitle = wszTitle;
 
-		return Initialize(&iasiInfo, IR_PARAM);
+		return Initialize(&iasiInfo);
 	}
 
-	bool ApplicationGL::Initialize(const AppStartupInfo * pInfo, IR_PARAM_RESULT_CT) {
+	ResultCode ApplicationGL::Initialize(const AppStartupInfo * pInfo) {
 		auto pHelper = OpenGLHelper::Instance();
 
 #ifdef _DEBUG
@@ -43,17 +43,17 @@ namespace Iris2D {
 
 		if (!pHelper->Initialze()) {
 			PrintDebugMessageW(L"Error when initializing OpenGL.");
-			return false;
+			return IRR_OpenGLInitializeFailed;
 		}
 
 		if (!pHelper->InitializeWindow(pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, pInfo->m_wstrTitle)) {
 			PrintDebugMessageW(L"Error when initializing glfw window.");
-			return false;
+			return IRR_WindowInitializeFailed;
 		}
 
 		if (!TextureGL::Initialize()) {
 			PrintDebugMessageW(L"Error when initializing Texture settings.");
-			return false;
+			return IRR_TextureSettingInitializeFailed;
 		}
 
 		GraphicsGL::Instance()->SetWidth(pInfo->m_nWidth);
@@ -61,34 +61,34 @@ namespace Iris2D {
 
 		if (!GraphicsGL::Instance()->Intialize()) {
 			PrintDebugMessageW(L"Error when initializing Graphics settings.");
-			return false;
+			return IRR_GraphicsInitializeFailed;
 		}
 
 		if (!ViewportShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing viewport shader.");
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		if (!SpriteShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing sprite shader.");
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		if (!BackShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing back shader.");
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		if (!BackTransitionShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing back transition shader.");
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		m_pfGameFunc = pInfo->m_pfFunc;
 #ifdef _WIN32
 		m_nShowCmd = pInfo->nShowCmd;
 #endif // _WIN32
-		return true;
+		return IRR_Success;
 	}
 
 	bool ApplicationGL::Run() {

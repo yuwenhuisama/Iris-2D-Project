@@ -29,19 +29,19 @@ namespace Iris2D {
 	public:
 		// Í¨¹ý IApplication ¼Ì³Ð
 #ifdef _WIN32
-		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle, IR_PARAM_RESULT) override;
+		ResultCode Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) override;
 #else
-		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) override;
+		ResultCode Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) override;
 #endif // _WIN32
-		virtual bool Initialize(const AppStartupInfo * pInfo, IR_PARAM_RESULT) override;
-		virtual bool Run() override;
-		virtual void Release() override;
-		virtual bool IsUninitialized() const override;
-		virtual bool IsInitiatlize() const override;
-		virtual bool IsRunning() const override;
-		virtual bool IsQuited() const override;
-		virtual void Quite() override;
-		virtual float GetTimeDelta() const override;
+		ResultCode Initialize(const AppStartupInfo * pInfo) override;
+		bool Run() override;
+		void Release() override;
+		bool IsUninitialized() const override;
+		bool IsInitiatlize() const override;
+		bool IsRunning() const override;
+		bool IsQuited() const override;
+		void Quite() override;
+		float GetTimeDelta() const override;
 
 	private:
 		ApplicationGL() = default;

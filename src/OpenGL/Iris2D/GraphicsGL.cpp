@@ -20,14 +20,14 @@ namespace Iris2D {
 		return &graphics;
 	}
 
-	void GraphicsGL::Update(IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::Update() {
 
 		if (!m_bVsync) {
 			m_bVsync = true;
 			glfwSwapInterval(1);
 		}
 
-		Render(IR_PARAM);
+		auto eResult = Render();
 		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 		glfwPollEvents();
 
@@ -53,15 +53,19 @@ namespace Iris2D {
 #endif // _DEBUG
 
 		++m_nFrameCount;
+
+		return eResult;
 	}
 
-	void GraphicsGL::UpdateNoLock(IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::UpdateNoLock() {
 		if (m_bVsync) {
 			m_bVsync = false;
 			glfwSwapInterval(0);
 		}
 
 		static double fTmp = 0.0;
+
+		auto eResult = IRR_Success;
 
 		while (!m_bUpdateLockFlag) {
 #ifdef _WIN32
@@ -75,7 +79,7 @@ namespace Iris2D {
 				m_dLastTime = m_dCurrentTime + m_fMsPerUpdate;
 				m_bUpdateLockFlag = true;
 			}
-			Render(IR_PARAM);
+			eResult = Render();
 
 			glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 			glfwPollEvents();
@@ -102,72 +106,85 @@ namespace Iris2D {
 #endif // _DEBUG
 
 		++m_nFrameCount;
+
+		return eResult;
 	}
 
-	void GraphicsGL::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::Wait(unsigned int nDuration) {
+		auto eResult = IRR_Success;
 		if (m_bVsync) {
 			for (size_t i = 0; i < nDuration; i++) {
-				Update(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
+				eResult = Update();
+				if (IR_FAILED(eResult)) {
 					break;
 				}
 			}
 		}
 		else {
 			for (size_t i = 0; i < nDuration; i++) {
-				UpdateNoLock(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
+				eResult = UpdateNoLock();
+				if (IR_FAILED(eResult)) {
 					break;
 				}
 			}
 		}
+
+		return eResult;
 	}
 
-	void GraphicsGL::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::FadeOut(unsigned int nDuration) {
 		// (r, g, b, a) -> (0, 0, 0, 0)
 		m_bFading = true;
 		m_nDuration = nDuration;
+
+		auto eResult = IRR_Success;
 		for (size_t i = nDuration; i > 0; --i) {
 			m_nCurrentDuration = i;
 			if (m_bVsync) {
-				Update(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
+				eResult = Update();
+				if (IR_FAILED(eResult)) {
 					break;
 				}
 			}
 			else {
-				UpdateNoLock(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
+				eResult = UpdateNoLock();
+				if (IR_FAILED(eResult)) {
 					break;
 				}
 			}
 		}
 		m_bFading = false;
+
+		return eResult;
 	}
 
-	void GraphicsGL::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::FadeIn(unsigned int nDuration) {
 		// (0, 0, 0, 0) -> (r, g, b, a)
 		m_bFading = true;
 		m_nDuration = nDuration;
+
+		auto eResult = IRR_Success;
 		for (size_t i = 0; i < nDuration; ++i) {
 			m_nCurrentDuration = i;
 			if (m_bVsync) {
-				Update(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
+				eResult = Update();
+				if (IR_FAILED(eResult)) {
 					break;
 				}
 			}
 			else {
-				UpdateNoLock(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
+				eResult = UpdateNoLock();
+				if (IR_FAILED(eResult)) {
 					break;
 				}
 			}
 		}
 		m_bFading = false;
+
+		return eResult;
 	}
 
-	void GraphicsGL::Freeze(IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::Freeze() {
 		m_bFreezing = true;
 
 		TextureGL::Release(m_pFreezedBackBuffer);
@@ -176,13 +193,14 @@ namespace Iris2D {
 		m_pFreezedBackBuffer = TextureGL::CopyFrom(m_pBackBuffer);
 
 		if (!m_pFreezedBackBuffer) {
-			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating freezed back buffer.");
+			return IRR_RenderBufferCreateFailed;
 		}
+		return IRR_Success;
 	}
 
-	void GraphicsGL::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague) {
 		if (!m_bFreezing) {
-			return;
+			return IRR_Success;
 		}
 
 		m_bFreezing = false;
@@ -193,8 +211,7 @@ namespace Iris2D {
 		if (!wstrFilename.empty()) {
 			pMaskBuffer = TextureGL::Create(wstrFilename);
 			if (!pMaskBuffer) {
-				IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating mask buffer.");
-				return;
+				return IRR_RenderBufferCreateFailed;
 			}
 		}
 
@@ -222,15 +239,19 @@ namespace Iris2D {
 
 		float fCompare = 1.0f;
 		const float fStep = fCompare / nDuration;
+
+		auto eResult = IRR_Success;
 		while (fCompare >= 0) {
 
 			pShader->SetCompare(1 - fCompare);
 			pShader->SetVague(nVague / 256.0f);
 
-			Update(IR_PARAM);
-			if(IR_FAILD(IR_PARAM)) {
+			eResult = Update();
+
+			if (IR_FAILED(eResult)) {
 				break;
 			}
+
 			fCompare -= fStep;
 		}
 
@@ -238,13 +259,15 @@ namespace Iris2D {
 		TextureGL::Release(pMaskBuffer);
 
 		m_bTransition = false;
+
+		return eResult;
 	}
 
 	void GraphicsGL::FrameReset() {
 		m_nFrameCount = 0;
 	}
 
-	void GraphicsGL::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::ResizeScreen(unsigned int nWidth, unsigned int nHeight) {
 		m_bManualResize = true;
 
 		const auto pWindow = OpenGLHelper::Instance()->GetWindow();
@@ -255,11 +278,15 @@ namespace Iris2D {
 
 		m_nWidth = nWidth;
 		m_nHeight = nHeight;
+
+		auto eResult = IRR_Success;
 		if (!CreateVertexBackBuffer()) {
-			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating back buffer.");
+			eResult = IRR_OpenGLVertexBufferCreateFailed;
 		}
 
 		m_bManualResize = false;
+
+		return eResult;
 	}
 
 	void GraphicsGL::SetWidth(unsigned int nWidth) {
@@ -345,7 +372,7 @@ namespace Iris2D {
 		return CreateVertexBackBuffer();
 	}
 
-	void GraphicsGL::Render(IR_PARAM_RESULT_CT) {
+	ResultCode GraphicsGL::Render() {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
 
 		if (m_bTransition) {
@@ -370,10 +397,7 @@ namespace Iris2D {
 			ViewportShaderGL::Instance()->Use();
 
 			for (auto& pViewport : m_stViewports) {
-				pViewport.second->Render(IR_PARAM);
-				if (IR_FAILD(IR_PARAM)) {
-					break;
-				}
+				pViewport.second->Render();
 			}
 
 			m_pBackBuffer->RestoreFrameBuffer();
@@ -406,13 +430,14 @@ namespace Iris2D {
 			glBindVertexArray(0);
 		}
 
+		return IRR_Success;
 	}
 
 	bool GraphicsGL::IsManualResize() const {
 		return m_bManualResize;
 	}
 
-	void GraphicsGL::AutoResize(unsigned nWidth, unsigned nHeight) {
+	void GraphicsGL::AutoResize(unsigned int nWidth, unsigned int nHeight) {
 		Release();
 
 		m_nWidth = nWidth;

@@ -63,55 +63,55 @@ namespace Iris2D {
 
 	public:
 		// Í¨¹ý ISprite ¼Ì³Ð
-		virtual void SetBitmap(Bitmap *& pBitmap, IR_PARAM_RESULT) override;
-		virtual Bitmap * GetBitmap() const override;
+		ResultCode SetBitmap(Bitmap *& pBitmap) override;
+		Bitmap * GetBitmap() const override;
 
-		virtual void SetX(float fX) override;
-		virtual float GetX() const override;
+		void SetX(float fX) override;
+		float GetX() const override;
 
-		virtual void SetY(float fY) override;
-		virtual float GetY() const override;
+		void SetY(float fY) override;
+		float GetY() const override;
 
-		virtual void SetZ(float fZ) override;
-		virtual float GetZ() const override;
+		void SetZ(float fZ) override;
+		float GetZ() const override;
 
-		virtual void SetAngle(float fAngle) override;
-		virtual float GetAngle() const override;
+		void SetAngle(float fAngle) override;
+		float GetAngle() const override;
 
-		virtual void SetZoomX(float fZoomX) override;
-		virtual float GetZoomX() const override;
+		void SetZoomX(float fZoomX) override;
+		float GetZoomX() const override;
 
-		virtual void SetZoomY(float fZoomY) override;
-		virtual float GetZoomY() const override;
+		void SetZoomY(float fZoomY) override;
+		float GetZoomY() const override;
 
-		virtual void SetOX(float fOX) override;
-		virtual float GetOX() override;
+		void SetOX(float fOX) override;
+		float GetOX() override;
 
-		virtual void SetOY(float fOY) override;
-		virtual float GetOY() override;
+		void SetOY(float fOY) override;
+		float GetOY() override;
 
-		virtual void SetMirror(bool bMirror) override;
-		virtual bool GetMirror() override;
+		void SetMirror(bool bMirror) override;
+		bool GetMirror() override;
 
-		virtual void SetVisible(bool bVisible) override;
-		virtual bool GetVisible() override;
+		void SetVisible(bool bVisible) override;
+		bool GetVisible() override;
 
-		virtual void SetOpacity(float fOpacity) override;
-		virtual float GetOpacity() override;
+		void SetOpacity(float fOpacity) override;
+		float GetOpacity() override;
 
-		virtual void SetSrcRect(Rect *& pSrcRect) override;
-		virtual Rect * GetSrcRect() const override;
+		void SetSrcRect(Rect *& pSrcRect) override;
+		Rect * GetSrcRect() const override;
 
-		virtual void SetTone(Tone *& pTone) override;
-		virtual Tone * GetTone() const override;
+		void SetTone(Tone *& pTone) override;
+		Tone * GetTone() const override;
 
-		virtual void Update() override;
+		ResultCode Update() override;
 
-		virtual void SetEffect(Effect::EffectBase* pEffect) override;
+		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
 
 	public:
 		bool CreateVertexBuffer();
-		void Render(IR_PARAM_RESULT_CT);
+		ResultCode Render();
 
 	private:
 		SpriteGL();

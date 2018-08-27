@@ -69,8 +69,8 @@ namespace Iris2D {
 		pSprite = nullptr;
 	}
 
-	void Sprite::SetBitmap(Bitmap *& pBitmap, IR_PARAM_RESULT_CT) {
-		m_pProxied->SetBitmap(pBitmap, IR_PARAM);
+	ResultCode Sprite::SetBitmap(Bitmap *& pBitmap) {
+		return m_pProxied->SetBitmap(pBitmap);
 	}
 
 	Bitmap * Sprite::GetBitmap() const {
@@ -181,11 +181,11 @@ namespace Iris2D {
 		return m_pProxied->GetTone();
 	}
 
-	void Sprite::Update() {
-		m_pProxied->Update();
+	ResultCode Sprite::Update() {
+		return m_pProxied->Update();
 	}
 
-	void Sprite::SetEffect(Effect::EffectBase* pEffect) {
-		m_pProxied->SetEffect(pEffect);
+	ResultCode Sprite::SetEffect(Effect::EffectBase* pEffect) {
+		return m_pProxied->SetEffect(pEffect);
 	}
 }

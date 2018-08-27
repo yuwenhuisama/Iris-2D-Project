@@ -61,9 +61,9 @@ namespace Iris2D {
 		* @see GameFunc
 		*/
 #ifdef _WIN32
-		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle, IR_PARAM_RESULT) override;
+		virtual ResultCode Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
 #else
-		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
+		virtual ResultCode Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
 #endif
 
 		/**
@@ -86,7 +86,7 @@ namespace Iris2D {
 		* @see Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle)
 		* @see AppStartupInfo
 		*/
-		virtual bool Initialize(const AppStartupInfo* pInfo, IR_PARAM_RESULT) override;
+		virtual ResultCode Initialize(const AppStartupInfo* pInfo) override;
 
 		/**
 		* \~english

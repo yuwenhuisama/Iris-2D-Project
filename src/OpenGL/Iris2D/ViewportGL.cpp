@@ -27,11 +27,10 @@
 namespace Iris2D {
 	Viewport* ViewportGL::sm_pGlobalViewport = nullptr;
 
-	ViewportGL * ViewportGL::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+	ViewportGL * ViewportGL::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight) {
 		auto pViewport = new ViewportGL();
 
 		if (!pViewport->CreateViewportVertexBufferAndFrameBuffer(nWidth, nHeight)) {
-			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating buffers in viewport.");
 			delete pViewport;
 			return nullptr;
 		}
@@ -46,8 +45,8 @@ namespace Iris2D {
 		return pViewport;
 	}
 
-	ViewportGL * ViewportGL::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
-		return ViewportGL::Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()), IR_PARAM);
+	ViewportGL * ViewportGL::Create(const Rect * pRect) {
+		return ViewportGL::Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()));
 	}
 
 	void ViewportGL::Release(ViewportGL *& pViewport) {
@@ -167,25 +166,27 @@ namespace Iris2D {
 		return m_pTexture->GetHeight();
 	}
 
-	void ViewportGL::RenderSprites(IR_PARAM_RESULT_CT) {
+	ResultCode ViewportGL::RenderSprites() {
 		m_pTexture->UseTextureAsFrameBuffer();
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
-		for (auto& pSprite : m_stSprites) {
-			pSprite.second->Render(IR_PARAM);
+		auto eResult = IRR_Success;
 
-			if(IR_FAILD(IR_PARAM)) {
+		for (auto& pSprite : m_stSprites) {
+			eResult = pSprite.second->Render();
+			if(IR_FAILED(eResult)) {
 				break;
 			}
 		}
 
 		m_pTexture->RestoreFrameBuffer();
 
+		return eResult;
 	}
 
-	void ViewportGL::Render(IR_PARAM_RESULT_CT) {
+	ResultCode ViewportGL::Render() {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
 		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
 
@@ -239,6 +240,8 @@ namespace Iris2D {
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
+
+		return IRR_Success;
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {

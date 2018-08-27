@@ -22,23 +22,23 @@ namespace Iris2D {
 
 	public:
 		// Í¨¹ý IFont ¼Ì³Ð
-		virtual void SetName(const std::wstring & wstrFontName) override;
-		virtual const std::wstring & GetName() const override;
+		void SetName(const std::wstring & wstrFontName) override;
+		const std::wstring & GetName() const override;
 
-		virtual void SetSize(unsigned int nSize) override;
-		virtual unsigned int GetSize() const override;
+		void SetSize(unsigned int nSize) override;
+		unsigned int GetSize() const override;
 
-		virtual void SetBold(bool bBold) override;
-		virtual bool GetBold() const override;
+		void SetBold(bool bBold) override;
+		bool GetBold() const override;
 
-		virtual void SetItalic(bool bItalic) override;
-		virtual bool GetItalic() const override;
+		void SetItalic(bool bItalic) override;
+		bool GetItalic() const override;
 
-		virtual void SetShadow(bool bShadow) override;
-		virtual bool GetShadow() const override;
+		void SetShadow(bool bShadow) override;
+		bool GetShadow() const override;
 		
-		virtual void SetColor(Color *& pColor) override;
-		virtual Color * GetColor() const override;
+		void SetColor(Color *& pColor) override;
+		Color * GetColor() const override;
 
 	private:
 		Font(IFont* pFont);

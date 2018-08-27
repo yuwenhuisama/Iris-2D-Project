@@ -55,23 +55,25 @@ namespace Iris2D {
 		delete pSprite;
 	}
 
-	void SpriteGL::SetBitmap(Bitmap *& pBitmap, IR_PARAM_RESULT_CT) {
+	ResultCode SpriteGL::SetBitmap(Bitmap *& pBitmap) {
 		if (pBitmap == m_pBitmap) {
-			return;
+			return IRR_Success;
 		}
 
 		Bitmap::Release(m_pBitmap);
 
 		if (!pBitmap) {
 			m_pBitmap = nullptr;
-			return;
+			return IRR_Success;
 		}
 
 		RefferAssign<BitmapGL*>(m_pBitmap, pBitmap);
 
 		if(!CreateVertexBuffer()) {
-			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating vertex buffer for Bitmap.");
+			return IRR_OpenGLVertexBufferCreateFailed;
 		}
+
+		return IRR_Success;
 	}
 
 	Bitmap * SpriteGL::GetBitmap() const {
@@ -212,15 +214,19 @@ namespace Iris2D {
 		return m_pTone;
 	}
 
-	void SpriteGL::Update() {
+	ResultCode SpriteGL::Update() {
 		if(m_pEffect) {
-			m_pEffect->Update();
+			if(!m_pEffect->Update()) {
+				return IRR_EffectUpdateFailed;
+			}
 		}
+
+		return IRR_Success;
 	}
 
-	void SpriteGL::SetEffect(Effect::EffectBase* pEffect) {
+	ResultCode SpriteGL::SetEffect(Effect::EffectBase* pEffect) {
 		if (pEffect == m_pEffect) {
-			return;
+			return IRR_Success;
 		}
 
 		if (m_pEffect) {
@@ -229,13 +235,18 @@ namespace Iris2D {
 
 		if (!pEffect) {
 			m_pEffect = nullptr;
-			return;
+			return IRR_Success;
 		}
 
+		auto result = IRR_Success;
 		const auto pEffectGL = GetProxied<Effect::EffectBaseGL*>(pEffect);
-		pEffectGL->Initialize(m_pBitmap->GetWidth(), m_pBitmap->GetHeight());
+		if(!pEffectGL->Initialize(m_pBitmap->GetWidth(), m_pBitmap->GetHeight())) {
+			result = IRR_EffectInitializeFailed;
+		}
 
 		RefferAssign<Effect::EffectBaseGL*>(m_pEffect, pEffect);
+
+		return result;
 	}
 
 	bool SpriteGL::CreateVertexBuffer() {
@@ -260,10 +271,10 @@ namespace Iris2D {
 		});
 	}
 
-	void SpriteGL::Render(IR_PARAM_RESULT_CT) {
+	ResultCode SpriteGL::Render() {
 
 		if (!m_bVisible || !m_pBitmap || m_fOpacity == 0.0f) {
-			return;
+			return IRR_Success;
 		}
 
 		TextureGL* pEffectTexture = nullptr;
@@ -353,6 +364,8 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
+
+		return IRR_Success;
 	}
 
 	SpriteGL::SpriteGL() {

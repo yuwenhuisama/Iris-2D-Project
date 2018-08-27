@@ -22,8 +22,8 @@ namespace Iris2D {
 
 	class ViewportGL : public Proxied<Viewport>, public IViewport, public RefCounter {
 	public:
-		static ViewportGL* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
-		static ViewportGL* Create(const Rect* pRect, IR_PARAM_RESULT);
+		static ViewportGL* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight);
+		static ViewportGL* Create(const Rect* pRect);
 		static void Release(ViewportGL*& pViewport);
 
 		static void ForceRelease(ViewportGL*& pViewport);
@@ -59,22 +59,22 @@ namespace Iris2D {
 
 	public:
 		// Í¨¹ý IViewport ¼Ì³Ð
-		virtual void SetOX(float fOX) override;
-		virtual float GetOX() const override;
-		virtual void SetOY(float fOY) override;
-		virtual float GetOY() const override;
-		virtual void SetSrcRect(Rect *& pSrcRect) override;
-		virtual Rect * GetSrcRect() const override;
-		virtual void SetTone(Tone *& pTone) override;
-		virtual Tone * GetTone() const override;
-		virtual void SetZ(float fZ) override;
-		virtual float GetZ() override;
-		virtual unsigned int GetWidth() const override;
-		virtual unsigned int GetHeight() const override;
+		void SetOX(float fOX) override;
+		float GetOX() const override;
+		void SetOY(float fOY) override;
+		float GetOY() const override;
+		void SetSrcRect(Rect *& pSrcRect) override;
+		Rect * GetSrcRect() const override;
+		void SetTone(Tone *& pTone) override;
+		Tone * GetTone() const override;
+		void SetZ(float fZ) override;
+		float GetZ() override;
+		unsigned int GetWidth() const override;
+		unsigned int GetHeight() const override;
 
 	public:
-		void RenderSprites(IR_PARAM_RESULT);
-		void Render(IR_PARAM_RESULT);
+		ResultCode RenderSprites();
+		ResultCode Render();
 
 		void AddSprite(SpriteGL*& pSprite);
 		void RemoveSprite(SpriteGL*& pSprite);

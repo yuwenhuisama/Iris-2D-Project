@@ -18,7 +18,7 @@ namespace Iris2D {
 		virtual ~ISprite() = default;
 
 	public:
-		virtual void SetBitmap(Bitmap*& pBitmap, IR_PARAM_RESULT) = 0;
+		virtual ResultCode SetBitmap(Bitmap*& pBitmap) = 0;
 		virtual Bitmap* GetBitmap() const = 0;
 
 		virtual void SetX(float fX) = 0;
@@ -60,8 +60,8 @@ namespace Iris2D {
 		virtual void SetTone(Tone*& pTone) = 0;
 		virtual Tone* GetTone() const = 0;
 
-		virtual void Update() = 0;
-		virtual void SetEffect(Effect::EffectBase* pEffect) = 0;
+		virtual ResultCode Update() = 0;
+		virtual ResultCode SetEffect(Effect::EffectBase* pEffect) = 0;
 	};
 }
 
