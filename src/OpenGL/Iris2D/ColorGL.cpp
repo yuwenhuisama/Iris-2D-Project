@@ -4,7 +4,6 @@
 namespace Iris2D {
 	ColorGL * ColorGL::Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha) {
 		auto pColor = new ColorGL();
-		pColor->IncreamRefCount();
 
 		pColor->m_n4Color = { cRed, cGreen, cBlue, cAlpha };
 		return pColor;
@@ -15,11 +14,7 @@ namespace Iris2D {
 			return;
 		}
 
-		pColor->DecreamRefCount();
-		if (pColor->GetRefCount() == 0) {
-			delete pColor;
-			pColor = nullptr;
-		}
+		RefferRelease(pColor);
 	}
 
 	void ColorGL::SetRed(unsigned char cRed) {

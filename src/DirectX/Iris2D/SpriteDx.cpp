@@ -48,7 +48,7 @@ namespace Iris2D
 		delete pSprite;
 	}
 
-	void SpriteDX::SetBitmap(Bitmap*& pBitmap)
+	void SpriteDX::SetBitmap(Bitmap*& pBitmap, IR_PARAM_RESULT_CT)
 	{
 		if (m_pBitmap == pBitmap) {
 			return;

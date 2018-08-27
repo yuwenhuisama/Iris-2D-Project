@@ -12,8 +12,8 @@ namespace Iris2D {
 	Application::Application() : Proxy(nullptr) {}
 
 #ifdef _WIN32
-	bool Application::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
-		return m_pProxied->Initialize(hInstance, nWidth, nHeight, pfGameFunc, wszTitle);
+	bool Application::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle, IR_PARAM_RESULT_CT) {
+		return m_pProxied->Initialize(hInstance, nWidth, nHeight, pfGameFunc, wszTitle, IR_PARAM);
 	}
 #else
 	bool IApplication::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
@@ -21,8 +21,8 @@ namespace Iris2D {
 	}
 #endif // _WIN32
 
-	bool Application::Initialize(const AppStartupInfo* pInfo) {
-		return m_pProxied->Initialize(pInfo);
+	bool Application::Initialize(const AppStartupInfo* pInfo, IR_PARAM_RESULT_CT) {
+		return m_pProxied->Initialize(pInfo, IR_PARAM);
 	}
 
 	bool Application::Run() {

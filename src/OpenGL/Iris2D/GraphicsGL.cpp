@@ -27,7 +27,7 @@ namespace Iris2D {
 			glfwSwapInterval(1);
 		}
 
-		Render();
+		Render(IR_PARAM);
 		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 		glfwPollEvents();
 
@@ -75,7 +75,7 @@ namespace Iris2D {
 				m_dLastTime = m_dCurrentTime + m_fMsPerUpdate;
 				m_bUpdateLockFlag = true;
 			}
-			Render();
+			Render(IR_PARAM);
 
 			glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 			glfwPollEvents();
@@ -108,11 +108,17 @@ namespace Iris2D {
 		if (m_bVsync) {
 			for (size_t i = 0; i < nDuration; i++) {
 				Update(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 		}
 		else {
 			for (size_t i = 0; i < nDuration; i++) {
 				UpdateNoLock(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 		}
 	}
@@ -125,9 +131,15 @@ namespace Iris2D {
 			m_nCurrentDuration = i;
 			if (m_bVsync) {
 				Update(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 			else {
 				UpdateNoLock(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 		}
 		m_bFading = false;
@@ -141,9 +153,15 @@ namespace Iris2D {
 			m_nCurrentDuration = i;
 			if (m_bVsync) {
 				Update(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 			else {
 				UpdateNoLock(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 		}
 		m_bFading = false;
@@ -156,6 +174,10 @@ namespace Iris2D {
 
 		// Freeze current back buffer preparing for transition
 		m_pFreezedBackBuffer = TextureGL::CopyFrom(m_pBackBuffer);
+
+		if (!m_pFreezedBackBuffer) {
+			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating freezed back buffer.");
+		}
 	}
 
 	void GraphicsGL::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
@@ -171,6 +193,7 @@ namespace Iris2D {
 		if (!wstrFilename.empty()) {
 			pMaskBuffer = TextureGL::Create(wstrFilename);
 			if (!pMaskBuffer) {
+				IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating mask buffer.");
 				return;
 			}
 		}
@@ -205,6 +228,9 @@ namespace Iris2D {
 			pShader->SetVague(nVague / 256.0f);
 
 			Update(IR_PARAM);
+			if(IR_FAILD(IR_PARAM)) {
+				break;
+			}
 			fCompare -= fStep;
 		}
 
@@ -229,7 +255,9 @@ namespace Iris2D {
 
 		m_nWidth = nWidth;
 		m_nHeight = nHeight;
-		CreateVertexBackBuffer();
+		if (!CreateVertexBackBuffer()) {
+			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating back buffer.");
+		}
 
 		m_bManualResize = false;
 	}
@@ -317,7 +345,7 @@ namespace Iris2D {
 		return CreateVertexBackBuffer();
 	}
 
-	void GraphicsGL::Render() {
+	void GraphicsGL::Render(IR_PARAM_RESULT_CT) {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
 
 		if (m_bTransition) {
@@ -342,15 +370,15 @@ namespace Iris2D {
 			ViewportShaderGL::Instance()->Use();
 
 			for (auto& pViewport : m_stViewports) {
-				pViewport.second->Render();
-				//m_pBackBuffer->SaveToFile(L"temp\\a.png");
+				pViewport.second->Render(IR_PARAM);
+				if (IR_FAILD(IR_PARAM)) {
+					break;
+				}
 			}
 
 			m_pBackBuffer->RestoreFrameBuffer();
 
 			const auto pShader = BackShaderGL::Instance();
-
-			//m_pBackBuffer->SaveToFile(L"temp\\a.png");
 
 			pShader->Use();
 			pShader->SetProjectionMatrix(c_mt4Projection);

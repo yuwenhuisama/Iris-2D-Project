@@ -9,8 +9,7 @@ namespace Iris2D {
 			return nullptr;
 		}
 
-		auto pBitmap = new BitmapGL();
-		pBitmap->IncreamRefCount();
+		const auto pBitmap = new BitmapGL();
 
 		pBitmap->m_pTexture = pTexture;
 
@@ -24,8 +23,7 @@ namespace Iris2D {
 			return nullptr;
 		}
 
-		auto pBitmap = new BitmapGL();
-		pBitmap->IncreamRefCount();
+		const auto pBitmap = new BitmapGL();
 
 		pBitmap->m_pTexture = pTexture;
 
@@ -46,11 +44,8 @@ namespace Iris2D {
 			return;
 		}
 
-		pBitmap->DecreamRefCount();
-		if (pBitmap->GetRefCount() == 0) {
-			delete pBitmap;
-			pBitmap = nullptr;
-		}
+		RefferRelease(pBitmap);
+
 	}
 
 	unsigned int BitmapGL::GetWidth() const {

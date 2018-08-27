@@ -63,7 +63,7 @@ namespace Iris2D
 
 	public:
 
-		void SetBitmap(Bitmap*& pBitmap);
+		void SetBitmap(Bitmap*& pBitmap, IR_PARAM_RESULT);
 		Bitmap* GetBitmap() const;
 
 		void SetX(float fX);

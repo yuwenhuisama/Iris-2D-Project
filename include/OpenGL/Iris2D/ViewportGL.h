@@ -9,6 +9,7 @@
 #include <map>
 #include "OpenGL/OpenGLUtil/ViewportShaderBuffersGL.h"
 #include "Common/Util/DirtyChecker.h"
+#include "Common/Util/RefCounter.h"
 
 namespace Iris2D {
 	class Viewport;
@@ -19,7 +20,7 @@ namespace Iris2D {
 	class TextureGL;
 	typedef Color Tone;
 
-	class ViewportGL : public Proxied<Viewport>, public IViewport {
+	class ViewportGL : public Proxied<Viewport>, public IViewport, public RefCounter {
 	public:
 		static ViewportGL* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
 		static ViewportGL* Create(const Rect* pRect, IR_PARAM_RESULT);
@@ -72,8 +73,8 @@ namespace Iris2D {
 		virtual unsigned int GetHeight() const override;
 
 	public:
-		void RenderSprites();
-		void Render();
+		void RenderSprites(IR_PARAM_RESULT);
+		void Render(IR_PARAM_RESULT);
 
 		void AddSprite(SpriteGL*& pSprite);
 		void RemoveSprite(SpriteGL*& pSprite);
@@ -82,7 +83,7 @@ namespace Iris2D {
 		bool CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight);
 
 		ViewportGL();
-		~ViewportGL();
+		virtual ~ViewportGL();
 	};
 }
 

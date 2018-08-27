@@ -69,8 +69,8 @@ namespace Iris2D {
 		pSprite = nullptr;
 	}
 
-	void Sprite::SetBitmap(Bitmap *& pBitmap) {
-		m_pProxied->SetBitmap(pBitmap);
+	void Sprite::SetBitmap(Bitmap *& pBitmap, IR_PARAM_RESULT_CT) {
+		m_pProxied->SetBitmap(pBitmap, IR_PARAM);
 	}
 
 	Bitmap * Sprite::GetBitmap() const {

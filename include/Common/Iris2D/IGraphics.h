@@ -2,6 +2,7 @@
 #define _H_IGRAPHICS_
 
 #include "Common/Util/Result.h"
+#include <string>
 
 namespace Iris2D {
 	class IGraphics {

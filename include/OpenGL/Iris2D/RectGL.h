@@ -16,6 +16,8 @@ namespace Iris2D
 	class Rect;
 	class RectGL : public Proxied<Rect>, public IRect, public RefCounter
 	{
+		REF_FRIEND_DECLARE;
+
 	private:
 		glm::vec4 m_f4Rect{ 0.0f, 0.0f, 0.0f, 0.0f };
 
@@ -63,6 +65,9 @@ namespace Iris2D
 	private:
 		 RectGL();
 		~RectGL() = default;
+
+		template <typename T>
+		friend void RefferRelease(T& refferer);
 	};
 }
 #endif // !_H_RECT_GL_

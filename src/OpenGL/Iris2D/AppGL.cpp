@@ -18,7 +18,7 @@ namespace Iris2D {
 	}
 
 #ifdef _WIN32
-	bool ApplicationGL::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
+	bool ApplicationGL::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle, IR_PARAM_RESULT_CT) {
 #else
 	bool ApplicationGL::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 #endif // _WIN32_
@@ -31,10 +31,10 @@ namespace Iris2D {
 		iasiInfo.m_pfFunc = pfGameFunc;
 		iasiInfo.m_wstrTitle = wszTitle;
 
-		return Initialize(&iasiInfo);
+		return Initialize(&iasiInfo, IR_PARAM);
 	}
 
-	bool ApplicationGL::Initialize(const AppStartupInfo * pInfo) {
+	bool ApplicationGL::Initialize(const AppStartupInfo * pInfo, IR_PARAM_RESULT_CT) {
 		auto pHelper = OpenGLHelper::Instance();
 
 #ifdef _DEBUG

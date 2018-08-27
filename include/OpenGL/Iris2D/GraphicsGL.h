@@ -83,7 +83,7 @@ namespace Iris2D {
 		void RemoveViewport(ViewportGL*& pViewport);
 
 		bool Intialize();
-		void Render();
+		void Render(IR_PARAM_RESULT);
 
 		bool IsManualResize() const;
 		void AutoResize(unsigned int nWidth, unsigned int nHeight);

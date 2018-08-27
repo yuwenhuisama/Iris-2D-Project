@@ -30,7 +30,7 @@ namespace Iris2D {
 		* \~english
 		* Create a bitmap from image file in hard disk.
 		* @param wstrFileName The path of image file which can both be relative path and absolute path.
-		* @return If bitmap has been created successfully pointer of BitmapDX will be returned otherwise nullptr.
+		* @return If bitmap has been created successfully pointer of Bitmap will be returned otherwise nullptr.
 		*/
 		/**
 		* \~chinese
@@ -45,7 +45,7 @@ namespace Iris2D {
 		* Create a blank bitmap.
 		* @param nWidth The pixel width of created bitmap.
 		* @param nHeight The pixel height of created bitmap.
-		* @return If bitmap has been created successfully pointer of BitmapDX will be returned otherwise nullptr.
+		* @return If bitmap has been created successfully pointer of Bitmap will be returned otherwise nullptr.
 		*/
 		/**
 		* \~chinese
@@ -60,14 +60,14 @@ namespace Iris2D {
 		* \~english
 		* Generate a new bitmap by copying old bitmap.
 		* @param pSrcBitmap The pointer to old bitmap.
-		* @return If bitmap has been created successfully pointer of BitmapDX will be returned otherwise nullptr.
+		* @return If bitmap has been created successfully pointer of Bitmap will be returned otherwise nullptr.
 		* @see CopyFrom(BitmapDX* pSrcBitmap, IR_PARAM_RESULT)
 		*/
 		/**
 		* \~chinese
 		* 复制一个老的 Bitmap 以创建新的 Bitmap。
 		* @param pSrcBitmap 指向老的 Bitmap 的指针
-		* @return 如果成功创建 Bitmap ，那么将会返回该 BitmapDX 的指针，否则返回 nullptr。
+		* @return 如果成功创建 Bitmap ，那么将会返回该 Bitmap 的指针，否则返回 nullptr。
 		* @see CopyFrom(BitmapDX* pSrcBitmap, IR_PARAM_RESULT)
 		*/
 		static Bitmap* Create(Bitmap* pSrcBitmap, IR_PARAM_RESULT);
@@ -76,16 +76,15 @@ namespace Iris2D {
 		* \~english
 		* Generate a new bitmap by copying old bitmap.
 		* @param pSrcBitmap The pointer to old bitmap.
-		* @return If bitmap has been created successfully pointer of BitmapDX will be returned otherwise nullptr.
+		* @return If bitmap has been created successfully pointer of Bitmap will be returned otherwise nullptr.
 		* @see CopyFrom(BitmapDX* pSrcBitmap, IR_PARAM_RESULT)
 		*/
 		/**
 		* \~chinese
 		* 复制一个老的 Bitmap 以创建新的 Bitmap。
 		* @param pSrcBitmap 指向老的 Bitmap 的指针
-		* @return 如果成功创建 Bitmap ，那么将会返回该 BitmapDX 的指针，否则返回 nullptr。
+		* @return 如果成功创建 Bitmap ，那么将会返回该 Bitmap 的指针，否则返回 nullptr。
 		* @see Create(BitmapDX* pSrcBitmap, IR_PARAM_RESULT)
-		*
 		*/
 		static Bitmap* CopyFrom(Bitmap* pSrcBitmap, IR_PARAM_RESULT);
 

@@ -31,6 +31,7 @@ namespace Iris2D {
 		auto pViewport = new ViewportGL();
 
 		if (!pViewport->CreateViewportVertexBufferAndFrameBuffer(nWidth, nHeight)) {
+			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating buffers in viewport.");
 			delete pViewport;
 			return nullptr;
 		}
@@ -57,12 +58,13 @@ namespace Iris2D {
 		GraphicsGL::Instance()->RemoveViewport(pViewport);
 
 		if (pViewport != GetProxied<ViewportGL*>(sm_pGlobalViewport)) {
-			GraphicsGL::Instance()->RemoveViewport(pViewport);
-			GetProxied<ViewportGL*>(sm_pGlobalViewport)->m_stSprites.insert(pViewport->m_stSprites.begin(), pViewport->m_stSprites.end());
+			if (GetProxied<SpriteGL*>(pViewport)->GetRefCount() == 1) {
+				GraphicsGL::Instance()->RemoveViewport(pViewport);
+				GetProxied<ViewportGL*>(sm_pGlobalViewport)->m_stSprites.insert(pViewport->m_stSprites.begin(), pViewport->m_stSprites.end());
+			}
 		}
 
-		delete pViewport;
-		pViewport = nullptr;
+		RefferRelease(pViewport);
 	}
 
 	void ViewportGL::ForceRelease(ViewportGL *& pViewport) {
@@ -83,10 +85,7 @@ namespace Iris2D {
 
 	bool ViewportGL::InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight) {
 		sm_pGlobalViewport = Viewport::Create(fX, fY, nWindowWidth, nWindowHeight);
-		if (!sm_pGlobalViewport) {
-			return false;
-		}
-		return true;
+		return sm_pGlobalViewport != nullptr;
 	}
 
 	bool ViewportGL::ReleaseGlobalViewport() {
@@ -126,9 +125,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<RectGL*>(pSrcRect)->IncreamRefCount();
-
-		m_pSrcRect = pSrcRect;
+		RefferAssign<RectGL*>(m_pSrcRect, pSrcRect);
 	}
 
 	Rect * ViewportGL::GetSrcRect() const {
@@ -147,9 +144,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<ToneGL*>(pTone)->IncreamRefCount();
-
-		m_pTone = pTone;
+		RefferAssign<ToneGL*>(m_pTone, pTone);
 	}
 
 	Tone * ViewportGL::GetTone() const {
@@ -172,26 +167,30 @@ namespace Iris2D {
 		return m_pTexture->GetHeight();
 	}
 
-	void ViewportGL::RenderSprites() {
+	void ViewportGL::RenderSprites(IR_PARAM_RESULT_CT) {
 		m_pTexture->UseTextureAsFrameBuffer();
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
 		for (auto& pSprite : m_stSprites) {
-			pSprite.second->Render();
+			pSprite.second->Render(IR_PARAM);
+
+			if(IR_FAILD(IR_PARAM)) {
+				break;
+			}
 		}
 
 		m_pTexture->RestoreFrameBuffer();
+
 	}
 
-	void ViewportGL::Render() {
+	void ViewportGL::Render(IR_PARAM_RESULT_CT) {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
 		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
 
 		auto pShader = ViewportShaderGL::Instance();
 
-		//TODO: Optimize for dirty check
 		pShader->SetProjectionMatrix(c_mt4Projection);
 
 		if (m_pSrcRect && GetProxied<RectGL*>(m_pSrcRect)->Modified()) {

@@ -21,7 +21,7 @@ namespace Iris2D {
 
 		public:
 			virtual bool Initialize(unsigned int nWidth, unsigned int nHeight);
-			bool Update(const Sprite* pSprite) override = 0;
+			bool Update() override = 0;
 			virtual std::string GetVertexShaderFile() = 0;
 			virtual std::string GetFragmentShaderFile() = 0;
 			virtual TextureGL*  Render(TextureGL* pPreTexture) = 0;

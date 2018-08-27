@@ -16,4 +16,8 @@ namespace Iris2D
 	{
 		--m_nRefCount;
 	}
+
+	RefCounter::RefCounter() {
+		++m_nRefCount;
+	}
 }

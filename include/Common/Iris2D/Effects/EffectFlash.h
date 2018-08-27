@@ -14,7 +14,7 @@ namespace Iris2D {
 			EFFECT_AUTO_RELEASE
 
 		public:
-			bool Update(const Sprite* pSprite) override;
+			bool Update() override;
 
 		private:
 			EffectFlash(IEffect* pEffect);

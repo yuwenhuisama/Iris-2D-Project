@@ -18,9 +18,9 @@ namespace Iris2D
 	}
 
 #ifdef _WIN32
-	bool ApplicationDX::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle)
+	bool ApplicationDX::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle, IR_PARAM_RESULT_CT)
 #else
-	bool ApplicationDX::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wstrTitle)
+	bool ApplicationDX::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wstrTitle, IR_PARAM_RESULT_CT)
 #endif
 	{
 		AppStartupInfo iasiInfo;
@@ -35,7 +35,7 @@ namespace Iris2D
 		return Initialize(&iasiInfo);
 	}
 
-	bool ApplicationDX::Initialize(const AppStartupInfo * pInfo)
+	bool ApplicationDX::Initialize(const AppStartupInfo * pInfo, IR_PARAM_RESULT_CT)
 	{
 		m_eAppState = AppState::Uninitialized;
 

@@ -3,15 +3,14 @@
 //
 
 #include "OpenGL/OpenGLUtil//OpenGLHelper.h"
-#include "OpenGL/Common.h"
 
 #include "OpenGL/Iris2D/GraphicsGL.h"
 
-#include <iostream>
 #include <codecvt>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "Common/Util/DebugUtil.h"
 
 #ifdef _WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -93,18 +92,18 @@ namespace Iris2D {
 
 		auto strConverted = converter.to_bytes(strTitle);
 		// create pWindow
-		auto pWindow = glfwCreateWindow(nWidth, nHeight, strConverted.c_str(), nullptr, nullptr);
+		const auto pWindow = glfwCreateWindow(nWidth, nHeight, strConverted.c_str(), nullptr, nullptr);
 		
 #ifdef _WIN32
 		RECT rcArea = { 0, 0, nWidth, nHeight};
 		AdjustWindowRect(&rcArea, WS_OVERLAPPEDWINDOW, false);
 
-		auto hHwnd = glfwGetWin32Window(pWindow);
+		const auto hHwnd = glfwGetWin32Window(pWindow);
 		::SetWindowPos(hHwnd, HWND_TOP, nX, nY, rcArea.right - rcArea.left, rcArea.bottom - rcArea.top, 0);
 #endif // _WIN32
 
 		if (!pWindow) {
-			std::cout << "Failed to create GLFW pWindow" << std::endl;
+			PrintDebugMessageW(L"Failed to create GLFW pWindow");
 			glfwTerminate();
 			return false;
 		}

@@ -12,6 +12,9 @@
 namespace Iris2D {
 	class TextureGL;
 	class BitmapGL : public RefCounter, public IBitmap, public Proxied<Bitmap> {
+
+		REF_FRIEND_DECLARE;
+
 	public:
 		static BitmapGL* Create(const std::wstring& wstrFileName, IR_PARAM_RESULT);
 		static BitmapGL* Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
@@ -19,6 +22,10 @@ namespace Iris2D {
 		static BitmapGL* CopyFrom(Bitmap* pSrcBitmap, IR_PARAM_RESULT);
 
 		static void Release(BitmapGL*& pBitmap);
+
+	private:
+		BitmapGL() = default;
+		~BitmapGL() = default;
 
 	private:
 		Font* m_pFont = nullptr;
@@ -47,6 +54,7 @@ namespace Iris2D {
 		virtual bool Dispose() override;
 
 		TextureGL* GetTexture() const;
+
 	};
 }
 

@@ -54,11 +54,11 @@ namespace Iris2D
 
 	public:
 #ifdef _WIN32
-		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle);
+		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle, IR_PARAM_RESULT);
 #else
-		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle);
+		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle, IR_PARAM_RESULT);
 #endif
-		virtual bool Initialize(const AppStartupInfo* pInfo);
+		virtual bool Initialize(const AppStartupInfo* pInfo, IR_PARAM_RESULT);
 		virtual bool Run();
 		virtual void Release();
 		virtual bool IsUninitialized() const;

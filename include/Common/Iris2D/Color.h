@@ -35,6 +35,10 @@ namespace Iris2D {
 		/**
 		* \~chinese
 		* 创建一个 Color 对象。
+		* @param cRed 所创建的 Color 对象的 Red 分量.
+		* @param cGreen 所创建的 Color 对象的 Green 分量.
+		* @param cBlue 所创建的 Color 对象的 Blue 分量.
+		* @param cAlpha 所创建的 Color 对象的 Alpha 分量.
 		* @return 如果 Color 对象创建成功那么返回它的指针否则返回 nullptr。
 		*/
 		static Color* Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha);

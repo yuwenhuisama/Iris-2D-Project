@@ -9,6 +9,7 @@
 #include "OpenGL/OpenGLUtil/SpriteShaderBuffersGL.h"
 
 #include "Common/Util/DirtyChecker.h"
+#include "Common/Util/RefCounter.h"
 
 namespace Iris2D {
 	class Viewport;
@@ -21,7 +22,7 @@ namespace Iris2D {
 		class EffectBaseGL;
 	}
 
-	class SpriteGL : public ISprite, public Proxied<Sprite> {
+	class SpriteGL : public ISprite, public Proxied<Sprite>, public RefCounter {
 	private:
 		Bitmap* m_pBitmap = nullptr;
 		Rect* m_pSrcRect = nullptr;
@@ -62,7 +63,7 @@ namespace Iris2D {
 
 	public:
 		// Í¨¹ý ISprite ¼Ì³Ð
-		virtual void SetBitmap(Bitmap *& pBitmap) override;
+		virtual void SetBitmap(Bitmap *& pBitmap, IR_PARAM_RESULT) override;
 		virtual Bitmap * GetBitmap() const override;
 
 		virtual void SetX(float fX) override;
@@ -110,7 +111,7 @@ namespace Iris2D {
 
 	public:
 		bool CreateVertexBuffer();
-		bool Render();
+		void Render(IR_PARAM_RESULT_CT);
 
 	private:
 		SpriteGL();

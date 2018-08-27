@@ -5,6 +5,8 @@
 #endif
 #include <string>
 
+#include "Common/Util/Result.h"
+
 namespace Iris2D {
 
 	struct AppStartupInfo;
@@ -13,12 +15,12 @@ namespace Iris2D {
 	class IApplication {
 	public:
 	#ifdef _WIN32
-		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) = 0;
+		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle, IR_PARAM_RESULT) = 0;
 	#else
-		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) = 0;
+		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle, IR_PARAM_RESULT) = 0;
 	#endif
 
-		virtual bool Initialize(const AppStartupInfo* pInfo) = 0;
+		virtual bool Initialize(const AppStartupInfo* pInfo, IR_PARAM_RESULT) = 0;
 
 		virtual bool Run() = 0;
 

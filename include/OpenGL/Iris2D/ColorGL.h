@@ -17,6 +17,8 @@ namespace Iris2D
 	class Color;
 	class ColorGL : public Proxied<Color>, public IColor, public RefCounter
 	{
+		REF_FRIEND_DECLARE;
+
 	private:
 		glm::ivec4 m_n4Color{ 0, 0, 0, 0 };
 		DirtyChecker m_dcChecker;

@@ -84,10 +84,8 @@ namespace Iris2D {
 	}
 
 	void TextureGL::Release(TextureGL *& pTexture) {
-		if (pTexture) {
-			delete pTexture;
-			pTexture = nullptr;
-		}
+		delete pTexture;
+		pTexture = nullptr;
 	}
 
 	void TextureGL::UseTexture(unsigned int nUnit) const {
@@ -163,10 +161,12 @@ namespace Iris2D {
 			return false;
 		}
 
-		stbi_write_png(strConverted.c_str(), nWidth, nHeight, STBI_rgb_alpha, pPixels, nWidth * 4);
+		if (!stbi_write_png(strConverted.c_str(), nWidth, nHeight, STBI_rgb_alpha, pPixels, nWidth * 4)) {
+			delete[] pPixels;
+			return false;
+		}
 
 		delete[] pPixels;
-
 		return true;
 	}
 
@@ -179,6 +179,10 @@ namespace Iris2D {
 
 		int nWidth, nHeight, nChannels;
 		const auto pData = stbi_load(strConverted.c_str(), &nWidth, &nHeight, &nChannels, STBI_rgb_alpha);
+
+		if (!pData) {
+			return false;
+		}
 
 		GLuint nTextureID = 0;
 		glGenTextures(1, &nTextureID);

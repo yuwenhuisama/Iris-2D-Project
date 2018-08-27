@@ -54,8 +54,8 @@ namespace Iris2D {
 			}
 		}
 
-		bool EffectFlash::Update(const Sprite* pSprite) {
-			return m_pProxied->Update(pSprite);
+		bool EffectFlash::Update() {
+			return m_pProxied->Update();
 		}
 
 		EffectFlash::EffectFlash(IEffect* pEffect): EffectBase(pEffect) {

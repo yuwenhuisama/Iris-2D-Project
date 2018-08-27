@@ -42,9 +42,10 @@ namespace Iris2D {
 
 	void SpriteGL::Release(SpriteGL *& pSprite) {
 		if (pSprite) {
-			GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(pSprite);
-			delete pSprite;
-			pSprite = nullptr;
+			if (GetProxied<SpriteGL*>(pSprite)->GetRefCount() == 1) {
+				GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(pSprite);
+			}
+			RefferRelease(pSprite);
 		}
 	}
 
@@ -54,7 +55,7 @@ namespace Iris2D {
 		delete pSprite;
 	}
 
-	void SpriteGL::SetBitmap(Bitmap *& pBitmap) {
+	void SpriteGL::SetBitmap(Bitmap *& pBitmap, IR_PARAM_RESULT_CT) {
 		if (pBitmap == m_pBitmap) {
 			return;
 		}
@@ -66,11 +67,11 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<BitmapGL*>(pBitmap)->IncreamRefCount();
+		RefferAssign<BitmapGL*>(m_pBitmap, pBitmap);
 
-		m_pBitmap = pBitmap;
-
-		CreateVertexBuffer();
+		if(!CreateVertexBuffer()) {
+			IR_PARAM_SET_RESULT(IR_RESULT_FAILED, L"Error when creating vertex buffer for Bitmap.");
+		}
 	}
 
 	Bitmap * SpriteGL::GetBitmap() const {
@@ -141,7 +142,6 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetOY(float fOY) {
-		// m_v2OrgPosition.y = fOY;
 		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.y, fOY, m_hOrgPos);
 	}
 
@@ -150,7 +150,6 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetMirror(bool bMirror) {
-		// m_bMirror = bMirror;
 		m_dcDirtyChecker.Assign(m_bMirror, bMirror, m_hMirror);
 	}
 
@@ -167,7 +166,6 @@ namespace Iris2D {
 	}
 
 	void SpriteGL::SetOpacity(float fOpacity) {
-		// m_f32Opacity = fOpacity;
 		fOpacity = clip(fOpacity, 0.0f, 1.0f);
 		m_dcDirtyChecker.Assign(m_fOpacity, fOpacity, m_hOpacity);
 	}
@@ -188,9 +186,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<RectGL*>(pSrcRect)->IncreamRefCount();
-
-		m_pSrcRect = pSrcRect;
+		RefferAssign<RectGL*>(m_pSrcRect, pSrcRect);
 	}
 
 	Rect * SpriteGL::GetSrcRect() const {
@@ -209,9 +205,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<ToneGL*>(pTone)->IncreamRefCount();
-
-		m_pTone = pTone;
+		RefferAssign<ToneGL*>(m_pTone, pTone);
 	}
 
 	Tone * SpriteGL::GetTone() const {
@@ -220,12 +214,11 @@ namespace Iris2D {
 
 	void SpriteGL::Update() {
 		if(m_pEffect) {
-			m_pEffect->Update(GetProxy());
+			m_pEffect->Update();
 		}
 	}
 
 	void SpriteGL::SetEffect(Effect::EffectBase* pEffect) {
-
 		if (pEffect == m_pEffect) {
 			return;
 		}
@@ -240,11 +233,9 @@ namespace Iris2D {
 		}
 
 		const auto pEffectGL = GetProxied<Effect::EffectBaseGL*>(pEffect);
-		pEffectGL->IncreamRefCount();
-
 		pEffectGL->Initialize(m_pBitmap->GetWidth(), m_pBitmap->GetHeight());
 
-		m_pEffect = pEffect;
+		RefferAssign<Effect::EffectBaseGL*>(m_pEffect, pEffect);
 	}
 
 	bool SpriteGL::CreateVertexBuffer() {
@@ -269,10 +260,10 @@ namespace Iris2D {
 		});
 	}
 
-	bool SpriteGL::Render() {
+	void SpriteGL::Render(IR_PARAM_RESULT_CT) {
 
 		if (!m_bVisible || !m_pBitmap || m_fOpacity == 0.0f) {
-			return true;
+			return;
 		}
 
 		TextureGL* pEffectTexture = nullptr;
@@ -337,7 +328,6 @@ namespace Iris2D {
 			m_svbfBuffer.m_v4Tone = { 0, 0, 0, 0 };
 		}
 
-		//static auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, -1.0f, 1.0f);
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_pViewport->GetWidth()), static_cast<float>(m_pViewport->GetHeight()), 0.0f, 0.0f, 9999.0f);
 
 		glViewport(0, 0, m_pViewport->GetWidth(), m_pViewport->GetHeight());
@@ -363,8 +353,6 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
-
-		return true;
 	}
 
 	SpriteGL::SpriteGL() {

@@ -1,6 +1,8 @@
 #ifndef _H_ISPRITE_
 #define _H_ISPRITE_
 
+#include "Common/Util/Result.h"
+
 namespace Iris2D {
 
 	namespace Effect {
@@ -16,7 +18,7 @@ namespace Iris2D {
 		virtual ~ISprite() = default;
 
 	public:
-		virtual void SetBitmap(Bitmap*& pBitmap) = 0;
+		virtual void SetBitmap(Bitmap*& pBitmap, IR_PARAM_RESULT) = 0;
 		virtual Bitmap* GetBitmap() const = 0;
 
 		virtual void SetX(float fX) = 0;

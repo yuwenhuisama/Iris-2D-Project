@@ -74,7 +74,7 @@ namespace Iris2D {
 		* 如果在设置 Bitmap 之前该 Sprite 已经存在 Bitmap ，那么用户应该手动释放之前的 Bitmap ，Iris 2D 不会自动释放之前的 Bitmap 。此项特性出于对于共享 Bitmap 的考虑。
 		* @param pBitmap 一个 BitmapDX 对象的指针。
 		*/
-		void SetBitmap(Bitmap*& pBitmap) override;
+		void SetBitmap(Bitmap*& pBitmap, IR_PARAM_RESULT) override;
 		
 		Bitmap* GetBitmap() const override;
 
