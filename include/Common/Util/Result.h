@@ -22,6 +22,9 @@ extern "C" {
 		IRR_D3DInitializeFailed,
 		IRR_D2DOperationFailed,
 		IRR_TextureOutputFailed,
+
+
+		IRR_XXXXXX
 	};
 #ifdef __cplusplus
 }

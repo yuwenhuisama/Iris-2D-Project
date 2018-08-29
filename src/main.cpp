@@ -16,6 +16,8 @@ bool GameCallBack() {
 	pSprite->SetZ(4.0f);
 
 	auto pBitmap2 = Bitmap::Create(L"image\\leimu.jpg");
+	pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
+
 	auto pSprite2 = Sprite::Create(pViewport);
 	pSprite2->SetX(50.0f);
 	pSprite2->SetBitmap(pBitmap2);
@@ -70,13 +72,13 @@ bool GameCallBack() {
 		//	pGraphics->Transition(240, L"", 10);
 		//}
 
-		if (nCounter == 60) {
-			pGraphics->ResizeScreen(300, 300);
-		} else if (nCounter == 120) {
-			pGraphics->ResizeScreen(600, 600);
-		} else if (nCounter == 180) {
-			pGraphics->ResizeScreen(1200, 1200);
-		}
+		//if (nCounter == 60) {
+		//	pGraphics->ResizeScreen(300, 300);
+		//} else if (nCounter == 120) {
+		//	pGraphics->ResizeScreen(600, 600);
+		//} else if (nCounter == 180) {
+		//	pGraphics->ResizeScreen(1200, 1200);
+		//}
 
 		++nCounter;
 	}
