@@ -156,15 +156,15 @@ namespace Iris2D {
 		pShader->SetSrcTexCoordRect(*pSrcRect, GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture());
 		pShader->SetOpacity(fOpacity);
 
-		glActiveTexture(GL_TEXTURE0);
-		GetTexture()->UseTexture();
+		//glActiveTexture(GL_TEXTURE0);
+		GetTexture()->UseTexture(0);
 		//GetTexture()->SaveToFile(L"d:\\frambuffera.png");;
-		glUniform1i(glGetUniformLocation(pShader->GetID(), "destTexture"), 0);
+		pShader->SetInt("destTexture", 0);
 
-		glActiveTexture(GL_TEXTURE1);
-		GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture()->UseTexture();
+		//glActiveTexture(GL_TEXTURE1);
+		GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture()->UseTexture(1);
 		//GetProxied<BitmapGL*>(pSrcBitmapGL)->SaveToFile(L"d:\\frambufferb.png");;
-		glUniform1i(glGetUniformLocation(pShader->GetID(), "srcTexture"), 1);
+		pShader->SetInt("srcTexture", 1);
 
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
@@ -245,7 +245,7 @@ namespace Iris2D {
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 
 		//开启混合
 		//glEnable(GL_BLEND);
@@ -266,6 +266,8 @@ namespace Iris2D {
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
 		glViewport(0, 0, nWindowWidth, nWindowHeight);//视口还原
+
+		TextureGL::Release(m_pTexture);
 		m_pTexture = pTextureFrameBuffer;
 
 		//pTextureFrameBuffer->SaveToFile(L"d:\\frambuffer4.png");
@@ -278,13 +280,13 @@ namespace Iris2D {
 		glGetIntegerv(GL_FRAMEBUFFER_BINDING, &nRestore);
 
 		m_pTexture->UseTextureAsFrameBuffer();
-		/*
+		
 		GLuint nFrameBuffer = 0;
 		glGenFramebuffers(1, &nFrameBuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, nFrameBuffer);
-
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, GetTexture(), 0);
-		*/
+		
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, GetTexture()->GetTextureID(), 0);
+		
 		const auto eStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 		if (eStatus != GL_FRAMEBUFFER_COMPLETE) {
 			PrintFormatDebugMessageW(L"Failed to make complete framebuffer object %x", eStatus);
@@ -298,14 +300,14 @@ namespace Iris2D {
 
 		const auto pPixels = new GLubyte[sizeof(GLubyte) * 4];
 
-		glReadPixels(0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pPixels);
+		glReadPixels(nX, nY, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pPixels);
 
 		auto pColor = Color::Create(pPixels[0], pPixels[1], pPixels[2], pPixels[3]);
 
 		delete[] pPixels;
 
 		m_pTexture->RestoreFrameBuffer();
-		//glDeleteFramebuffers(1, &nFrameBuffer);
+		glDeleteFramebuffers(1, &nFrameBuffer);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, nRestore);
 
@@ -404,7 +406,7 @@ namespace Iris2D {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 
-		/****绘制文字（bugbu分）******
+		
 		auto pShaderFont = FontShaderGL::Instance();
 		pShaderFont->Initialize();
 		pShaderFont->SetProjectionMatrix(c_mt4Projection);
@@ -415,7 +417,7 @@ namespace Iris2D {
 		DrawTexHelper *drawtext = new DrawTexHelper();
 		drawtext->LoadChar(GetProxied<FontGL*>(GetFont())->GetFTFace(), wstrText);
 		drawtext->Draw(wstrText, static_cast<GLfloat>(nX), static_cast<GLfloat>(nY), static_cast<GLfloat>(nWidth), static_cast<GLfloat>(nHeight));
-		******/
+		
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
 		glViewport(0, 0, nWindowWidth, nWindowHeight);//视口还原

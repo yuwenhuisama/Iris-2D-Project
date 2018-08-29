@@ -16,17 +16,25 @@ bool GameCallBack() {
 	pSprite->SetZ(4.0f);
 
 	auto pBitmap2 = Bitmap::Create(L"image\\leimu.jpg");
-	pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
+
+	//pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
+	//pBitmap2->ClearRect(Rect::Create(130, 140, 400, 400));
+	//pBitmap2->StretchBlt(Rect::Create(130, 140, 100, 100),pBitmap, Rect::Create(100, 100, 300, 300),100);
+	pBitmap2->HueChange(350);
 
 	auto pSprite2 = Sprite::Create(pViewport);
 	pSprite2->SetX(50.0f);
 	pSprite2->SetBitmap(pBitmap2);
 	pSprite2->SetZ(5.0f);
 
+	auto pTmpColor = pBitmap->GetPixel(0, 0);
+
+	//pSprite2->SetOpacity(0.5f);
+
 	auto pColor = Color::Create(255, 255, 255, 255);
 	auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
 
-	pSprite->SetEffect(pEffect);
+	//pSprite->SetEffect(pEffect);
 
 	auto fAngle = 0.0f;
 	auto fBrightness = 0.0f;
