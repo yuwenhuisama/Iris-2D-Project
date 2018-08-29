@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Iris2DNativeBridge;
+using Iris2D.NativeBridge;
 
 namespace Iris2D.Core
 {
@@ -32,13 +32,13 @@ namespace Iris2D.Core
 
         private readonly IntPtr m_handle;
 
-        public bool Initialize(UInt32 width, UInt32 height, GameFunc gameFunc, string title) =>
-            ApplicationNative.Initialize(m_handle, Process.GetCurrentProcess().Handle,
-                   width, height, 
-                   () => gameFunc() ? 0 : 1,
-                   title) != 0;
+        public void Initialize(UInt32 width, UInt32 height, GameFunc gameFunc, string title) =>
+            NativeHelper.AssertSuccess(ApplicationNative.Initialize(m_handle, Process.GetCurrentProcess().Handle,
+                width, height,
+                () => gameFunc() ? 0 : 1,
+                title));
 
-        public bool Initialize(AppStartupInfo startupInfo)
+        public void Initialize(AppStartupInfo startupInfo)
         {
             var nativeInfo = new ApplicationNative.AppStartupInfo()
             {
@@ -58,10 +58,11 @@ namespace Iris2D.Core
 
             var result = ApplicationNative.Initialize(m_handle, intPtr);
             Marshal.FreeHGlobal(intPtr);
-            return result != 0;
+
+            NativeHelper.AssertSuccess(result);
         }
 
-        public void Run() => ApplicationNative.Run(m_handle);
+        public bool Run() => ApplicationNative.Run(m_handle) != 0;
 
         public void Release() => ApplicationNative.Release(m_handle);
 

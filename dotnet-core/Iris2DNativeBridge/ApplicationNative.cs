@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Iris2DNativeBridge
+namespace Iris2D.NativeBridge
 {
     public static class ApplicationNative
     {

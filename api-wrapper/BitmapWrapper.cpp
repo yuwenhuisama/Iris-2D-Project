@@ -19,8 +19,8 @@ EXPORT_API BITMAP_HANDLE Bitmap_CopyFrom(BITMAP_HANDLE hSrcBitmap) {
 	return Iris2D::Bitmap::CopyFrom(pCastedSrcBitmap);
 }
 
-EXPORT_API void Bitmap_Release(BITMAP_HANDLE* pBitmap) {
-	auto pCastedBitmap = reinterpret_cast<Iris2D::Bitmap*&>(*pBitmap);
+EXPORT_API void Bitmap_Release(BITMAP_HANDLE* hBitmap) {
+	auto pCastedBitmap = reinterpret_cast<Iris2D::Bitmap*&>(*hBitmap);
 	return Iris2D::Bitmap::Release(pCastedBitmap);
 }
 

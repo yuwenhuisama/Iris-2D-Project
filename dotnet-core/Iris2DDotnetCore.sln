@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28010.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iris2D", "Iris2DDotnetCore\Iris2D.csproj", "{A236E9A2-5965-494E-9338-8A0F0E4B2B8C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iris2DNativeBridge", "Iris2DNativeBridge\Iris2DNativeBridge.csproj", "{7FCDD862-575D-4112-835A-6617C8AC625B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iris2D.NativeBridge", "Iris2DNativeBridge\Iris2D.NativeBridge.csproj", "{7FCDD862-575D-4112-835A-6617C8AC625B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

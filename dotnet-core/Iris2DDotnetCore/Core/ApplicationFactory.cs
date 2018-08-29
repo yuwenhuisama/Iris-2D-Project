@@ -1,7 +1,7 @@
-﻿using Iris2DNativeBridge;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Iris2D.NativeBridge;
 
 namespace Iris2D
 {
