@@ -30,7 +30,7 @@ void main()
 		outputColor.g = spriteFragmentInfo.tone.g / 255.0f + outputColor.g + (grayFull - outputColor.g) * spriteFragmentInfo.tone.a / 255.0f;
 		outputColor.b = spriteFragmentInfo.tone.b / 255.0f + outputColor.b + (grayFull - outputColor.b) * spriteFragmentInfo.tone.a / 255.0f;
 		
-		outputColor.a = spriteFragmentInfo.opacity;
+		outputColor.a = outputColor.a * spriteFragmentInfo.opacity;
 	}
 
 	fragColor = outputColor;

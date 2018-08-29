@@ -170,6 +170,11 @@ namespace Iris2D {
 		return true;
 	}
 
+	GLuint TextureGL::GetTextureID()
+	{
+		return m_nTextureID;
+	}
+
 	bool TextureGL::LoadTexture(const std::wstring & wstrTexturePath) {
 		// load texture data
 		using convert_type = std::codecvt_utf8<wchar_t>;
