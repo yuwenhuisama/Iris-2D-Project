@@ -2,41 +2,39 @@
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 
 namespace Iris2D {
-	BitmapGL * BitmapGL::Create(const std::wstring & wstrFileName, IR_PARAM_RESULT_CT) {
+	BitmapGL * BitmapGL::Create(const std::wstring & wstrFileName) {
 		const auto pTexture = TextureGL::Create(wstrFileName);
 
 		if (!pTexture) {
 			return nullptr;
 		}
 
-		auto pBitmap = new BitmapGL();
-		pBitmap->IncreamRefCount();
+		const auto pBitmap = new BitmapGL();
 
 		pBitmap->m_pTexture = pTexture;
 
 		return pBitmap;
 	}
 
-	BitmapGL * BitmapGL::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+	BitmapGL * BitmapGL::Create(unsigned int nWidth, unsigned int nHeight) {
 		const auto pTexture = TextureGL::Create(nWidth, nHeight);
 
 		if (!pTexture) {
 			return nullptr;
 		}
 
-		auto pBitmap = new BitmapGL();
-		pBitmap->IncreamRefCount();
+		const auto pBitmap = new BitmapGL();
 
 		pBitmap->m_pTexture = pTexture;
 
 		return pBitmap;
 	}
 
-	BitmapGL * BitmapGL::Create(Bitmap * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
+	BitmapGL * BitmapGL::Create(Bitmap * pSrcBitmapGL) {
 		return nullptr;
 	}
 
-	BitmapGL * BitmapGL::CopyFrom(Bitmap * pSrcBitmapGL, IR_PARAM_RESULT_CT) {
+	BitmapGL * BitmapGL::CopyFrom(Bitmap * pSrcBitmapGL) {
 		return nullptr;
 	}
 
@@ -46,11 +44,8 @@ namespace Iris2D {
 			return;
 		}
 
-		pBitmap->DecreamRefCount();
-		if (pBitmap->GetRefCount() == 0) {
-			delete pBitmap;
-			pBitmap = nullptr;
-		}
+		RefferRelease(pBitmap);
+
 	}
 
 	unsigned int BitmapGL::GetWidth() const {
@@ -61,48 +56,52 @@ namespace Iris2D {
 		return m_pTexture->GetHeight();
 	}
 
-	bool BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const Color * pColor, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const Color * pColor) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::FillRect(const Rect * pRect, const Color * pColor, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::FillRect(const Rect * pRect, const Color * pColor) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::Clear(IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::Clear() {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::ClearRect(const Rect * pRect, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::ClearRect(const Rect * pRect) {
+		return IRR_Success;
 	}
 
-	Color * BitmapGL::GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT_CT) const {
+	Color * BitmapGL::GetPixel(unsigned int nX, unsigned int nY) const {
 		return nullptr;
 	}
 
-	bool BitmapGL::SetPixel(unsigned int nX, unsigned int nY, const Color * pColor, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::GetPixel(unsigned int nX, unsigned int nY, Color*& pColor) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::SaveToFile(const std::wstring & wstrFilePath) {
-		return false;
+	ResultCode BitmapGL::SetPixel(unsigned int nX, unsigned int nY, const Color * pColor) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::HueChange(float fHue, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::SaveToFile(const std::wstring & wstrFilePath) {
+		return IRR_Success;
+	}
+
+	ResultCode BitmapGL::HueChange(float fHue) {
+		return IRR_Success;
 	}
 
 	void BitmapGL::SetFont(Font *& pFont) {
@@ -112,21 +111,25 @@ namespace Iris2D {
 		return nullptr;
 	}
 
-	unsigned int BitmapGL::TextSize(const Font * pFont, const std::wstring & wstrText, IR_PARAM_RESULT_CT) {
+	unsigned int BitmapGL::TextSize(const Font * pFont, const std::wstring & wstrText) {
 		return 0;
 	}
 
-	bool BitmapGL::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::TextSize(const Font* pFont, const std::wstring& wstrText, unsigned int& nSize) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::DrawText(const Rect * pRect, const std::wstring & wstrText, AlignType nAlign, IR_PARAM_RESULT_CT) {
-		return false;
+	ResultCode BitmapGL::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType nAlign) {
+		return IRR_Success;
 	}
 
-	bool BitmapGL::Dispose() {
+	ResultCode BitmapGL::DrawText(const Rect * pRect, const std::wstring & wstrText, AlignType nAlign) {
+		return IRR_Success;
+	}
+
+	ResultCode BitmapGL::Dispose() {
 		TextureGL::Release(m_pTexture);
-		return true;
+		return IRR_Success;
 	}
 
 	TextureGL * BitmapGL::GetTexture() const {

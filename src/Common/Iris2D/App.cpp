@@ -12,16 +12,16 @@ namespace Iris2D {
 	Application::Application() : Proxy(nullptr) {}
 
 #ifdef _WIN32
-	bool Application::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
+	ResultCode Application::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 		return m_pProxied->Initialize(hInstance, nWidth, nHeight, pfGameFunc, wszTitle);
 	}
 #else
-	bool IApplication::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
+	ResultCode IApplication::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 		return m_pProxied->Initialize(nWidth, nHeight, pfGameFunc, wszTitle);
 	}
 #endif // _WIN32
 
-	bool Application::Initialize(const AppStartupInfo* pInfo) {
+	ResultCode Application::Initialize(const AppStartupInfo* pInfo) {
 		return m_pProxied->Initialize(pInfo);
 	}
 

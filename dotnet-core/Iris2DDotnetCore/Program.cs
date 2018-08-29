@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net.Mime;
-using System.Net.WebSockets;
 using Iris2D.Core;
-using Iris2DNativeBridge;
+using Iris2D.NativeBridge;
 
 namespace Iris2D
 {
@@ -11,42 +8,39 @@ namespace Iris2D
     {
         static void Main(string[] args)
         {
-            Console.Write("Begin...");
+            Console.WriteLine("Begin...");
 
             ApplicationFactory.InitApiType(ApplicationFactory.GameApiType.OpenGL);
 
-            //var result = Application.Instance.Initialize(1600, 1200, () =>
-            //{
-            //    while (!Application.Instance.IsQuited)
-            //    {
-            //        Graphics.Instance.Update();
-            //    }
-            //    return true;
-            //}, "My Iris App");
-            var result = Application.Instance.Initialize(new Application.AppStartupInfo()
+            try
             {
-                GameFunc = () =>
+                Application.Instance.Initialize(new Application.AppStartupInfo()
                 {
-                    while (!Application.Instance.IsQuited)
+                    GameFunc = () =>
                     {
-                        Graphics.Instance.Update();
-                    }
-                    return true;
-                },
-                Width = 1600,
-                Height = 1200,
-                X = 400,
-                Y = 400,
-                Title = "Iris 2D Application",
-            });
+                        while (!Application.Instance.IsQuited)
+                        {
+                            Graphics.Instance.Update();
+                        }
 
-            if (!result)
+                        return true;
+                    },
+                    Width = 1600,
+                    Height = 1200,
+                    X = 400,
+                    Y = 400,
+                    Title = "Iris 2D Application",
+                });
+
+                Application.Instance.Run();
+            }
+            catch(Iris2DNativeException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
             {
                 Application.Instance.Release();
-            }
-            else
-            {
-                Application.Instance.Run();
             }
 
         }

@@ -25,6 +25,10 @@ namespace Iris2D {
 
 		virtual unsigned int GetWidth() const = 0;
 		virtual unsigned int GetHeight() const = 0;
+
+	public:
+		IViewport() = default;
+		virtual ~IViewport() = default;
 	};
 }
 

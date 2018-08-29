@@ -27,7 +27,7 @@
 namespace Iris2D {
 	Viewport* ViewportGL::sm_pGlobalViewport = nullptr;
 
-	ViewportGL * ViewportGL::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+	ViewportGL * ViewportGL::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight) {
 		auto pViewport = new ViewportGL();
 
 		if (!pViewport->CreateViewportVertexBufferAndFrameBuffer(nWidth, nHeight)) {
@@ -45,8 +45,8 @@ namespace Iris2D {
 		return pViewport;
 	}
 
-	ViewportGL * ViewportGL::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
-		return ViewportGL::Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()), IR_PARAM);
+	ViewportGL * ViewportGL::Create(const Rect * pRect) {
+		return ViewportGL::Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()));
 	}
 
 	void ViewportGL::Release(ViewportGL *& pViewport) {
@@ -57,12 +57,13 @@ namespace Iris2D {
 		GraphicsGL::Instance()->RemoveViewport(pViewport);
 
 		if (pViewport != GetProxied<ViewportGL*>(sm_pGlobalViewport)) {
-			GraphicsGL::Instance()->RemoveViewport(pViewport);
-			GetProxied<ViewportGL*>(sm_pGlobalViewport)->m_stSprites.insert(pViewport->m_stSprites.begin(), pViewport->m_stSprites.end());
+			if (pViewport->GetRefCount() == 1) {
+				GraphicsGL::Instance()->RemoveViewport(pViewport);
+				GetProxied<ViewportGL*>(sm_pGlobalViewport)->m_stSprites.insert(pViewport->m_stSprites.begin(), pViewport->m_stSprites.end());
+			}
 		}
 
-		delete pViewport;
-		pViewport = nullptr;
+		RefferRelease(pViewport);
 	}
 
 	void ViewportGL::ForceRelease(ViewportGL *& pViewport) {
@@ -83,10 +84,7 @@ namespace Iris2D {
 
 	bool ViewportGL::InitializeGlobalViewport(float fX, float fY, unsigned int nWindowWidth, unsigned int nWindowHeight) {
 		sm_pGlobalViewport = Viewport::Create(fX, fY, nWindowWidth, nWindowHeight);
-		if (!sm_pGlobalViewport) {
-			return false;
-		}
-		return true;
+		return sm_pGlobalViewport != nullptr;
 	}
 
 	bool ViewportGL::ReleaseGlobalViewport() {
@@ -126,9 +124,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<RectGL*>(pSrcRect)->IncreamRefCount();
-
-		m_pSrcRect = pSrcRect;
+		RefferAssign<RectGL*>(m_pSrcRect, pSrcRect);
 	}
 
 	Rect * ViewportGL::GetSrcRect() const {
@@ -147,9 +143,7 @@ namespace Iris2D {
 			return;
 		}
 
-		GetProxied<ToneGL*>(pTone)->IncreamRefCount();
-
-		m_pTone = pTone;
+		RefferAssign<ToneGL*>(m_pTone, pTone);
 	}
 
 	Tone * ViewportGL::GetTone() const {
@@ -172,26 +166,32 @@ namespace Iris2D {
 		return m_pTexture->GetHeight();
 	}
 
-	void ViewportGL::RenderSprites() {
+	ResultCode ViewportGL::RenderSprites() {
 		m_pTexture->UseTextureAsFrameBuffer();
 
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 
+		auto eResult = IRR_Success;
+
 		for (auto& pSprite : m_stSprites) {
-			pSprite.second->Render();
+			eResult = pSprite.second->Render();
+			if(IR_FAILED(eResult)) {
+				break;
+			}
 		}
 
 		m_pTexture->RestoreFrameBuffer();
+
+		return eResult;
 	}
 
-	void ViewportGL::Render() {
+	ResultCode ViewportGL::Render() {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GraphicsGL::Instance()->GetWidth()), static_cast<float>(GraphicsGL::Instance()->GetHeight()), 0.0f, 0.0f, 9999.0f);
 		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
 
 		auto pShader = ViewportShaderGL::Instance();
 
-		//TODO: Optimize for dirty check
 		pShader->SetProjectionMatrix(c_mt4Projection);
 
 		if (m_pSrcRect && GetProxied<RectGL*>(m_pSrcRect)->Modified()) {
@@ -240,6 +240,8 @@ namespace Iris2D {
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
+
+		return IRR_Success;
 	}
 
 	void ViewportGL::AddSprite(SpriteGL *& pSprite) {

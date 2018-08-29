@@ -5,39 +5,39 @@ EXPORT_API GRAPHICS_HANDLE Graphics_GetInstance() {
 	return Iris2D::AppFactory::GetGraphics();
 }
 
-EXPORT_API void Graphics_Update(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_Update(GRAPHICS_HANDLE hGraphics) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->Update(IR_PARAM);
+	return pGraphics->Update();
 }
 
-EXPORT_API void Graphics_UpdateNoLock(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_UpdateNoLock(GRAPHICS_HANDLE hGraphics) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->UpdateNoLock(IR_PARAM);
+	return pGraphics->UpdateNoLock();
 }
 
-EXPORT_API void Graphics_Wait(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_Wait(GRAPHICS_HANDLE hGraphics, unsigned int nDuration) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->Wait(nDuration, IR_PARAM);
+	return pGraphics->Wait(nDuration);
 }
 
-EXPORT_API void Graphics_FadeOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_FadeOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->FadeOut(nDuration, IR_PARAM);
+	return pGraphics->FadeOut(nDuration);
 }
 
-EXPORT_API void Graphics_FadeIn(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_FadeIn(GRAPHICS_HANDLE hGraphics, unsigned int nDuration) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->FadeIn(nDuration, IR_PARAM);
+	return pGraphics->FadeIn(nDuration);
 }
 
-EXPORT_API void Graphics_Freeze(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_Freeze(GRAPHICS_HANDLE hGraphics) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->Freeze(IR_PARAM);
+	return pGraphics->Freeze();
 }
 
-EXPORT_API void Graphics_Transition(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, wchar_t * wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_Transition(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, wchar_t * wstrFilename, unsigned int nVague) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->Transition(nDuration, wstrFilename, nVague,IR_PARAM);
+	return pGraphics->Transition(nDuration, wstrFilename, nVague);
 }
 
 EXPORT_API void Graphics_FrameReset(GRAPHICS_HANDLE hGraphics) {
@@ -45,9 +45,9 @@ EXPORT_API void Graphics_FrameReset(GRAPHICS_HANDLE hGraphics) {
 	pGraphics->FrameReset();
 }
 
-EXPORT_API void Graphics_ResizeScreen(GRAPHICS_HANDLE hGraphics, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+EXPORT_API ResultCode Graphics_ResizeScreen(GRAPHICS_HANDLE hGraphics, unsigned int nWidth, unsigned int nHeight) {
 	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->ResizeScreen(nWidth, nHeight, IR_PARAM);
+	return pGraphics->ResizeScreen(nWidth, nHeight);
 }
 
 EXPORT_API void Graphics_SetWidth(GRAPHICS_HANDLE hGraphics, unsigned int nWidth) {
@@ -56,7 +56,7 @@ EXPORT_API void Graphics_SetWidth(GRAPHICS_HANDLE hGraphics, unsigned int nWidth
 }
 
 EXPORT_API unsigned int Graphics_GetWidth(GRAPHICS_HANDLE hGraphics) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
+	const auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	return pGraphics->GetWidth();
 }
 
@@ -66,17 +66,17 @@ EXPORT_API void Graphics_SetHeight(GRAPHICS_HANDLE hGraphics, unsigned int nHeig
 }
 
 EXPORT_API unsigned int Graphics_GetHeight(GRAPHICS_HANDLE hGraphics) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
+	const auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	return pGraphics->GetHeight();
 }
 
 EXPORT_API unsigned int Graphics_GetFrameCount(GRAPHICS_HANDLE hGraphics) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
+	const auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	return pGraphics->GetFrameCount();
 }
 
 EXPORT_API float Graphics_GetBrightness(GRAPHICS_HANDLE hGraphics) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
+	const auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	return pGraphics->GetBrightness();
 }
 
@@ -91,7 +91,7 @@ EXPORT_API void Graphics_SetFrameRate(GRAPHICS_HANDLE hGraphics, float fFrameRat
 }
 
 EXPORT_API float Graphics_GetFrameRate(GRAPHICS_HANDLE hGraphics) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
+	const auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	return pGraphics->GetFrameRate();
 }
 

@@ -6,6 +6,7 @@
 
 #include "Common/Iris2D/ISprite.h"
 #include "Common/Iris2D/Proxied.h"
+#include "Common/Util/RefCounter.h"
 
 namespace Iris2D
 {
@@ -22,7 +23,7 @@ namespace Iris2D
 
 	typedef ColorDX ToneDX;
 	__declspec(align(16))
-	class SpriteDX : public Proxied<Sprite>, public ISprite
+	class SpriteDX : public Proxied<Sprite>, public ISprite, public RefCounter
 	{
 	private:
 
@@ -63,51 +64,51 @@ namespace Iris2D
 
 	public:
 
-		void SetBitmap(Bitmap*& pBitmap);
-		Bitmap* GetBitmap() const;
+		ResultCode SetBitmap(Bitmap*& pBitmap) override;
+		Bitmap* GetBitmap() const override;
 
-		void SetX(float fX);
-		float GetX() const;
+		void SetX(float fX) override;
+		float GetX() const override;
 
-		void SetY(float fY);
+		void SetY(float fY) override;
 		float GetY() const;
 
-		void SetZ(float fZ);
-		float GetZ() const;
+		void SetZ(float fZ) override;
+		float GetZ() const override;
 
-		void SetAngle(float fAngle);
-		float GetAngle() const;
+		void SetAngle(float fAngle) override;
+		float GetAngle() const override;
 
-		void SetZoomX(float fZoomX);
-		float GetZoomX() const;
+		void SetZoomX(float fZoomX) override;
+		float GetZoomX() const override;
 
-		void SetZoomY(float fZoomY);
-		float GetZoomY() const;
+		void SetZoomY(float fZoomY) override;
+		float GetZoomY() const override;
 
-		void SetOX(float fOX);
-		float GetOX();
+		void SetOX(float fOX) override;
+		float GetOX() override;
 
-		void SetOY(float fOY);
-		float GetOY();
+		void SetOY(float fOY) override;
+		float GetOY() override;
 
-		void SetMirror(bool bMirror);
-		bool GetMirror();
+		void SetMirror(bool bMirror) override;
+		bool GetMirror() override;
 
-		void SetVisible(bool bVisible);
-		bool GetVisible();
+		void SetVisible(bool bVisible) override;
+		bool GetVisible() override;
 
-		void SetOpacity(float fOpacity);
+		void SetOpacity(float fOpacity) override;
 		float GetOpacity();
 
-		void SetSrcRect(Rect*& pSrcRect);
-		Rect* GetSrcRect() const;
+		void SetSrcRect(Rect*& pSrcRect) override;
+		Rect* GetSrcRect() const override;
 
-		void SetTone(Tone*& pTone);
-		Tone* GetTone() const;
+		void SetTone(Tone*& pTone) override;
+		Tone* GetTone() const override;
 
-		void Update();
+		ResultCode Update() override;
 
-		void SetEffect(Effect::EffectBase* pEffect) override;
+		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
 
 		void Render();
 		bool Dispose();

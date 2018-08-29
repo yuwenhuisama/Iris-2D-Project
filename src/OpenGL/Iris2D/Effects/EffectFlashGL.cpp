@@ -14,14 +14,12 @@ namespace Iris2D {
 			}
 
 			const auto pEffect =  new EffectFlashGL();
-			pEffect->IncreamRefCount();
 
 			pEffect->m_bLoop = bLoop;
 			pEffect->m_nDuration = nDuration;
 			pEffect->m_nCounter = nDuration;
 
-			GetProxied<ColorGL*>(pColor)->IncreamRefCount();
-			pEffect->m_pColor = pColor;
+			RefferAssign<ColorGL*>(pEffect->m_pColor, pColor);
 
 			return pEffect;
 		}
@@ -32,14 +30,10 @@ namespace Iris2D {
 				return;
 			}
 
-			pEffectFlash->DecreamRefCount();
-			if (pEffectFlash->GetRefCount() == 0) {
-				delete pEffectFlash;
-				pEffectFlash = nullptr;
-			}
+			RefferRelease(pEffectFlash);
 		}
 
-		bool EffectFlashGL::Update(const Sprite* pSprite) {
+		bool EffectFlashGL::Update() {
 
 			if (m_bLoop && m_nCounter == 0) {
 				m_nCounter = m_nDuration;

@@ -5,7 +5,6 @@ namespace Iris2D
 	RectGL * RectGL::Create(float fX, float fY, float fWidth, float fHeight)
 	{
 		auto pRect = new RectGL();
-		pRect->IncreamRefCount();
 
 		if (fWidth <= 0) {
 			fWidth = 1.0f;
@@ -22,7 +21,6 @@ namespace Iris2D
 	RectGL * RectGL::Create2(float fLeft, float fTop, float fRight, float fBottom)
 	{
 		auto pRect = new RectGL();
-		pRect->IncreamRefCount();
 
 		if (fBottom <= fTop) {
 			fBottom = fTop + 1.0f;
@@ -42,11 +40,7 @@ namespace Iris2D
 			return;
 		}
 
-		pRect->DecreamRefCount();
-		if (pRect->GetRefCount() == 0) {
-			delete pRect;
-			pRect = nullptr;
-		}
+		RefferRelease(pRect);
 	}
 
 	void RectGL::SetX(float fX)

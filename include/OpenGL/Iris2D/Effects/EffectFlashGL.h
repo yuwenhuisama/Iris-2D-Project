@@ -22,7 +22,7 @@ namespace Iris2D {
 			static void Release(EffectFlashGL*& pEffectFlash);
 
 		public:
-			bool Update(const Sprite* pSprite) override;
+			bool Update() override;
 			std::string GetVertexShaderFile() override;
 			std::string GetFragmentShaderFile() override;
 			TextureGL* Render(TextureGL* pPreTexture) override;

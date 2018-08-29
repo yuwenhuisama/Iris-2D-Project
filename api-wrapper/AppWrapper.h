@@ -5,7 +5,9 @@
 
 #undef LIBRARY_EXPORTS
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 	typedef BOOL(*App_GameFunc)();
 
 #pragma pack(push, 8)  
@@ -41,8 +43,8 @@ extern "C" {
 #pragma pack(pop)
 
 	EXPORT_API APP_HANDLE App_GetInstance();
-	EXPORT_API BOOL App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
-	EXPORT_API BOOL App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo);
+	EXPORT_API ResultCode App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
+	EXPORT_API ResultCode App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo);
 	EXPORT_API BOOL App_Run(APP_HANDLE hHandle);
 	EXPORT_API void App_Release(APP_HANDLE hHandle);
 	EXPORT_API BOOL App_IsUninitialized(APP_HANDLE hHandle);
@@ -50,6 +52,9 @@ extern "C" {
 	EXPORT_API BOOL App_IsQuited(APP_HANDLE hHandle);
 	EXPORT_API void App_Quite(APP_HANDLE hHandle);
 	EXPORT_API float App_GetTimeDelta(APP_HANDLE hHandle);
+
+#ifdef __cplusplus
 }
+#endif
 
 #endif

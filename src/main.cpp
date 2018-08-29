@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
 	AppFactory::InitApiType(ApiType::OpenGL);
 	auto pApp = AppFactory::GetApplication();
 
-	if (!pApp->Initialize(&iasiStartInfo)) {
+	if (IR_FAILED(pApp->Initialize(&iasiStartInfo))) {
 		pApp->Release();
 		return -1;
 	}

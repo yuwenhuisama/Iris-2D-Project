@@ -74,7 +74,7 @@ namespace Iris2D {
 		* 如果在设置 Bitmap 之前该 Sprite 已经存在 Bitmap ，那么用户应该手动释放之前的 Bitmap ，Iris 2D 不会自动释放之前的 Bitmap 。此项特性出于对于共享 Bitmap 的考虑。
 		* @param pBitmap 一个 BitmapDX 对象的指针。
 		*/
-		void SetBitmap(Bitmap*& pBitmap) override;
+		ResultCode SetBitmap(Bitmap*& pBitmap) override;
 		
 		Bitmap* GetBitmap() const override;
 
@@ -430,7 +430,7 @@ namespace Iris2D {
 		* \~chinese
 		* 对当前的 Sprite 更新一帧。如果当前的 Sprite 被设置了动画，那么调用该函数将会让当前 Sprite 的动画前进一帧。
 		*/
-		void Update() override;
+		ResultCode Update() override;
 
 		
 		/**
@@ -443,7 +443,7 @@ namespace Iris2D {
 		 * \brief 对当前 Sprite 设置一个特效。
 		 * \param pEffect 指向 Effect 对象的指针
 		 */
-		void SetEffect(Effect::EffectBase* pEffect) override;
+		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
 
 		private:
 			Sprite(ISprite* pSprite);

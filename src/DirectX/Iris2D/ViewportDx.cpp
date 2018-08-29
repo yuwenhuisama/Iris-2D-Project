@@ -1,5 +1,4 @@
 #include "DirectX/Iris2D/ViewportDX.h"
-#include "Common/Iris2D/Sprite.h"
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/Color.h"
 #include "Common/Iris2D/Viewport.h"
@@ -16,14 +15,12 @@
 #include "DirectX/Iris2D/GraphicsDX.h"
 #include "DirectX/Iris2D/Shaders/ViewportVertexShader.h"
 #include "DirectX/Iris2D/Shaders/ViewportPixelShader.h"
-#include "DirectX/Iris2D/Shaders/SpriteVertexShader.h"
-#include "DirectX/Iris2D/Shaders/SpritePixelShader.h"
 
 namespace Iris2D
 {
 	Viewport* ViewportDX::sm_pGlobalViewport = nullptr;
 
-	ViewportDX * ViewportDX::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
+	ViewportDX * ViewportDX::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight)
 	{
 		auto pNewViewport = new ViewportDX();
 		pNewViewport->m_pTexture = TextureDX::Create(nWidth, nHeight);
@@ -51,9 +48,9 @@ namespace Iris2D
 		return pNewViewport;
 	}
 
-	ViewportDX * ViewportDX::Create(const Rect * pRect, IR_PARAM_RESULT_CT)
+	ViewportDX * ViewportDX::Create(const Rect * pRect)
 	{
-		return Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()), IR_PARAM);
+		return Create(pRect->GetX(), pRect->GetY(), static_cast<unsigned int>(pRect->GetWidth()), static_cast<unsigned int>(pRect->GetHeight()));
 	}
 
 	void ViewportDX::Release(ViewportDX*& pViewport)
@@ -238,12 +235,7 @@ namespace Iris2D
 
 		if (m_bSrcRectDirtyFlag || (m_pSrcRect && GetProxied<RectDX*>(m_pSrcRect)->Modified())) {
 			if (m_pSrcRect) {
-				auto left = m_pSrcRect->GetLeft();
-				auto top = m_pSrcRect->GetTop();
-				auto right = m_pSrcRect->GetRight();
-				auto bottom = m_pSrcRect->GetBottom();
-
-				auto ptSize = m_pTexture->GetRenderTargetBitmap()->GetSize();
+				const auto ptSize = m_pTexture->GetRenderTargetBitmap()->GetSize();
 
 				m_ivpsPixelBuffer.m_f4ViewportRect = {
 					m_pSrcRect->GetLeft() / ptSize.width,
@@ -357,7 +349,7 @@ namespace Iris2D
 		dsdResourceData.pSysMem = arrVertices;
 
 		auto pD3DManager = D3DResourceManager::Instance();
-		auto hResult = pD3DManager->GetD3D11Device()->CreateBuffer(&dbdVertextDesc, &dsdResourceData, &m_pVertexBuffer);
+		const auto hResult = pD3DManager->GetD3D11Device()->CreateBuffer(&dbdVertextDesc, &dsdResourceData, &m_pVertexBuffer);
 		if (FAILED(hResult)) {
 			SafeCOMRelease(m_pVertexBuffer);
 			return false;

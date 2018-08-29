@@ -49,7 +49,7 @@ namespace Iris2D {
 		* @return 如果成功创建 Viewport ，那么将会返回该 ViewportDX 的指针，否则返回 nullptr。
 		* @see Create(RectDX* pRect, IR_PARAM_RESULT)
 		*/
-		static Viewport* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
+		static Viewport* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight);
 
 		/**
 		* \~english
@@ -65,7 +65,7 @@ namespace Iris2D {
 		* @return 如果成功创建 Viewport ，那么将会返回该 ViewportDX 的指针，否则返回 nullptr。
 		* @see Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
 		*/
-		static Viewport* Create(const Rect* pRect, IR_PARAM_RESULT);
+		static Viewport* Create(const Rect* pRect);
 
 		/**
 		* \~english
@@ -101,7 +101,7 @@ namespace Iris2D {
 		* 这个属性在以任意点为旋转中心进行旋转的时候相当有用。
 		* @param fOX 当前 Sprite 传送原点的 X 坐标。
 		*/
-		void SetOX(float fOX);
+		void SetOX(float fOX) override;
 		/**
 		* \~english
 		* Get X position of origin transfer position of current viewport.
@@ -112,7 +112,7 @@ namespace Iris2D {
 		* 获取当前 Viewport 的传送原点的 X 坐标。
 		* @return 当前 Viewport 的传送原点的 X 坐标。
 		*/
-		float GetOX() const;
+		float GetOX() const override;
 
 		/**
 		* \~english
@@ -132,7 +132,7 @@ namespace Iris2D {
 		* 这个属性在以任意点为旋转中心进行旋转的时候相当有用。
 		* @param fOY 当前 Viewport 传送原点的 Y 坐标。
 		*/
-		void SetOY(float fOY);
+		void SetOY(float fOY) override;
 		/**
 		* \~english
 		* Get Y position of origin transfer position of current viewport.
@@ -143,7 +143,7 @@ namespace Iris2D {
 		* 获取当前 Viewport 的传送原点的 Y 坐标。
 		* @return 当前 Viewport 的传送原点的 Y 坐标。
 		*/
-		float GetOY() const;
+		float GetOY() const override;
 
 		/**
 		* \~english
@@ -159,7 +159,7 @@ namespace Iris2D {
 		* 当前 Viewport 的 (0, 0)  即是传入的 Rect 的原点。这个函数便于让 Viewport 只显示它的内容的一部分。
 		* @param pSrcRect 指向限制 Rect 对象的指针。
 		*/
-		void SetSrcRect(Rect*& pSrcRect);
+		void SetSrcRect(Rect*& pSrcRect) override;
 		/**
 		* \~english
 		* Get the limit rect of current viewport.
@@ -170,7 +170,7 @@ namespace Iris2D {
 		* 获取当前 Viewport 的限制 Rect 的指针。
 		* @return 当前 Viewport 的限制 Rect 的指针。
 		*/
-		Rect* GetSrcRect() const;
+		Rect* GetSrcRect() const override;
 
 		/**
 		* \~english
@@ -197,7 +197,7 @@ namespace Iris2D {
 		*
 		* @param pTone 指向 Tone 对象的指针。
 		*/
-		void SetTone(Tone*& pTone);
+		void SetTone(Tone*& pTone) override;
 		/**
 		* \~english
 		* Get the tone object of current viewport.
@@ -208,7 +208,7 @@ namespace Iris2D {
 		* 获取当前 viewport 的 Tone 的指针。
 		* @return 当前 Viewport 的 Tone 的指针。
 		*/
-		Tone* GetTone() const;
+		Tone* GetTone() const override;
 
 		/**
 		 * \~english

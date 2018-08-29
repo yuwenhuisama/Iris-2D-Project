@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Iris2DNativeBridge
+namespace Iris2D.NativeBridge
 {
     public static class GraphicsNative
     {
@@ -9,31 +9,31 @@ namespace Iris2DNativeBridge
         public static extern IntPtr GetInstance();
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_Update")]
-        public static extern void Update(IntPtr handle, IntPtr result);
+        public static extern Int32 Update(IntPtr handle, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_UpdateNoLock")]
-        public static extern void UpdateNoLock(IntPtr handle, IntPtr result);
+        public static extern Int32 UpdateNoLock(IntPtr handle, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_Wait")]
-        public static extern void Wait(IntPtr handle, UInt32 duration, IntPtr result);
+        public static extern Int32 Wait(IntPtr handle, UInt32 duration, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_FadeOut")]
-        public static extern void FadeOut(IntPtr handle, UInt32 duration, IntPtr result);
+        public static extern Int32 FadeOut(IntPtr handle, UInt32 duration, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_FadeIn")]
-        public static extern void FadeIn(IntPtr handle, UInt32 duration, IntPtr result);
+        public static extern Int32 FadeIn(IntPtr handle, UInt32 duration, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_Freeze", CharSet = CharSet.Unicode)]
-        public static extern void Freeze(IntPtr handle);
+        public static extern Int32 Freeze(IntPtr handle);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_Transition", CharSet = CharSet.Unicode)]
-        public static extern void Transition(IntPtr handle, UInt32 duration, string filename, UInt32 vague, IntPtr result);
+        public static extern Int32 Transition(IntPtr handle, UInt32 duration, string filename, UInt32 vague, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_FrameReset")]
         public static extern void FrameReset(IntPtr handle);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_ResizeScreen", CharSet = CharSet.Unicode)]
-        public static extern void ResizeScreen(IntPtr handle, UInt32 width, UInt32 height, IntPtr result);
+        public static extern Int32 ResizeScreen(IntPtr handle, UInt32 width, UInt32 height, IntPtr result);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_SetWidth")]
         public static extern void SetWidth(IntPtr handle, UInt32 width);

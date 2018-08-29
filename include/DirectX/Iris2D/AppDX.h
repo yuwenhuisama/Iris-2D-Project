@@ -54,19 +54,19 @@ namespace Iris2D
 
 	public:
 #ifdef _WIN32
-		virtual bool Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle);
+		ResultCode Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
 #else
-		virtual bool Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle);
+		ResultCode(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wszTitle) override;
 #endif
-		virtual bool Initialize(const AppStartupInfo* pInfo);
-		virtual bool Run();
-		virtual void Release();
-		virtual bool IsUninitialized() const;
-		virtual bool IsInitiatlize() const;
-		virtual bool IsRunning() const;
-		virtual bool IsQuited() const;
-		virtual void Quite();
-		virtual float GetTimeDelta() const;
+		ResultCode Initialize(const AppStartupInfo* pInfo) override;
+		bool Run() override;
+		void Release() override;
+		bool IsUninitialized() const override;
+		bool IsInitiatlize() const override;
+		bool IsRunning() const override;
+		bool IsQuited() const override;
+		void Quite() override;
+		float GetTimeDelta() const override;
 
 	private:
 #ifdef _WIN32

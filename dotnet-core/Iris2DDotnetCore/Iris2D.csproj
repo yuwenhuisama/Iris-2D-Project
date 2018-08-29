@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Iris2DNativeBridge\Iris2DNativeBridge.csproj" />
+    <ProjectReference Include="..\Iris2DNativeBridge\Iris2D.NativeBridge.csproj" />
   </ItemGroup>
 
 </Project>

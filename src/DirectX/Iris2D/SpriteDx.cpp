@@ -7,7 +7,6 @@
 #include "DirectX/Iris2D/Shaders/SpritePixelShader.h"
 #include "DirectX/Iris2D/D3DResourceManager.h"
 #include "DirectX/Util/SpriteVertexDX.h"
-#include "DirectX/Iris2D/GraphicsDX.h"
 #include "DirectX/Util/TextureDX.h"
 
 #include "Common/Iris2D/Viewport.h"
@@ -23,7 +22,7 @@ namespace Iris2D
 {
 	SpriteDX * Iris2D::SpriteDX::Create(Viewport* pViewport)
 	{
-		auto pSprite = new SpriteDX();
+		const auto pSprite = new SpriteDX();
 		pSprite->m_pViewport = pViewport == nullptr ? ViewportDX::GetGlobalViewport() : pViewport;
 		
 		GetProxied<ViewportDX*>(pSprite->m_pViewport)->AddSprite(pSprite);
@@ -48,14 +47,14 @@ namespace Iris2D
 		delete pSprite;
 	}
 
-	void SpriteDX::SetBitmap(Bitmap*& pBitmap)
+	ResultCode SpriteDX::SetBitmap(Bitmap*& pBitmap)
 	{
 		if (m_pBitmap == pBitmap) {
-			return;
+			return IRR_Success;
 		}
 
 		if (!pBitmap) {
-			return;
+			return IRR_Success;
 		}
 
 		Bitmap::Release(m_pBitmap);
@@ -65,6 +64,8 @@ namespace Iris2D
 		CreateSpriteVertexBuffer();
 
 		m_bfPixelShaderBuffer.m_f4SpriteRect = { 0.0f, 0.0f, 1.0f, 1.0f };
+
+		return IRR_Success;
 	}
 
 	Bitmap * SpriteDX::GetBitmap() const
@@ -248,11 +249,13 @@ namespace Iris2D
 		return m_pTone;
 	}
 
-	void SpriteDX::Update()
+	ResultCode SpriteDX::Update()
 	{
+		return IRR_Success;
 	}
 
-	void SpriteDX::SetEffect(Effect::EffectBase* pEffect) {
+	ResultCode SpriteDX::SetEffect(Effect::EffectBase* pEffect) {
+		return IRR_Success;
 	}
 
 	void SpriteDX::Render()
@@ -302,11 +305,6 @@ namespace Iris2D
 
 		if (m_bSrcRectDirtyFlag || (m_pSrcRect && GetProxied<RectDX*>(m_pSrcRect)->Modified())) {
 			if (m_pSrcRect) {
-				auto left = m_pSrcRect->GetLeft();
-				auto top = m_pSrcRect->GetTop();
-				auto right = m_pSrcRect->GetRight();
-				auto bottom = m_pSrcRect->GetBottom();
-
 				m_bfPixelShaderBuffer.m_f4SpriteRect = {
 					m_pSrcRect->GetLeft() / m_pBitmap->GetWidth(),
 					m_pSrcRect->GetTop() / m_pBitmap->GetHeight(),
@@ -391,8 +389,8 @@ namespace Iris2D
 
 		SafeCOMRelease(m_pVertexBuffer);
 
-		auto nWidth = m_pBitmap->GetWidth();
-		auto nHeight = m_pBitmap->GetHeight();
+		const auto nWidth = m_pBitmap->GetWidth();
+		const auto nHeight = m_pBitmap->GetHeight();
 
 		SpriteVertex arrVertices[] = {
 			{ XMFLOAT4(static_cast<float>(nWidth), 0.0f,						1.0f, 1.0f), XMFLOAT2(1.0f, 0.0f) },

@@ -36,7 +36,7 @@ namespace Iris2D {
 		* Iris 2D 支持锁帧，因此如果使用该函数，那么 Iris 2D 将会自动地控制游戏的更新速度。 Iris 2D 控制帧率的机制，即是如果游戏更新过快则简单地进行等待。
 		* @see UpdateNoLock()
 		*/
-		void Update(IR_PARAM_RESULT);
+		ResultCode Update() override;
 
 		/**
 		* \~english
@@ -56,32 +56,32 @@ namespace Iris2D {
 		* 该函数将会在不控制两帧更新时间间隔的情况下更新游戏帧，因此游戏会全速运行。
 		* @see Update()
 		*/
-		void UpdateNoLock(IR_PARAM_RESULT);
+		ResultCode UpdateNoLock() override;
 
-		void Wait(unsigned int nDuration, IR_PARAM_RESULT);
-		void FadeOut(unsigned int nDuration, IR_PARAM_RESULT);
-		void FadeIn(unsigned int nDuration, IR_PARAM_RESULT);
-		void Freeze(IR_PARAM_RESULT);
-		void Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT);
+		ResultCode Wait(unsigned int nDuration) override;
+		ResultCode FadeOut(unsigned int nDuration) override;
+		ResultCode FadeIn(unsigned int nDuration) override;
+		ResultCode Freeze() override;
+		ResultCode Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague) override;
 		//void Snap2Bitmap(IIrisBitmap *bitmap, IR_PARAM_RESULT);
-		void FrameReset();
-		void ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
+		void FrameReset() override;
+		ResultCode ResizeScreen(unsigned int nWidth, unsigned int nHeight) override;
 
-		void SetWidth(unsigned int nWidth);
-		unsigned int GetWidth() const;
-		void SetHeight(unsigned int nHeight);
-		unsigned int GetHeight() const;
-		unsigned int GetFrameCount() const;
+		void SetWidth(unsigned int nWidth) override;
+		unsigned int GetWidth() const override;
+		void SetHeight(unsigned int nHeight) override;
+		unsigned int GetHeight() const override;
+		unsigned int GetFrameCount() const override;
 
-		float GetBrightness() const;
-		void SetBrightness(float fBrightness);
+		float GetBrightness() const override;
+		void SetBrightness(float fBrightness) override;
 
-		void SetFrameRate(float fFrameRate);
-		float GetFrameRate() const;
+		void SetFrameRate(float fFrameRate) override;
+		float GetFrameRate() const override;
 
-		void Release();
+		void Release() override;
 
-		float GetMsPerUpdate();
+		float GetMsPerUpdate() override;
 
 	private:
 		Graphics();

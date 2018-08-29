@@ -10,13 +10,13 @@
 namespace Iris2D {
 	Viewport::Viewport(IViewport* pViewport) : Proxy(pViewport) {}
 
-	Viewport * Viewport::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
+	Viewport * Viewport::Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight) {
 		Viewport* pViewport = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
 		{
-			auto pTmp = ViewportDX::Create(fX, fY, nWidth, nHeight, IR_PARAM);
+			auto pTmp = ViewportDX::Create(fX, fY, nWidth, nHeight);
 			pViewport = new Viewport(pTmp);
 			pTmp->SetProxy(pViewport);
 		}
@@ -24,7 +24,7 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 		{
-			auto pTmp = ViewportGL::Create(fX, fY, nWidth, nHeight, IR_PARAM);
+			auto pTmp = ViewportGL::Create(fX, fY, nWidth, nHeight);
 			pViewport = new Viewport(pTmp);
 			pTmp->SetProxy(pViewport);
 		}
@@ -36,13 +36,13 @@ namespace Iris2D {
 		return pViewport;
 	}
 
-	Viewport * Viewport::Create(const Rect * pRect, IR_PARAM_RESULT_CT) {
+	Viewport * Viewport::Create(const Rect * pRect) {
 		Viewport* pViewport = nullptr;
 		switch (AppFactory::GetApiType()) {
 #ifdef _WIN32
 		case ApiType::DirectX:
 		{
-			auto pTmp = ViewportDX::Create(pRect, IR_PARAM);
+			auto pTmp = ViewportDX::Create(pRect);
 			pViewport = new Viewport(pTmp);
 			pTmp->SetProxy(pViewport);
 		}
@@ -50,7 +50,7 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 		{
-			auto pTmp = ViewportGL::Create(pRect, IR_PARAM);
+			auto pTmp = ViewportGL::Create(pRect);
 			pViewport = new Viewport(pTmp);
 			pTmp->SetProxy(pViewport);
 		}

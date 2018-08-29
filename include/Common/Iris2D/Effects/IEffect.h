@@ -8,7 +8,7 @@ namespace Iris2D {
 		class IEffect {
 		public:
 			virtual ~IEffect() = default;
-			virtual bool Update(const Sprite* pSprite) = 0;
+			virtual bool Update() = 0;
 		};
 	}
 }

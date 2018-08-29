@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Iris2DNativeBridge
+namespace Iris2D.NativeBridge
 {
     public static class ApplicationFactoryNative
     {

@@ -9,40 +9,40 @@ namespace Iris2D {
 
 	Graphics::Graphics() : Proxy(nullptr) {}
 
-	void Graphics::Update(IR_PARAM_RESULT_CT) {
-		m_pProxied->Update(IR_PARAM);
+	ResultCode Graphics::Update() {
+		return m_pProxied->Update();
 	}
 
-	void Graphics::UpdateNoLock(IR_PARAM_RESULT_CT) {
-		m_pProxied->UpdateNoLock(IR_PARAM);
+	ResultCode Graphics::UpdateNoLock() {
+		return m_pProxied->UpdateNoLock();
 	}
 
-	void Graphics::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT) {
-		m_pProxied->Wait(nDuration, IR_PARAM);
+	ResultCode Graphics::Wait(unsigned int nDuration) {
+		return m_pProxied->Wait(nDuration);
 	}
 
-	void Graphics::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT) {
-		m_pProxied->FadeIn(nDuration, IR_PARAM);
+	ResultCode Graphics::FadeOut(unsigned int nDuration) {
+		return m_pProxied->FadeIn(nDuration);
 	}
 
-	void Graphics::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT) {
-		m_pProxied->FadeOut(nDuration, IR_PARAM);
+	ResultCode Graphics::FadeIn(unsigned int nDuration) {
+		return m_pProxied->FadeOut(nDuration);
 	}
 
-	void Graphics::Freeze(IR_PARAM_RESULT_CT) {
-		m_pProxied->Freeze(IR_PARAM);
+	ResultCode Graphics::Freeze() {
+		return m_pProxied->Freeze();
 	}
 
-	void Graphics::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT) {
-		m_pProxied->Transition(nDuration, wstrFilename, nVague, IR_PARAM);
+	ResultCode Graphics::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague) {
+		return m_pProxied->Transition(nDuration, wstrFilename, nVague);
 	}
 
 	void Graphics::FrameReset() {
-		m_pProxied->FrameReset();
+		return m_pProxied->FrameReset();
 	}
 
-	void Graphics::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT) {
-		m_pProxied->ResizeScreen(nWidth, nHeight, IR_PARAM);
+	ResultCode Graphics::ResizeScreen(unsigned int nWidth, unsigned int nHeight) {
+		return m_pProxied->ResizeScreen(nWidth, nHeight);
 	}
 
 	void Graphics::SetWidth(unsigned int nWidth) {
