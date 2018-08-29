@@ -6,7 +6,7 @@ namespace Iris2D
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Begin...");
 
