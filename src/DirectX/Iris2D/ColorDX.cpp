@@ -6,7 +6,6 @@ namespace Iris2D
 	ColorDX * ColorDX::Create(unsigned char cRed, unsigned char cGreen, unsigned char cBlue, unsigned char cAlpha)
 	{
 		auto pColor = new ColorDX();
-		pColor->IncreamRefCount();
 
 		pColor->m_n4Color = { cRed, cGreen, cBlue, cAlpha };
 		return pColor;

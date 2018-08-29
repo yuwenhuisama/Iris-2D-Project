@@ -57,7 +57,7 @@ namespace Iris2D {
 		GraphicsGL::Instance()->RemoveViewport(pViewport);
 
 		if (pViewport != GetProxied<ViewportGL*>(sm_pGlobalViewport)) {
-			if (GetProxied<SpriteGL*>(pViewport)->GetRefCount() == 1) {
+			if (pViewport->GetRefCount() == 1) {
 				GraphicsGL::Instance()->RemoveViewport(pViewport);
 				GetProxied<ViewportGL*>(sm_pGlobalViewport)->m_stSprites.insert(pViewport->m_stSprites.begin(), pViewport->m_stSprites.end());
 			}

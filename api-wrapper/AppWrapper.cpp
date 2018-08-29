@@ -5,12 +5,12 @@ EXPORT_API APP_HANDLE App_GetInstance() {
 	return Iris2D::AppFactory::GetApplication();
 }
 
-EXPORT_API BOOL App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle) {
+EXPORT_API ResultCode App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle) {
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
 	return pApplication->Initialize(hInstance, nWidth, nHeight, reinterpret_cast<Iris2D::GameFunc>(pfGameFunc), wszTitle);
 }
 
-EXPORT_API BOOL App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo) {
+EXPORT_API ResultCode App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo) {
 	Iris2D::AppStartupInfo asiInfo(pInfo->m_hInstance, pInfo->nShowCmd, pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, reinterpret_cast<Iris2D::GameFunc>(pInfo->m_pfFunc), pInfo->m_wstrTitle);
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
 	return pApplication->Initialize(&asiInfo);

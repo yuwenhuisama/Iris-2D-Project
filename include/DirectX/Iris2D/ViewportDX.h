@@ -5,6 +5,7 @@
 #include "DirectX/Util/ViewportShaderBuffersDX.h"
 #include "Common/Iris2D/IViewport.h"
 #include "Common/Iris2D/Proxied.h"
+#include "Common/Util/RefCounter.h"
 
 namespace Iris2D
 {
@@ -18,7 +19,7 @@ namespace Iris2D
 	class Viewport;
 
 	__declspec(align(16))
-	class ViewportDX : public IViewport, public Proxied<Viewport>
+	class ViewportDX : public IViewport, public Proxied<Viewport>, public RefCounter
 	{
 	private:
 		std::unordered_set<SpriteDX*> m_stSprits;
@@ -48,9 +49,9 @@ namespace Iris2D
 		static Viewport* sm_pGlobalViewport;
 
 	public:
-		static ViewportDX* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT);
+		static ViewportDX* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight);
 
-		static ViewportDX* Create(const Rect* pRect, IR_PARAM_RESULT);
+		static ViewportDX* Create(const Rect* pRect);
 		static void Release(ViewportDX*& pViewport);
 
 		static void ForceRelease(ViewportDX*& pViewport);
@@ -61,17 +62,17 @@ namespace Iris2D
 
 	public:
 
-		void SetOX(float fOX);
-		float GetOX() const;
+		void SetOX(float fOX) override;
+		float GetOX() const override;
 
-		void SetOY(float fOY);
-		float GetOY() const;
+		void SetOY(float fOY) override;
+		float GetOY() const override;
 
-		void SetSrcRect(Rect*& pSrcRect);
-		Rect* GetSrcRect() const;
+		void SetSrcRect(Rect*& pSrcRect) override;
+		Rect* GetSrcRect() const override;
 
-		void SetTone(Tone*& pTone);
-		Tone* GetTone() const;
+		void SetTone(Tone*& pTone) override;
+		Tone* GetTone() const override;
 
 		bool Dispose();
 		bool RenderSprite();

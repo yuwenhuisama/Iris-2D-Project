@@ -24,26 +24,26 @@ namespace Iris2D {
 		m_stViewports.erase(pViewport);
 	}
 
-	void GraphicsDX::Update(IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::Update()
 	{
 		auto pApp = ApplicationDX::Instance();
 		auto pD3DManager = D3DResourceManager::Instance();
 
 		while (!m_bUpdateLockFlag) {
-			MSG msg = { 0 };
-			if (::PeekMessage(&msg, 0, 0, 0, PM_REMOVE)) {
+			MSG msg = { 0};
+			if (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 				::TranslateMessage(&msg);
 				::DispatchMessage(&msg);
 
 				if (msg.message == WM_QUIT) {
 					pApp->Quite();
-					return;
+					return IRR_Success;;
 				}
 			}
 			else {
 				m_fCurrentTime = static_cast<float>(::timeGetTime());
 				if (m_fCurrentTime >= m_fLastTime) {
-					auto fTimeDelta = (m_fCurrentTime - m_fLastTime);
+					//const auto fTimeDelta = (m_fCurrentTime - m_fLastTime);
 					m_fLastTime = m_fCurrentTime + m_fMsPerUpdate;
 					m_bUpdateLockFlag = true;
 				}
@@ -54,9 +54,11 @@ namespace Iris2D {
 		}
 		m_bUpdateLockFlag = false;
 		++m_nFrameCount;
+
+		return IRR_Success;
 	}
 
-	void GraphicsDX::UpdateNoLock(IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::UpdateNoLock()
 	{
 		auto pApp = ApplicationDX::Instance();
 		auto pD3DManager = D3DResourceManager::Instance();
@@ -68,7 +70,7 @@ namespace Iris2D {
 
 			if (msg.message == WM_QUIT) {
 				pApp->Quite();
-				return;
+				return IRR_Success;
 			}
 		}
 		else {
@@ -76,26 +78,33 @@ namespace Iris2D {
 			pD3DManager->GetSwapChain()->Present(0, 0);
 		}
 		++m_nFrameCount;
+
+		return IRR_Success;
 	}
 
-	void GraphicsDX::Wait(unsigned int nDuration, IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::Wait(unsigned int nDuration)
 	{
+		return IRR_Success;
 	}
 
-	void GraphicsDX::FadeOut(unsigned int nDuration, IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::FadeOut(unsigned int nDuration)
 	{
+		return IRR_Success;
 	}
 
-	void GraphicsDX::FadeIn(unsigned int nDuration, IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::FadeIn(unsigned int nDuration)
 	{
+		return IRR_Success;
 	}
 
-	void GraphicsDX::Freeze(IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::Freeze()
 	{
+		return IRR_Success;
 	}
 
-	void GraphicsDX::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague)
 	{
+		return IRR_Success;
 	}
 
 	void GraphicsDX::FrameReset()
@@ -103,8 +112,9 @@ namespace Iris2D {
 		m_nFrameCount = 0;
 	}
 
-	void GraphicsDX::ResizeScreen(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
+	ResultCode GraphicsDX::ResizeScreen(unsigned int nWidth, unsigned int nHeight)
 	{
+		return IRR_Success;
 	}
 
 	void GraphicsDX::SetWidth(unsigned int nWidth)

@@ -24,7 +24,6 @@ namespace Iris2D
 	FontDX * FontDX::Create(const std::wstring & wstrFontName)
 	{
 		auto pNewObject = new FontDX();
-		pNewObject->IncreamRefCount();
 		pNewObject->m_wstrFontName = wstrFontName;
 
 		return pNewObject;

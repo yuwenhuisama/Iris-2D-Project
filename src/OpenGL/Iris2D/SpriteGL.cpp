@@ -24,6 +24,7 @@
 
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "OpenGL/Iris2D/RectGL.h"
+#include "OpenGL/Iris2D/SpriteGL.h"
 
 #include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "OpenGL/Iris2D/Effects/EffectBaseGL.h"
@@ -42,7 +43,7 @@ namespace Iris2D {
 
 	void SpriteGL::Release(SpriteGL *& pSprite) {
 		if (pSprite) {
-			if (GetProxied<SpriteGL*>(pSprite)->GetRefCount() == 1) {
+			if (pSprite->GetRefCount() == 1) {
 				GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(pSprite);
 			}
 			RefferRelease(pSprite);

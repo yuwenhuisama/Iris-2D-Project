@@ -16,6 +16,10 @@ extern "C" {
 		IRR_EffectInitializeFailed,
 		IRR_EffectUpdateFailed,
 		IRR_RenderBufferCreateFailed,
+		IRR_D2DInitializeFailed,
+		IRR_D3DInitializeFailed,
+		IRR_D2DOperationFailed,
+		IRR_TextureOutputFailed,
 	};
 }
 

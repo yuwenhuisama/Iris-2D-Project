@@ -21,6 +21,8 @@ namespace Iris2D {
 	typedef Color Tone;
 
 	class ViewportGL : public Proxied<Viewport>, public IViewport, public RefCounter {
+		REF_FRIEND_DECLARE
+
 	public:
 		static ViewportGL* Create(float fX, float fY, unsigned int nWidth, unsigned int nHeight);
 		static ViewportGL* Create(const Rect* pRect);

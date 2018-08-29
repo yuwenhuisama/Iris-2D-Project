@@ -50,7 +50,7 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 		{
-			auto pTmp = ViewportGL::Create(pRect, IR_PARAM);
+			auto pTmp = ViewportGL::Create(pRect);
 			pViewport = new Viewport(pTmp);
 			pTmp->SetProxy(pViewport);
 		}

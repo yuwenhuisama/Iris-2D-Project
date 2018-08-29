@@ -23,6 +23,8 @@ namespace Iris2D {
 	}
 
 	class SpriteGL : public ISprite, public Proxied<Sprite>, public RefCounter {
+		REF_FRIEND_DECLARE
+
 	private:
 		Bitmap* m_pBitmap = nullptr;
 		Rect* m_pSrcRect = nullptr;

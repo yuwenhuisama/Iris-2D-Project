@@ -2,6 +2,7 @@
 #define _H_COMMON_WRAPPER_
 
 #include "Common/Iris2D.h"
+#include "Common/Util/Result.h"
 #include "Types.h"
 
 #ifdef LIBRARY_EXPORTS

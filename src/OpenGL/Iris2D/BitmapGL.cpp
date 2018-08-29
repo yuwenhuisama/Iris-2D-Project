@@ -56,11 +56,11 @@ namespace Iris2D {
 		return m_pTexture->GetHeight();
 	}
 
-	ResultCode BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity) {
+	ResultCode BitmapGL::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity) {
 		return IRR_Success;
 	}
 
-	ResultCode BitmapGL::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmapGL, const Rect * pSrcRect, float fOpacity) {
+	ResultCode BitmapGL::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity) {
 		return IRR_Success;
 	}
 

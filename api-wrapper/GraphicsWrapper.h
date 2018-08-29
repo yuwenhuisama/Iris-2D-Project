@@ -4,23 +4,25 @@
 #include "Common.h"
 
 #undef LIBRARY_EXPORTS
-
+#ifdef __cplusplus
 extern "C" {
+#endif
+
 	EXPORT_API GRAPHICS_HANDLE Graphics_GetInstance();
-	EXPORT_API void Graphics_Update(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT);
-	EXPORT_API void Graphics_UpdateNoLock(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT);
+	EXPORT_API ResultCode Graphics_Update(GRAPHICS_HANDLE hGraphics);
+	EXPORT_API ResultCode Graphics_UpdateNoLock(GRAPHICS_HANDLE hGraphics);
 
-	EXPORT_API void Graphics_Wait(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
+	EXPORT_API ResultCode Graphics_Wait(GRAPHICS_HANDLE hGraphics, unsigned int nDuration);
 
-	EXPORT_API void Graphics_FadeOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
-	EXPORT_API void Graphics_FadeIn(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, IR_PARAM_RESULT_CT);
+	EXPORT_API ResultCode Graphics_FadeOut(GRAPHICS_HANDLE hGraphics, unsigned int nDuration);
+	EXPORT_API ResultCode Graphics_FadeIn(GRAPHICS_HANDLE hGraphics, unsigned int nDuration);
 
-	EXPORT_API void Graphics_Freeze(GRAPHICS_HANDLE hGraphics, IR_PARAM_RESULT_CT);
-	EXPORT_API void Graphics_Transition(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, wchar_t* wstrFilename, unsigned int nVague, IR_PARAM_RESULT_CT);
+	EXPORT_API ResultCode Graphics_Freeze(GRAPHICS_HANDLE hGraphics);
+	EXPORT_API ResultCode Graphics_Transition(GRAPHICS_HANDLE hGraphics, unsigned int nDuration, wchar_t* wstrFilename, unsigned int nVague);
 
 	EXPORT_API void Graphics_FrameReset(GRAPHICS_HANDLE hGraphics);
 
-	EXPORT_API void Graphics_ResizeScreen(GRAPHICS_HANDLE hGraphics, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT);
+	EXPORT_API ResultCode Graphics_ResizeScreen(GRAPHICS_HANDLE hGraphics, unsigned int nWidth, unsigned int nHeight);
 
 	EXPORT_API void Graphics_SetWidth(GRAPHICS_HANDLE hGraphics, unsigned int nWidth);
 	EXPORT_API unsigned int Graphics_GetWidth(GRAPHICS_HANDLE hGraphics);
@@ -38,6 +40,8 @@ extern "C" {
 	EXPORT_API void Graphics_Release(GRAPHICS_HANDLE hGraphics);
 	EXPORT_API float Graphics_GetMsPerUpdate(GRAPHICS_HANDLE hGraphics);
 
+#ifdef __cplusplus
 }
+#endif
 
 #endif // _H_GRAPHICS_WRAPPER_

@@ -26,23 +26,23 @@ namespace Iris2D
 		static FontDX* Create(const std::wstring& wstrFontName);
 		static void Release(FontDX*& pFont);
 
-		virtual void SetName(const std::wstring& wstrFontName);
-		virtual const std::wstring& GetName() const;
+		void SetName(const std::wstring& wstrFontName) override;
+		const std::wstring& GetName() const override;
 
-		virtual void SetSize(unsigned int nSize);
-		virtual unsigned int GetSize() const;
+		void SetSize(unsigned int nSize) override;
+		unsigned int GetSize() const override;
 
-		virtual void SetBold(bool bBold);
-		virtual bool GetBold() const;
+		void SetBold(bool bBold) override;
+		bool GetBold() const override;
 
-		virtual void SetItalic(bool bItalic);
-		virtual bool GetItalic() const;
+		void SetItalic(bool bItalic) override;
+		bool GetItalic() const override;
 
-		virtual void SetShadow(bool bShadow);
-		virtual bool GetShadow() const;
+		void SetShadow(bool bShadow) override;
+		bool GetShadow() const override;
 
-		virtual void SetColor(Color*& pColor);
-		virtual Color* GetColor() const;
+		void SetColor(Color*& pColor) override;
+		Color* GetColor() const override;
 
 		static std::wstring GetDefaultName();
 		static unsigned int GetDefaultSize();

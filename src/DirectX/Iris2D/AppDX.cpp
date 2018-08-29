@@ -18,9 +18,9 @@ namespace Iris2D
 	}
 
 #ifdef _WIN32
-	bool ApplicationDX::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle, IR_PARAM_RESULT_CT)
+	ResultCode ApplicationDX::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle)
 #else
-	bool ApplicationDX::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wstrTitle, IR_PARAM_RESULT_CT)
+	ResultCode ApplicationDX::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring& wstrTitle)
 #endif
 	{
 		AppStartupInfo iasiInfo;
@@ -35,32 +35,32 @@ namespace Iris2D
 		return Initialize(&iasiInfo);
 	}
 
-	bool ApplicationDX::Initialize(const AppStartupInfo * pInfo, IR_PARAM_RESULT_CT)
+	ResultCode ApplicationDX::Initialize(const AppStartupInfo * pInfo)
 	{
 		m_eAppState = AppState::Uninitialized;
 
 		if (!InitializeWindow(pInfo)) {
-			return false;
+			return IRR_WindowInitializeFailed;
 		}
 
 		if (!D3DResourceManager::Instance()->Initialize(m_hWindow)) {
-			return false;
+			return IRR_D3DInitializeFailed;
 		}
 
 		if (!D2DResourceManager::Instance()->Initialize()) {
-			return false;
+			return IRR_D2DInitializeFailed;
 		}
 
 		GraphicsDX::Instance()->SetWidth(pInfo->m_nWidth);
 		GraphicsDX::Instance()->SetHeight(pInfo->m_nHeight);
 
 		if (!TextureDX::Initialize()) {
-			return false;
+			return IRR_TextureSettingInitializeFailed;
 		}
 
 
 		if (!ViewportDX::InitGlobalViewport(pInfo->m_nWidth, pInfo->m_nHeight)) {
-			return false;
+			return IRR_RenderBufferCreateFailed;
 		}
 
 		/* Shaders */
@@ -68,33 +68,33 @@ namespace Iris2D
 		auto pSpriteVertexShader = SpriteVertexShader::Instance();
 		auto pD3DManager = D3DResourceManager::Instance();
 		if (!pSpriteVertexShader->Initialize()) {
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		if (!pSpriteVertexShader->CreateInputLayout()) {
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		// Sprite Pixel Shader
 		auto pSpritePixelShader = SpritePixelShader::Instance();
 		if (!pSpritePixelShader->Initialize()) {
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		// Viewport Vertex Shader
 		auto pViewportVertexShader = ViewportVertexShader::Instance();
 		if (!pViewportVertexShader->Initialize()) {
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		if (!pViewportVertexShader->CreateInputLayout()) {
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		// Viewport Pixel Shader
 		auto pViewportPixelShader = ViewportPixelShader::Instance();
 		if (!pViewportPixelShader->Initialize()) {
-			return false;
+			return IRR_ShaderInitializeFailed;
 		}
 
 		m_pfGameFunc = pInfo->m_pfFunc;
@@ -102,7 +102,7 @@ namespace Iris2D
 
 		m_eAppState = AppState::Initialized;
 
-		return true;
+		return IRR_Success;
 	}
 
 	bool ApplicationDX::Run()
@@ -164,6 +164,8 @@ namespace Iris2D
 			PostQuitMessage(0);
 			ApplicationDX::Instance()->Quite();
 			break;
+		default:
+			break;
 		}
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
@@ -175,9 +177,9 @@ namespace Iris2D
 		wndClass.style = CS_HREDRAW | CS_VREDRAW;
 		wndClass.lpfnWndProc = WndProc;
 		wndClass.hInstance = pInfo->m_hInstance;
-		wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+		wndClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wndClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_WINDOW + 1);
-		wndClass.lpszMenuName = NULL;
+		wndClass.lpszMenuName = nullptr;
 		wndClass.lpszClassName = "IrisAppWindow";
 
 		if (!RegisterClassEx(&wndClass)) {
@@ -187,7 +189,7 @@ namespace Iris2D
 		RECT rcArea = { 0, 0, pInfo->m_nWidth, pInfo->m_nHeight };
 		AdjustWindowRect(&rcArea, WS_OVERLAPPEDWINDOW, false);
 
-		HWND hHwnd = CreateWindowW(L"IrisAppWindow",
+		const HWND hHwnd = CreateWindowW(L"IrisAppWindow",
 			pInfo->m_wstrTitle.c_str(),
 			WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX,
 			pInfo->m_nX,

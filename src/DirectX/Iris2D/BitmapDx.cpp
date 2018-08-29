@@ -21,10 +21,9 @@
 
 namespace Iris2D
 {
-	BitmapDX * BitmapDX::Create(const std::wstring & wstrFileName, IR_PARAM_RESULT_CT)
+	BitmapDX * BitmapDX::Create(const std::wstring & wstrFileName)
 	{
-		auto pBitmap = new BitmapDX();
-		pBitmap->IncreamRefCount();
+		const auto pBitmap = new BitmapDX();
 
 		pBitmap->m_pTexture = TextureDX::Create(wstrFileName);
 		if (!pBitmap->m_pTexture) {
@@ -35,10 +34,9 @@ namespace Iris2D
 		return pBitmap;
 	}
 
-	BitmapDX * BitmapDX::Create(unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
+	BitmapDX * BitmapDX::Create(unsigned int nWidth, unsigned int nHeight)
 	{
-		auto pBitmap = new BitmapDX();
-		pBitmap->IncreamRefCount();
+		const auto pBitmap = new BitmapDX();
 
 		pBitmap->m_pTexture = TextureDX::Create(nWidth, nHeight);
 		if (pBitmap->m_pTexture == nullptr) {
@@ -49,21 +47,20 @@ namespace Iris2D
 		return pBitmap;
 	}
 
-	BitmapDX * BitmapDX::Create(Bitmap * pSrcBitmap, IR_PARAM_RESULT_CT)
+	BitmapDX * BitmapDX::Create(Bitmap * pSrcBitmap)
 	{
-		auto pNewBitmap = BitmapDX::Create(pSrcBitmap->GetWidth(), pSrcBitmap->GetHeight(), IR_PARAM);
+		auto pNewBitmap = BitmapDX::Create(pSrcBitmap->GetWidth(), pSrcBitmap->GetHeight());
 		auto pArea = Rect::Create(0.0f, 0.0f, static_cast<float>(pSrcBitmap->GetWidth()), static_cast<float>(pSrcBitmap->GetHeight()));
-		pNewBitmap->IncreamRefCount();
 
-		pNewBitmap->Blt(0, 0, pSrcBitmap, pArea, 255.0f, IR_PARAM);
+		pNewBitmap->Blt(0, 0, pSrcBitmap, pArea, 255.0f);
 
 		Rect::Release(pArea);
 
 		return pNewBitmap;
 	}
 
-	BitmapDX * BitmapDX::CopyFrom(Bitmap * pSrcBitmap, IR_PARAM_RESULT_CT) {
-		return BitmapDX::Create(pSrcBitmap, IR_PARAM);
+	BitmapDX * BitmapDX::CopyFrom(Bitmap * pSrcBitmap) {
+		return BitmapDX::Create(pSrcBitmap);
 	}
 
 	void BitmapDX::Release(BitmapDX *& pBitmap)
@@ -79,7 +76,7 @@ namespace Iris2D
 		}
 	}
 
-	bool BitmapDX::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const Color * pColor, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const Color * pColor)
 	{
 		auto pDestRenderTarget = m_pTexture->GetRenderTargetBitmap();
 
@@ -94,7 +91,7 @@ namespace Iris2D
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pBrush);
 			m_pTexture->ReleaseSyncFromDx10Side();
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		pDestRenderTarget->FillRectangle(D2D1::RectF(static_cast<float>(nX), static_cast<float>(nY), static_cast<float>(nX + nWidth), static_cast<float>(nY + nHeight)), pBrush);
@@ -103,24 +100,24 @@ namespace Iris2D
 		SafeCOMRelease(pBrush);
 
 		if (FAILED(hResult)) {
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		m_pTexture->ReleaseSyncFromDx10Side();
 
-		return true;
+		return IRR_Success;
 	}
 
-	bool BitmapDX::FillRect(const Rect * pRect, const Color * pColor, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::FillRect(const Rect * pRect, const Color * pColor)
 	{
 		return FillRect(static_cast<unsigned int>(pRect->GetX()), 
 			static_cast<unsigned int>(pRect->GetY()),
 			static_cast<unsigned int>(pRect->GetWidth()),
 			static_cast<unsigned int>(pRect->GetHeight()),
-			pColor, IR_PARAM);
+			pColor);
 	}
 
-	bool BitmapDX::Clear(IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::Clear()
 	{
 		auto pDestRenderTarget = m_pTexture->GetRenderTargetBitmap();
 
@@ -134,32 +131,32 @@ namespace Iris2D
 		m_pTexture->ReleaseSyncFromDx10Side();
 
 		if (FAILED(hResult)) {
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
-		return true;
+		return IRR_Success;
 	}
 
-	bool BitmapDX::ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::ClearRect(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight)
 	{
 		auto pClearColor = Color::Create(0, 0, 0, 0);
-		auto bResult = FillRect(nX, nY, nWidth, nHeight, pClearColor);
+		const auto bResult = FillRect(nX, nY, nWidth, nHeight, pClearColor);
 		Color::Release(pClearColor);
 		return bResult;
 	}
 
-	bool BitmapDX::ClearRect(const Rect * pRect, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::ClearRect(const Rect * pRect)
 	{
 		auto pClearColor = Color::Create(0, 0, 0, 0);
-		auto bResult = FillRect(pRect, pClearColor);
+		const auto bResult = FillRect(pRect, pClearColor);
 		Color::Release(pClearColor);
 		return bResult;
 	}
 
-	Color* BitmapDX::GetPixel(unsigned int nX, unsigned int nY, IR_PARAM_RESULT_CT) const
+	Color* BitmapDX::GetPixel(unsigned int nX, unsigned int nY) const
 	{
 		// Capture Texture
-		auto pSrcD3DResource = m_pTexture->GetTexture();
+		const auto pSrcD3DResource = m_pTexture->GetTexture();
 		DirectX::ScratchImage siImage;
 		m_pTexture->AquireSyncFromDx11Side();
 		DirectX::CaptureTexture(D3DResourceManager::Instance()->GetD3D11Device(), D3DResourceManager::Instance()->GetD3DDeviceContext(), pSrcD3DResource, siImage);
@@ -171,8 +168,8 @@ namespace Iris2D
 			return nullptr;
 		}
 
-		auto pRawData = pImage->pixels;
-		auto nPitch = pImage->rowPitch;
+		const auto pRawData = pImage->pixels;
+		const auto nPitch = pImage->rowPitch;
 
 		union {
 			unsigned int m_nData;
@@ -183,7 +180,7 @@ namespace Iris2D
 				unsigned char m_cRed;
 				unsigned char m_cAlpha;
 			} m_stRGBA;
-		} uRGBA;
+		} uRGBA{};
 
 		uRGBA.m_nData = *reinterpret_cast<unsigned int*>(pRawData + nPitch * nY + nX * sizeof(uRGBA));
 
@@ -191,24 +188,24 @@ namespace Iris2D
 
 	}
 
-	bool BitmapDX::SetPixel(unsigned int nX, unsigned int nY, const Color * pColor, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::SetPixel(unsigned int nX, unsigned int nY, const Color * pColor)
 	{
-		return FillRect(nX, nY, nX + 1, nY + 1, pColor, IR_PARAM);
+		return FillRect(nX, nY, nX + 1, nY + 1, pColor);
 	}
 
-	bool BitmapDX::SaveToFile(const std::wstring& wstrFilePath)
+	ResultCode BitmapDX::SaveToFile(const std::wstring& wstrFilePath)
 	{
-		return m_pTexture->SaveToFile(wstrFilePath); 
+		return m_pTexture->SaveToFile(wstrFilePath) ? IRR_Success : IRR_TextureOutputFailed;
 	}
 
-	bool BitmapDX::HueChange(float fHue, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::HueChange(float fHue)
 	{
 		// Copy a bitmap
 		auto pTmpBitmap = BitmapDX::Create(GetProxy());
 		auto pTmpTexture = pTmpBitmap->GetTexture();
 
 		ID2D1Effect* pEffectHueRotate = nullptr;
-		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
+		//auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
 		auto pSurface = m_pTexture->GetDxgiSurface();
 
 		auto pD2DContext = D2DResourceManager::Instance()->GetD2DDeviceContext();
@@ -234,7 +231,7 @@ namespace Iris2D
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pBitmap);
 			BitmapDX::Release(pTmpBitmap);
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		auto pTmpSurface = pTmpTexture->GetDxgiSurface();
@@ -244,7 +241,7 @@ namespace Iris2D
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pBitmap);
 			BitmapDX::Release(pTmpBitmap);
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		hResult = pD2DContext->CreateEffect(CLSID_D2D1HueRotation, &pEffectHueRotate);
@@ -252,7 +249,7 @@ namespace Iris2D
 			SafeCOMRelease(pBitmap);
 			SafeCOMRelease(pEffectHueRotate);
 			BitmapDX::Release(pTmpBitmap);
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		pEffectHueRotate->SetInput(0, pBitmap2);
@@ -272,7 +269,7 @@ namespace Iris2D
 			SafeCOMRelease(pBitmap2);
 			SafeCOMRelease(pEffectHueRotate);
 			BitmapDX::Release(pTmpBitmap);
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		SafeCOMRelease(pBitmap);
@@ -280,7 +277,7 @@ namespace Iris2D
 		SafeCOMRelease(pEffectHueRotate);
 		BitmapDX::Release(pTmpBitmap);
 
-		return true;
+		return IRR_Success;
 	}
 
 	void BitmapDX::SetFont(Font *& pFont)
@@ -297,7 +294,7 @@ namespace Iris2D
 		return m_pFont;
 	}
 
-	unsigned int BitmapDX::TextSize(const Font * pFont, const std::wstring & wstrText, IR_PARAM_RESULT_CT)
+	unsigned int BitmapDX::TextSize(const Font * pFont, const std::wstring & wstrText)
 	{
 		auto pTextFormat = CreateTextFormat(GetProxied<FontDX*>(pFont));
 		auto pDWriteFactory = D2DResourceManager::Instance()->GetDWriteFactory();
@@ -308,7 +305,7 @@ namespace Iris2D
 			hResult = pDWriteFactory->CreateTextLayout(wstrText.c_str(), wstrText.size(), pTextFormat, std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), &pLayout);
 		}
 
-		DWRITE_TEXT_METRICS dtmTemp;
+		DWRITE_TEXT_METRICS dtmTemp{};
 		if (SUCCEEDED(hResult)) {
 			pLayout->GetMetrics(&dtmTemp);
 		}
@@ -319,10 +316,10 @@ namespace Iris2D
 		return static_cast<unsigned int>(ceil(dtmTemp.widthIncludingTrailingWhitespace));
 	}
 
-	bool BitmapDX::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring& wstrText, AlignType nAlign, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring& wstrText, AlignType nAlign)
 	{
 		auto pTextFormat = CreateTextFormat(GetProxied<FontDX*>(m_pFont));
-		auto pDWriteFactory = D2DResourceManager::Instance()->GetDWriteFactory();
+		//auto pDWriteFactory = D2DResourceManager::Instance()->GetDWriteFactory();
 		auto pRenderTarget = m_pTexture->GetRenderTargetBitmap();
 
 		HRESULT hResult = S_OK;
@@ -347,7 +344,7 @@ namespace Iris2D
 
 			pRenderTarget->BeginDraw();
 
-			auto pColor = m_pFont
+			const auto pColor = m_pFont
 				? m_pFont->GetColor() ? m_pFont->GetColor() : Font::GetDefaultColor()
 				: Font::GetDefaultColor();
 
@@ -395,19 +392,27 @@ namespace Iris2D
 
 		SafeCOMRelease(pTextFormat);
 
-		return SUCCEEDED(hResult) ? true : false;
+		return SUCCEEDED(hResult) ? IRR_Success : IRR_D2DOperationFailed;
 	}
 
-	bool BitmapDX::DrawText(const Rect* pRect, const std::wstring& wstrText, AlignType nAlign, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::DrawText(const Rect* pRect, const std::wstring& wstrText, AlignType nAlign)
 	{
-		return DrawText(static_cast<float>(pRect->GetX()), static_cast<float>(pRect->GetY()), static_cast<float>(pRect->GetWidth()), static_cast<float>(pRect->GetHeight()), wstrText, nAlign, IR_PARAM);
+		return DrawText(static_cast<float>(pRect->GetX()), static_cast<float>(pRect->GetY()), static_cast<float>(pRect->GetWidth()), static_cast<float>(pRect->GetHeight()), wstrText, nAlign);
 	}
 
-	bool BitmapDX::Dispose()
+	ResultCode BitmapDX::GetPixel(unsigned nX, unsigned nY, Color*& pColor) {
+		return IRR_Success;
+	}
+
+	ResultCode BitmapDX::TextSize(const Font* pFont, const std::wstring& wstrText, unsigned& nSize) {
+		return IRR_Success;
+	}
+
+	ResultCode BitmapDX::Dispose()
 	{
 		TextureDX::Release(m_pTexture);
 		Font::Release(m_pFont);
-		return true;
+		return IRR_Success;
 	}
 
 	TextureDX * BitmapDX::GetTexture() const
@@ -467,16 +472,16 @@ namespace Iris2D
 		return static_cast<unsigned int>(m_pTexture->GetRenderTargetBitmap()->GetPixelSize().height);
 	}
 
-	bool BitmapDX::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::Blt(unsigned int nDestX, unsigned int nDestY, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity)
 	{
 		auto pDestSrc = Rect::Create(static_cast<float>(nDestX), static_cast<float>(nDestY), static_cast<float>(pSrcRect->GetWidth()), static_cast<float>(pSrcRect->GetHeight()));
-		auto bResult = StretchBlt(pDestSrc, pSrcBitmap, pSrcRect, fOpacity, IR_PARAM);
+		auto bResult = StretchBlt(pDestSrc, pSrcBitmap, pSrcRect, fOpacity);
 		Rect::Release(pDestSrc);
 
 		return bResult;
 	}
 
-	bool BitmapDX::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity, IR_PARAM_RESULT_CT)
+	ResultCode BitmapDX::StretchBlt(const Rect * pDestRect, const Bitmap * pSrcBitmap, const Rect * pSrcRect, float fOpacity)
 	{
 		if (fOpacity < 0.0f) {
 			fOpacity = 0.0f;
@@ -508,13 +513,13 @@ namespace Iris2D
 		dbpProperties.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
 
 		ID2D1Bitmap* pDestBitmap = nullptr;
-		unsigned int nSrcWidth = pImage->width;
-		unsigned int nSrcHeight = pImage->height;
-		D2D1_SIZE_U dsuSize = { nSrcWidth, nSrcHeight };
+		const unsigned int nSrcWidth = pImage->width;
+		const unsigned int nSrcHeight = pImage->height;
+		const D2D1_SIZE_U dsuSize = { nSrcWidth, nSrcHeight };
 		auto hResult = pDestRenderTarget->CreateBitmap(dsuSize, pImage->pixels, pImage->rowPitch, dbpProperties, &pDestBitmap);
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pDestBitmap);
-			return false;
+			return IRR_D2DOperationFailed;
 		}
 
 		// Draw
@@ -533,13 +538,13 @@ namespace Iris2D
 
 		SafeCOMRelease(pDestBitmap);
 		if (FAILED(hResult)) {
-			return false;
+			return IRR_D2DOperationFailed;
 		}
-		return true;
+		return IRR_Success;
 	}
 
 	BitmapDX::~BitmapDX()
 	{
-		Dispose();
+		BitmapDX::Dispose();
 	}
 }
