@@ -4,7 +4,9 @@
 #include "Common/CompileConfigure.h"
 #include <cwchar>
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 	enum  ResultCode {
 		IRR_Success = 0,
 		IRR_OpenGLInitializeFailed,
@@ -21,7 +23,9 @@ extern "C" {
 		IRR_D2DOperationFailed,
 		IRR_TextureOutputFailed,
 	};
+#ifdef __cplusplus
 }
+#endif
 
 #define IR_SUCCESS(result) (result == IRR_Success)
 #define IR_FAILED(result) (result != IRR_Success)
