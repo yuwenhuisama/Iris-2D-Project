@@ -5,6 +5,7 @@
 #include "Common/Iris2D/Proxied.h"
 #include "Common/Util/RefCounter.h"
 
+
 #ifdef _WIN32
 #undef DrawText
 #endif

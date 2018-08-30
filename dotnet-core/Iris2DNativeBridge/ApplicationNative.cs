@@ -28,7 +28,7 @@ namespace Iris2D.NativeBridge
         [DllImport("libiris2d.dll", EntryPoint = "App_GetInstance")]
         public static extern IntPtr GetInstance();
 
-        [DllImport("libiris2d.dll", EntryPoint = "App_Initialize1", CharSet = CharSet.Unicode)]
+        [DllImport("libiris2d.dll", EntryPoint = "App_Initialize", CharSet = CharSet.Unicode)]
         public static extern Int32 Initialize(IntPtr handle, IntPtr instance, UInt32 width, UInt32 height, GameFunc gameFunc, string title);
 
         [DllImport("libiris2d.dll", EntryPoint = "App_Initialize2", CharSet = CharSet.Unicode)]

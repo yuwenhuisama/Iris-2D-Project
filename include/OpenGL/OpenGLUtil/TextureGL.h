@@ -38,6 +38,8 @@ namespace Iris2D {
 
 		bool SaveToFile(const std::wstring& wstrFilePath) const;
 
+		GLuint GetTextureID();
+
 	private:
 		bool LoadTexture(const std::wstring& wstrTexturePath);
 		bool LoadTexture(unsigned char* pPixels, unsigned int nWidth, unsigned int nHeight);

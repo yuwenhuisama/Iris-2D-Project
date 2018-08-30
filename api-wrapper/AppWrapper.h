@@ -43,7 +43,7 @@ extern "C" {
 #pragma pack(pop)
 
 	EXPORT_API APP_HANDLE App_GetInstance();
-	EXPORT_API ResultCode App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
+	EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
 	EXPORT_API ResultCode App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo);
 	EXPORT_API BOOL App_Run(APP_HANDLE hHandle);
 	EXPORT_API void App_Release(APP_HANDLE hHandle);

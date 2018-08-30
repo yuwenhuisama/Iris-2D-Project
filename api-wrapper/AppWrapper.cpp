@@ -5,7 +5,7 @@ EXPORT_API APP_HANDLE App_GetInstance() {
 	return Iris2D::AppFactory::GetApplication();
 }
 
-EXPORT_API ResultCode App_Initialize1(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle) {
+EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle) {
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
 	return pApplication->Initialize(hInstance, nWidth, nHeight, reinterpret_cast<Iris2D::GameFunc>(pfGameFunc), wszTitle);
 }

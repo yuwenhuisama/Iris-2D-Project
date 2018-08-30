@@ -11,6 +11,13 @@
 
 #include "Common/Util/DebugUtil.h"
 
+#include "OpenGL/Iris2D/Shaders/BackGroundShaderGL.h";
+#include "OpenGL/Iris2D/Shaders/ClearRectShaderGL.h";
+#include "OpenGL/Iris2D/Shaders/CopyRectShaderGL.h";
+#include "OpenGL/Iris2D/Shaders/FillRectshaderGL.h";
+#include "OpenGL/Iris2D/Shaders/FontShaderGL.h";
+#include "OpenGL/Iris2D/Shaders/HueChangeShaderGL.h";
+
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {
 		static ApplicationGL application;
@@ -81,6 +88,36 @@ namespace Iris2D {
 
 		if (!BackTransitionShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing back transition shader.");
+			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!BackGroundShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing back ground shader.");
+			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!ClearRectShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing clear rect shader.");
+			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!CopyRectShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing copy rect shader.");
+			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!FillRectShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing fill rect shader.");
+			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!FontShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing font shader.");
+			return IRR_ShaderInitializeFailed;
+		}	
+
+		if (!HueChangeShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing hue change shader.");
 			return IRR_ShaderInitializeFailed;
 		}
 
