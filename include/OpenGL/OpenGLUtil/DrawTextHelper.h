@@ -9,28 +9,29 @@
 
 namespace Iris2D {
 	struct Character {
-		GLuint TextureID;   // ID handle of the glyph texture
+		GLuint m_nTextureID;   // ID handle of the glyph texture
 		//glm::ivec2 Size;    // Size of glyph
-		int nWidth;
-		int nHeight;
+		int m_nWidth;
+		int m_nHeight;
 		//glm::ivec2 Bearing;  // Offset from baseline to left/top of glyph
-		int nLeft;
-		int nTop;
-		GLuint Advance;    // Horizontal offset to advance to next glyph
+		int m_nLeft;
+		int m_nTop;
+		GLuint m_nAdvance;    // Horizontal offset to advance to next glyph
 	};
+
 	class DrawTexHelper {
 	private:
-		GLuint VAO=0, VBO=0;
+		GLuint m_nVAO = 0;
+		GLuint m_nVBO = 0;
 
 		std::map<wchar_t, Character> Characters;
 
 	public:
-		void Draw(const std::wstring text, GLfloat fx, GLfloat fy, GLfloat fw, GLfloat fh);
-		void LoadChar(FT_Face face, const std::wstring &text);
+		void Draw(const std::wstring& wstrText, GLfloat fX, GLfloat fY, GLfloat fW, GLfloat fH);
+		void LoadChar(FT_Face ftFace, const std::wstring& wstrText);
 		unsigned int GetTextSize(const std::wstring & wstrText);
-		char * ws2c(const wchar_t * pwText);
 
-		DrawTexHelper();
+		DrawTexHelper() = default;
 		~DrawTexHelper();
 
 	};

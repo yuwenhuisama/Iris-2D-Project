@@ -1,4 +1,5 @@
 #include "OpenGL/Iris2D/Shaders/CopyRectShaderGL.h"
+#include "Common/Iris2D/Rect.h"
 
 
 namespace Iris2D {
@@ -12,25 +13,27 @@ namespace Iris2D {
 		return ShaderGL::Initialize("shaders/GLSL/copy_rect_shader.vert", "shaders/GLSL/copy_rect_shader.frag");
 	}
 
-	void CopyRectShaderGL::SetDesRect(const Rect & desRect) {
-		SetFloat4("desRect", desRect.GetLeft(), desRect.GetTop(), desRect.GetRight(), desRect.GetBottom());
+	void CopyRectShaderGL::SetDesRect(const Rect* pDesRect) {
+		SetFloat4("desRect", pDesRect->GetLeft(), pDesRect->GetTop(), pDesRect->GetRight(), pDesRect->GetBottom());
 	}
-	void CopyRectShaderGL::SetSrcTexCoordRect(const Rect & srcRect, TextureGL *psrcTextur) {
+	void CopyRectShaderGL::SetSrcTexCoordRect(const Rect* pSrcRect, const TextureGL* pSrcTexture) {
 
-		float fSrcTexcoodLeft = static_cast<float>(srcRect.GetLeft()) / static_cast<float>(psrcTextur->GetWidth());
-		float fSrcTexcoodTop =1- static_cast<float>(srcRect.GetTop()) / static_cast<float>(psrcTextur->GetHeight());
-		float fSrcTexcoodRight = static_cast<float>(srcRect.GetRight()) / static_cast<float>(psrcTextur->GetWidth());
-		float fSrcTexcoodBottom =1- static_cast<float>(srcRect.GetBottom()) / static_cast<float>(psrcTextur->GetHeight());
+		const float fSrcTexcoodLeft = static_cast<float>(pSrcRect->GetLeft()) / static_cast<float>(pSrcTexture->GetWidth());
+		const float fSrcTexcoodTop =1 - static_cast<float>(pSrcRect->GetTop()) / static_cast<float>(pSrcTexture->GetHeight());
+		const float fSrcTexcoodRight = static_cast<float>(pSrcRect->GetRight()) / static_cast<float>(pSrcTexture->GetWidth());
+		const float fSrcTexcoodBottom =1 - static_cast<float>(pSrcRect->GetBottom()) / static_cast<float>(pSrcTexture->GetHeight());
 
 		SetFloat4("srcRect", fSrcTexcoodLeft, fSrcTexcoodTop, fSrcTexcoodRight, fSrcTexcoodBottom);
 	}
 
-	void CopyRectShaderGL::SetSrcRect(const Rect & srcRect) {
-		SetFloat4("srcRect", srcRect.GetLeft(), srcRect.GetTop(), srcRect.GetRight(), srcRect.GetBottom());
+	void CopyRectShaderGL::SetSrcRect(const Rect* pSrcRect) {
+		SetFloat4("srcRect", pSrcRect->GetLeft(), pSrcRect->GetTop(), pSrcRect->GetRight(), pSrcRect->GetBottom());
 	}
+
 	void CopyRectShaderGL::SetProjectionMatrix(const glm::mat4 & mtProjection) {
 		SetMatrix("desOthoMat", mtProjection);
 	}
+
 	void CopyRectShaderGL::SetDesOthoMat(const glm::mat4 & mtProjection) {
 		SetMatrix("desOthoMat", mtProjection);
 	}

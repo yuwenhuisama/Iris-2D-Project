@@ -11,7 +11,6 @@ namespace Iris2D {
 		static BackGroundShaderGL* Instance();
 	public:
 		bool Initialize();
-		GLuint BindBufferData();
 
 	private:
 		BackGroundShaderGL() = default;

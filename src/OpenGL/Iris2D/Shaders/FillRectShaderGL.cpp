@@ -1,7 +1,8 @@
-
 #include "Common/Util/DebugUtil.h"
 #include "OpenGL/Iris2D/Shaders/FillRectshaderGL.h"
 #include "OpenGL/OpenGLUtil/BackBufferVertexGL.h"
+#include "Common/Iris2D/Rect.h"
+#include "Common/Iris2D/Color.h"
 
 
 namespace Iris2D {
@@ -16,20 +17,18 @@ namespace Iris2D {
 		}
 
 		//£¨top,left,width,height£©
-		void FillRectShaderGL::SetRectLocation(const Rect &  rectLocation) {
-			SetFloat4("fillLocation", rectLocation.GetLeft(), rectLocation.GetTop(), rectLocation.GetRight(), rectLocation.GetBottom());
-
+		void FillRectShaderGL::SetRectLocation(const Rect*  pRectLocation) {
+			SetFloat4("fillLocation", pRectLocation->GetLeft(), pRectLocation->GetTop(), pRectLocation->GetRight(), pRectLocation->GetBottom());
 		}
-
 		
-		void FillRectShaderGL::SetFillColor(const Color & fillColor) {
-			//SetFloat4("fillColor", 0.8f,0.8f,0.8f,0.8f);
-
-			SetFloat4("fillColor", static_cast<float>(fillColor.GetRed())/255.f , static_cast<float>(fillColor.GetGreen())/255.f, static_cast<float>(fillColor.GetBlue())/255.f, static_cast<float>(fillColor.GetAlpha())/255.f);
+		void FillRectShaderGL::SetFillColor(const Color* pFillColor) {
+			SetFloat4("fillColor", static_cast<float>(pFillColor->GetRed())/255.f , static_cast<float>(pFillColor->GetGreen())/255.f, static_cast<float>(pFillColor->GetBlue())/255.f, static_cast<float>(pFillColor->GetAlpha()) / 255.f);
 		}
+
 		void FillRectShaderGL::SetProjectionMatrix(const glm::mat4& mtProjection) {
 			SetMatrix("projectionMat", mtProjection);
 		}
+
 		GLuint FillRectShaderGL::BindBufferData(float fWidth, float fHeigh) {
 			BackBufferVertexGL arrBuffers[] = {
 			{ { fWidth,	fHeigh,	0.0f, 1.0f },{ 1.0f, 1.0f } },
@@ -62,7 +61,5 @@ namespace Iris2D {
 
 			glBindVertexArray(0);
 			return VAO;
-
 		}
-
 }

@@ -1,6 +1,8 @@
 #include "Common/Util/DebugUtil.h"
 #include "OpenGL/OpenGLUtil/BackBufferVertexGL.h"
 #include "OpenGL/Iris2D/Shaders/ClearRectShaderGL.h"
+#include "Common/Iris2D/Rect.h"
+
 namespace Iris2D {
 	ClearRectShaderGL* ClearRectShaderGL::Instance() {
 		static ClearRectShaderGL clearRectshader;
@@ -12,15 +14,14 @@ namespace Iris2D {
 	}
 
 	//£¨top,left,width,height£©
-	void ClearRectShaderGL::SetRectLocation(const Rect &  rectLocation) {
-		SetFloat4("fillLocation", rectLocation.GetLeft(), rectLocation.GetTop(), rectLocation.GetRight(), rectLocation.GetBottom());
-
+	void ClearRectShaderGL::SetRectLocation(const Rect*  pLocation) {
+		SetFloat4("fillLocation", pLocation->GetLeft(), pLocation->GetTop(), pLocation->GetRight(), pLocation->GetBottom());
 	}
-
 
 	void ClearRectShaderGL::SetProjectionMatrix(const glm::mat4& mtProjection) {
 		SetMatrix("projectionMat", mtProjection);
 	}
+
 	GLuint ClearRectShaderGL::BindBufferData(float fWidth, float fHeigh) {
 		BackBufferVertexGL arrBuffers[] = {
 		{ { fWidth,	fHeigh,	0.0f, 1.0f },{ 1.0f, 1.0f } },

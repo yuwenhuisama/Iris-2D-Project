@@ -11,10 +11,11 @@ namespace Iris2D {
 		return ShaderGL::Initialize("shaders/GLSL/hue_change_shader.vert", "shaders/GLSL/hue_change_shader.frag");
 	}
 
-	void HueChangeShaderGL::setHue(int nHue)
+	void HueChangeShaderGL::SetHue(int nHue)
 	{
 		SetInt("hsv_h", nHue);
 	}
+
 	GLuint HueChangeShaderGL::BindBufferData() {
 		float arrs[] = {
 			//destPoint			//Ttexcood	

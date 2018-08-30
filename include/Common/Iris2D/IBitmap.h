@@ -50,8 +50,8 @@ namespace Iris2D {
 		virtual unsigned int TextSize(const Font* pFont, const std::wstring& wstrText) = 0;
 		virtual ResultCode TextSize(const Font* pFont, const std::wstring& wstrText, unsigned int& nSize) = 0;
 
-		virtual ResultCode DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring& wstrText, AlignType nAlign) = 0;
-		virtual ResultCode DrawText(const Rect* pRect, const std::wstring& wstrText, AlignType nAlign) = 0;
+		virtual ResultCode DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring& wstrText, AlignType eAlign) = 0;
+		virtual ResultCode DrawText(const Rect* pRect, const std::wstring& wstrText, AlignType eAlign) = 0;
 
 		virtual ResultCode Dispose() = 0;
 	};
