@@ -16,8 +16,7 @@ void main()
 	vec4 fillRectzw=orthoMat*vec4(fillLocation.zw, 0.0f, 1.f);
 
 	if( Position.x>fillRectxy.x && Position.x<fillRectzw.x && Position.y>fillRectxy.y && Position.y<fillRectzw.y  ){
-	//color = fillColor;
-		color = mix(texture(ourTexture, TexCoord),fillColor, fillColor.w);
+		color = mix(texture(ourTexture, TexCoord),vec4(fillColor.xyz,1.0f), fillColor.w);
 	}		
 	else
 		color = texture(ourTexture, TexCoord);

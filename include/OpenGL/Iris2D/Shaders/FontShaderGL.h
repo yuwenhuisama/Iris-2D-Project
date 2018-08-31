@@ -21,7 +21,7 @@ namespace Iris2D {
 
 		void SetFontColor(const  Color& fontColor);
 		void SetProjectionMatrix(const glm::mat4& mtProjection);
-		GLuint BindBufferData(const std::wstring & wstrText);
+		
 
 	private:
 		FontShaderGL() = default;

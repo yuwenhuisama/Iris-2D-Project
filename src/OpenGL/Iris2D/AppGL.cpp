@@ -70,12 +70,12 @@ namespace Iris2D {
 			PrintDebugMessageW(L"Error when initializing Graphics settings.");
 			return IRR_GraphicsInitializeFailed;
 		}
-
+		
 		if (!ViewportShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing viewport shader.");
 			return IRR_ShaderInitializeFailed;
 		}
-
+		
 		if (!SpriteShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing sprite shader.");
 			return IRR_ShaderInitializeFailed;

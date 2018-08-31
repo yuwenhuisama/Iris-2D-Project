@@ -16,13 +16,12 @@ namespace Iris2D {
 		void SetFillColor(const Color* fillColor);
 		void SetProjectionMatrix(const glm::mat4& mtProjection);
 
-		GLuint BindBufferData(float fWidth, float fHeigh);
+	
 
 	private:
 		FillRectShaderGL() = default;
 		~FillRectShaderGL() = default;
 	};
-	
 }
 
 #endif // _H_FILLRECT_SHADER_GL_

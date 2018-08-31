@@ -15,11 +15,11 @@ namespace Iris2D {
 		void SetProjectionMatrix(const glm::mat4& mtProjection);
 		void SetDesOthoMat(const glm::mat4 & mtProjection);
 		void SetDesRect(const Rect* fillRect);
-		void SetSrcTexCoordRect(const Rect* srcRect, const TextureGL *psrcTextur);
+		void SetSrcTexCoordRect(const Rect* srcRect, const float &fWidth, const float &fHeight);
 		void SetSrcRect(const Rect* srcRect);
 		void SetOpacity(float opacity);
 
-		GLuint BindBufferData(float fWidth, float fHeight);
+	
 
 	private:
 		CopyRectShaderGL() = default;

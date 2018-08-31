@@ -9,7 +9,7 @@ namespace Iris2D {
 	}
 	bool BackGroundShaderGL::Initialize()
 	{
-		return ShaderGL::Initialize("shaders/GLSL/backgroud_shader.vert", "shaders/GLSL/backgroud_shader.frag");
+		return ShaderGL::Initialize("shaders/GLSL/backgroud_vertex_shader.vert", "shaders/GLSL/backgroud_fragment_shader.frag");
 
 	}
 
