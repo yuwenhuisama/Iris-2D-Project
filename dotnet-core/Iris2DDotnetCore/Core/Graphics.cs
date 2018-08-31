@@ -14,23 +14,23 @@ namespace Iris2D.Core
 
         public static readonly Graphics Instance = new Graphics(GraphicsNative.GetInstance());
 
-        public void Update() => NativeHelper.AssertSuccess(GraphicsNative.Update(m_handle, IntPtr.Zero));
+        public void Update() => NativeHelper.AssertSuccess(GraphicsNative.Update(m_handle));
 
-        public void UpdateNoLock() => NativeHelper.AssertSuccess(GraphicsNative.UpdateNoLock(m_handle, IntPtr.Zero));
+        public void UpdateNoLock() => NativeHelper.AssertSuccess(GraphicsNative.UpdateNoLock(m_handle));
 
-        public void Wait(UInt32 duration) => NativeHelper.AssertSuccess(GraphicsNative.Wait(m_handle, duration, IntPtr.Zero));
+        public void Wait(UInt32 duration) => NativeHelper.AssertSuccess(GraphicsNative.Wait(m_handle, duration));
 
-        public void FadeOut(UInt32 duration) => NativeHelper.AssertSuccess(GraphicsNative.FadeOut(m_handle, duration, IntPtr.Zero));
+        public void FadeOut(UInt32 duration) => NativeHelper.AssertSuccess(GraphicsNative.FadeOut(m_handle, duration));
 
-        public void FadeIn(UInt32 duration) => NativeHelper.AssertSuccess(GraphicsNative.FadeIn(m_handle, duration, IntPtr.Zero));
+        public void FadeIn(UInt32 duration) => NativeHelper.AssertSuccess(GraphicsNative.FadeIn(m_handle, duration));
 
         public void Freeze() => NativeHelper.AssertSuccess(GraphicsNative.Freeze(m_handle));
 
-        public void Transition(UInt32 duration, string filename, UInt32 vague) => NativeHelper.AssertSuccess(GraphicsNative.Transition(m_handle, duration, filename, vague, IntPtr.Zero));
+        public void Transition(UInt32 duration, string filename, UInt32 vague) => NativeHelper.AssertSuccess(GraphicsNative.Transition(m_handle, duration, filename, vague));
 
         public void FrameReset() => GraphicsNative.FrameReset(m_handle);
 
-        public void ResizeScreen(UInt32 width, UInt32 height) => NativeHelper.AssertSuccess(GraphicsNative.ResizeScreen(m_handle, width, height, IntPtr.Zero));
+        public void ResizeScreen(UInt32 width, UInt32 height) => NativeHelper.AssertSuccess(GraphicsNative.ResizeScreen(m_handle, width, height));
 
         public UInt32 Width
         {
