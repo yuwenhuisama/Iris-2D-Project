@@ -67,10 +67,7 @@ namespace Iris2D {
 			0.0f,											0.0f,											0.0f, 0.0f,
 			0.0f,											static_cast<float>(pSrcBitmapGL->GetHeight()),  0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -112,7 +109,7 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<float>(nWindowHeight));
+		glViewport(0, 0, nWindowWidth, nWindowHeight);
 
 		pBitmap->m_pTexture = pTextureFrameBuffer;
 
@@ -172,12 +169,7 @@ namespace Iris2D {
 			0.0f,							0.0f,								0.0f, 0.0f,
 			0.0f,							static_cast<float>(GetHeight()),	0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -192,10 +184,6 @@ namespace Iris2D {
 		})) {
 			return IRR_OpenGLVertexBufferCreateFailed;
 		}
-
-
-
-		
 		
 		pShader->Use();
 		pShader->SetDesOthoMat(c_mt4Projection);
@@ -249,10 +237,7 @@ namespace Iris2D {
 			0.0f,							0.0f,								0.0f, 0.0f,
 			0.0f,							static_cast<float>(GetHeight()),	0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -320,10 +305,7 @@ namespace Iris2D {
 			0.0f,							0.0f,								0.0f, 0.0f,
 			0.0f,							static_cast<float>(GetHeight()),  0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -337,15 +319,6 @@ namespace Iris2D {
 		})) {
 			return IRR_OpenGLVertexBufferCreateFailed;
 		}
-
-
-
-
-
-
-
-
-
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
@@ -446,12 +419,6 @@ namespace Iris2D {
 			-1.0f ,	-1.0f,		0.0f,0.0f,
 			-1.0f ,	 1.0f,    	0.0f,1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;

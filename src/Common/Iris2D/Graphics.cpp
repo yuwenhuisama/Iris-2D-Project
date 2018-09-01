@@ -45,16 +45,8 @@ namespace Iris2D {
 		return m_pProxied->ResizeScreen(nWidth, nHeight);
 	}
 
-	void Graphics::SetWidth(unsigned int nWidth) {
-		m_pProxied->SetWidth(nWidth);
-	}
-
 	unsigned int Graphics::GetWidth() const {
 		return m_pProxied->GetWidth();
-	}
-
-	void Graphics::SetHeight(unsigned int nHeight) {
-		m_pProxied->SetHeight(nHeight);
 	}
 
 	unsigned int Graphics::GetHeight() const {
