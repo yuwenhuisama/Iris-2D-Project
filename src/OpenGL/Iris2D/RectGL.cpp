@@ -1,4 +1,5 @@
 #include "OpenGL/Iris2D/RectGL.h"
+#include "Common/Iris2D/Rect.h"
 
 namespace Iris2D
 {
@@ -176,6 +177,10 @@ namespace Iris2D
 	void RectGL::ModifyDone()
 	{
 		m_dcChecker.ResetDirty(m_hModified);
+	}
+
+	bool RectGL::CheckInsectionWith(const Rect* pRect) {
+		return !(GetLeft() > pRect->GetRight() || GetTop() > pRect->GetBottom() || pRect->GetLeft() > GetRight() || pRect->GetTop() > GetBottom());
 	}
 
 	RectGL::RectGL() {

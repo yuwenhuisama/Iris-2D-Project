@@ -2,6 +2,7 @@
 #define _H_IRECT_
 
 namespace Iris2D {
+	class Rect;
 	class IRect {
 	public:
 		virtual void SetX(float fX) = 0;
@@ -30,6 +31,8 @@ namespace Iris2D {
 
 		virtual void Set(float fX, float fY, float fWidth, float fHeight) = 0;
 		virtual void Set2(float fLeft, float fTop, float fRight, float fBottom) = 0;
+
+		virtual bool CheckInsectionWith(const Rect* pRect) = 0;
 	};
 }
 

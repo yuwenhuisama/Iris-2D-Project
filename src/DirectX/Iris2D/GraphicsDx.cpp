@@ -30,7 +30,7 @@ namespace Iris2D {
 		auto pD3DManager = D3DResourceManager::Instance();
 
 		while (!m_bUpdateLockFlag) {
-			MSG msg = { 0};
+			MSG msg = { 0 };
 			if (::PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 				::TranslateMessage(&msg);
 				::DispatchMessage(&msg);

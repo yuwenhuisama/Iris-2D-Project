@@ -20,7 +20,7 @@ namespace Iris2D
 	};
 
 	template <typename PT, typename T>
-	void RefferAssign(T& refferrer, T& refferee) {
+	void RefferAssign(T& refferrer, const T& refferee) {
 		using R_PT = std::remove_pointer_t<PT>;
 		static_assert(std::is_base_of<Iris2D::RefCounter, R_PT>::value, "Only RefCounter type can use RefferAssign function.");
 

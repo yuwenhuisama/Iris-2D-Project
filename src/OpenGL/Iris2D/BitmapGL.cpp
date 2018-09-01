@@ -82,8 +82,8 @@ namespace Iris2D {
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
-		pShader->SetRectLocation((*pFillRect));
-		pShader->SetFillColor((*pFillColor));
+		pShader->SetRectLocation(pFillRect);
+		pShader->SetFillColor(pFillColor);
 
 		glBindVertexArray(VAO);
 		GetProxied<BitmapGL*>(pSrcBitmapGL)->GetTexture()->UseTexture();
@@ -146,8 +146,8 @@ namespace Iris2D {
 		const GLuint VAO = pShader->BindBufferData(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
 		pShader->Use();
 		pShader->SetDesOthoMat(c_mt4Projection);
-		pShader->SetDesRect((*pDestRect));
-		pShader->SetSrcTexCoordRect(*pSrcRect, GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture());
+		pShader->SetDesRect(pDestRect);
+		pShader->SetSrcTexCoordRect(pSrcRect, GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture());
 		pShader->SetOpacity(fOpacity);
 
 		GetTexture()->UseTexture(0);
@@ -195,8 +195,8 @@ namespace Iris2D {
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
-		pShader->SetRectLocation(*pRect);
-		pShader->SetFillColor(*pColor);
+		pShader->SetRectLocation(pRect);
+		pShader->SetFillColor(pColor);
 
 		glBindVertexArray(VAO);
 		GetTexture()->UseTexture();
@@ -243,7 +243,7 @@ namespace Iris2D {
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
-		pShader->SetRectLocation(*pRect);
+		pShader->SetRectLocation(pRect);
 
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();

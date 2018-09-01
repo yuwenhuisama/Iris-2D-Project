@@ -161,4 +161,8 @@ namespace Iris2D {
 	void Rect::Set2(float fLeft, float fTop, float fRight, float fBottom) {
 		m_pProxied->Set2(fLeft, fTop, fRight, fBottom);
 	}
+
+	bool Rect::CheckInsectionWith(const Rect* pRect) {
+		return m_pProxied->CheckInsectionWith(pRect);
+	}
 };

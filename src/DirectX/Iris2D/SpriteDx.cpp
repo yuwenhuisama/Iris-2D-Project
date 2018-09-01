@@ -168,7 +168,7 @@ namespace Iris2D
 		m_bfVertexShaderBuffer.m_f2OxOy.x = fOX;
 	}
 
-	float SpriteDX::GetOX()
+	float SpriteDX::GetOX() const
 	{
 		return m_bfVertexShaderBuffer.m_f2OxOy.x;
 	}
@@ -178,7 +178,7 @@ namespace Iris2D
 		m_bfVertexShaderBuffer.m_f2OxOy.y = fOY;
 	}
 
-	float SpriteDX::GetOY()
+	float SpriteDX::GetOY() const
 	{
 		return m_bfVertexShaderBuffer.m_f2OxOy.y;
 	}
@@ -188,7 +188,7 @@ namespace Iris2D
 		m_bfPixelShaderBuffer.m_nMirror = (bMirror ? 1 : 0);
 	}
 
-	bool SpriteDX::GetMirror()
+	bool SpriteDX::GetMirror() const
 	{
 		return m_bfPixelShaderBuffer.m_nMirror == 1;
 	}
@@ -198,7 +198,7 @@ namespace Iris2D
 		m_bVisible = bVisible;
 	}
 
-	bool SpriteDX::GetVisible()
+	bool SpriteDX::GetVisible() const
 	{
 		return m_bVisible;
 	}
@@ -214,7 +214,7 @@ namespace Iris2D
 		m_bfPixelShaderBuffer.m_fOpacity = fOpacity / 255.0f;
 	}
 
-	float SpriteDX::GetOpacity()
+	float SpriteDX::GetOpacity() const
 	{
 		return m_bfPixelShaderBuffer.m_fOpacity;;
 	}

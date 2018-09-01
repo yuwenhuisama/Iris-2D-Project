@@ -58,6 +58,8 @@ namespace Iris2D
 		bool Modified() const;
 		void ModifyDone();
 
+		bool CheckInsectionWith(const Rect* pRect) override;
+
 	private:
 		RectDX();
 		~RectDX() = default;

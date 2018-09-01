@@ -422,6 +422,8 @@ namespace Iris2D {
 				m_pFreezedBackBuffer->UseTexture();
 			}
 
+			glViewport(0, 0, m_nWidth, m_nHeight);
+
 			glClearColor(0.f, 0.f, 0.f, 1.f);
 			glClear(GL_COLOR_BUFFER_BIT /*| GL_DEPTH_BUFFER_BIT*/);
 

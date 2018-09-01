@@ -129,7 +129,7 @@ namespace Iris2D {
 		m_pProxied->SetOX(fOX);
 	}
 
-	float Sprite::GetOX() {
+	float Sprite::GetOX() const {
 		return m_pProxied->GetOX();
 	}
 
@@ -137,7 +137,7 @@ namespace Iris2D {
 		m_pProxied->SetOY(fOY);
 	}
 
-	float Sprite::GetOY() {
+	float Sprite::GetOY() const {
 		return m_pProxied->GetOY();
 	}
 
@@ -145,7 +145,7 @@ namespace Iris2D {
 		m_pProxied->SetMirror(bMirror);
 	}
 
-	bool Sprite::GetMirror() {
+	bool Sprite::GetMirror() const {
 		return m_pProxied->GetMirror();
 	}
 
@@ -153,7 +153,7 @@ namespace Iris2D {
 		m_pProxied->SetVisible(bVisible);
 	}
 
-	bool Sprite::GetVisible() {
+	bool Sprite::GetVisible() const {
 		return m_pProxied->GetVisible();
 	}
 
@@ -161,7 +161,7 @@ namespace Iris2D {
 		m_pProxied->SetOpacity(fOpacity);
 	}
 
-	float Sprite::GetOpacity() {
+	float Sprite::GetOpacity() const {
 		return m_pProxied->GetOpacity();
 	}
 

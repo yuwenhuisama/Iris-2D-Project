@@ -88,7 +88,7 @@ namespace Iris2D {
 		* 设置当前 Rect 左上角点的 X 坐标。
 		* @param fX 当前 Rect 左上角点的 X 坐标。
 		*/
-		void SetX(float fX);
+		void SetX(float fX) override;
 		/**
 		* \~english
 		* Get the x position of left top point of current rect.
@@ -99,7 +99,7 @@ namespace Iris2D {
 		* 获取当前 Rect 左上角点的 X 坐标。
 		* @return 当前 Rect 左上角点的 X 坐标。
 		*/
-		float GetX() const;
+		float GetX() const override;
 
 		/**
 		* \~english
@@ -111,7 +111,7 @@ namespace Iris2D {
 		* 设置当前 Rect 左上角点的 Y 坐标。
 		* @param fY 当前 Rect 左上角点的 Y 坐标。
 		*/
-		void SetY(float fY);
+		void SetY(float fY) override;
 		/**
 		* \~english
 		* Get the y position of left top point of current rect.
@@ -122,7 +122,7 @@ namespace Iris2D {
 		* 获取当前 Rect 左上角点的 Y 坐标。
 		* @return 当前 Rect 左上角点的 Y 坐标。
 		*/
-		float GetY() const;
+		float GetY() const override;
 
 		/**
 		* \~english
@@ -134,7 +134,7 @@ namespace Iris2D {
 		* 设置当前 Rect 的宽度。
 		* @param fWidth 当前 Rect 的宽度。
 		*/
-		void SetWidth(float fWidth);
+		void SetWidth(float fWidth) override;
 		/**
 		* \~english
 		* Set the width of current rect.
@@ -145,7 +145,7 @@ namespace Iris2D {
 		* 设置当前 Rect 的宽度。
 		* @return 当前 Rect 的宽度。
 		*/
-		float GetWidth() const;
+		float GetWidth() const override;
 
 		/**
 		* \~english
@@ -157,7 +157,7 @@ namespace Iris2D {
 		* 设置当前 Rect 的高度。
 		* @param fHeight 当前 Rect 的高度。
 		*/
-		void SetHeight(float fHeight);
+		void SetHeight(float fHeight) override;
 		/**
 		* \~english
 		* Set the height of current rect.
@@ -168,7 +168,7 @@ namespace Iris2D {
 		* 设置当前 Rect 的高度。
 		* @return 当前 Rect 的高度。
 		*/
-		float GetHeight() const;
+		float GetHeight() const override;
 
 		/**
 		* \~english
@@ -180,7 +180,7 @@ namespace Iris2D {
 		* 设置当前 Rect 左边边的 X 坐标。
 		* @param fLeft 当前 Rect 左边边的 X 坐标。
 		*/
-		void SetLeft(float fLeft);
+		void SetLeft(float fLeft) override;
 		/**
 		* \~english
 		* Get the x position of left edge of current rect.
@@ -191,7 +191,7 @@ namespace Iris2D {
 		* 获取当前 Rect 左边边的 X 坐标。
 		* @return 当前 Rect 左边边的 X 坐标。
 		*/
-		float GetLeft() const;
+		float GetLeft() const override;
 
 		/**
 		* \~english
@@ -203,7 +203,7 @@ namespace Iris2D {
 		* 设置当前 Rect 上边边的 X 坐标。
 		* @param fTop 当前 Rect 上边边的 X 坐标。
 		*/
-		void SetTop(float fTop);
+		void SetTop(float fTop) override;
 		/**
 		* \~english
 		* Get the y position of top edge of current rect.
@@ -214,7 +214,7 @@ namespace Iris2D {
 		* 获取当前 Rect 上边边的 X 坐标。
 		* @return 当前 Rect 上边边的 X 坐标。
 		*/
-		float GetTop() const;
+		float GetTop() const override;
 
 		/**
 		* \~english
@@ -226,7 +226,7 @@ namespace Iris2D {
 		* 设置当前 Rect 右边边的 X 坐标。
 		* @param fRight 当前 Rect 右边边的 X 坐标。
 		*/
-		void SetRight(float fRight);
+		void SetRight(float fRight) override;
 		/**
 		* \~english
 		* Get the x position of right edge of current rect.
@@ -237,7 +237,7 @@ namespace Iris2D {
 		* 获取当前 Rect 右边边的 X 坐标。
 		* @return 当前 Rect 右边边的 X 坐标。
 		*/
-		float GetRight() const;
+		float GetRight() const override;
 
 		/**
 		* \~english
@@ -249,7 +249,7 @@ namespace Iris2D {
 		* 设置当前 Rect 下边边的 X 坐标。
 		* @param fBottom 当前 Rect 下边边的 X 坐标。
 		*/
-		void SetBottom(float fBottom);
+		void SetBottom(float fBottom) override;
 		/**
 		* \~english
 		* Get the y position of bottom edge of current rect.
@@ -260,7 +260,7 @@ namespace Iris2D {
 		* 获取当前 Rect 下边边的 X 坐标。
 		* @return 当前 Rect 下边边的 X 坐标。
 		*/
-		float GetBottom() const;
+		float GetBottom() const override;
 
 		/**
 		* \~english
@@ -281,27 +281,43 @@ namespace Iris2D {
 		* @return 当前 Rect 的指针。
 		* @see Set2(float fLeft, float fTop, float fRight, float fBottom)
 		*/
-		void Set(float fX, float fY, float fWidth, float fHeight);
+		void Set(float fX, float fY, float fWidth, float fHeight) override;
+
 		/**
-		* \~english
-		* Set properties of current Rect.
-		* @param fLeft X position of left edge of current rect.
-		* @param fTop Y position of top edge of current rect.
-		* @param fRight X position of right edge of current rect.
-		* @param fBottom Y position of bottom edge of current rect.
-		* @return A pointer to current rect.
-		*/
+		 * \~english
+		 * Set properties of current Rect.
+		 * \param fLeft X position of left edge of current rect.
+		 *  \param fTop Y position of top edge of current rect.
+		 * \param fRight X position of right edge of current rect.
+		 * \param fBottom Y position of bottom edge of current rect.
+		 * \return A pointer to current rect.
+		 */
 		/**
-		* \~chinese
-		* 设置当前 Rect 的属性。
-		* @param fLeft 当前 Rect 左边边的 X 坐标。
-		* @param fTop 当前 Rect 上边边的 Y 坐标。
-		* @param fRight 当前 Rect 右边边的 X 坐标。
-		* @param fBottom 当前 Rect 下边边的 Y 坐标。
-		* @return 当前 Rect 的指针。
-		* @see Set(float fX, float fY, float fWidth, float fHeight)
-		*/
-		void Set2(float fLeft, float fTop, float fRight, float fBottom);
+		 * \~chinese
+		 * 设置当前 Rect 的属性。
+		 * \param fLeft 当前 Rect 左边边的 X 坐标。
+		 * \param fTop 当前 Rect 上边边的 Y 坐标。
+		 * \param fRight 当前 Rect 右边边的 X 坐标。
+		 * \param fBottom 当前 Rect 下边边的 Y 坐标。
+		 * \return 当前 Rect 的指针。
+		 * \see Set(float fX, float fY, float fWidth, float fHeight)
+		 */
+		void Set2(float fLeft, float fTop, float fRight, float fBottom) override;
+
+		/**
+		 * \~english
+		 * \brief 
+		 * \param pRect Target Rect Object.
+		 * \return true if 2 rects insects with each other otherwise false.
+		 */
+		/**
+		 * \~chinese
+		 * \brief 
+		 * \param pRect 目标 Rect 对象。
+		 * \return 如果 2 个 Rect 相交返回 true 否则返回 false。
+		 */
+		bool CheckInsectionWith(const Rect* pRect) override;
+
 
 		private:
 			Rect(IRect* pRect);

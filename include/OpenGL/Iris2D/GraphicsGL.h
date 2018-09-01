@@ -67,9 +67,10 @@ namespace Iris2D {
 		ResultCode Transition(unsigned int nDuration, const std::wstring& wstrFilename, unsigned int nVague) override;
 		void FrameReset() override;
 		ResultCode ResizeScreen(unsigned int nWidth, unsigned int nHeight) override;
-		void SetWidth(unsigned int nWidth) override;
+		void SetWidth(unsigned int nWidth);
+		void SetHeight(unsigned int nHeight);
+
 		unsigned int GetWidth() const override;
-		void SetHeight(unsigned int nHeight) override;
 		unsigned int GetHeight() const override;
 		unsigned int GetFrameCount() const override;
 		float GetBrightness() const override;
