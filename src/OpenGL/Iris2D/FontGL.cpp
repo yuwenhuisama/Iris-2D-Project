@@ -2,6 +2,7 @@
 
 #include "Common/Util/ProxyConvert.h"
 #include <functional>
+#include  <codecvt>
 namespace Iris2D {
 
 	
@@ -29,7 +30,14 @@ namespace Iris2D {
 		if (FT_Init_FreeType(&pNewObject->m_FTLibrary))
 			return nullptr;
 		const wchar_t* pwText = &wstrFontName[0];
-		if (FT_New_Face(pNewObject->m_FTLibrary, DrawTexHelper().ws2c(pwText), 0, &pNewObject->m_FTFace))
+
+		using convert_type = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_type, wchar_t> converter;
+
+		auto strConverted = converter.to_bytes(wstrFontName);
+
+
+		if (FT_New_Face(pNewObject->m_FTLibrary, strConverted.c_str(), 0, &pNewObject->m_FTFace))
 			return nullptr;
 		FT_Select_Charmap(pNewObject->m_FTFace, FT_ENCODING_UNICODE);
 		FT_Set_Pixel_Sizes(pNewObject->m_FTFace, 0, pNewObject->m_nSize);

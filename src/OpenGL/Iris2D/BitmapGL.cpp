@@ -61,9 +61,30 @@ namespace Iris2D {
 		const auto pBitmap = new BitmapGL();
 
 		auto pShader = FillRectShaderGL::Instance();
+		static GLfloat arrVertices[] = {
+			static_cast<float>(pSrcBitmapGL->GetWidth()),	static_cast<float>(pSrcBitmapGL->GetHeight()),	1.0f, 1.0f,
+			static_cast<float>(pSrcBitmapGL->GetWidth()),	0.0f,											1.0f, 0.0f,
+			0.0f,											0.0f,											0.0f, 0.0f,
+			0.0f,											static_cast<float>(pSrcBitmapGL->GetHeight()),  0.0f, 1.0f
+		};
+		unsigned int arrIndiecs[] = {
+			0, 1, 3,
+			1, 2, 3,
+		};
+		GLuint nVAO = 0;
+		GLuint nVBO = 0;
+		GLuint nEBO = 0;
 
-		const GLuint VAO = pShader->BindBufferData(static_cast<float>(pSrcBitmapGL->GetWidth()), static_cast<float>(pSrcBitmapGL->GetHeight()));
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(0));
+			glEnableVertexAttribArray(0);
 
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(1);
+			glBindVertexArray(0);
+		})) {
+			return nullptr;
+		}
 		auto pTextureFrameBuffer = Iris2D::TextureGL::CreateFrameBuffer(pSrcBitmapGL->GetWidth(), pSrcBitmapGL->GetHeight());
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(pSrcBitmapGL->GetWidth()), 0.0f, static_cast<float>(pSrcBitmapGL->GetHeight()), -1.0f, 1.0f);
 		const auto pFillRect = Rect::Create(0.0f, 0.0f, 0.0f, 0.0f);
@@ -74,9 +95,9 @@ namespace Iris2D {
 		glfwGetFramebufferSize(OpenGLHelper::Instance()->GetWindow(), &nWindowWidth, &nWindowHeight);
 
 		pTextureFrameBuffer->UseTextureAsFrameBuffer();
-		glViewport(0, 0, pSrcBitmapGL->GetWidth(), pSrcBitmapGL->GetHeight());//适口转换
+		glViewport(0, 0, pSrcBitmapGL->GetWidth(), pSrcBitmapGL->GetHeight());
 
-		glClearColor(0.0f, 0.1f, 0.1f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//glDisable(GL_DEPTH_TEST);
 
@@ -85,13 +106,14 @@ namespace Iris2D {
 		pShader->SetRectLocation(pFillRect);
 		pShader->SetFillColor(pFillColor);
 
-		glBindVertexArray(VAO);
+		glBindVertexArray(nVAO);
 		GetProxied<BitmapGL*>(pSrcBitmapGL)->GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<float>(nWindowHeight));//适口还原
+		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<float>(nWindowHeight));
+
 		pBitmap->m_pTexture = pTextureFrameBuffer;
 
 		return pBitmap;
@@ -143,20 +165,50 @@ namespace Iris2D {
 
 		auto pShader = CopyRectShaderGL::Instance();
 
-		const GLuint VAO = pShader->BindBufferData(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
+		//const GLuint VAO = pShader->BindBufferData(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
+		static GLfloat arrVertices[] = {
+			static_cast<float>(GetWidth()),	static_cast<float>(GetHeight()),	1.0f, 1.0f,
+			static_cast<float>(GetWidth()),	0.0f,								1.0f, 0.0f,
+			0.0f,							0.0f,								0.0f, 0.0f,
+			0.0f,							static_cast<float>(GetHeight()),	0.0f, 1.0f
+		};
+		unsigned int arrIndiecs[] = {
+			0, 1, 3,
+			1, 2, 3,
+		};
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		GLuint nVAO = 0;
+		GLuint nVBO = 0;
+		GLuint nEBO = 0;
+
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(0));
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(1);
+			glBindVertexArray(0);
+		})) {
+			return IRR_OpenGLVertexBufferCreateFailed;
+		}
+
+
+
+		
+		
 		pShader->Use();
 		pShader->SetDesOthoMat(c_mt4Projection);
 		pShader->SetDesRect(pDestRect);
-		pShader->SetSrcTexCoordRect(pSrcRect, GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture());
+		pShader->SetSrcTexCoordRect(pSrcRect, static_cast<float >(GetProxied<BitmapGL*>(pSrcBitmap)->GetWidth()),static_cast<float>(GetProxied<BitmapGL*>(pSrcBitmap)->GetHeight()));
 		pShader->SetOpacity(fOpacity);
 
 		GetTexture()->UseTexture(0);
 		pShader->SetInt("destTexture", 0);
-
 		GetProxied<BitmapGL*>(pSrcBitmap)->GetTexture()->UseTexture(1);
 		pShader->SetInt("srcTexture", 1);
 
-		glBindVertexArray(VAO);
+		glBindVertexArray(nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 
@@ -168,7 +220,7 @@ namespace Iris2D {
 		m_pTexture = pTextureFrameBuffer;
 		
 		return IRR_Success;
-	}
+	} 
 
 	ResultCode BitmapGL::FillRect(unsigned nX, unsigned nY, unsigned nWidth, unsigned nHeight, const Color * pColor) {
 		const auto  pRect = Rect::Create(static_cast<float>(nX), static_cast<float>(nY), static_cast<float>(nWidth), static_cast<float>(nHeight));
@@ -184,21 +236,44 @@ namespace Iris2D {
 		glfwGetFramebufferSize(OpenGLHelper::Instance()->GetWindow(), &nWindowWidth, &nWindowHeight);
 
 		pTextureFrameBuffer->UseTextureAsFrameBuffer();
-		glViewport(0, 0, GetWidth(), GetHeight());//视口转换
+		glViewport(0, 0, GetWidth(), GetHeight());
 
 		glClearColor(0.0f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		auto pShader = FillRectShaderGL::Instance();
 
-		const GLuint VAO = pShader->BindBufferData(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
+		static GLfloat arrVertices[] = {
+			static_cast<float>(GetWidth()),	static_cast<float>(GetHeight()),	1.0f, 1.0f,
+			static_cast<float>(GetWidth()),	0.0f,								1.0f, 0.0f,
+			0.0f,							0.0f,								0.0f, 0.0f,
+			0.0f,							static_cast<float>(GetHeight()),	0.0f, 1.0f
+		};
+		unsigned int arrIndiecs[] = {
+			0, 1, 3,
+			1, 2, 3,
+		};
+		GLuint nVAO = 0;
+		GLuint nVBO = 0;
+		GLuint nEBO = 0;
+
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(0));
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<void*>(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(1);
+			glBindVertexArray(0);
+		})) {
+			return IRR_OpenGLVertexBufferCreateFailed;
+		}
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetRectLocation(pRect);
 		pShader->SetFillColor(pColor);
 
-		glBindVertexArray(VAO);
+		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
@@ -239,7 +314,38 @@ namespace Iris2D {
 
 		auto pShader = ClearRectShaderGL::Instance();
 
-		const GLuint nVAO = pShader->BindBufferData(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
+		static GLfloat arrVertices[] = {
+			static_cast<float>(GetWidth()),	static_cast<float>(GetHeight()),	1.0f, 1.0f,
+			static_cast<float>(GetWidth()),	0.0f,								1.0f, 0.0f,
+			0.0f,							0.0f,								0.0f, 0.0f,
+			0.0f,							static_cast<float>(GetHeight()),  0.0f, 1.0f
+		};
+		unsigned int arrIndiecs[] = {
+			0, 1, 3,
+			1, 2, 3,
+		};
+		GLuint nVAO = 0;
+		GLuint nVBO = 0;
+		GLuint nEBO = 0;
+
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), static_cast<GLvoid*>(0));
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(1);
+		})) {
+			return IRR_OpenGLVertexBufferCreateFailed;
+		}
+
+
+
+
+
+
+
+
+
 
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
@@ -321,11 +427,11 @@ namespace Iris2D {
 
 	ResultCode BitmapGL::HueChange(float fHue) {
 		auto pTextureFrameBuffer = Iris2D::TextureGL::CreateFrameBuffer(GetWidth(), GetHeight());
-		int nWindowWidth, nWindowHeight;//保存原适口大小
+		int nWindowWidth, nWindowHeight;
 		glfwGetFramebufferSize(OpenGLHelper::Instance()->GetWindow(), &nWindowWidth, &nWindowHeight);
 
 		pTextureFrameBuffer->UseTextureAsFrameBuffer();
-		glViewport(0, 0, GetWidth(), GetHeight());//视口转换
+		glViewport(0, 0, GetWidth(), GetHeight());
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -333,11 +439,37 @@ namespace Iris2D {
 
 		auto pShader = HueChangeShaderGL::Instance();
 
-		const GLuint VAO = pShader->BindBufferData();
+		float arrVertices[] = {
+			//destPoint			//Ttexcood	
+			1.0f,	 1.0f,		1.0f,1.0f,
+			1.0f,	-1.0f,   	1.0f,0.0f,
+			-1.0f ,	-1.0f,		0.0f,0.0f,
+			-1.0f ,	 1.0f,    	0.0f,1.0f
+		};
+		unsigned int arrIndiecs[] = {
+			0, 1, 3,
+			1, 2, 3,
+		};
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		GLuint nVAO = 0;
+		GLuint nVBO = 0;
+		GLuint nEBO = 0;
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), static_cast<GLvoid*>(0));
+			glEnableVertexAttribArray(0);
+
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(1);
+		})) {
+			return IRR_OpenGLVertexBufferCreateFailed;
+		}
+
 		pShader->Use();
 		pShader->SetHue(static_cast<int>(fHue));
 
-		glBindVertexArray(VAO);
+		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
@@ -381,17 +513,17 @@ namespace Iris2D {
 
 		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_DEPTH_TEST);
 
 		//background
 		auto pShaderBackground = BackGroundShaderGL::Instance();
 
 		static GLfloat arrVertices[] = {
 			//position	    //texcoord
-			 1.0f,  1.0f,   1.0f, 1.0f,   // 右上
-			 1.0f, -1.0f,   1.0f, 0.0f,   // 右下
-			-1.0f, -1.0f,   0.0f, 0.0f,   // 左下
-			-1.0f,  1.0f,   0.0f, 1.0f    // 左上
+			 1.0f,  1.0f,   1.0f, 1.0f,   
+			 1.0f, -1.0f,   1.0f, 0.0f,   
+			-1.0f, -1.0f,   0.0f, 0.0f,   
+			-1.0f,  1.0f,   0.0f, 1.0f    
 		};
 
 		GLuint nVAO = 0;

@@ -11,7 +11,7 @@ namespace Iris2D {
 		bool Initialize();
 
 		void SetHue(int nHue);
-		GLuint BindBufferData();
+	
 
 	private:
 		HueChangeShaderGL() = default;

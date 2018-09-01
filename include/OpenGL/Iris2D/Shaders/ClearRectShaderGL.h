@@ -12,7 +12,6 @@ namespace Iris2D {
 		bool Initialize();
 		void SetRectLocation(const Rect* pLocation);
 		void SetProjectionMatrix(const glm::mat4& mtProjection);
-		GLuint BindBufferData(float fWidth, float fHeigh);
 
 	private:
 		ClearRectShaderGL() = default;
