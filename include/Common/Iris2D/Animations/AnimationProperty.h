@@ -8,6 +8,7 @@
 #include <list>
 #include <unordered_map>
 #include <glm/vec2.hpp>
+#include "AnimationReferred.h"
 
 namespace Iris2D {
 	class Sprite;
@@ -28,7 +29,7 @@ namespace Iris2D {
 		};
 
 		template<typename E>
-		class AnimationProperty: public AnimationBase, public RefCounter {
+		class AnimationProperty: public AnimationReffered {
 		protected:
 			std::list<KeyFrameElement<E>> m_lsKeyFrameList {};
 			
@@ -150,10 +151,14 @@ namespace Iris2D {
 				m_lsCallBackList.push_back({ fProgress, fCallBack });
 			}
 
+			AnimationState GetAnimationState() override {
+				return m_eState;
+			}
+
 			virtual bool UpdateProperty(Sprite* pSprite, const E& dpValue) = 0;
 
 		protected:
-			AnimationProperty(IAnimation* pAnimation) : AnimationBase(pAnimation) {}
+			AnimationProperty() : AnimationReffered() {}
 			~AnimationProperty() {
 				Sprite::Release(m_pSprite);
 			}

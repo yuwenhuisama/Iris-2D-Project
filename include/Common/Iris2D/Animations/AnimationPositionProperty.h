@@ -19,7 +19,7 @@ namespace Iris2D {
 			bool UpdateProperty(Sprite* pSprite, const PositionVec2& dpValue) override;
 
 		private:
-			AnimationPositionProperty();
+			AnimationPositionProperty() = default;
 			~AnimationPositionProperty() = default;
 		};
 	}

@@ -43,8 +43,5 @@ namespace Iris2D {
 			pSprite->SetAngle(dpValue);
 			return true;
 		}
-
-		AnimationAngleProperty::AnimationAngleProperty(): AnimationProperty(nullptr) {
-		}
 	}
 }

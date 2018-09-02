@@ -16,5 +16,6 @@
 #include "Common/Iris2D/Animations/AnimationPositionProperty.h"
 #include "Common/Iris2D/Animations/AnimationZoomProperty.h"
 #include "Common/Iris2D/Animations/AnimationAngleProperty.h"
+#include "Common/Iris2D/Animations/AnimationParallelGroup.h"
 
 #endif

@@ -17,7 +17,7 @@ namespace Iris2D {
 			bool UpdateProperty(Sprite* pSprite, const ZoomVec2& dpValue) override;
 
 		private:
-			AnimationZoomProperty();
+			AnimationZoomProperty() = default;
 			~AnimationZoomProperty() = default;
 		};
 	}

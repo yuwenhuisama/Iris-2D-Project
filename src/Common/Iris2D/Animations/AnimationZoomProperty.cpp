@@ -41,8 +41,5 @@ namespace Iris2D {
 			pSprite->SetZoomY(dpValue.y);
 			return true;
 		}
-
-		AnimationZoomProperty::AnimationZoomProperty() : AnimationProperty(nullptr) {
-		}
 	}
 }

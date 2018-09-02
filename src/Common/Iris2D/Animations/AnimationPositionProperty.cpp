@@ -44,8 +44,5 @@ namespace Iris2D {
 			pSprite->SetY(dpValue.y);
 			return true;
 		}
-
-		AnimationPositionProperty::AnimationPositionProperty(): AnimationProperty(nullptr) {
-		}
 	}
 }

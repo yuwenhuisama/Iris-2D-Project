@@ -4,6 +4,7 @@
 #include "Common/Iris2D/Proxy.h"
 
 #define ANIMATION_AUTO_RELEASE\
+		public:\
 			AnimationBase* AutoRelease() override{\
 				auto pAnimationDerived = this;\
 				Release(pAnimationDerived);\

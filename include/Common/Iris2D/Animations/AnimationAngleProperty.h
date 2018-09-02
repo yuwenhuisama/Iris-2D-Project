@@ -18,7 +18,7 @@ namespace Iris2D {
 			bool UpdateProperty(Sprite* pSprite, const AngleValue& dpValue) override;
 
 		private:
-			AnimationAngleProperty();
+			AnimationAngleProperty() = default;
 			~AnimationAngleProperty() = default;
 		};
 	}
