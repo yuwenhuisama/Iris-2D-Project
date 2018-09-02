@@ -42,17 +42,44 @@ bool GameCallBack() {
 	auto bUp = true;
 	auto nCounter = 0;
 
-	auto pAnimation = Animation::AnimationPositionProperty::Create(pSprite2);
-	pAnimation->SetStartKeyFrame({ 0, 0 });
-	pAnimation->SetEndKeyFrame({ 0, 0 });
-	pAnimation->SetTotalTime(400);
-	pAnimation->SetKeyFrameList({
-		{ 0.25f, { 0, 400 }},
-		{ 0.5f,  { 400, 400 }},
-		{ 0.75f, { 400, 0 } }
+	//auto pAnimation = Animation::AnimationPositionProperty::Create(pSprite2);
+	//pAnimation->SetStartKeyFrame({ 0, 0 });
+	//pAnimation->SetEndKeyFrame({ 0, 0 });
+	//pAnimation->SetTotalTime(400);
+	//pAnimation->SetKeyFrameList({
+	//	{ 0.25f, { 0, 400 }},
+	//	{ 0.5f,  { 400, 400 }},
+	//	{ 0.75f, { 400, 0 } }
+	//});
+	//pAnimation->SetLoop(true);
+	//pAnimation->Start();
+
+	//auto pAnimation2 = Animation::AnimationAngleProperty::Create(pSprite2);
+	//pAnimation2->SetStartKeyFrame(0.0f);
+	//pAnimation2->SetEndKeyFrame(360.0f);
+	//pAnimation2->SetTotalTime(300);
+	//pAnimation2->SetLoop(true);
+	//pAnimation2->Start();
+
+	auto pAnimation3 = Animation::AnimationZoomProperty::Create(pSprite2);
+	pAnimation3->SetStartKeyFrame({ 0.5, 0.5 });
+	pAnimation3->SetEndKeyFrame({ 1.0, 1.0 });
+	pAnimation3->SetTotalTime(400);
+	pAnimation3->SetKeyFrameList({
+		{ 0.25f, { 0.75, 0.5 }},
+		{ 0.5f,  { 0.75, 0.75 }},
+		{ 0.75f, { 1.0, 0.75 } }
 	});
-	pAnimation->SetLoop(true);
-	pAnimation->Start();
+	pAnimation3->SetLoop(true);
+	pAnimation3->AddCallBack(0.2f, [](float fProgress) -> void {
+		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
+	});
+
+	pAnimation3->AddCallBack(0.8f, [](float fProgress) -> void {
+		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
+	});
+
+	pAnimation3->Start();
 
 	//pGraphics->FadeIn(50);
 	//pGraphics->FadeOut(50);
@@ -81,7 +108,7 @@ bool GameCallBack() {
 		// pSprite->SetOpacity(fOpacity);
 		// pSprite->GetTone()->SetRed(nRed);
 
-		pAnimation->Update();
+		pAnimation3->Update();
 
 		//pSprite->Update();
 		//pGraphics->SetBrightness(fBrightness);
@@ -115,7 +142,7 @@ bool GameCallBack() {
 	Color::Release(pColor);
 	Viewport::Release(pViewport);
 
-	Animation::AnimationPositionProperty::Release(pAnimation);
+	Animation::AnimationZoomProperty::Release(pAnimation3);
 
 	return true;
 }

@@ -6,31 +6,25 @@
 #include "Common/Iris2D/Sprite.h"
 
 #include <list>
+#include <unordered_map>
 #include <glm/vec2.hpp>
 
 namespace Iris2D {
 	class Sprite;
 	namespace Animation {
-
-		//struct PositionVec2 {
-		//	float m_nX = 0.0f;
-		//	float m_nY = 0.0f;
-		//};
-
-		//struct ZoomVec2 {
-		//	float m_nX = 0.0f;
-		//	float m_nY = 0.0f;
-		//};
-
 		typedef glm::vec2 PositionVec2;
 		typedef glm::vec2 ZoomVec2;
-
 		typedef float AngleValue;
 
 		template<typename E>
 		struct KeyFrameElement {
 			float m_fProgress = 0.0;
-			E m_v2Data{};
+			E m_dpData{};
+		};
+
+		struct AnimationCallBackPair {
+			float fProgress = 0.0f;
+			AnimationCallBack fCallBack {};
 		};
 
 		template<typename E>
@@ -45,7 +39,6 @@ namespace Iris2D {
 			typename std::list<KeyFrameElement<E>>::iterator m_iterCurrent {};
 
 			KeyFrameElement<E> m_dpPreFrameData;
-
 			KeyFrameElement<E> m_dpStartFrameData;
 			KeyFrameElement<E> m_dpEndFrameData;
 
@@ -53,10 +46,8 @@ namespace Iris2D {
 
 			bool m_bIsLoop = false;
 
-			//static AnimationProperty* Create(Sprite*& pSprite);
-			//static void Release(AnimationProperty*& pAnimation);
-
-			//ANIMATION_AUTO_RELEASE
+			std::list<AnimationCallBackPair> m_lsCallBackList {};
+			std::unordered_map<unsigned int, AnimationCallBackPair> m_umapCallBackMap{};
 
 		public:
 			void SetTotalTime(unsigned nTotalFrame) {
@@ -82,44 +73,51 @@ namespace Iris2D {
 			bool Update() override {
 				if (m_eState != AnimationState::Displaying) {
 					if(m_bIsLoop && m_eState == AnimationState::Terminated) {
-						UpdateProperty(m_pSprite, m_dpStartFrameData.m_v2Data);
+						UpdateProperty(m_pSprite, m_dpStartFrameData.m_dpData);
 						Start();
 						return true;
-					} else {
-						return false;
 					}
-				}
-
-				if (m_lsKeyFrameList.empty()) {
 					return false;
 				}
 
 				++m_nFrameCounter;
 
-				E dpValue {};
-				if (m_iterCurrent == m_lsKeyFrameList.end()) {
-					if (m_nFrameCounter == m_nTotalTime) {
-						dpValue = m_dpEndFrameData.m_v2Data;
-						End();
-					} else {
-						const auto& iterLast = m_lsKeyFrameList.back();
-						auto fDelta = (m_nFrameCounter - (iterLast.m_fProgress * m_nTotalTime)) / ((m_dpEndFrameData.m_fProgress - iterLast.m_fProgress) * m_nTotalTime);
-						dpValue = (1.0f - fDelta) * iterLast.m_v2Data + fDelta * m_dpEndFrameData.m_v2Data;
-					}
+				E dpValue{};
+
+				if (m_lsKeyFrameList.empty()) {
+					auto fDelta = m_nFrameCounter / static_cast<float>(m_nTotalTime);
+					dpValue = (1.0f - fDelta) * m_dpStartFrameData.m_dpData + fDelta * m_dpEndFrameData.m_dpData;
 				}
 				else {
-					if (static_cast<unsigned int>(m_iterCurrent->m_fProgress * m_nTotalTime) == m_nFrameCounter) {
-						dpValue = m_iterCurrent->m_v2Data;
-						m_dpPreFrameData = *m_iterCurrent;
-
-						++m_iterCurrent;
+					if (m_iterCurrent == m_lsKeyFrameList.end()) {
+						if (m_nFrameCounter == m_nTotalTime) {
+							dpValue = m_dpEndFrameData.m_dpData;
+							End();
+						}
+						else {
+							const auto& iterLast = m_lsKeyFrameList.back();
+							auto fDelta = (m_nFrameCounter - (iterLast.m_fProgress * m_nTotalTime)) / ((m_dpEndFrameData.m_fProgress - iterLast.m_fProgress) * m_nTotalTime);
+							dpValue = (1.0f - fDelta) * iterLast.m_dpData + fDelta * m_dpEndFrameData.m_dpData;
+						}
 					}
 					else {
-						// interpolation
-						auto fDelta = (m_nFrameCounter - (m_dpPreFrameData.m_fProgress * m_nTotalTime)) / ((m_iterCurrent->m_fProgress - m_dpPreFrameData.m_fProgress) * m_nTotalTime);
+						if (static_cast<unsigned int>(m_iterCurrent->m_fProgress * m_nTotalTime) == m_nFrameCounter) {
+							dpValue = m_iterCurrent->m_dpData;
+							m_dpPreFrameData = *m_iterCurrent;
 
-						dpValue = (1.0f - fDelta) * m_dpPreFrameData.m_v2Data + fDelta * m_iterCurrent->m_v2Data;
+							++m_iterCurrent;
+						}
+						else {
+							// interpolation linear
+							auto fDelta = (m_nFrameCounter - (m_dpPreFrameData.m_fProgress * m_nTotalTime)) / ((m_iterCurrent->m_fProgress - m_dpPreFrameData.m_fProgress) * m_nTotalTime);
+							dpValue = (1.0f - fDelta) * m_dpPreFrameData.m_dpData + fDelta * m_iterCurrent->m_dpData;
+						}
 					}
+				}
+
+				if (!m_umapCallBackMap.empty() && m_umapCallBackMap.find(m_nFrameCounter) != m_umapCallBackMap.end()) {
+					const auto& pair = m_umapCallBackMap[m_nFrameCounter];
+					pair.fCallBack(pair.fProgress);
 				}
 
 				return UpdateProperty(m_pSprite, dpValue);
@@ -127,11 +125,16 @@ namespace Iris2D {
 
 			void Start() override {
 
-				m_nFrameCounter = 0;
+				if (m_eState == AnimationState::Pending) {
+					m_umapCallBackMap.clear();
+					for (const auto& pair : m_lsCallBackList) {
+						m_umapCallBackMap[static_cast<unsigned int>(m_nTotalTime * pair.fProgress)] = pair;
+					}
+				}
 
+				m_nFrameCounter = 0;
 				m_eState= AnimationState::Displaying;
 				m_dpPreFrameData = m_dpStartFrameData;
-
 				m_iterCurrent = m_lsKeyFrameList.begin();
 			}
 
@@ -143,6 +146,10 @@ namespace Iris2D {
 				m_bIsLoop = bIsLoop;
 			}
 
+			void AddCallBack(float fProgress, const AnimationCallBack& fCallBack) override {
+				m_lsCallBackList.push_back({ fProgress, fCallBack });
+			}
+
 			virtual bool UpdateProperty(Sprite* pSprite, const E& dpValue) = 0;
 
 		protected:
@@ -150,7 +157,6 @@ namespace Iris2D {
 			~AnimationProperty() {
 				Sprite::Release(m_pSprite);
 			}
-
 		};
 	}
 }
