@@ -7,8 +7,9 @@ bool GameCallBack() {
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
 	
-	auto pViewport = Viewport::Create(20.0f, 20.0f, 1000, 1000);
-	pViewport->SetZ(1.0f);
+	//auto pViewport = Viewport::Create(20.0f, 20.0f, 1000, 1000);
+	//pViewport->SetZ(1.0f);
+	Viewport* pViewport = nullptr;
 
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
 	auto pSprite = Sprite::Create(pViewport);
@@ -41,6 +42,18 @@ bool GameCallBack() {
 	auto bUp = true;
 	auto nCounter = 0;
 
+	auto pAnimation = Animation::AnimationPositionProperty::Create(pSprite2);
+	pAnimation->SetStartKeyFrame({ 0, 0 });
+	pAnimation->SetEndKeyFrame({ 0, 0 });
+	pAnimation->SetTotalTime(400);
+	pAnimation->SetKeyFrameList({
+		{ 0.25f, { 0, 400 }},
+		{ 0.5f,  { 400, 400 }},
+		{ 0.75f, { 400, 0 } }
+	});
+	pAnimation->SetLoop(true);
+	pAnimation->Start();
+
 	//pGraphics->FadeIn(50);
 	//pGraphics->FadeOut(50);
 
@@ -68,7 +81,9 @@ bool GameCallBack() {
 		// pSprite->SetOpacity(fOpacity);
 		// pSprite->GetTone()->SetRed(nRed);
 
-		pSprite->Update();
+		pAnimation->Update();
+
+		//pSprite->Update();
 		//pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
 
@@ -99,6 +114,8 @@ bool GameCallBack() {
 	Effect::EffectFlash::Release(pEffect);
 	Color::Release(pColor);
 	Viewport::Release(pViewport);
+
+	Animation::AnimationPositionProperty::Release(pAnimation);
 
 	return true;
 }

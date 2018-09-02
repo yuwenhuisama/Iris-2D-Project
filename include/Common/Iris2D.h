@@ -13,5 +13,6 @@
 #include "Common/Iris2D/Graphics.h"
 
 #include "Common/Iris2D/Effects/EffectFlash.h"
+#include "Common/Iris2D/Animations/AnimationPositionProperty.h"
 
 #endif

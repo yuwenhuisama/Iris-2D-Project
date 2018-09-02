@@ -1,6 +1,7 @@
 #ifndef _H_REF_COUNTER_
 #define _H_REF_COUNTER_
 #include <type_traits>
+#include "Common/Util/ProxyConvert.h"
 
 namespace Iris2D
 {
@@ -42,7 +43,7 @@ namespace Iris2D
 
 #define REF_FRIEND_DECLARE\
 		template <typename T>\
-		friend void RefferRelease(T& refferer);
+		friend void Iris2D::RefferRelease(T& refferer);
 
 
 #endif // _H_REF_COUNTER_

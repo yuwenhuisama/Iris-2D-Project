@@ -8,7 +8,7 @@ namespace Iris2D {
 	namespace Effect {
 		class EffectFlash : public EffectBase {
 		public:
-			static EffectFlash* Create(Color*& pColor, unsigned nDuration, bool bLoop);
+			static EffectFlash* Create(Color*& pColor, unsigned int nDuration, bool bLoop);
 			static void Release(EffectFlash*& pEffectFlash);
 
 			EFFECT_AUTO_RELEASE
