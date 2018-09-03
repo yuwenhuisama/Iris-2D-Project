@@ -13,11 +13,25 @@
 
 namespace Iris2D {
 	namespace Animation {
-		class AnimationBase : public Proxy<IAnimation>, public IAnimation {
+		class AnimationBase : public IAnimation {
 		public:
-			AnimationBase(IAnimation* pProxied) : Proxy<IAnimation>(pProxied) {}
+			virtual ~AnimationBase() = default;
 			virtual AnimationBase* AutoRelease() = 0;
-			~AnimationBase() = default;
+		};
+
+		class AnimationBaseProperty : public AnimationBase {
+		public:
+			virtual void SetTotalTime(unsigned int nTotalFrame) = 0;
+			virtual void AddCallBack(float fProgress, const AnimationCallBack& fCallBack) = 0;
+		};
+
+		class AnimationBaseFrame : public AnimationBase {
+		public:
+			virtual void SetInterval(unsigned int nTotalFrame) = 0;
+		};
+
+		class AnimationBaseGroup : public AnimationBase {
+			virtual void AddCallBack(unsigned int nFrameCount, const std::function<void(unsigned int)>& fCallBack) = 0;
 		};
 	}
 }

@@ -5,11 +5,24 @@
 
 namespace Iris2D {
 	namespace Animation {
-		class AnimationReffered : public AnimationBase, public RefCounter {
+		class AnimationRefferedProperty : public AnimationBaseProperty, public RefCounter {
 		public:
-			AnimationReffered() : AnimationBase(nullptr) {}
-			virtual ~AnimationReffered() = default;
+			AnimationRefferedProperty() = default;
+			virtual ~AnimationRefferedProperty() = default;
 		};
+
+		class AnimationRefferedFrame : public AnimationBaseFrame, public RefCounter {
+		public:
+			AnimationRefferedFrame() = default;
+			virtual ~AnimationRefferedFrame() = default;
+		};
+
+		class AnimationRefferedGroup : public AnimationBaseGroup, public RefCounter {
+		public:
+			AnimationRefferedGroup() = default;
+			virtual ~AnimationRefferedGroup() = default;
+		};
+
 	}
 }
 

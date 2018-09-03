@@ -1,7 +1,7 @@
 #ifndef _H_ANIMATION_ANGLE_PROPERTY_
 #define _H_ANIMATION_ANGLE_PROPERTY_
 
-#include "Common/Iris2D/Animations/AnimationProperty.h"
+#include "Common/Iris2D/Animations/AnimationProperty/AnimationProperty.h"
 
 namespace Iris2D {
 	namespace Animation {

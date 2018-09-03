@@ -1,4 +1,4 @@
-#include "Common/Iris2D/Animations/AnimationSerialGroup.h"
+#include "Common/Iris2D/Animations/AnimationGroup/AnimationSerialGroup.h"
 
 namespace Iris2D {
 	namespace Animation {
@@ -15,7 +15,17 @@ namespace Iris2D {
 			RefferRelease(pAnimationGroup);
 		}
 
-		void AnimationSerialGroup::AddAnimation(AnimationReffered* pAnimation) {
+		void AnimationSerialGroup::AddAnimation(AnimationRefferedProperty* pAnimation) {
+			pAnimation->IncreamRefCount();
+			m_lsAnimations.push_back(pAnimation);
+		}
+
+		void AnimationSerialGroup::AddAnimation(AnimationRefferedFrame* pAnimation) {
+			pAnimation->IncreamRefCount();
+			m_lsAnimations.push_back(pAnimation);
+		}
+
+		void AnimationSerialGroup::AddAnimation(AnimationRefferedGroup* pAnimation) {
 			pAnimation->IncreamRefCount();
 			m_lsAnimations.push_back(pAnimation);
 		}
@@ -77,12 +87,6 @@ namespace Iris2D {
 
 		AnimationState AnimationSerialGroup::GetAnimationState() {
 			return m_eState;
-		}
-
-		void AnimationSerialGroup::AddCallBack(float fProgress, const AnimationCallBack& fCallBack) {
-		}
-
-		void AnimationSerialGroup::SetTotalTime(unsigned nTotalFrame) {
 		}
 
 		AnimationSerialGroup::~AnimationSerialGroup() {

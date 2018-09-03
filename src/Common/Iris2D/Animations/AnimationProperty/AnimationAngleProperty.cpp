@@ -1,4 +1,4 @@
-#include "Common/Iris2D/Animations/AnimationAngleProperty.h"
+#include "Common/Iris2D/Animations/AnimationProperty/AnimationAngleProperty.h"
 #include "Common/Iris2D/Sprite.h"
 #include "Common/Iris2D/AppFactory.h"
 

@@ -1,8 +1,6 @@
 #ifndef _H_ANIMATION_POSITION_PROPERTY_
 #define _H_ANIMATION_POSITION_PROPERTY_
-#include "AnimationProperty.h"
-#include "AnimationBase.h"
-#include "Common/Util/RefCounter.h"
+#include "Common/Iris2D/Animations/AnimationProperty/AnimationProperty.h"
 
 namespace Iris2D {
 	namespace Animation {

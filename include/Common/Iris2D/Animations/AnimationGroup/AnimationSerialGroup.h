@@ -1,14 +1,14 @@
 #ifndef _H_ANIMATION_SERIAL_GROUP_
 #define _H_ANIMATION_SERIAL_GROUP_
 
-#include "AnimationReferred.h"
+#include "Common/Iris2D/Animations/AnimationReferred.h"
 #include <unordered_map>
 
 namespace Iris2D {
 	namespace Animation {
-		class AnimationSerialGroup : public AnimationReffered {
+		class AnimationSerialGroup : public AnimationRefferedGroup {
 			REF_FRIEND_DECLARE
-				ANIMATION_AUTO_RELEASE
+			ANIMATION_AUTO_RELEASE
 
 		private:
 			std::list<AnimationBase*> m_lsAnimations;
@@ -23,17 +23,16 @@ namespace Iris2D {
 			static void Release(AnimationSerialGroup*& pAnimationGroup);
 
 		public:
-			void AddAnimation(AnimationReffered* pAnimation);
+			void AddAnimation(AnimationRefferedProperty* pAnimation);
+			void AddAnimation(AnimationRefferedFrame* pAnimation);
+			void AddAnimation(AnimationRefferedGroup* pAnimation);
+
 			bool Update() override;
 			void Start() override;
 			void End() override;
 			void SetLoop(bool bIsLoop) override;
-			void AddCallBack(unsigned int nFrameCount, const std::function<void(unsigned int)>& fCallBack);
+			void AddCallBack(unsigned int nFrameCount, const std::function<void(unsigned int)>& fCallBack) override;
 			AnimationState GetAnimationState() override;
-
-		private:
-			void AddCallBack(float fProgress, const AnimationCallBack& fCallBack) override;
-			void SetTotalTime(unsigned nTotalFrame) override;
 
 		private:
 			AnimationSerialGroup() = default;

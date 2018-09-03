@@ -1,6 +1,6 @@
 #ifndef _H_ANIMATION_ZOOM_PROPERTY_
 #define _H_ANIMATION_ZOOM_PROPERTY_
-#include "AnimationAngleProperty.h"
+#include "Common/Iris2D/Animations/AnimationProperty/AnimationProperty.h"
 
 namespace Iris2D {
 	namespace Animation {
