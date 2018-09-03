@@ -5,6 +5,7 @@
 
 #include "Common/Util/ProxyConvert.h"
 
+#include "OpenGL/Iris2D/FontGL.h"
 #ifdef _WIN32
 #include "DirectX/Iris2D/FontDX.h"
 #endif // _WIN32
@@ -68,9 +69,12 @@ namespace Iris2D {
 			return FontDX::Existed(wstrFontName);
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::Existed(wstrFontName);
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 
 		return false;
@@ -88,10 +92,17 @@ namespace Iris2D {
 		}
 			break;
 #endif // _WIN32
-		case ApiType::OpenGL:
+		case ApiType::OpenGL: {
+			auto pTmp = FontGL::Create(wstrFontName);
+			pFont = new Font(pTmp);
+			pFont->SetProxied(pTmp);
+		}
+			break;
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 
 		return pFont;
@@ -111,9 +122,13 @@ namespace Iris2D {
 			break;
 #endif // _WIN32
 		case ApiType::OpenGL:
+			FontGL::Release(reinterpret_cast<FontGL*&>(pProxied));
+			break;
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 
 		// Delete proxy object when proxied object has been released.
@@ -130,9 +145,12 @@ namespace Iris2D {
 			return FontDX::GetDefaultName();
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::GetDefaultName();
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 		return L"";
 	}
@@ -144,9 +162,12 @@ namespace Iris2D {
 			return FontDX::GetDefaultSize();
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::GetDefaultSize();
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 		return 0;
 	}
@@ -158,9 +179,12 @@ namespace Iris2D {
 			return FontDX::GetDefaultBold();
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::GetDefaultBold();
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 		return false;
 	}
@@ -172,9 +196,12 @@ namespace Iris2D {
 			return FontDX::GetDefaultItalic();
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::GetDefaultItalic();
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 		return false;
 	}
@@ -186,9 +213,12 @@ namespace Iris2D {
 			return FontDX::GetDefaultShadow();
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::GetDefaultShadow();
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 		return false;
 	}
@@ -200,9 +230,12 @@ namespace Iris2D {
 			return FontDX::GetDefaultColor();
 #endif // _WIN32
 		case ApiType::OpenGL:
+			return FontGL::GetDefaultColor();
+			/*
 			break;
 		default:
 			break;
+			*/
 		}
 		return nullptr;
 	}

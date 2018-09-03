@@ -7,13 +7,26 @@
 #include "Common/Iris2D/Proxied.h"
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "Common/Iris2D/Color.h"
-#include "OpenGL/OpenGLUtil/DrawTextHelper.h"
+//#include "OpenGL/OpenGLUtil/DrawTextHelper.h"
+
+
+#include "OpenGL/OpenGLUtil/TextureGL.h"
+#include <GL/glew.h>
+#include <map>
+#include "Common/Iris2D/Rect.h"
+#include "OpenGL/OpenGLUtil/Character.h"
+#include "Common/Iris2D/IBitmap.h"
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 //#include <ft2build.h>
 //#include FT_FREETYPE_H
 
 namespace Iris2D
 {
+	
+
+
 	class Color;
 	class Font;
 	class FontGL : public Proxied<Font>, public IFont, public RefCounter
@@ -25,14 +38,38 @@ namespace Iris2D
 		bool m_bItalic = GetDefaultItalic();
 		bool m_bShadow = GetDefaultShadow();
 		Color* m_pColor = GetDefaultColor();
+	
 
-		GLuint VAO=0, VBO=0;
-		FT_Library m_FTLibrary;
-		FT_Face m_FTFace;
+
+
+		//GLuint m_nVAO = 0;
+		//GLuint m_nVBO = 0;
+		FT_Library m_FTLibrary=NULL;
+		FT_Face m_FTFace=NULL;
+
+		unsigned int m_nTextureMapWidth = 0;
+		unsigned int m_nTextureMapHeight = 0;
+		unsigned int m_nOriginY = 0;
+		std::map<wchar_t, Character> Characters;
+
+		TextureGL * m_pTemporaryTexture=nullptr;
+
+
+
+
 
 	public:
 		FT_Library GetFTLibrary();
-		 FT_Face GetFTFace();
+		FT_Face GetFTFace();
+		void LoadChar(const std::wstring& wstrText);
+		unsigned int GetTextWidth(const std::wstring & wstrText);
+	//	void DrawString(const std::wstring& wstrText, GLfloat fX, GLfloat fY, GLfloat fW, GLfloat fH);
+		void DrawString(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
+		TextureGL *GetTemporaryTexture();
+		
+
+
+
 
 		static bool Existed(const std::wstring& wstrFontName);
 

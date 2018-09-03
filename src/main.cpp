@@ -6,7 +6,7 @@ bool GameCallBack() {
 
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
-	
+
 	//auto pViewport = Viewport::Create(20.0f, 20.0f, 1000, 1000);
 	//pViewport->SetZ(1.0f);
 	Viewport* pViewport = nullptr;
@@ -21,6 +21,21 @@ bool GameCallBack() {
 	//pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
 	//pBitmap2->ClearRect(Rect::Create(130, 140, 400, 400));
 	//pBitmap2->StretchBlt(Rect::Create(130, 140, 100, 100),pBitmap, Rect::Create(100, 100, 300, 300),100);
+	
+	auto pfont = Font::Create(L"Font/simhei.ttf");
+	pfont->SetSize(80);
+	pBitmap->SetFont(pfont);
+	auto pRect1 = Rect::Create(200, 220, 260, 80);
+	pBitmap->DrawText(pRect1, L"bigBoombàÔàÔàÔ", AlignType::Center);
+	
+	
+	auto pRect2 = Rect::Create(100, 350, 360, 80);
+	pfont->SetSize(50);
+	pBitmap->DrawText(pRect2, L"fuck·¨¿Ë", AlignType::Center);
+	
+
+
+
 	pBitmap2->HueChange(350);
 
 	auto pSprite2 = Sprite::Create(pViewport);
@@ -47,10 +62,10 @@ bool GameCallBack() {
 	pAnimation->SetEndKeyFrame({ 0, 0 });
 	pAnimation->SetTotalTime(400);
 	pAnimation->SetKeyFrameList({
-		{ 0.25f, { 0, 400 }},
-		{ 0.5f,  { 400, 400 }},
-		{ 0.75f, { 400, 0 } }
-	});
+		{ 0.25f,{ 0, 400 } },
+		{ 0.5f,{ 400, 400 } },
+		{ 0.75f,{ 400, 0 } }
+		});
 	//pAnimation->SetLoop(true);
 	//pAnimation->Start();
 
@@ -66,10 +81,10 @@ bool GameCallBack() {
 	pAnimation3->SetEndKeyFrame({ 1.0, 1.0 });
 	pAnimation3->SetTotalTime(400);
 	pAnimation3->SetKeyFrameList({
-		{ 0.25f, { 0.75, 0.5 }},
-		{ 0.5f,  { 0.75, 0.75 }},
-		{ 0.75f, { 1.0, 0.75 } }
-	});
+		{ 0.25f,{ 0.75, 0.5 } },
+		{ 0.5f,{ 0.75, 0.75 } },
+		{ 0.75f,{ 1.0, 0.75 } }
+		});
 	//pAnimation3->SetLoop(true);
 	pAnimation3->AddCallBack(0.2f, [](float fProgress) -> void {
 		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
