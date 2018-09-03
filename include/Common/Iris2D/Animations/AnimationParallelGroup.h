@@ -1,15 +1,13 @@
 #ifndef _H_ANIMATION_PARALLEL_GROUP_
 #define _H_ANIMATION_PARALLEL_GROUP_
 
-#include "Common/Iris2D/Animations/AnimationBase.h"
-#include "Common/Util/RefCounter.h"
 #include <list>
 #include "AnimationReferred.h"
 #include <unordered_map>
 
 namespace Iris2D {
 	namespace Animation {
-		class AnimationParallelGroup: public AnimationBase, public RefCounter {
+		class AnimationParallelGroup: public AnimationReffered {
 			REF_FRIEND_DECLARE
 			ANIMATION_AUTO_RELEASE
 		
@@ -33,12 +31,12 @@ namespace Iris2D {
 			void AddCallBack(unsigned int nFrameCount, const std::function<void(unsigned int)>& fCallBack);
 			AnimationState GetAnimationState() override;
 
-
 		private:
+			void SetTotalTime(unsigned int nFrame) override;
 			void AddCallBack(float fProgress, const AnimationCallBack& fCallBack) override;
 
 		private:
-			AnimationParallelGroup();
+			AnimationParallelGroup() = default;
 			~AnimationParallelGroup();
 		};
 	}

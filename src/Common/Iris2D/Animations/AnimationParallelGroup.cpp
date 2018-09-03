@@ -80,10 +80,10 @@ namespace Iris2D {
 			return m_eState;
 		}
 
-		void AnimationParallelGroup::AddCallBack(float fProgress, const AnimationCallBack& fCallBack) {}
-
-		AnimationParallelGroup::AnimationParallelGroup(): AnimationBase(nullptr) {
+		void AnimationParallelGroup::SetTotalTime(unsigned int nFrame) {
 		}
+
+		void AnimationParallelGroup::AddCallBack(float fProgress, const AnimationCallBack& fCallBack) {}
 
 		AnimationParallelGroup::~AnimationParallelGroup() {
 			for(auto& pAnimation : m_lsAnimations) {

@@ -51,7 +51,7 @@ namespace Iris2D {
 			std::unordered_map<unsigned int, AnimationCallBackPair> m_umapCallBackMap{};
 
 		public:
-			void SetTotalTime(unsigned nTotalFrame) {
+			void SetTotalTime(unsigned int nTotalFrame) override {
 				m_nTotalTime = nTotalFrame;
 			}
 
@@ -86,8 +86,13 @@ namespace Iris2D {
 				E dpValue{};
 
 				if (m_lsKeyFrameList.empty()) {
-					auto fDelta = m_nFrameCounter / static_cast<float>(m_nTotalTime);
-					dpValue = (1.0f - fDelta) * m_dpStartFrameData.m_dpData + fDelta * m_dpEndFrameData.m_dpData;
+					if (m_nFrameCounter == m_nTotalTime) {
+						dpValue = m_dpEndFrameData.m_dpData;
+						End();
+					} else {
+						auto fDelta = m_nFrameCounter / static_cast<float>(m_nTotalTime);
+						dpValue = (1.0f - fDelta) * m_dpStartFrameData.m_dpData + fDelta * m_dpEndFrameData.m_dpData;
+					}
 				}
 				else {
 					if (m_iterCurrent == m_lsKeyFrameList.end()) {

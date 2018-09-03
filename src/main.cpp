@@ -79,7 +79,7 @@ bool GameCallBack() {
 		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
 	});
 
-	auto pAnimationGroup = Animation::AnimationParallelGroup::Create();
+	auto pAnimationGroup = Animation::AnimationSerialGroup::Create();
 	pAnimationGroup->AddAnimation(pAnimation);
 	pAnimationGroup->AddAnimation(pAnimation2);
 	pAnimationGroup->AddAnimation(pAnimation3);
@@ -155,7 +155,7 @@ bool GameCallBack() {
 	Animation::AnimationAngleProperty::Release(pAnimation2);
 	Animation::AnimationZoomProperty::Release(pAnimation3);
 
-	Animation::AnimationParallelGroup::Release(pAnimationGroup);
+	Animation::AnimationSerialGroup::Release(pAnimationGroup);
 
 	return true;
 }
