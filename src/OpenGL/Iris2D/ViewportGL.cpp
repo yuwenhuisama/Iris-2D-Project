@@ -175,6 +175,7 @@ namespace Iris2D {
 		auto eResult = IRR_Success;
 
 		for (auto& pSprite : m_stSprites) {
+			// TODO: optimize for batch render.
 			eResult = pSprite.second->Render();
 			if(IR_FAILED(eResult)) {
 				break;

@@ -11,7 +11,6 @@
 #include "Common/Util/DebugUtil.h"
 #include "OpenGL/Iris2D/FontGL.h"
 
-
 #include "OpenGL/Iris2D/Shaders/FillRectShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/CopyRectShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/ClearRectShaderGL.h"
@@ -67,10 +66,7 @@ namespace Iris2D {
 			0.0f,											0.0f,											0.0f, 0.0f,
 			0.0f,											static_cast<float>(pSrcBitmapGL->GetHeight()),  0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -112,19 +108,9 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<float>(nWindowHeight));
+		glViewport(0, 0, nWindowWidth, nWindowHeight);
+
 		pBitmap->m_pTexture = pTextureFrameBuffer;
-		if (nVAO) {
-			glDeleteVertexArrays(1, &nVAO);
-		}
-
-		if (nVBO) {
-			glDeleteBuffers(1, &nVBO);
-		}
-
-		if (nEBO) {
-			glDeleteBuffers(1, &nEBO);
-		}
 
 		return pBitmap;
 	}
@@ -182,12 +168,7 @@ namespace Iris2D {
 			0.0f,							0.0f,								0.0f, 0.0f,
 			0.0f,							static_cast<float>(GetHeight()),	0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -202,10 +183,6 @@ namespace Iris2D {
 		})) {
 			return IRR_OpenGLVertexBufferCreateFailed;
 		}
-
-
-
-		
 		
 		pShader->Use();
 		pShader->SetDesOthoMat(c_mt4Projection);
@@ -228,17 +205,6 @@ namespace Iris2D {
 		TextureGL::Release(m_pTexture);
 
 		m_pTexture = pTextureFrameBuffer;
-		if (nVAO) {
-			glDeleteVertexArrays(1, &nVAO);
-		}
-
-		if (nVBO) {
-			glDeleteBuffers(1, &nVBO);
-		}
-
-		if (nEBO) {
-			glDeleteBuffers(1, &nEBO);
-		}
 		
 		return IRR_Success;
 	} 
@@ -270,10 +236,7 @@ namespace Iris2D {
 			0.0f,							0.0f,								0.0f, 0.0f,
 			0.0f,							static_cast<float>(GetHeight()),	0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -305,18 +268,6 @@ namespace Iris2D {
 		TextureGL::Release(m_pTexture);
 
 		m_pTexture = pTextureFrameBuffer;
-
-		if (nVAO) {
-			glDeleteVertexArrays(1, &nVAO);
-		}
-
-		if (nVBO) {
-			glDeleteBuffers(1, &nVBO);
-		}
-
-		if (nEBO) {
-			glDeleteBuffers(1, &nEBO);
-		}
 
 		return IRR_Success;
 	}
@@ -353,10 +304,7 @@ namespace Iris2D {
 			0.0f,							0.0f,								0.0f, 0.0f,
 			0.0f,							static_cast<float>(GetHeight()),  0.0f, 1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
+
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
@@ -385,18 +333,6 @@ namespace Iris2D {
 
 		TextureGL::Release(m_pTexture);
 		m_pTexture = pTextureFrameBuffer;
-
-		if (nVAO) {
-			glDeleteVertexArrays(1, &nVAO);
-		}
-
-		if (nVBO) {
-			glDeleteBuffers(1, &nVBO);
-		}
-
-		if (nEBO) {
-			glDeleteBuffers(1, &nEBO);
-		}
 
 		return IRR_Success;
 	}
@@ -482,12 +418,6 @@ namespace Iris2D {
 			-1.0f ,	-1.0f,		0.0f,0.0f,
 			-1.0f ,	 1.0f,    	0.0f,1.0f
 		};
-		unsigned int arrIndiecs[] = {
-			0, 1, 3,
-			1, 2, 3,
-		};
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
@@ -513,32 +443,18 @@ namespace Iris2D {
 		pTextureFrameBuffer->RestoreFrameBuffer();
 		glViewport(0, 0, nWindowWidth, nWindowHeight);//视口还原
 		m_pTexture = pTextureFrameBuffer;
-		if (nVAO) {
-			glDeleteVertexArrays(1, &nVAO);
-		}
-
-		if (nVBO) {
-			glDeleteBuffers(1, &nVBO);
-		}
-
-		if (nEBO) {
-			glDeleteBuffers(1, &nEBO);
-		}
-
 		return IRR_Success;
 	}
 
 	void BitmapGL::SetFont(Font *& pFont) {
 		m_pFont = pFont;
-
 	}
 
 	Font * BitmapGL::GetFont() const {
-		return nullptr;
+		return m_pFont;
 	}
 
 	unsigned int BitmapGL::TextSize(const Font * pFont, const std::wstring & wstrText) {
-		
 		GetProxied<FontGL*>(pFont)->LoadChar(wstrText);
 		return GetProxied<FontGL*>(pFont)->GetTextWidth(wstrText);
 	}
@@ -549,10 +465,10 @@ namespace Iris2D {
 	}
 
 	ResultCode BitmapGL::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType eAlign) {
-
+		
 		GetProxied<FontGL*>(m_pFont)->LoadChar(wstrText);
 		GetProxied<FontGL*>(m_pFont)->DrawString(wstrText, nWidth, nHeight, eAlign);
-	
+
 		auto pTextureFrameBuffer = Iris2D::TextureGL::CreateFrameBuffer(GetWidth(), GetHeight());
 
 		int nWindowWidth, nWindowHeight;
@@ -568,17 +484,17 @@ namespace Iris2D {
 
 		static GLfloat arrVertices[] = {
 			//position	    //texcoord
-			 1.0f,  1.0f,   1.0f, 1.0f,   
-			 1.0f, -1.0f,   1.0f, 0.0f,   
-			-1.0f, -1.0f,   0.0f, 0.0f,   
-			-1.0f,  1.0f,   0.0f, 1.0f    
+			1.0f,  1.0f,   1.0f, 1.0f,
+			1.0f, -1.0f,   1.0f, 0.0f,
+			-1.0f, -1.0f,   0.0f, 0.0f,
+			-1.0f,  1.0f,   0.0f, 1.0f
 		};
 
 		GLuint nVAO = 0;
 		GLuint nVBO = 0;
 		GLuint nEBO = 0;
 
-		if(!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices, sizeof(arrVertices), nVAO, nVBO, nEBO, [&]() -> void {
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), static_cast<GLvoid*>(0));
 			glEnableVertexAttribArray(0);
 
@@ -596,13 +512,13 @@ namespace Iris2D {
 
 		auto pShaderFont2 = BackGroundShaderGL::Instance();
 
-	    const GLfloat & fH = static_cast<GLfloat>(GetHeight());
-	    const GLfloat & fW = static_cast<GLfloat>(GetWidth());
-	    const GLfloat & ftop = nY / fH * 2 - 1;
-	    const GLfloat & fleft = nX / fW * 2 - 1;
-	    const GLfloat & fright=(static_cast<GLfloat>(nX+ GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetWidth())) / fW * 2 - 1;
-	    const GLfloat & fbottom=(static_cast<GLfloat>(nY+ GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetHeight()) )/ fH * 2 - 1;
-		
+		const GLfloat & fH = static_cast<GLfloat>(GetHeight());
+		const GLfloat & fW = static_cast<GLfloat>(GetWidth());
+		const GLfloat & ftop = nY / fH * 2 - 1;
+		const GLfloat & fleft = nX / fW * 2 - 1;
+		const GLfloat & fright = (static_cast<GLfloat>(nX + GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetWidth())) / fW * 2 - 1;
+		const GLfloat & fbottom = (static_cast<GLfloat>(nY + GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetHeight())) / fH * 2 - 1;
+
 		GLfloat arrVertices2[] = {
 			fright,  fbottom,    1.0f, 1.0f,
 			fright,  ftop,   1.0f, 0.0f,
@@ -629,8 +545,9 @@ namespace Iris2D {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		
+
 		m_pTexture = pTextureFrameBuffer;
+		//m_pTexture->SaveToFile(L"d:\\hehe2.png");
 		if (nVAO) {
 			glDeleteVertexArrays(1, &nVAO);
 		}

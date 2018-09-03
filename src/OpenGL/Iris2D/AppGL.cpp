@@ -11,12 +11,12 @@
 
 #include "Common/Util/DebugUtil.h"
 
-#include "OpenGL/Iris2D/Shaders/BackGroundShaderGL.h";
-#include "OpenGL/Iris2D/Shaders/ClearRectShaderGL.h";
-#include "OpenGL/Iris2D/Shaders/CopyRectShaderGL.h";
-#include "OpenGL/Iris2D/Shaders/FillRectshaderGL.h";
-#include "OpenGL/Iris2D/Shaders/FontShaderGL.h";
-#include "OpenGL/Iris2D/Shaders/HueChangeShaderGL.h";
+#include "OpenGL/Iris2D/Shaders/BackGroundShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/ClearRectShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/CopyRectShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/FillRectshaderGL.h"
+#include "OpenGL/Iris2D/Shaders/FontShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/HueChangeShaderGL.h"
 
 namespace Iris2D {
 	ApplicationGL * ApplicationGL::Instance() {

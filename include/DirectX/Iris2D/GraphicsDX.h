@@ -94,9 +94,9 @@ namespace Iris2D {
 		void FrameReset() override;
 		ResultCode ResizeScreen(unsigned int nWidth, unsigned int nHeight) override;
 
-		void SetWidth(unsigned int nWidth) override;
+		void SetWidth(unsigned int nWidth);
 		unsigned int GetWidth() const override;
-		void SetHeight(unsigned int nHeight) override;
+		void SetHeight(unsigned int nHeight);
 		unsigned int GetHeight() const override;
 		unsigned int GetFrameCount() const override;
 

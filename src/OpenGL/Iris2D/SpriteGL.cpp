@@ -140,7 +140,7 @@ namespace Iris2D {
 		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.x, fOX, m_hOrgPos);
 	}
 
-	float SpriteGL::GetOX() {
+	float SpriteGL::GetOX() const {
 		return m_svbfBuffer.m_v2OrgPosition.x;
 	}
 
@@ -148,7 +148,7 @@ namespace Iris2D {
 		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.y, fOY, m_hOrgPos);
 	}
 
-	float SpriteGL::GetOY() {
+	float SpriteGL::GetOY() const {
 		return m_svbfBuffer.m_v2OrgPosition.y;
 	}
 
@@ -156,7 +156,7 @@ namespace Iris2D {
 		m_dcDirtyChecker.Assign(m_bMirror, bMirror, m_hMirror);
 	}
 
-	bool SpriteGL::GetMirror() {
+	bool SpriteGL::GetMirror() const {
 		return m_bMirror;
 	}
 
@@ -164,7 +164,7 @@ namespace Iris2D {
 		m_bVisible = bVisible;
 	}
 
-	bool SpriteGL::GetVisible() {
+	bool SpriteGL::GetVisible() const {
 		return m_bVisible;
 	}
 
@@ -173,7 +173,7 @@ namespace Iris2D {
 		m_dcDirtyChecker.Assign(m_fOpacity, fOpacity, m_hOpacity);
 	}
 
-	float SpriteGL::GetOpacity() {
+	float SpriteGL::GetOpacity() const {
 		return m_fOpacity;
 	}
 
@@ -274,7 +274,7 @@ namespace Iris2D {
 
 	ResultCode SpriteGL::Render() {
 
-		if (!m_bVisible || !m_pBitmap || m_fOpacity == 0.0f) {
+		if (NeedDiscard()) {
 			return IRR_Success;
 		}
 
@@ -364,9 +364,36 @@ namespace Iris2D {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 
-		glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());
-
 		return IRR_Success;
+	}
+
+	bool SpriteGL::NeedDiscard() const {
+		if (!m_pBitmap || !GetVisible() || m_fOpacity == 0.0f) {
+			return true;
+		}
+
+		Rect* pViewportArea = nullptr;
+		Rect* pThisArea = nullptr;
+
+		// TODO: optimize area rect generation.
+		if (!m_pViewport->GetSrcRect()) {
+			pViewportArea = Rect::Create(0, 0, m_pViewport->GetWidth(), m_pViewport->GetHeight());
+		} else {
+			RefferAssign<RectGL*>(pViewportArea, m_pViewport->GetSrcRect());
+		}
+
+		if (!m_pSrcRect) {
+			pThisArea = Rect::Create(-GetOX(), -GetOY(), m_pBitmap->GetWidth() * GetZoomX(), m_pBitmap->GetHeight() * GetZoomY());
+		} else {
+			pThisArea = Rect::Create(-GetOX(), -GetOY(), m_pSrcRect->GetWidth() * GetZoomX(), m_pSrcRect->GetHeight() * GetZoomY());
+		}
+
+		const auto bResult = !pThisArea->CheckInsectionWith(pViewportArea);
+
+		Rect::Release(pViewportArea);
+		Rect::Release(pThisArea);
+
+		return bResult;
 	}
 
 	SpriteGL::SpriteGL() {

@@ -23,6 +23,7 @@ namespace Iris2D {
 
 	void FontGL::LoadChar(const std::wstring & wstrText)
 	{
+		m_nTextureMapHeight = 0;
 		Characters.clear();
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		for (const auto& c : wstrText)
@@ -108,7 +109,7 @@ namespace Iris2D {
 
 		pTextureFont->UseTextureAsFrameBuffer();
 		glViewport(0, 0, fWidth, fHeight);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.0f, 0.0f, 1.0f, 0.2f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		auto pShaderFont = FontShaderGL::Instance();
@@ -117,6 +118,8 @@ namespace Iris2D {
 		pShaderFont->Use();
 		pShaderFont->SetProjectionMatrix(c_mt4Projection);
 		pShaderFont->SetFontColor(m_pColor); //*GetProxied<FontGL*>(GetFont())->GetColor());
+
+
 		fTop = fTop+ m_nTextureMapHeight-(m_nOriginY);
 
 		glGenVertexArrays(1, &nVAO);
@@ -171,7 +174,7 @@ namespace Iris2D {
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		pTextureFont->RestoreFrameBuffer();
-		pTextureFont->SaveToFile(L"d:\\hehe2.png");
+		pTextureFont->SaveToFile(L"d:\\hehe3.png");
 		
 		m_pTemporaryTexture = pTextureFont;
 

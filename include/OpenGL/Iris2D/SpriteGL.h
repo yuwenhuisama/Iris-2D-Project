@@ -87,19 +87,19 @@ namespace Iris2D {
 		float GetZoomY() const override;
 
 		void SetOX(float fOX) override;
-		float GetOX() override;
+		float GetOX() const override;
 
 		void SetOY(float fOY) override;
-		float GetOY() override;
+		float GetOY() const override;
 
 		void SetMirror(bool bMirror) override;
-		bool GetMirror() override;
+		bool GetMirror() const override;
 
 		void SetVisible(bool bVisible) override;
-		bool GetVisible() override;
+		bool GetVisible() const override;
 
 		void SetOpacity(float fOpacity) override;
-		float GetOpacity() override;
+		float GetOpacity() const override;
 
 		void SetSrcRect(Rect *& pSrcRect) override;
 		Rect * GetSrcRect() const override;
@@ -114,6 +114,9 @@ namespace Iris2D {
 	public:
 		bool CreateVertexBuffer();
 		ResultCode Render();
+
+	private:
+		bool NeedDiscard() const;
 
 	private:
 		SpriteGL();

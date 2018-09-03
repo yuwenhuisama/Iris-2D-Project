@@ -35,13 +35,13 @@ namespace Iris2D.Core
         public UInt32 Width
         {
             get => GraphicsNative.GetWidth(m_handle);
-            set => GraphicsNative.SetWidth(m_handle, value);
+            private set => throw new NotImplementedException();
         }
 
         public UInt32 Height
         {
             get => GraphicsNative.GetHeight(m_handle);
-            set => GraphicsNative.SetHeight(m_handle, value);
+            private set => throw new NotImplementedException();
         }
 
         public UInt32 FrameCount => GraphicsNative.GetFrameCount(m_handle);
@@ -49,7 +49,7 @@ namespace Iris2D.Core
         public float Brightness
         {
             get => GraphicsNative.GetBrightness(m_handle);
-            set => GraphicsNative.SetBrightness(m_handle, value);
+            private set => GraphicsNative.SetBrightness(m_handle, value);
         }
 
         public float FrameRate

@@ -40,19 +40,19 @@ namespace Iris2D {
 		virtual float GetZoomY() const = 0;
 
 		virtual void SetOX(float fOX) = 0;
-		virtual float GetOX() = 0;
+		virtual float GetOX() const = 0;
 
 		virtual void SetOY(float fOY) = 0;
-		virtual float GetOY() = 0;
+		virtual float GetOY() const = 0;
 
 		virtual void SetMirror(bool bMirror) = 0;
-		virtual bool GetMirror() = 0;
+		virtual bool GetMirror() const = 0;
 
 		virtual void SetVisible(bool bVisible) = 0;
-		virtual bool GetVisible() = 0;
+		virtual bool GetVisible() const = 0;
 
 		virtual void SetOpacity(float fOpacity) = 0;
-		virtual float GetOpacity() = 0;
+		virtual float GetOpacity() const = 0;
 
 		virtual void SetSrcRect(Rect*& pSrcRect) = 0;
 		virtual Rect* GetSrcRect() const = 0;

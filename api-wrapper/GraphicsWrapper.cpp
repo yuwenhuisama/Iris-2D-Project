@@ -50,19 +50,9 @@ EXPORT_API ResultCode Graphics_ResizeScreen(GRAPHICS_HANDLE hGraphics, unsigned 
 	return pGraphics->ResizeScreen(nWidth, nHeight);
 }
 
-EXPORT_API void Graphics_SetWidth(GRAPHICS_HANDLE hGraphics, unsigned int nWidth) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->SetWidth(nWidth);
-}
-
 EXPORT_API unsigned int Graphics_GetWidth(GRAPHICS_HANDLE hGraphics) {
 	const auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
 	return pGraphics->GetWidth();
-}
-
-EXPORT_API void Graphics_SetHeight(GRAPHICS_HANDLE hGraphics, unsigned int nHeight) {
-	auto pGraphics = reinterpret_cast<Iris2D::Graphics*>(hGraphics);
-	pGraphics->SetHeight(nHeight);
 }
 
 EXPORT_API unsigned int Graphics_GetHeight(GRAPHICS_HANDLE hGraphics) {

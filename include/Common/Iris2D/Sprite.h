@@ -249,7 +249,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的传送原点的 X 坐标。
 		* @return 当前 Sprite 的传送原点的 X 坐标。
 		*/
-		float GetOX() override;
+		float GetOX() const  override;
 
 		/**
 		* \~english
@@ -280,7 +280,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的传送原点的 Y 坐标。
 		* @return 当前 Sprite 的传送原点的 Y 坐标。
 		*/
-		float GetOY() override;
+		float GetOY() const  override;
 
 		/**
 		* \~english
@@ -303,7 +303,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 是否以镜像显示。
 		* @return 如果是镜像显示返回 true ，否则返回 false 。
 		*/
-		bool GetMirror() override;
+		bool GetMirror() const override;
 
 		/**
 		* \~english
@@ -326,7 +326,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 是否可见。
 		* @return 如果当前 Sprite 可见那么返回 true ，否则返回 false 。
 		*/
-		bool GetVisible() override;
+		bool GetVisible() const override;
 
 		/**
 		* \~english
@@ -355,7 +355,7 @@ namespace Iris2D {
 		* 获取当前 Sprite 的透明值。
 		* @return 当前 Sprite 的透明值。
 		*/
-		float GetOpacity() override;
+		float GetOpacity() const override;
 
 		/**
 		* \~english

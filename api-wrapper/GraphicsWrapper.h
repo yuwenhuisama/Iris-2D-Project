@@ -24,9 +24,7 @@ extern "C" {
 
 	EXPORT_API ResultCode Graphics_ResizeScreen(GRAPHICS_HANDLE hGraphics, unsigned int nWidth, unsigned int nHeight);
 
-	EXPORT_API void Graphics_SetWidth(GRAPHICS_HANDLE hGraphics, unsigned int nWidth);
 	EXPORT_API unsigned int Graphics_GetWidth(GRAPHICS_HANDLE hGraphics);
-	EXPORT_API void Graphics_SetHeight(GRAPHICS_HANDLE hGraphics, unsigned int nHeight);
 	EXPORT_API unsigned int Graphics_GetHeight(GRAPHICS_HANDLE hGraphics);
 
 	EXPORT_API unsigned int Graphics_GetFrameCount(GRAPHICS_HANDLE hGraphics);

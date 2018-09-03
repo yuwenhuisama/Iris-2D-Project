@@ -35,14 +35,8 @@ namespace Iris2D.NativeBridge
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_ResizeScreen", CharSet = CharSet.Unicode)]
         public static extern Int32 ResizeScreen(IntPtr handle, UInt32 width, UInt32 height);
 
-        [DllImport("libiris2d.dll", EntryPoint = "Graphics_SetWidth")]
-        public static extern void SetWidth(IntPtr handle, UInt32 width);
-
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_GetWidth")]
         public static extern UInt32 GetWidth(IntPtr handle);
-
-        [DllImport("libiris2d.dll", EntryPoint = "Graphics_SetHeight")]
-        public static extern void SetHeight(IntPtr handle, UInt32 height);
 
         [DllImport("libiris2d.dll", EntryPoint = "Graphics_GetHeight")]
         public static extern UInt32 GetHeight(IntPtr handle);

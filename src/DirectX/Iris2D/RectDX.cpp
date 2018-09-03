@@ -185,6 +185,11 @@ namespace Iris2D
 		m_dcChecker.ResetDirty(m_hModified);
 	}
 
+	bool RectDX::CheckInsectionWith(const Rect* pRect) {
+		// TODO: compete insection check for RectDX.
+		return true;
+	}
+
 	RectDX::RectDX() {
 		m_hModified = m_dcChecker.Register();
 	}

@@ -6,9 +6,10 @@ bool GameCallBack() {
 
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
-	
-	auto pViewport = Viewport::Create(0.0f, 0.0f, 600, 600);
-	pViewport->SetZ(1.0f);
+
+	//auto pViewport = Viewport::Create(20.0f, 20.0f, 1000, 1000);
+	//pViewport->SetZ(1.0f);
+	Viewport* pViewport = nullptr;
 
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
 	auto pSprite = Sprite::Create(pViewport);
@@ -21,24 +22,24 @@ bool GameCallBack() {
 	//pBitmap2->ClearRect(Rect::Create(130, 140, 400, 400));
 	//pBitmap2->StretchBlt(Rect::Create(130, 140, 100, 100),pBitmap, Rect::Create(100, 100, 300, 300),100);
 	
-
-
 	auto pfont = Font::Create(L"Font/simhei.ttf");
 	pfont->SetSize(80);
-	pBitmap2->SetFont(pfont);
+	pBitmap->SetFont(pfont);
 	auto pRect1 = Rect::Create(200, 220, 260, 80);
-	pBitmap2->DrawText(pRect1,L"bigBoom嘣嘣", AlignType::Right);
-
+	pBitmap->DrawText(pRect1, L"bigBoomb嘣嘣嘣", AlignType::Center);
+	
+	
 	auto pRect2 = Rect::Create(100, 350, 360, 80);
 	pfont->SetSize(50);
-	pBitmap2->DrawText(pRect2, L"fuck法克", AlignType::Center);
+	pBitmap->DrawText(pRect2, L"fuck法克", AlignType::Center);
+	
 
 
-	//pBitmap2->HueChange(350);
 
+	pBitmap2->HueChange(350);
 
 	auto pSprite2 = Sprite::Create(pViewport);
-	pSprite2->SetX(50.0f);
+	pSprite2->SetX(200.0f);
 	pSprite2->SetBitmap(pBitmap2);
 	pSprite2->SetZ(5.0f);
 
@@ -56,6 +57,52 @@ bool GameCallBack() {
 	auto bUp = true;
 	auto nCounter = 0;
 
+	auto pAnimation = Animation::AnimationPositionProperty::Create(pSprite2);
+	pAnimation->SetStartKeyFrame({ 0, 0 });
+	pAnimation->SetEndKeyFrame({ 0, 0 });
+	pAnimation->SetTotalTime(400);
+	pAnimation->SetKeyFrameList({
+		{ 0.25f,{ 0, 400 } },
+		{ 0.5f,{ 400, 400 } },
+		{ 0.75f,{ 400, 0 } }
+		});
+	//pAnimation->SetLoop(true);
+	//pAnimation->Start();
+
+	auto pAnimation2 = Animation::AnimationAngleProperty::Create(pSprite2);
+	pAnimation2->SetStartKeyFrame(0.0f);
+	pAnimation2->SetEndKeyFrame(360.0f);
+	pAnimation2->SetTotalTime(300);
+	//pAnimation2->SetLoop(true);
+	//pAnimation2->Start();
+
+	auto pAnimation3 = Animation::AnimationZoomProperty::Create(pSprite2);
+	pAnimation3->SetStartKeyFrame({ 0.5, 0.5 });
+	pAnimation3->SetEndKeyFrame({ 1.0, 1.0 });
+	pAnimation3->SetTotalTime(400);
+	pAnimation3->SetKeyFrameList({
+		{ 0.25f,{ 0.75, 0.5 } },
+		{ 0.5f,{ 0.75, 0.75 } },
+		{ 0.75f,{ 1.0, 0.75 } }
+		});
+	//pAnimation3->SetLoop(true);
+	pAnimation3->AddCallBack(0.2f, [](float fProgress) -> void {
+		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
+	});
+
+	pAnimation3->AddCallBack(0.8f, [](float fProgress) -> void {
+		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
+	});
+
+	auto pAnimationGroup = Animation::AnimationParallelGroup::Create();
+	pAnimationGroup->AddAnimation(pAnimation);
+	pAnimationGroup->AddAnimation(pAnimation2);
+	pAnimationGroup->AddAnimation(pAnimation3);
+	pAnimationGroup->SetLoop(true);
+
+	pAnimationGroup->Start();
+
+	//pAnimation3->Start();
 	//pGraphics->FadeIn(50);
 	//pGraphics->FadeOut(50);
 
@@ -83,7 +130,11 @@ bool GameCallBack() {
 		// pSprite->SetOpacity(fOpacity);
 		// pSprite->GetTone()->SetRed(nRed);
 
-		pSprite->Update();
+		//pAnimation3->Update();
+
+		pAnimationGroup->Update();
+
+		//pSprite->Update();
 		//pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
 
@@ -103,7 +154,7 @@ bool GameCallBack() {
 		//	pGraphics->ResizeScreen(1200, 1200);
 		//}
 
-		++nCounter;
+		//++nCounter;
 	}
 
 	Sprite::Release(pSprite);
@@ -115,6 +166,12 @@ bool GameCallBack() {
 	Color::Release(pColor);
 	Viewport::Release(pViewport);
 
+	Animation::AnimationPositionProperty::Release(pAnimation);
+	Animation::AnimationAngleProperty::Release(pAnimation2);
+	Animation::AnimationZoomProperty::Release(pAnimation3);
+
+	Animation::AnimationParallelGroup::Release(pAnimationGroup);
+
 	return true;
 }
 
@@ -123,7 +180,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
-	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 800, 600, GameCallBack, L"My Iris App" };
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
 
 	AppFactory::InitApiType(ApiType::OpenGL);
 	auto pApp = AppFactory::GetApplication();
