@@ -6,7 +6,7 @@ EXPORT_API COLOR_HANDLE Color_Create(unsigned char cRed, unsigned char cGreen, u
 }
 
 EXPORT_API void Color_Release(COLOR_HANDLE* pColor) {
-	const auto pCastedColor = reinterpret_cast<Iris2D::Color*>(pColor);
+	auto pCastedColor = reinterpret_cast<Iris2D::Color*>(pColor);
 	Iris2D::Color::Release(pCastedColor);
 }
 
