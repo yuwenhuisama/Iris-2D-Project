@@ -128,7 +128,7 @@ namespace Iris2D
 		pDestRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black, 0.0f));
 
 	 	auto hResult = pDestRenderTarget->EndDraw();
-		m_pTexture->ReleaseSyncFromDx10Side();
+		m_pTexture->ReleaseSyncFromDx10Side(); 
 
 		if (FAILED(hResult)) {
 			return IRR_D2DOperationFailed;

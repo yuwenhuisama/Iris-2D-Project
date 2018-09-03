@@ -19,9 +19,9 @@ namespace Iris2D {
 	public:
 		bool Initialize();
 
-		void SetFontColor(const  Color& fontColor);
+		void SetFontColor(const  Color * fontColor);
 		void SetProjectionMatrix(const glm::mat4& mtProjection);
-		
+		void SetDestRect(const Rect * pDestRect,const unsigned int nDesTextureWidth,const unsigned int nDesTextureHeight);
 
 	private:
 		FontShaderGL() = default;

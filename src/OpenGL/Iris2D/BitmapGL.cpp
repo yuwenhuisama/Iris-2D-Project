@@ -10,7 +10,7 @@
 
 #include "Common/Util/DebugUtil.h"
 #include "OpenGL/Iris2D/FontGL.h"
-#include "OpenGL/OpenGLUtil/DrawTextHelper.h"
+
 
 #include "OpenGL/Iris2D/Shaders/FillRectShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/CopyRectShaderGL.h"
@@ -113,8 +113,18 @@ namespace Iris2D {
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
 		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<float>(nWindowHeight));
-
 		pBitmap->m_pTexture = pTextureFrameBuffer;
+		if (nVAO) {
+			glDeleteVertexArrays(1, &nVAO);
+		}
+
+		if (nVBO) {
+			glDeleteBuffers(1, &nVBO);
+		}
+
+		if (nEBO) {
+			glDeleteBuffers(1, &nEBO);
+		}
 
 		return pBitmap;
 	}
@@ -218,6 +228,17 @@ namespace Iris2D {
 		TextureGL::Release(m_pTexture);
 
 		m_pTexture = pTextureFrameBuffer;
+		if (nVAO) {
+			glDeleteVertexArrays(1, &nVAO);
+		}
+
+		if (nVBO) {
+			glDeleteBuffers(1, &nVBO);
+		}
+
+		if (nEBO) {
+			glDeleteBuffers(1, &nEBO);
+		}
 		
 		return IRR_Success;
 	} 
@@ -285,6 +306,18 @@ namespace Iris2D {
 
 		m_pTexture = pTextureFrameBuffer;
 
+		if (nVAO) {
+			glDeleteVertexArrays(1, &nVAO);
+		}
+
+		if (nVBO) {
+			glDeleteBuffers(1, &nVBO);
+		}
+
+		if (nEBO) {
+			glDeleteBuffers(1, &nEBO);
+		}
+
 		return IRR_Success;
 	}
 
@@ -338,15 +371,6 @@ namespace Iris2D {
 			return IRR_OpenGLVertexBufferCreateFailed;
 		}
 
-
-
-
-
-
-
-
-
-
 		pShader->Use();
 		pShader->SetProjectionMatrix(c_mt4Projection);
 		pShader->SetRectLocation(pRect);
@@ -361,6 +385,18 @@ namespace Iris2D {
 
 		TextureGL::Release(m_pTexture);
 		m_pTexture = pTextureFrameBuffer;
+
+		if (nVAO) {
+			glDeleteVertexArrays(1, &nVAO);
+		}
+
+		if (nVBO) {
+			glDeleteBuffers(1, &nVBO);
+		}
+
+		if (nEBO) {
+			glDeleteBuffers(1, &nEBO);
+		}
 
 		return IRR_Success;
 	}
@@ -477,10 +513,24 @@ namespace Iris2D {
 		pTextureFrameBuffer->RestoreFrameBuffer();
 		glViewport(0, 0, nWindowWidth, nWindowHeight);//视口还原
 		m_pTexture = pTextureFrameBuffer;
+		if (nVAO) {
+			glDeleteVertexArrays(1, &nVAO);
+		}
+
+		if (nVBO) {
+			glDeleteBuffers(1, &nVBO);
+		}
+
+		if (nEBO) {
+			glDeleteBuffers(1, &nEBO);
+		}
+
 		return IRR_Success;
 	}
 
 	void BitmapGL::SetFont(Font *& pFont) {
+		m_pFont = pFont;
+
 	}
 
 	Font * BitmapGL::GetFont() const {
@@ -488,11 +538,9 @@ namespace Iris2D {
 	}
 
 	unsigned int BitmapGL::TextSize(const Font * pFont, const std::wstring & wstrText) {
-		auto pDrawText = new DrawTexHelper();
-		pDrawText->LoadChar(GetProxied<FontGL*>(pFont)->GetFTFace(), wstrText);
-		const auto result = pDrawText->GetTextSize(wstrText);
-		delete pDrawText;
-		return result;
+		
+		GetProxied<FontGL*>(pFont)->LoadChar(wstrText);
+		return GetProxied<FontGL*>(pFont)->GetTextWidth(wstrText);
 	}
 
 	ResultCode BitmapGL::TextSize(const Font* pFont, const std::wstring& wstrText, unsigned int& nSize) {
@@ -501,9 +549,11 @@ namespace Iris2D {
 	}
 
 	ResultCode BitmapGL::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType eAlign) {
-		
+
+		GetProxied<FontGL*>(m_pFont)->LoadChar(wstrText);
+		GetProxied<FontGL*>(m_pFont)->DrawString(wstrText, nWidth, nHeight, eAlign);
+	
 		auto pTextureFrameBuffer = Iris2D::TextureGL::CreateFrameBuffer(GetWidth(), GetHeight());
-		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(GetWidth()), 0.0f, static_cast<float>(GetHeight()));
 
 		int nWindowWidth, nWindowHeight;
 		glfwGetFramebufferSize(OpenGLHelper::Instance()->GetWindow(), &nWindowWidth, &nWindowHeight);
@@ -511,10 +561,8 @@ namespace Iris2D {
 		pTextureFrameBuffer->UseTextureAsFrameBuffer();
 		glViewport(0, 0, GetWidth(), GetHeight());
 
-		glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		//glDisable(GL_DEPTH_TEST);
-
 		//background
 		auto pShaderBackground = BackGroundShaderGL::Instance();
 
@@ -545,24 +593,44 @@ namespace Iris2D {
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
+
+		auto pShaderFont2 = BackGroundShaderGL::Instance();
+
+	    const GLfloat & fH = static_cast<GLfloat>(GetHeight());
+	    const GLfloat & fW = static_cast<GLfloat>(GetWidth());
+	    const GLfloat & ftop = nY / fH * 2 - 1;
+	    const GLfloat & fleft = nX / fW * 2 - 1;
+	    const GLfloat & fright=(static_cast<GLfloat>(nX+ GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetWidth())) / fW * 2 - 1;
+	    const GLfloat & fbottom=(static_cast<GLfloat>(nY+ GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetHeight()) )/ fH * 2 - 1;
 		
-		auto pShaderFont = FontShaderGL::Instance();
-		pShaderFont->Initialize();
-		pShaderFont->SetProjectionMatrix(c_mt4Projection);
+		GLfloat arrVertices2[] = {
+			fright,  fbottom,    1.0f, 1.0f,
+			fright,  ftop,   1.0f, 0.0f,
+			fleft,   ftop,   0.0f, 0.0f,
+			fleft,   fbottom,   0.0f, 1.0f
+		};
+		GLuint nVAO2 = 0;
+		GLuint nVBO2 = 0;
+		GLuint nEBO2 = 0;
 
-		pShaderFont->SetFontColor(*GetProxied<FontGL*>(GetFont())->GetColor());
-		pShaderFont->Use();
+		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrVertices2, sizeof(arrVertices2), nVAO2, nVBO2, nEBO2, [&]() -> void {
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), static_cast<GLvoid*>(0));
+			glEnableVertexAttribArray(0);
 
-		DrawTexHelper dthDrawtext;
-		dthDrawtext.LoadChar(GetProxied<FontGL*>(GetFont())->GetFTFace(), wstrText);
-		dthDrawtext.Draw(wstrText, static_cast<GLfloat>(nX), static_cast<GLfloat>(nY), static_cast<GLfloat>(nWidth), static_cast<GLfloat>(nHeight));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(2 * sizeof(GLfloat)));
+			glEnableVertexAttribArray(1);
+		})) {
+			return IRR_OpenGLVertexBufferCreateFailed;
+		}
 
+		pShaderFont2->Use();
+		glBindVertexArray(nVAO2);
+		GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->UseTexture();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		glBindVertexArray(0);
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		glViewport(0, 0, nWindowWidth, nWindowHeight);
-
-		TextureGL::Release(m_pTexture);
+		
 		m_pTexture = pTextureFrameBuffer;
-
 		if (nVAO) {
 			glDeleteVertexArrays(1, &nVAO);
 		}
@@ -574,7 +642,18 @@ namespace Iris2D {
 		if (nEBO) {
 			glDeleteBuffers(1, &nEBO);
 		}
-		
+
+		if (nVAO2) {
+			glDeleteVertexArrays(1, &nVAO2);
+		}
+
+		if (nVBO2) {
+			glDeleteBuffers(1, &nVBO2);
+		}
+
+		if (nEBO2) {
+			glDeleteBuffers(1, &nEBO2);
+		}
 		return IRR_Success;
 	}
 
@@ -582,8 +661,8 @@ namespace Iris2D {
 		return DrawText(
 			static_cast<unsigned int>(pRect->GetLeft()),
 			static_cast<unsigned int>(pRect->GetTop()),
-			static_cast<unsigned int>(pRect->GetRight()),
-			static_cast<unsigned int>(pRect->GetBottom()),
+			static_cast<unsigned int>(pRect->GetWidth()),
+			static_cast<unsigned int>(pRect->GetHeight()),
 			wstrText,
 			eAlign
 		);

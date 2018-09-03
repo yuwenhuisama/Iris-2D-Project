@@ -7,7 +7,7 @@ bool GameCallBack() {
 	auto pGraphics = AppFactory::GetGraphics();
 	auto pApp = AppFactory::GetApplication();
 	
-	auto pViewport = Viewport::Create(20.0f, 20.0f, 1000, 1000);
+	auto pViewport = Viewport::Create(0.0f, 0.0f, 600, 600);
 	pViewport->SetZ(1.0f);
 
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
@@ -20,7 +20,22 @@ bool GameCallBack() {
 	//pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
 	//pBitmap2->ClearRect(Rect::Create(130, 140, 400, 400));
 	//pBitmap2->StretchBlt(Rect::Create(130, 140, 100, 100),pBitmap, Rect::Create(100, 100, 300, 300),100);
-	pBitmap2->HueChange(350);
+	
+
+
+	auto pfont = Font::Create(L"Font/simhei.ttf");
+	pfont->SetSize(80);
+	pBitmap2->SetFont(pfont);
+	auto pRect1 = Rect::Create(200, 220, 260, 80);
+	pBitmap2->DrawText(pRect1,L"bigBoomàÔàÔ", AlignType::Right);
+
+	auto pRect2 = Rect::Create(100, 350, 360, 80);
+	pfont->SetSize(50);
+	pBitmap2->DrawText(pRect2, L"fuck·¨¿Ë", AlignType::Center);
+
+
+	//pBitmap2->HueChange(350);
+
 
 	auto pSprite2 = Sprite::Create(pViewport);
 	pSprite2->SetX(50.0f);
@@ -108,7 +123,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
-	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 800, 600, GameCallBack, L"My Iris App" };
 
 	AppFactory::InitApiType(ApiType::OpenGL);
 	auto pApp = AppFactory::GetApplication();
