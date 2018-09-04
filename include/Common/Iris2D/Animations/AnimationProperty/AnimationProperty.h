@@ -2,13 +2,12 @@
 #define _H_ANIMATION_PROPERTY_
 
 #include "Common/Iris2D/Animations/AnimationBase.h"
-#include "Common/Util/RefCounter.h"
 #include "Common/Iris2D/Sprite.h"
 
 #include <list>
 #include <unordered_map>
 #include <glm/vec2.hpp>
-#include "AnimationReferred.h"
+#include "Common/Iris2D/Animations/AnimationReferred.h"
 
 namespace Iris2D {
 	class Sprite;
@@ -29,7 +28,7 @@ namespace Iris2D {
 		};
 
 		template<typename E>
-		class AnimationProperty: public AnimationReffered {
+		class AnimationProperty: public AnimationRefferedProperty {
 		protected:
 			std::list<KeyFrameElement<E>> m_lsKeyFrameList {};
 			
@@ -51,7 +50,7 @@ namespace Iris2D {
 			std::unordered_map<unsigned int, AnimationCallBackPair> m_umapCallBackMap{};
 
 		public:
-			void SetTotalTime(unsigned nTotalFrame) {
+			void SetTotalTime(unsigned int nTotalFrame) override {
 				m_nTotalTime = nTotalFrame;
 			}
 
@@ -86,8 +85,13 @@ namespace Iris2D {
 				E dpValue{};
 
 				if (m_lsKeyFrameList.empty()) {
-					auto fDelta = m_nFrameCounter / static_cast<float>(m_nTotalTime);
-					dpValue = (1.0f - fDelta) * m_dpStartFrameData.m_dpData + fDelta * m_dpEndFrameData.m_dpData;
+					if (m_nFrameCounter == m_nTotalTime) {
+						dpValue = m_dpEndFrameData.m_dpData;
+						End();
+					} else {
+						auto fDelta = m_nFrameCounter / static_cast<float>(m_nTotalTime);
+						dpValue = (1.0f - fDelta) * m_dpStartFrameData.m_dpData + fDelta * m_dpEndFrameData.m_dpData;
+					}
 				}
 				else {
 					if (m_iterCurrent == m_lsKeyFrameList.end()) {
@@ -125,7 +129,6 @@ namespace Iris2D {
 			}
 
 			void Start() override {
-
 				if (m_eState == AnimationState::Pending) {
 					m_umapCallBackMap.clear();
 					for (const auto& pair : m_lsCallBackList) {
@@ -158,7 +161,7 @@ namespace Iris2D {
 			virtual bool UpdateProperty(Sprite* pSprite, const E& dpValue) = 0;
 
 		protected:
-			AnimationProperty() : AnimationReffered() {}
+			AnimationProperty() : AnimationRefferedProperty() {}
 			~AnimationProperty() {
 				Sprite::Release(m_pSprite);
 			}

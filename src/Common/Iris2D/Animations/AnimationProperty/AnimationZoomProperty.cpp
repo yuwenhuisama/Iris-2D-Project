@@ -1,7 +1,5 @@
-#include "Common/Iris2D/Animations/AnimationPositionProperty.h"
-#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Animations/AnimationProperty/AnimationZoomProperty.h"
 #include "Common/Iris2D/AppFactory.h"
-
 #include "OpenGL/Iris2D/SpriteGL.h"
 
 #ifdef _WIN32
@@ -10,9 +8,8 @@
 
 namespace Iris2D {
 	namespace Animation {
-
-		AnimationPositionProperty* AnimationPositionProperty::Create(Sprite*& pSprite) {
-			const auto pAnimation = new AnimationPositionProperty();
+		AnimationZoomProperty* AnimationZoomProperty::Create(Sprite*& pSprite) {
+			const auto pAnimation = new AnimationZoomProperty();
 			pAnimation->m_pSprite = pSprite;
 
 			switch (AppFactory::GetApiType()) {
@@ -31,7 +28,7 @@ namespace Iris2D {
 			return pAnimation;
 		}
 
-		void AnimationPositionProperty::Release(AnimationPositionProperty*& pAnimation) {
+		void AnimationZoomProperty::Release(AnimationZoomProperty*& pAnimation) {
 			if (!pAnimation) {
 				return;
 			}
@@ -39,9 +36,9 @@ namespace Iris2D {
 			Iris2D::RefferRelease(pAnimation);
 		}
 
-		bool AnimationPositionProperty::UpdateProperty(Sprite* pSprite, const PositionVec2& dpValue) {
-			pSprite->SetX(dpValue.x);
-			pSprite->SetY(dpValue.y);
+		bool AnimationZoomProperty::UpdateProperty(Sprite* pSprite, const PositionVec2& dpValue) {
+			pSprite->SetZoomX(dpValue.x);
+			pSprite->SetZoomY(dpValue.y);
 			return true;
 		}
 	}

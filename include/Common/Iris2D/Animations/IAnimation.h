@@ -20,7 +20,6 @@ namespace Iris2D {
 			virtual void Start() = 0;
 			virtual void End() = 0;
 			virtual void SetLoop(bool bIsLoop) = 0;
-			virtual void AddCallBack(float fProgress, const AnimationCallBack& fCallBack) = 0;
 			virtual AnimationState GetAnimationState() = 0;
 			virtual ~IAnimation() = default;
 		};
