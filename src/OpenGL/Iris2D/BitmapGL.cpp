@@ -161,6 +161,7 @@ namespace Iris2D {
 
 		auto pShader = CopyRectShaderGL::Instance();
 
+
 		//const GLuint VAO = pShader->BindBufferData(static_cast<float>(GetWidth()), static_cast<float>(GetHeight()));
 		static GLfloat arrVertices[] = {
 			static_cast<float>(GetWidth()),	static_cast<float>(GetHeight()),	1.0f, 1.0f,
@@ -455,7 +456,7 @@ namespace Iris2D {
 	}
 
 	unsigned int BitmapGL::TextSize(const Font * pFont, const std::wstring & wstrText) {
-		GetProxied<FontGL*>(pFont)->LoadChar(wstrText);
+		//GetProxied<FontGL*>(pFont)->LoadChar(wstrText);
 		return GetProxied<FontGL*>(pFont)->GetTextWidth(wstrText);
 	}
 
@@ -465,9 +466,11 @@ namespace Iris2D {
 	}
 
 	ResultCode BitmapGL::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType eAlign) {
-		
-		GetProxied<FontGL*>(m_pFont)->LoadChar(wstrText);
-		GetProxied<FontGL*>(m_pFont)->DrawString(wstrText, nWidth, nHeight, eAlign);
+		GetProxied<FontGL*>(m_pFont)->SetUseCache(true);
+
+
+		GetProxied<FontGL*>(m_pFont)->LoadWstring(wstrText);
+		auto pfontTexture=GetProxied<FontGL*>(m_pFont)->DrawString(wstrText, nWidth, nHeight, eAlign);
 
 		auto pTextureFrameBuffer = Iris2D::TextureGL::CreateFrameBuffer(GetWidth(), GetHeight());
 
@@ -516,8 +519,8 @@ namespace Iris2D {
 		const GLfloat & fW = static_cast<GLfloat>(GetWidth());
 		const GLfloat & ftop = nY / fH * 2 - 1;
 		const GLfloat & fleft = nX / fW * 2 - 1;
-		const GLfloat & fright = (static_cast<GLfloat>(nX + GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetWidth())) / fW * 2 - 1;
-		const GLfloat & fbottom = (static_cast<GLfloat>(nY + GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->GetHeight())) / fH * 2 - 1;
+		const GLfloat & fright = (static_cast<GLfloat>(nX + pfontTexture->GetWidth())) / fW * 2 - 1;
+		const GLfloat & fbottom = (static_cast<GLfloat>(nY + pfontTexture->GetHeight())) / fH * 2 - 1;
 
 		GLfloat arrVertices2[] = {
 			fright,  fbottom,    1.0f, 1.0f,
@@ -541,10 +544,12 @@ namespace Iris2D {
 
 		pShaderFont2->Use();
 		glBindVertexArray(nVAO2);
-		GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->UseTexture();
+		//GetProxied<FontGL*>(m_pFont)->GetTemporaryTexture()->UseTexture();
+		pfontTexture->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 		pTextureFrameBuffer->RestoreFrameBuffer();
+
 
 		m_pTexture = pTextureFrameBuffer;
 		//m_pTexture->SaveToFile(L"d:\\hehe2.png");
