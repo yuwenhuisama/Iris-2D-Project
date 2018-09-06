@@ -24,12 +24,14 @@ bool GameCallBack() {
 	
 	auto pfont = Font::Create(L"Font/simhei.ttf");
 	pfont->SetSize(60);
+	pfont->SetBold(true);
+	pfont->SetItalic(true);
 	pBitmap->SetFont(pfont);
 	auto pRect1 = Rect::Create(200, 220, 260, 80);
 	pBitmap->DrawText(pRect1, L"wsdlkufiowejlkfsdjfasdasdasdb", AlignType::Right);
 	
-	
-	auto pRect2 = Rect::Create(100, 350, 360, 80);
+
+	auto pRect2 = Rect::Create(100, 350, 360, 100);
 	pfont->SetSize(100);
 	pBitmap->DrawText(pRect2, L"bba·¨¿Ë", AlignType::Center);
 	

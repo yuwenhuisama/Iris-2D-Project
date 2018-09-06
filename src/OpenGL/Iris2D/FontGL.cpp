@@ -10,6 +10,10 @@
 #include "OpenGL/Iris2D/Shaders/BackGroundShaderGL.h"
 #include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 
+
+#include <freetype/ftoutln.h>
+#include FT_BITMAP_H
+
 namespace Iris2D {
 
 	
@@ -39,12 +43,17 @@ namespace Iris2D {
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		for (const auto& c : wstrText)
 		{
-			if (FT_Load_Char(m_FTFace, c, FT_LOAD_RENDER)) {
+			if (FT_Load_Char(m_FTFace, c, FT_LOAD_MONOCHROME)) {
 				continue;
 			}
 			if (Characters.count(c) > 0) {
 				continue;
 			}
+			if (m_bBold) {
+				FT_Outline_Embolden(&m_FTFace->glyph->outline, 128);
+			}
+			FT_Render_Glyph(m_FTFace->glyph, FT_RENDER_MODE_NORMAL);
+
 			GLuint nTexture;
 			glGenTextures(1, &nTexture);
 			glBindTexture(GL_TEXTURE_2D, nTexture);
@@ -123,9 +132,14 @@ namespace Iris2D {
 		Characters.clear();
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-		if (FT_Load_Char(m_FTFace, wChar, FT_LOAD_RENDER)) {
+		if (FT_Load_Char(m_FTFace, wChar, FT_LOAD_MONOCHROME)) {
 			return;
 		}
+		if (m_bBold) {
+			FT_Outline_Embolden(&m_FTFace->glyph->outline, 128);
+		}
+		FT_Render_Glyph(m_FTFace->glyph, FT_RENDER_MODE_NORMAL);
+
 		GLuint nTexture;
 		glGenTextures(1, &nTexture);
 		glBindTexture(GL_TEXTURE_2D, nTexture);
@@ -429,7 +443,10 @@ namespace Iris2D {
 
 		glBindVertexArray(nVAO);
 		const Character& chCharacter = Characters[wChar];
-		const GLfloat fXPos = chCharacter.m_nLeft;
+		GLfloat fXPos = chCharacter.m_nLeft;
+		if (m_bItalic) {
+			fXPos = 0-chCharacter.m_nLeft/2;
+		}
 		const GLfloat fYPos = fTop - chCharacter.m_nTop;
 
 		const GLfloat fTmpW = chCharacter.m_nWidth;
@@ -552,7 +569,7 @@ namespace Iris2D {
 	void FontGL::SetItalic(bool bItalic)
 	{
 		if (bItalic && !m_bItalic) {
-			float lean = 0.5f;
+			float lean = 0.2f;
 			FT_Matrix matrix;
 			matrix.xx = 0x10000L;
 			matrix.xy = lean * 0x10000L;

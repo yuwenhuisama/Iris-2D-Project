@@ -7,20 +7,18 @@
 #include "Common/Iris2D/Proxied.h"
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "Common/Iris2D/Color.h"
-//#include "OpenGL/OpenGLUtil/DrawTextHelper.h"
 
 
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include <GL/glew.h>
-#include <map>
+//#include <map>
+#include <unordered_map>  
 #include "Common/Iris2D/Rect.h"
 #include "OpenGL/OpenGLUtil/Character.h"
 #include "Common/Iris2D/IBitmap.h"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
 
 namespace Iris2D
 {
@@ -49,8 +47,10 @@ namespace Iris2D
 		unsigned int m_nTextureMapHeight = 0;
 		unsigned int m_nOriginY = 0;
 
-		std::map<wchar_t, Character> Characters;
-		std::map<wchar_t, CharacterWithcache> CharacterWicaches;
+		std::unordered_map<wchar_t, Character> Characters;
+		std::unordered_map<wchar_t, CharacterWithcache> CharacterWicaches;
+		//std::map<wchar_t, Character> Characters;
+		//std::map<wchar_t, CharacterWithcache> CharacterWicaches;
 
 		TextureGL * m_pTemporaryTexture=nullptr;
 		TextureGL * m_pCacheTexture = nullptr;
