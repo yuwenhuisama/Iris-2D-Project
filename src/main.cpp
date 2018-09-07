@@ -28,9 +28,9 @@ bool GameCallBack() {
 	pfont->SetItalic(true);
 	pBitmap->SetFont(pfont);
 	auto pRect1 = Rect::Create(200, 220, 260, 80);
-	pBitmap->DrawText(pRect1, L"wsdlkufiowejlkfsdjfasdasdasdb", AlignType::Right);
+	pBitmap->DrawText(pRect1, L"cb", AlignType::Right);
 	
-
+	//pfont->SetBold(false);
 	auto pRect2 = Rect::Create(100, 350, 360, 100);
 	pfont->SetSize(100);
 	pBitmap->DrawText(pRect2, L"bba·¨¿Ë", AlignType::Center);
