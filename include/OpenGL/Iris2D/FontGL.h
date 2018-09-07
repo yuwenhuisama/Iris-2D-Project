@@ -42,25 +42,25 @@ namespace Iris2D
 		FT_Face m_FTFace=NULL;
 
 		bool m_bUseCache = false;
-
-		unsigned int m_nTextureMapWidth = 0;
+		unsigned int m_nDrawTimes = 0;
+		//unsigned int m_nTextureMapWidth = 0;
 		unsigned int m_nTextureMapHeight = 0;
 		unsigned int m_nOriginY = 0;
 
+		FontStyle m_FSFontStyle = FontStyle::Nomal;
+
 		std::unordered_map<wchar_t, Character> Characters;
-		std::unordered_map<wchar_t, CharacterWithcache> CharacterWicaches;
-		//std::map<wchar_t, Character> Characters;
-		//std::map<wchar_t, CharacterWithcache> CharacterWicaches;
 
-		TextureGL * m_pTemporaryTexture=nullptr;
-		TextureGL * m_pCacheTexture = nullptr;
+		std::unordered_map<CharCacheMapKey, CharacterWithcache, CharCacheMapHashFunc, EqualKey> CharacterWicaches;
 
+		void ResetOriginAndHeight();
 		void LoadStringWithDataBind(const std::wstring& wstrText);
 		void LoadStringWithoutDataBind(const std::wstring& wstrText);
 		void LoadChar(const wchar_t & wChar);
 		TextureGL * DrawStringWithCache(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
 		TextureGL * DrawStringWithoutCache(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
 		void DrawCasheTexture(const wchar_t & wChar);
+
 
 	public:
 		FT_Library GetFTLibrary();
@@ -69,8 +69,6 @@ namespace Iris2D
 		void SetUseCache(bool bUseCach);
 		unsigned int GetTextWidth(const std::wstring & wstrText);
 		TextureGL * DrawString(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
-		void LoadWstring(const std::wstring& wstrText);
-		TextureGL *GetTemporaryTexture();
 
 		//TextureGL *GetCacheTexture();
 		

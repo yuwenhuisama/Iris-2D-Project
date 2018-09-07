@@ -467,7 +467,7 @@ namespace Iris2D {
 
 	ResultCode BitmapGL::DrawText(unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, const std::wstring & wstrText, AlignType eAlign) {
 		//GetProxied<FontGL*>(m_pFont)->SetUseCache(true);
-		GetProxied<FontGL*>(m_pFont)->LoadWstring(wstrText);
+		//GetProxied<FontGL*>(m_pFont)->LoadWstring(wstrText);
 		auto pfontTexture=GetProxied<FontGL*>(m_pFont)->DrawString(wstrText, nWidth, nHeight, eAlign);
 
 		auto pTextureFrameBuffer = Iris2D::TextureGL::CreateFrameBuffer(GetWidth(), GetHeight());
@@ -547,7 +547,6 @@ namespace Iris2D {
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 		glBindVertexArray(0);
 		pTextureFrameBuffer->RestoreFrameBuffer();
-
 
 		m_pTexture = pTextureFrameBuffer;
 		//m_pTexture->SaveToFile(L"d:\\hehe2.png");
