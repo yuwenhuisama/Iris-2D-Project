@@ -43,14 +43,10 @@ namespace Iris2D
 
 		bool m_bUseCache = false;
 		unsigned int m_nDrawTimes = 0;
-		//unsigned int m_nTextureMapWidth = 0;
 		unsigned int m_nTextureMapHeight = 0;
 		unsigned int m_nOriginY = 0;
-
 		FontStyle m_FSFontStyle = FontStyle::Nomal;
-
 		std::unordered_map<wchar_t, Character> Characters;
-
 		std::unordered_map<CharCacheMapKey, CharacterWithcache, CharCacheMapHashFunc, EqualKey> CharacterWicaches;
 
 		void ResetOriginAndHeight();
@@ -60,6 +56,8 @@ namespace Iris2D
 		TextureGL * DrawStringWithCache(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
 		TextureGL * DrawStringWithoutCache(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
 		void DrawCasheTexture(const wchar_t & wChar);
+		GLfloat GetAlignLeft(GLfloat fRectWidth, GLfloat fStringWidth, AlignType eAlign);
+
 
 
 	public:
@@ -69,10 +67,6 @@ namespace Iris2D
 		void SetUseCache(bool bUseCach);
 		unsigned int GetTextWidth(const std::wstring & wstrText);
 		TextureGL * DrawString(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
-
-		//TextureGL *GetCacheTexture();
-		
-
 	public:
 
 		static bool Existed(const std::wstring& wstrFontName);

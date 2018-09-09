@@ -16,7 +16,7 @@ namespace Iris2D {
 	};
 
 	struct Character {
-	public:
+
 		GLuint m_nTextureID;
 		int m_nWidth;
 		int m_nHeight;
@@ -25,7 +25,7 @@ namespace Iris2D {
 		GLuint m_nAdvance;
 	};
 	struct CharacterWithcache {
-	public:
+	
 		TextureGL * m_pTexture;
 		int m_nTimes;
 	};

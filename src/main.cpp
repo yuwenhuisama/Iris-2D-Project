@@ -24,11 +24,14 @@ bool GameCallBack() {
 	
 	auto pfont = Font::Create(L"Font/simhei.ttf");
 	pfont->SetSize(60);
-	pfont->SetBold(true);
+	//pfont->SetBold(true);
 	pfont->SetItalic(true);
+	pfont->SetShadow(true);
 	pBitmap->SetFont(pfont);
+
+
 	auto pRect1 = Rect::Create(200, 220, 260, 80);
-	pBitmap->DrawText(pRect1, L"cb", AlignType::Right);
+	pBitmap->DrawText(pRect1, L"cb", AlignType::Left);
 	
 	//pfont->SetBold(false);
 	auto pRect2 = Rect::Create(100, 350, 360, 100);
@@ -36,7 +39,7 @@ bool GameCallBack() {
 	pBitmap->DrawText(pRect2, L"bba·¨¿Ë", AlignType::Center);
 	
 
-	pBitmap2->HueChange(350);
+	pBitmap2->HueChange(300);
 
 	auto pSprite2 = Sprite::Create(pViewport);
 	pSprite2->SetX(200.0f);
