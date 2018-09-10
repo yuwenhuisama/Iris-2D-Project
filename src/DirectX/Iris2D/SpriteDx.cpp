@@ -13,7 +13,7 @@
 #include "Common/Iris2D/Bitmap.h"
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/Color.h"
-#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Sprites/SpriteStatic.h"
 #include "Common/Util/ProxyConvert.h"
 
 #include <functional>
@@ -42,8 +42,8 @@ namespace Iris2D
 
 	void SpriteDX::ForceRelease(SpriteDX * pSprite)
 	{
-		auto pProxy = pSprite->GetProxy();;
-		Sprite::ForceRelease(pProxy);
+		auto pProxy = dynamic_cast<SpriteStatic*>(pSprite->GetProxy());
+		SpriteStatic::ForceRelease(pProxy);
 		delete pSprite;
 	}
 

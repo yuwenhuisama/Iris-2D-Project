@@ -8,13 +8,13 @@ namespace Iris2D {
 			REF_FRIEND_DECLARE;
 
 		public:
-			static AnimationPositionProperty* Create(Sprite*& pSprite);
+			static AnimationPositionProperty* Create(SpriteStatic*& pSprite);
 			static void Release(AnimationPositionProperty*& pAnimation);
 
 			ANIMATION_AUTO_RELEASE
 
 		public:
-			bool UpdateProperty(Sprite* pSprite, const PositionVec2& dpValue) override;
+			bool UpdateProperty(SpriteStatic* pSprite, const PositionVec2& dpValue) override;
 
 		private:
 			AnimationPositionProperty() = default;

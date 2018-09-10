@@ -8,13 +8,13 @@ namespace Iris2D {
 			REF_FRIEND_DECLARE;
 
 		public:
-			static AnimationZoomProperty* Create(Sprite*& pSprite);
+			static AnimationZoomProperty* Create(SpriteStatic*& pSprite);
 			static void Release(AnimationZoomProperty*& pAnimation);
 
 			ANIMATION_AUTO_RELEASE
 
 		public:
-			bool UpdateProperty(Sprite* pSprite, const ZoomVec2& dpValue) override;
+			bool UpdateProperty(SpriteStatic* pSprite, const ZoomVec2& dpValue) override;
 
 		private:
 			AnimationZoomProperty() = default;

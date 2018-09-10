@@ -8,7 +8,7 @@
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/Bitmap.h"
 #include "Common/Iris2D/Font.h"
-#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Sprites/SpriteStatic.h"
 #include "Common/Iris2D/Viewport.h"
 #include "Common/Iris2D/Graphics.h"
 

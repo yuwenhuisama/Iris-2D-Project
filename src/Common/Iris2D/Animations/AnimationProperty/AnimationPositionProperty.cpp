@@ -1,8 +1,7 @@
 #include "Common/Iris2D/Animations/AnimationProperty/AnimationPositionProperty.h"
-#include "Common/Iris2D/Sprite.h"
 #include "Common/Iris2D/AppFactory.h"
 
-#include "OpenGL/Iris2D/SpriteGL.h"
+#include "OpenGL/Iris2D/Sprites/SpriteStaticGL.h"
 
 #ifdef _WIN32
 #include "DirectX/Iris2D/SpriteDX.h"
@@ -11,7 +10,7 @@
 namespace Iris2D {
 	namespace Animation {
 
-		AnimationPositionProperty* AnimationPositionProperty::Create(Sprite*& pSprite) {
+		AnimationPositionProperty* AnimationPositionProperty::Create(SpriteStatic*& pSprite) {
 			const auto pAnimation = new AnimationPositionProperty();
 			pAnimation->m_pSprite = pSprite;
 
@@ -22,7 +21,7 @@ namespace Iris2D {
 				break;
 #endif // _WIN32
 			case ApiType::OpenGL:
-				RefferAssign<SpriteGL*>(pAnimation->m_pSprite, pSprite);
+				RefferAssign<SpriteStaticGL*>(pAnimation->m_pSprite, pSprite);
 				break;
 			default:
 				break;
@@ -39,7 +38,7 @@ namespace Iris2D {
 			Iris2D::RefferRelease(pAnimation);
 		}
 
-		bool AnimationPositionProperty::UpdateProperty(Sprite* pSprite, const PositionVec2& dpValue) {
+		bool AnimationPositionProperty::UpdateProperty(SpriteStatic* pSprite, const PositionVec2& dpValue) {
 			pSprite->SetX(dpValue.x);
 			pSprite->SetY(dpValue.y);
 			return true;

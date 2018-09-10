@@ -9,13 +9,13 @@ namespace Iris2D {
 			REF_FRIEND_DECLARE;
 
 		public:
-			static AnimationAngleProperty* Create(Sprite*& pSprite);
+			static AnimationAngleProperty* Create(SpriteStatic*& pSprite);
 			static void Release(AnimationAngleProperty*& pAnimation);
 
 			ANIMATION_AUTO_RELEASE
 
 		public:
-			bool UpdateProperty(Sprite* pSprite, const AngleValue& dpValue) override;
+			bool UpdateProperty(SpriteStatic* pSprite, const AngleValue& dpValue) override;
 
 		private:
 			AnimationAngleProperty() = default;

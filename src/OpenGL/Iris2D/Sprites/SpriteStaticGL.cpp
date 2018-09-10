@@ -1,8 +1,8 @@
 #include "OpenGL/Common.h"
-#include "OpenGL/Iris2D/SpriteGL.h"
+#include "OpenGL/Iris2D/Sprites/SpriteStaticGL.h"
 #include "OpenGL/Iris2D/BitmapGL.h"
 #include "Common/Iris2D/Viewport.h"
-#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Sprites/SpriteStatic.h"
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/Color.h"
 #include <glm/glm.hpp>
@@ -15,7 +15,6 @@
 
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
 
-#include "OpenGL/Iris2D/GraphicsGL.h"
 #include "OpenGL/Iris2D/ViewportGL.h"
 
 #include "OpenGL/OpenGLUtil/TextureGL.h"
@@ -24,39 +23,38 @@
 
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "OpenGL/Iris2D/RectGL.h"
-#include "OpenGL/Iris2D/SpriteGL.h"
 
 #include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "OpenGL/Iris2D/Effects/EffectBaseGL.h"
 #include "Common/Iris2D/Effects/EffectBase.h"
 
 namespace Iris2D {
-	SpriteGL * SpriteGL::Create(Viewport * pViewport) {
-		auto pSprite = new SpriteGL();
+	SpriteStaticGL * SpriteStaticGL::Create(Viewport * pViewport) {
+		const auto pSprite = new SpriteStaticGL();
 
 		pSprite->m_pViewport = pViewport == nullptr ? ViewportGL::GetGlobalViewport() : pViewport;
 
-		GetProxied<ViewportGL*>(pSprite->m_pViewport)->AddSprite(pSprite);
+		GetProxied<ViewportGL*>(pSprite->m_pViewport)->AddSprite(static_cast<SpriteBaseGL*>(pSprite));
 
 		return pSprite;
 	}
 
-	void SpriteGL::Release(SpriteGL *& pSprite) {
+	void SpriteStaticGL::Release(SpriteStaticGL *& pSprite) {
 		if (pSprite) {
 			if (pSprite->GetRefCount() == 1) {
-				GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(pSprite);
+				GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(reinterpret_cast<SpriteBaseGL*&>(pSprite));
 			}
 			RefferRelease(pSprite);
 		}
 	}
 
-	void SpriteGL::ForceRelease(SpriteGL * pSprite) {
-		auto pProxy = pSprite->GetProxy();;
-		Sprite::ForceRelease(pProxy);
+	void SpriteStaticGL::ForceRelease(SpriteStaticGL* pSprite) {
+		auto pProxy = dynamic_cast<SpriteStatic*>(pSprite->GetProxy());
+		SpriteStatic::ForceRelease(pProxy);
 		delete pSprite;
 	}
 
-	ResultCode SpriteGL::SetBitmap(Bitmap *& pBitmap) {
+	ResultCode SpriteStaticGL::SetBitmap(Bitmap *& pBitmap) {
 		if (pBitmap == m_pBitmap) {
 			return IRR_Success;
 		}
@@ -77,107 +75,27 @@ namespace Iris2D {
 		return IRR_Success;
 	}
 
-	Bitmap * SpriteGL::GetBitmap() const {
+	Bitmap * SpriteStaticGL::GetBitmap() const {
 		return m_pBitmap;
 	}
 
-	void SpriteGL::SetX(float fX) {
-		// m_v3Position.x = fX;
-		m_dcDirtyChecker.Assign(m_v3Position.x, fX, m_hTranslate);
-	}
-
-	float SpriteGL::GetX() const {
-		return m_v3Position.x;
-	}
-
-	void SpriteGL::SetY(float fY) {
-		// m_v3Position.y = fY;
-		m_dcDirtyChecker.Assign(m_v3Position.y, fY, m_hTranslate);
-	}
-
-	float SpriteGL::GetY() const {
-		return m_v3Position.y;
-	}
-
-	void SpriteGL::SetZ(float fZ) {
-		// m_v3Position.z = fZ;
-		m_dcDirtyChecker.Assign(m_v3Position.z, fZ, m_hTranslate);
-	}
-
-	float SpriteGL::GetZ() const {
-		return m_v3Position.z;
-	}
-
-	void SpriteGL::SetAngle(float fAngle) {
-		// m_fAngle = fAngle;
-		m_dcDirtyChecker.Assign(m_fAngle, fAngle, m_hRotate);
-	}
-
-	float SpriteGL::GetAngle() const {
-		return m_fAngle;
-	}
-
-	void SpriteGL::SetZoomX(float fZoomX) {
-		//m_v2Zoom.x = fZoomX;
-		m_dcDirtyChecker.Assign(m_v2Zoom.x, fZoomX, m_hZoom);
-	}
-
-	float SpriteGL::GetZoomX() const {
-		return m_v2Zoom.x;
-	}
-
-	void SpriteGL::SetZoomY(float fZoomY) {
-		//m_v2Zoom.y = fZoomY;
-		m_dcDirtyChecker.Assign(m_v2Zoom.y, fZoomY, m_hZoom);
-	}
-
-	float SpriteGL::GetZoomY() const {
-		return m_v2Zoom.y;
-	}
-
-	void SpriteGL::SetOX(float fOX) {
-		//m_v2OrgPosition.x = fOX;
+	void SpriteStaticGL::SetOX(float fOX) {
 		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.x, fOX, m_hOrgPos);
 	}
 
-	float SpriteGL::GetOX() const {
+	float SpriteStaticGL::GetOX() const {
 		return m_svbfBuffer.m_v2OrgPosition.x;
 	}
 
-	void SpriteGL::SetOY(float fOY) {
+	void SpriteStaticGL::SetOY(float fOY) {
 		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.y, fOY, m_hOrgPos);
 	}
 
-	float SpriteGL::GetOY() const {
+	float SpriteStaticGL::GetOY() const {
 		return m_svbfBuffer.m_v2OrgPosition.y;
 	}
 
-	void SpriteGL::SetMirror(bool bMirror) {
-		m_dcDirtyChecker.Assign(m_bMirror, bMirror, m_hMirror);
-	}
-
-	bool SpriteGL::GetMirror() const {
-		return m_bMirror;
-	}
-
-	void SpriteGL::SetVisible(bool bVisible) {
-		m_bVisible = bVisible;
-	}
-
-	bool SpriteGL::GetVisible() const {
-		return m_bVisible;
-	}
-
-	void SpriteGL::SetOpacity(float fOpacity) {
-		fOpacity = clip(fOpacity, 0.0f, 1.0f);
-		m_dcDirtyChecker.Assign(m_fOpacity, fOpacity, m_hOpacity);
-	}
-
-	float SpriteGL::GetOpacity() const {
-		return m_fOpacity;
-	}
-
-	void SpriteGL::SetSrcRect(Rect *& pSrcRect) {
+	void SpriteStaticGL::SetSrcRect(Rect *& pSrcRect) {
 		if (pSrcRect == m_pSrcRect) {
 			return;
 		}
@@ -192,30 +110,11 @@ namespace Iris2D {
 		RefferAssign<RectGL*>(m_pSrcRect, pSrcRect);
 	}
 
-	Rect * SpriteGL::GetSrcRect() const {
+	Rect * SpriteStaticGL::GetSrcRect() const {
 		return m_pSrcRect;
 	}
 
-	void SpriteGL::SetTone(Tone *& pTone) {
-		if (pTone == m_pTone) {
-			return;
-		}
-
-		Tone::Release(m_pTone);
-
-		if (!pTone) {
-			m_pTone = nullptr;
-			return;
-		}
-
-		RefferAssign<ToneGL*>(m_pTone, pTone);
-	}
-
-	Tone * SpriteGL::GetTone() const {
-		return m_pTone;
-	}
-
-	ResultCode SpriteGL::Update() {
+	ResultCode SpriteStaticGL::Update() {
 		if(m_pEffect) {
 			if(!m_pEffect->Update()) {
 				return IRR_EffectUpdateFailed;
@@ -225,7 +124,7 @@ namespace Iris2D {
 		return IRR_Success;
 	}
 
-	ResultCode SpriteGL::SetEffect(Effect::EffectBase* pEffect) {
+	ResultCode SpriteStaticGL::SetEffect(Effect::EffectBase* pEffect) {
 		if (pEffect == m_pEffect) {
 			return IRR_Success;
 		}
@@ -250,7 +149,7 @@ namespace Iris2D {
 		return result;
 	}
 
-	bool SpriteGL::CreateVertexBuffer() {
+	bool SpriteStaticGL::CreateVertexBuffer() {
 		const auto pBitmap = GetProxied<BitmapGL*>(m_pBitmap);
 
 		const auto nWidth = pBitmap->GetWidth();
@@ -272,7 +171,7 @@ namespace Iris2D {
 		});
 	}
 
-	ResultCode SpriteGL::Render() {
+	ResultCode SpriteStaticGL::Render() {
 
 		if (NeedDiscard()) {
 			return IRR_Success;
@@ -367,7 +266,7 @@ namespace Iris2D {
 		return IRR_Success;
 	}
 
-	bool SpriteGL::NeedDiscard() const {
+	bool SpriteStaticGL::NeedDiscard() const {
 		if (!m_pBitmap || !GetVisible() || m_fOpacity == 0.0f) {
 			return true;
 		}
@@ -396,16 +295,7 @@ namespace Iris2D {
 		return bResult;
 	}
 
-	SpriteGL::SpriteGL() {
-		m_hTranslate = m_dcDirtyChecker.Register();
-		m_hZoom = m_dcDirtyChecker.Register();
-		m_hOrgPos = m_dcDirtyChecker.Register();
-		m_hRotate = m_dcDirtyChecker.Register();
-		m_hMirror = m_dcDirtyChecker.Register();
-		m_hOpacity = m_dcDirtyChecker.Register();
-	}
-
-	SpriteGL::~SpriteGL() {
+	SpriteStaticGL::~SpriteStaticGL() {
 		Bitmap::Release(m_pBitmap);
 		Rect::Release(m_pSrcRect);
 		Tone::Release(m_pTone);

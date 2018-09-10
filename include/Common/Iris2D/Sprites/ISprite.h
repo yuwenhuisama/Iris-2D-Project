@@ -54,9 +54,6 @@ namespace Iris2D {
 		virtual void SetOpacity(float fOpacity) = 0;
 		virtual float GetOpacity() const = 0;
 
-		virtual void SetSrcRect(Rect*& pSrcRect) = 0;
-		virtual Rect* GetSrcRect() const = 0;
-
 		virtual void SetTone(Tone*& pTone) = 0;
 		virtual Tone* GetTone() const = 0;
 

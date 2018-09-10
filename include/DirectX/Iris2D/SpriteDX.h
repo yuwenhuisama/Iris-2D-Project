@@ -4,13 +4,12 @@
 #include "DirectX/Common.h"
 #include "DirectX/Util/SpriteShaderBuffersDX.h"
 
-#include "Common/Iris2D/ISprite.h"
+#include "Common/Iris2D/Sprites/ISpriteStatic.h"
 #include "Common/Iris2D/Proxied.h"
 #include "Common/Util/RefCounter.h"
 
 namespace Iris2D
 {
-	class Sprite;
 	class BitmapDX;
 	class RectDX;
 	class ColorDX;
@@ -23,7 +22,7 @@ namespace Iris2D
 
 	typedef ColorDX ToneDX;
 	__declspec(align(16))
-	class SpriteDX : public Proxied<Sprite>, public ISprite, public RefCounter
+	class SpriteDX : public Proxied<ISprite>, public ISpriteStatic, public RefCounter
 	{
 	private:
 
