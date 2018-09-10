@@ -16,7 +16,7 @@ namespace Iris2D {
 	class Rect;
 	class Color;
 
-	class SpriteGL;
+	class SpriteBaseGL;
 	class TextureGL;
 	typedef Color Tone;
 
@@ -46,7 +46,7 @@ namespace Iris2D {
 		float m_fY = 0.0f;
 		float m_fZ = 0.0f;
 
-		std::multimap<float, SpriteGL*, std::less<>> m_stSprites;
+		std::multimap<float, SpriteBaseGL*, std::less<>> m_stSprites;
 
 		unsigned int m_nVAO = 0;
 		unsigned int m_nVBO = 0;
@@ -78,8 +78,8 @@ namespace Iris2D {
 		ResultCode RenderSprites();
 		ResultCode Render();
 
-		void AddSprite(SpriteGL*& pSprite);
-		void RemoveSprite(SpriteGL*& pSprite);
+		void AddSprite(SpriteBaseGL* pSprite);
+		void RemoveSprite(SpriteBaseGL* pSprite);
 
 	private:
 		bool CreateViewportVertexBufferAndFrameBuffer(unsigned int nWidth, unsigned int nHeight);

@@ -13,6 +13,16 @@ namespace Iris2D {
 		void SetProxied(P* pProxied) { m_pProxied = pProxied; }
 	};
 
+	template<typename P> class ProxyDecl {
+	public:
+		ProxyDecl() = default;
+		virtual ~ProxyDecl() = default;
+
+	protected:
+		virtual P* GetAbstractProxied() const = 0;
+
+	};
+
 };
 
 #endif // !_H_PROXY_

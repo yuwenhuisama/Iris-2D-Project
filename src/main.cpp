@@ -12,7 +12,7 @@ bool GameCallBack() {
 	Viewport* pViewport = nullptr;
 
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
-	auto pSprite = Sprite::Create(pViewport);
+	auto pSprite = SpriteStatic::Create(pViewport);
 	pSprite->SetBitmap(pBitmap);
 	pSprite->SetZ(4.0f);
 
@@ -41,7 +41,7 @@ bool GameCallBack() {
 
 	pBitmap2->HueChange(300);
 
-	auto pSprite2 = Sprite::Create(pViewport);
+	auto pSprite2 = SpriteStatic::Create(pViewport);
 	pSprite2->SetX(200.0f);
 	pSprite2->SetBitmap(pBitmap2);
 	pSprite2->SetZ(5.0f);
@@ -160,8 +160,8 @@ bool GameCallBack() {
 		//++nCounter;
 	}
 
-	Sprite::Release(pSprite);
-	Sprite::Release(pSprite2);
+	SpriteStatic::Release(pSprite);
+	SpriteStatic::Release(pSprite2);
 	//Rect::Release(pRect);
 	Bitmap::Release(pBitmap);
 	Bitmap::Release(pBitmap2);

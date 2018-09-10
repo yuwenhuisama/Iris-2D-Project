@@ -2,7 +2,7 @@
 #define _H_ANIMATION_PROPERTY_
 
 #include "Common/Iris2D/Animations/AnimationBase.h"
-#include "Common/Iris2D/Sprite.h"
+#include "Common/Iris2D/Sprites/SpriteStatic.h"
 
 #include <list>
 #include <unordered_map>
@@ -10,7 +10,7 @@
 #include "Common/Iris2D/Animations/AnimationReferred.h"
 
 namespace Iris2D {
-	class Sprite;
+
 	namespace Animation {
 		typedef glm::vec2 PositionVec2;
 		typedef glm::vec2 ZoomVec2;
@@ -33,7 +33,7 @@ namespace Iris2D {
 			std::list<KeyFrameElement<E>> m_lsKeyFrameList {};
 			
 			unsigned int m_nTotalTime = 0;
-			Sprite* m_pSprite = nullptr;
+			SpriteStatic* m_pSprite = nullptr;
 			AnimationState m_eState = AnimationState::Pending;
 
 			typename std::list<KeyFrameElement<E>>::iterator m_iterCurrent {};
@@ -158,12 +158,12 @@ namespace Iris2D {
 				return m_eState;
 			}
 
-			virtual bool UpdateProperty(Sprite* pSprite, const E& dpValue) = 0;
+			virtual bool UpdateProperty(SpriteStatic* pSprite, const E& dpValue) = 0;
 
 		protected:
 			AnimationProperty() : AnimationRefferedProperty() {}
 			~AnimationProperty() {
-				Sprite::Release(m_pSprite);
+				SpriteStatic::Release(m_pSprite);
 			}
 		};
 	}

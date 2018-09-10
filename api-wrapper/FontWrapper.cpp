@@ -1,11 +1,11 @@
 #define LIBRARY_EXPORTS
 #include "FontWrapper.h"
 
-EXPORT_API bool Font_Existed(const wchar_t** wstrFontName) {
+EXPORT_API bool Font_Existed(const wchar_t* wstrFontName) {
 	return Iris2D::Font::Existed(wstrFontName);
 }
 
-EXPORT_API FONT_HANDLE Font_Create(const wchar_t** wstrFontName) {
+EXPORT_API FONT_HANDLE Font_Create(const wchar_t* wstrFontName) {
 	return Iris2D::Font::Create(wstrFontName);
 }
 
@@ -15,7 +15,10 @@ EXPORT_API void Font_Release(FONT_HANDLE* pFont) {
 }
 
 EXPORT_API wchar_t* Font_GetDefaultName() {
-	return Iris2D::Font::GetDefaultName();
+	const auto& wstrName = Iris2D::Font::GetDefaultName();
+	const auto wszName = new wchar_t[wstrName.size()]{0,};
+	wcscpy(wszName, wstrName.c_str());
+	return wszName;
 }
 
 EXPORT_API unsigned int Font_GetDefaultSize() {
@@ -38,14 +41,18 @@ EXPORT_API COLOR_HANDLE Font_GetDefaultColor() {
 	return Iris2D::Font::GetDefaultColor();
 }
 
-EXPORT_API void Font_SetName(FONT_HANDLE hHandle, const wchar_t** wstrFontName) {
+EXPORT_API void Font_SetName(FONT_HANDLE hHandle, const wchar_t* wstrFontName) {
 	const auto pFont = reinterpret_cast<Iris2D::Font*>(hHandle);
 	pFont->SetName(wstrFontName);
 }
 
-EXPORT_API const wchar_t** Font_GetName(FONT_HANDLE hHandle) {
+EXPORT_API const wchar_t* Font_GetName(FONT_HANDLE hHandle) {
 	const auto pFont = reinterpret_cast<Iris2D::Font*>(hHandle);
-	return pFont->GetName();
+
+	const auto& wstrName = pFont->GetName();
+	const auto wszName = new wchar_t[wstrName.size()]{ 0, };
+	wcscpy(wszName, wstrName.c_str());
+	return wszName;
 }
 
 EXPORT_API void Font_SetSize(FONT_HANDLE hHandle, unsigned int nSize) {
@@ -89,7 +96,7 @@ EXPORT_API bool Font_GetShadow(FONT_HANDLE hHandle) {
 
 EXPORT_API void Font_SetColor(FONT_HANDLE hHandle, COLOR_HANDLE* pColor) {
 	const auto pFont = reinterpret_cast<Iris2D::Font*>(hHandle);
-	const auto pCastedColor = reinterpret_cast<Iris2D::Color*&>(pColor);
+	auto pCastedColor = reinterpret_cast<Iris2D::Color*&>(pColor);
 	pFont->SetColor(pCastedColor);
 }
 

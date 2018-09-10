@@ -9,7 +9,7 @@
 
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include "OpenGL/Iris2D/GraphicsGL.h"
-#include "OpenGL/Iris2D/SpriteGL.h"
+#include "OpenGL/Iris2D/Sprites/SpriteBaseGL.h"
 
 #include "Common/Util/ProxyConvert.h"
 
@@ -22,6 +22,7 @@
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "OpenGL/Iris2D/RectGL.h"
 #include "Common/Util/Util.h"
+#include "OpenGL/Iris2D/Sprites/SpriteStaticGL.h"
 
 
 namespace Iris2D {
@@ -72,7 +73,7 @@ namespace Iris2D {
 		}
 
 		for (auto& pSprite : pViewport->m_stSprites) {
-			SpriteGL::ForceRelease(pSprite.second);
+			SpriteStaticGL::ForceRelease(dynamic_cast<SpriteStaticGL*>(pSprite.second));
 		}
 
 		auto pProxy = pViewport->GetProxy();
@@ -245,11 +246,11 @@ namespace Iris2D {
 		return IRR_Success;
 	}
 
-	void ViewportGL::AddSprite(SpriteGL *& pSprite) {
-		m_stSprites.insert(std::pair<float, SpriteGL*>(pSprite->GetZ(), pSprite));
+	void ViewportGL::AddSprite(SpriteBaseGL* pSprite) {
+		m_stSprites.insert(std::pair<float, SpriteBaseGL*>(pSprite->GetZ(), pSprite));
 	}
 
-	void ViewportGL::RemoveSprite(SpriteGL *& pSprite) {
+	void ViewportGL::RemoveSprite(SpriteBaseGL* pSprite) {
 		auto iterRange = m_stSprites.equal_range(pSprite->GetZ());
 		while (iterRange.first != iterRange.second) {
 			if (iterRange.first->second == pSprite) {
