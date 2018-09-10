@@ -23,20 +23,23 @@ bool GameCallBack() {
 	//pBitmap2->StretchBlt(Rect::Create(130, 140, 100, 100),pBitmap, Rect::Create(100, 100, 300, 300),100);
 	
 	auto pfont = Font::Create(L"Font/simhei.ttf");
-	pfont->SetSize(80);
+	pfont->SetSize(60);
+	//pfont->SetBold(true);
+	pfont->SetItalic(true);
+	pfont->SetShadow(true);
 	pBitmap->SetFont(pfont);
+
+
 	auto pRect1 = Rect::Create(200, 220, 260, 80);
-	pBitmap->DrawText(pRect1, L"bigBoomb嘣嘣嘣", AlignType::Center);
+	pBitmap->DrawText(pRect1, L"cb", AlignType::Left);
 	
-	
-	auto pRect2 = Rect::Create(100, 350, 360, 80);
-	pfont->SetSize(50);
-	pBitmap->DrawText(pRect2, L"fuck法克", AlignType::Center);
+	//pfont->SetBold(false);
+	auto pRect2 = Rect::Create(100, 350, 360, 100);
+	pfont->SetSize(100);
+	pBitmap->DrawText(pRect2, L"bba法克", AlignType::Center);
 	
 
-
-
-	pBitmap2->HueChange(350);
+	pBitmap2->HueChange(300);
 
 	auto pSprite2 = SpriteStatic::Create(pViewport);
 	pSprite2->SetX(200.0f);

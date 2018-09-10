@@ -7,20 +7,18 @@
 #include "Common/Iris2D/Proxied.h"
 #include "OpenGL/Iris2D/ColorGL.h"
 #include "Common/Iris2D/Color.h"
-//#include "OpenGL/OpenGLUtil/DrawTextHelper.h"
 
 
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include <GL/glew.h>
-#include <map>
+//#include <map>
+#include <unordered_map>  
 #include "Common/Iris2D/Rect.h"
 #include "OpenGL/OpenGLUtil/Character.h"
 #include "Common/Iris2D/IBitmap.h"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
-
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
 
 namespace Iris2D
 {
@@ -39,37 +37,37 @@ namespace Iris2D
 		bool m_bShadow = GetDefaultShadow();
 		Color* m_pColor = GetDefaultColor();
 	
-
-
-
-		//GLuint m_nVAO = 0;
-		//GLuint m_nVBO = 0;
+	private:
 		FT_Library m_FTLibrary=NULL;
 		FT_Face m_FTFace=NULL;
 
-		unsigned int m_nTextureMapWidth = 0;
+		bool m_bUseCache = false;
+		unsigned int m_nDrawTimes = 0;
 		unsigned int m_nTextureMapHeight = 0;
 		unsigned int m_nOriginY = 0;
-		std::map<wchar_t, Character> Characters;
+		FontStyle m_FSFontStyle = FontStyle::Nomal;
+		std::unordered_map<wchar_t, Character> Characters;
+		std::unordered_map<CharCacheMapKey, CharacterWithcache, CharCacheMapHashFunc, EqualKey> CharacterWicaches;
 
-		TextureGL * m_pTemporaryTexture=nullptr;
-
-
+		void ResetOriginAndHeight();
+		void LoadStringWithDataBind(const std::wstring& wstrText);
+		void LoadStringWithoutDataBind(const std::wstring& wstrText);
+		void LoadChar(const wchar_t & wChar);
+		TextureGL * DrawStringWithCache(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
+		TextureGL * DrawStringWithoutCache(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
+		void DrawCasheTexture(const wchar_t & wChar);
+		GLfloat GetAlignLeft(GLfloat fRectWidth, GLfloat fStringWidth, AlignType eAlign);
 
 
 
 	public:
 		FT_Library GetFTLibrary();
 		FT_Face GetFTFace();
-		void LoadChar(const std::wstring& wstrText);
-		unsigned int GetTextWidth(const std::wstring & wstrText);
-	//	void DrawString(const std::wstring& wstrText, GLfloat fX, GLfloat fY, GLfloat fW, GLfloat fH);
-		void DrawString(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
-		TextureGL *GetTemporaryTexture();
 		
-
-
-
+		void SetUseCache(bool bUseCach);
+		unsigned int GetTextWidth(const std::wstring & wstrText);
+		TextureGL * DrawString(const std::wstring&, GLfloat fWidth, GLfloat fHeight, AlignType eAlign);
+	public:
 
 		static bool Existed(const std::wstring& wstrFontName);
 
