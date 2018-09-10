@@ -42,7 +42,7 @@ namespace Iris2D {
 	void SpriteStaticGL::Release(SpriteStaticGL *& pSprite) {
 		if (pSprite) {
 			if (pSprite->GetRefCount() == 1) {
-				GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(reinterpret_cast<SpriteBaseGL*&>(pSprite));
+				GetProxied<ViewportGL*>(pSprite->m_pViewport)->RemoveSprite(static_cast<SpriteBaseGL*>(pSprite));
 			}
 			RefferRelease(pSprite);
 		}
