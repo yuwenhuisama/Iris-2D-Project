@@ -11,8 +11,7 @@ namespace Iris2D {
 		BoldAndItalic,
 		BoldAdnShadow,
 		ItalicAndShadow,
-		NomalAndBoldAndShadow = 9
-
+		BoldAndItalicAndShadow = 9
 	};
 
 	struct Character {
