@@ -4,6 +4,7 @@
 #include<OpenGL/OpenGLUtil/TextureGL.h>
 namespace Iris2D {
 	enum class FontStyle {
+		
 		Nomal = 0 ,
 		Bold = 2 ,
 		Italic,
@@ -12,6 +13,7 @@ namespace Iris2D {
 		BoldAdnShadow,
 		ItalicAndShadow,
 		BoldAndItalicAndShadow = 9
+
 	};
 
 	struct Character {
