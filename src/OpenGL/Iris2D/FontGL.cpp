@@ -54,7 +54,7 @@ namespace Iris2D {
 			if (Characters.count(c) > 0) {
 				continue;
 			}
-			if (m_bBold) {
+			if (GetBold()) {
 				FT_Outline_Embolden(&m_FTFace->glyph->outline, 128);
 			}
 			FT_Render_Glyph(m_FTFace->glyph, FT_RENDER_MODE_NORMAL);
@@ -124,7 +124,7 @@ namespace Iris2D {
 		if (FT_Load_Char(m_FTFace, wChar, FT_LOAD_MONOCHROME)) {
 			return;
 		}
-		if (m_bBold) {
+		if (GetBold()) {
 			FT_Outline_Embolden(&m_FTFace->glyph->outline, 128);
 		}
 		FT_Render_Glyph(m_FTFace->glyph, FT_RENDER_MODE_NORMAL);
@@ -216,7 +216,7 @@ namespace Iris2D {
 
 	TextureGL * FontGL::DrawStringWithCache(const std::wstring & wstrText, GLfloat fWidth, GLfloat fHeight, AlignType eAlign) {
 		for (auto & c : wstrText) {
-			const CharCacheMapKey &ccKey = { c,m_nSize,m_FSFontStyle,m_pColor->GetRed(),m_pColor->GetGreen(),m_pColor->GetBlue(),m_pColor->GetAlpha() };
+			const CharCacheMapKey &ccKey = { c,m_nSize,m_nFontStyle,m_pColor->GetRed(),m_pColor->GetGreen(),m_pColor->GetBlue(),m_pColor->GetAlpha() };
 			if (CharacterWicaches.count(ccKey) == 0) {
 				DrawCasheTexture(c);
 			}
@@ -255,7 +255,7 @@ namespace Iris2D {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		for (auto & c : wstrText) {
-			const CharCacheMapKey &ccKey = { c,m_nSize,m_FSFontStyle,m_pColor->GetRed(),m_pColor->GetGreen(),m_pColor->GetBlue(),m_pColor->GetAlpha() };
+			const CharCacheMapKey &ccKey = { c,m_nSize,m_nFontStyle,m_pColor->GetRed(),m_pColor->GetGreen(),m_pColor->GetBlue(),m_pColor->GetAlpha() };
 			fLeft = fPosX / fWidth * 2 - 1;
 			fRight = (fPosX + CharacterWicaches[ccKey].m_pTexture->GetWidth()) / fWidth * 2 - 1;
 			fBottom = -1;
@@ -317,13 +317,13 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		for (auto& c : wstrText)
 		{
-			pShaderFont->SetFontColor(pShadowColor);
+			pShaderFont->SetFontColor(m_pColor);
 			const Character& chCharacter = Characters[c];
 			const GLfloat & fXPos = fLeft + chCharacter.m_nLeft;
 			const GLfloat &fYPos = fTop - chCharacter.m_nTop;
 			const GLfloat &fTmpW = chCharacter.m_nWidth;
 			const GLfloat &fTmpH = chCharacter.m_nHeight;
-			for (GLfloat fShadow = 4; fShadow >=0; fShadow -= 4) {
+			for (GLfloat fShadow = 0; fShadow <=4; fShadow += 4) {
 				GLfloat vertices[4][4] = {
 				{ fXPos + fTmpW + fShadow,	fYPos + fTmpH + fShadow,		1.0, 1.0 },
 				{ fXPos + fTmpW + fShadow,	fYPos + fShadow,				1.0, 0.0 },
@@ -336,14 +336,13 @@ namespace Iris2D {
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				if (!m_bShadow) {
-					break;
+				if (GetShadow()) {
+					pShaderFont->SetFontColor(pShadowColor);
 				}
 				else {
-					pShaderFont->SetFontColor(m_pColor);
+					break;
 				}
 			}
-			pShaderFont->SetFontColor(m_pColor);
 			if (fLeft > fWidth) {
 				break;
 			}
@@ -374,7 +373,7 @@ namespace Iris2D {
 		GLuint nVBO = 0;
 		GLfloat fShadow = 0;
 		auto pShadowColor = Color::Create(m_pColor->GetRed(), m_pColor->GetGreen(), m_pColor->GetBlue(), m_pColor->GetAlpha()>>1);
-		if (m_bShadow) {
+		if (GetShadow()) {
 			fShadow = 4;
 		}		
 		auto pTextureFont = Iris2D::TextureGL::CreateFrameBuffer((Characters[wChar].m_nAdvance>>6), m_nTextureMapHeight );
@@ -388,7 +387,7 @@ namespace Iris2D {
 		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<GLfloat>(Characters[wChar].m_nAdvance >> 6), 0.0f, static_cast<GLfloat>(m_nTextureMapHeight));
 		pShaderFont->Use();
 		pShaderFont->SetProjectionMatrix(c_mt4Projection);
-		if (m_bShadow) {
+		if (GetShadow()) {
 			pShaderFont->SetFontColor(pShadowColor);
 		}
 		else {
@@ -411,7 +410,7 @@ namespace Iris2D {
 		const Character& chCharacter = Characters[wChar];
 		for (; fShadow >= 0; fShadow -= 4) {
 			GLfloat fXPos = chCharacter.m_nLeft;
-			if (m_bItalic) {
+			if (m_nFontStyle & static_cast<unsigned int>(FontStyle::m_nItalic) > 0) {
 				fXPos = 0 - chCharacter.m_nLeft / 2;
 			}
 			const GLfloat fYPos = fTop - chCharacter.m_nTop;
@@ -434,8 +433,7 @@ namespace Iris2D {
 
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			if (m_bShadow) {
-				//m_pColor->SetAlpha(m_pColor->GetAlpha() << 2);
+			if (GetShadow()) {
 				pShaderFont->SetFontColor(m_pColor);
 			}
 		}
@@ -446,7 +444,7 @@ namespace Iris2D {
 		pTextureFont->RestoreFrameBuffer();
 		//pTextureFont->SaveToFile(L"d:\\fuck.png");
 		const CharacterWithcache &ccValue = { pTextureFont,0};
-		const CharCacheMapKey &ckKey = { wChar,m_nSize,m_FSFontStyle,m_pColor->GetRed(),m_pColor->GetGreen(),m_pColor->GetBlue(),m_pColor->GetAlpha() };
+		const CharCacheMapKey &ckKey = { wChar,m_nSize,m_nFontStyle,m_pColor->GetRed(),m_pColor->GetGreen(),m_pColor->GetBlue(),m_pColor->GetAlpha() };
 		CharacterWicaches.insert(std::pair<CharCacheMapKey, CharacterWithcache>(ckKey, ccValue));
 		if (nVAO) {
 			glDeleteVertexArrays(1, &nVAO);
@@ -550,29 +548,25 @@ namespace Iris2D {
 
 	void FontGL::SetBold(bool bBold)
 	{
-		if (static_cast<GLbyte>(m_FSFontStyle) >= 0) {
-			if (bBold) {
-				m_FSFontStyle = static_cast<FontStyle>(
-					static_cast<GLbyte>(m_FSFontStyle) + static_cast<GLbyte>(FontStyle::Bold)
-					);
-			}
-			else {
-				m_FSFontStyle = static_cast<FontStyle>(
-					static_cast<GLbyte>(m_FSFontStyle) - static_cast<GLbyte>(FontStyle::Bold)
-					);
-			}
+		if (bBold) {
+			m_nFontStyle = static_cast<unsigned int>(FontStyle::m_nBold) | m_nFontStyle;
 		}
-		m_bBold = bBold;
+		else {
+			m_nFontStyle= (~static_cast<unsigned int>(FontStyle::m_nBold)) & m_nFontStyle;
+		}
+
+		
 	}
 
 	bool FontGL::GetBold() const
 	{
-		return m_bBold;
+		//return m_nFontStyle>= static_cast<unsigned int>(FontStyle::m_nBold);
+		return m_nFontStyle & static_cast<unsigned int>(FontStyle::m_nBold);
 	}
 
 	void FontGL::SetItalic(bool bItalic)
 	{
-		if (bItalic && !m_bItalic) {
+		if (bItalic) {
 			float fLean = 0.2f;
 			static FT_Matrix matrix;
 			matrix.xx = 0x10000L;
@@ -580,58 +574,39 @@ namespace Iris2D {
 			matrix.yx = 0;
 			matrix.yy = 0x10000L;
 			FT_Set_Transform(m_FTFace, &matrix, 0);
+			m_nFontStyle = static_cast<unsigned int>(FontStyle::m_nItalic) | m_nFontStyle;
 		}
-		else if (!bItalic && m_bItalic) {
+		else {
 			static FT_Matrix matrix;
 			matrix.xx = 0x10000L;
 			matrix.xy = 0;
 			matrix.yx = 0;
 			matrix.yy = 0x10000L;
 			FT_Set_Transform(m_FTFace, &matrix, 0);
+			m_nFontStyle = (~static_cast<unsigned int>(FontStyle::m_nItalic)) & m_nFontStyle;
 		}
-		if (static_cast<GLbyte>(m_FSFontStyle) >= 0) {
-			if (bItalic) {
-				m_FSFontStyle = static_cast<FontStyle>(
-					static_cast<GLbyte>(m_FSFontStyle) + static_cast<GLbyte>(FontStyle::Italic)
-					);
-			}
-			else {
-				m_FSFontStyle = static_cast<FontStyle>(
-					static_cast<GLbyte>(m_FSFontStyle) - static_cast<GLbyte>(FontStyle::Italic)
-					);
-
-			}
-		}
-		m_bItalic = bItalic;
 		
 	}
 
 	bool FontGL::GetItalic() const
 	{
-		return m_bItalic;
+		//return  m_nFontStyle >= static_cast<unsigned int>(FontStyle::m_nItalic);
+		return  m_nFontStyle & static_cast<unsigned int>(FontStyle::m_nItalic);
 	}
 
 	void FontGL::SetShadow(bool bShadow)
 	{
-		if (static_cast<GLbyte>(m_FSFontStyle) >= 0) {
-			if (bShadow) {
-				m_FSFontStyle = static_cast<FontStyle>(
-					static_cast<GLbyte>(m_FSFontStyle) + static_cast<GLbyte>(FontStyle::Shadow)
-					);
-			}
-			else {
-				m_FSFontStyle = static_cast<FontStyle>(
-					static_cast<GLbyte>(m_FSFontStyle) - static_cast<GLbyte>(FontStyle::Shadow)
-					);
-
-			}
+		if (bShadow) {
+			m_nFontStyle = static_cast<unsigned int>(FontStyle::m_nShadow) | m_nFontStyle;
 		}
-		m_bShadow = bShadow;
+		else {
+			m_nFontStyle = (~static_cast<unsigned int>(FontStyle::m_nShadow)) & m_nFontStyle;
+		}
 	}
 
 	bool FontGL::GetShadow() const
 	{
-		return m_bShadow;
+		return  m_nFontStyle & static_cast<unsigned int>(FontStyle::m_nShadow);
 	}
 
 	void FontGL::SetColor(Color *& pColor)

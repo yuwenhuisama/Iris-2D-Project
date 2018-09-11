@@ -32,9 +32,6 @@ namespace Iris2D
 	private:
 		std::wstring m_wstrFontName = GetDefaultName();
 		unsigned int m_nSize = GetDefaultSize();;
-		bool m_bBold = GetDefaultBold();
-		bool m_bItalic = GetDefaultItalic();
-		bool m_bShadow = GetDefaultShadow();
 		Color* m_pColor = GetDefaultColor();
 	
 	private:
@@ -45,7 +42,7 @@ namespace Iris2D
 		unsigned int m_nDrawTimes = 0;
 		unsigned int m_nTextureMapHeight = 0;
 		unsigned int m_nOriginY = 0;
-		FontStyle m_FSFontStyle = FontStyle::Nomal;
+		unsigned int m_nFontStyle = 0;
 		std::unordered_map<wchar_t, Character> Characters;
 		std::unordered_map<CharCacheMapKey, CharacterWithcache, CharCacheMapHashFunc, EqualKey> CharacterWicaches;
 
