@@ -113,4 +113,8 @@ namespace Iris2D {
 	ResultCode SpriteBase::SetEffect(Effect::EffectBase* pEffect) {
 		return GetAbstractProxied()->SetEffect(pEffect);
 	}
+
+	Viewport* SpriteBase::GetViewport() {
+		return GetAbstractProxied()->GetViewport();
+	}
 }

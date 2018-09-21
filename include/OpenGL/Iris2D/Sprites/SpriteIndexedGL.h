@@ -1,81 +1,38 @@
-#ifndef _H_SPRITE_STATIC_GL_
-#define _H_SPRITE_STATIC_GL_
-
-#include "Common/Iris2D/Sprites/ISpriteStatic.h"
-#include "Common/Iris2D/Proxied.h"
-#include <glm/glm.hpp>
-
-#include "OpenGL/Common.h"
-#include "OpenGL/OpenGLUtil/SpriteShaderBuffersGL.h"
-
-#include "Common/Util/DirtyChecker.h"
-#include "Common/Util/RefCounter.h"
-#include "OpenGL/Iris2D/Sprites/SpriteBaseGL.h"
-#include "OpenGL/OpenGLUtil/SpriteVertexGL.h"
+#ifndef _H_SPRITE_INDEXED_GL
+#define _H_SPRITE_INDEXED_GL
+#include "SpriteBaseGL.h"
+#include "Common/Iris2D/Sprites/ISpriteIndexed.h"
 
 namespace Iris2D {
+
+	class Bitmap;
 	class Viewport;
-	class Color;
-	typedef Color Tone;
-
-	namespace Effect{
-		class EffectBase;
-		class EffectBaseGL;
-	}
-
-	class TextureGL;
-	class SpriteStaticGL :  public ISpriteStatic, public SpriteBaseGL {
-		REF_FRIEND_DECLARE
-
+	class SpriteIndexedGL : public ISpriteIndexed, public SpriteBaseGL {
 	private:
-		Rect* m_pSrcRect = nullptr;
-
-		GLuint m_nVBO = 0;
-		GLuint m_nVAO = 0;
-		GLuint m_nEBO = 0;
-
-		//SpriteStaticVertexShaderBufferGL m_svbfBuffer;
-
-		SpriteInstanceAttributeGL m_siaBuffer;
+		Bitmap* m_pBitmap = nullptr;
+		unsigned int m_nCurrentIndex = 0;
+		const std::vector<Rect*> m_vcAreas{};
 
 	public:
-		static SpriteStaticGL * Create(Viewport* pViewport = nullptr);
-		static void Release(SpriteStaticGL*& pSprite);
-
-		static void ForceRelease(SpriteStaticGL* pSprite);
+		static ResultCode Create(Viewport* pViewport = nullptr);
+		static void Release(SpriteIndexedGL*& pSprite);
 
 	public:
-		// Í¨¹ý ISprite ¼Ì³Ð
-		ResultCode SetBitmap(Bitmap *& pBitmap) override;
-		Bitmap * GetBitmap() const override;
-
+		ResultCode SetBitmap(Bitmap*& pBitmap) override;
+		Bitmap* GetBitmap() const override;
 		void SetOX(float fOX) override;
 		float GetOX() const override;
-
 		void SetOY(float fOY) override;
 		float GetOY() const override;
-
-		void SetSrcRect(Rect *& pSrcRect) override;
-		Rect * GetSrcRect() const override;
-
 		ResultCode Update() override;
-
 		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
-
-		bool CheckMergeableWith(const SpriteStaticGL* pSpriteTarget);
-
-	public:
-		bool CreateVertexBuffer();
 		ResultCode Render() override;
-		TextureGL* RenderEffect();
-		SpriteInstanceAttributeGL GetInstanceAttribute();
 
-	private:
-		bool NeedDiscard() const;
-
-	private:
-		SpriteStaticGL() = default;
-		~SpriteStaticGL();
+		void SetIndex(unsigned nIndex) override;
+		unsigned GetIndex() const override;
+		void SetIndexedAreas(const std::vector<Rect*>& vcAreas) override;
+		void SetIndexedAreas(std::vector<Rect*>&& vcAreas) override;
+		void SetSplitIndexAreas(unsigned nRow, unsigned nColumn) override;
 
 	public:
 		void SetX(float fX) override {
@@ -164,6 +121,7 @@ namespace Iris2D {
 		}
 
 	};
+
 }
 
-#endif // !_H_SPRITE_STATIC_GL_
+#endif // !_H_SPRITE_INDEXED_GL

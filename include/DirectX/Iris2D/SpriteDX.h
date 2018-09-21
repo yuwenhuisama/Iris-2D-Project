@@ -109,6 +109,8 @@ namespace Iris2D
 
 		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
 
+		Viewport* GetViewport() override;
+
 		void Render();
 		bool Dispose();
 

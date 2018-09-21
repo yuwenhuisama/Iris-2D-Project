@@ -12,6 +12,7 @@ namespace Iris2D {
 	class Bitmap;
 	class Rect;
 	class Color;
+	class Viewport;
 	typedef Color Tone;
 	class ISprite {
 	protected:
@@ -56,6 +57,8 @@ namespace Iris2D {
 
 		virtual void SetTone(Tone*& pTone) = 0;
 		virtual Tone* GetTone() const = 0;
+
+		virtual Viewport* GetViewport() = 0;
 
 		virtual ResultCode Update() = 0;
 		virtual ResultCode SetEffect(Effect::EffectBase* pEffect) = 0;

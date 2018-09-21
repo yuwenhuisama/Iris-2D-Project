@@ -3,9 +3,13 @@
 
 #include <string>
 #include "OpenGL/Common.h"
+#include <unordered_map>
+#include <Common/Util/RefCounter.h>
 
 namespace Iris2D {
-	class TextureGL {
+	class TextureGL : RefCounter {
+		REF_FRIEND_DECLARE
+
 	private:
 		GLuint m_nTextureID = 0;
 		GLuint m_nFBO = 0;
@@ -15,6 +19,10 @@ namespace Iris2D {
 
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;
+
+	private:
+		static std::unordered_map<std::wstring, TextureGL*> m_umpCache;
+		static std::unordered_map<TextureGL*, std::wstring> m_umpCacheReverse;
 
 	public:
 		static TextureGL* Create(const std::wstring& wstrTexturePath);

@@ -206,6 +206,10 @@ namespace Iris2D {
 		ResultCode SetEffect(Effect::EffectBase* pEffect) override {
 			return SpriteBase::SetEffect(pEffect);
 		}
+
+		Viewport* GetViewport() override {
+			return SpriteBase::GetViewport();
+		}
 	};
 }
 

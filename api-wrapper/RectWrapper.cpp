@@ -2,7 +2,7 @@
 #include "RectWrapper.h"
 
 EXPORT_API RECT_HANDLE Rect_Create(float fX, float fY, float fWidth, float fHeight) {
-	return Iris2D::Rect::Create(fX, fY, fWidth, fHeight)
+	return Iris2D::Rect::Create(fX, fY, fWidth, fHeight);
 }
 
 EXPORT_API RECT_HANDLE Rect_Create2(float fLeft, float fTop, float fRight, float fBottom) {
@@ -105,5 +105,5 @@ EXPORT_API bool Rect_CheckInsectionWith(RECT_HANDLE hHandle, const RECT_HANDLE p
 	const auto pCastedRect = reinterpret_cast<Iris2D::Rect*>(hHandle);
 	const auto pCheckedRect = reinterpret_cast<Iris2D::Rect*>(pRect);
 
-	pCastedRect->CheckInsectionWith(pCheckedRect);
+	return pCastedRect->CheckInsectionWith(pCheckedRect);
 }

@@ -27,6 +27,7 @@
 #include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "OpenGL/Iris2D/Effects/EffectBaseGL.h"
 #include "Common/Iris2D/Effects/EffectBase.h"
+#include "OpenGL/OpenGLUtil/SpriteRenderQueueGL.h"
 
 namespace Iris2D {
 	SpriteStaticGL * SpriteStaticGL::Create(Viewport * pViewport) {
@@ -80,19 +81,19 @@ namespace Iris2D {
 	}
 
 	void SpriteStaticGL::SetOX(float fOX) {
-		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.x, fOX, m_hOrgPos);
+		m_dcDirtyChecker.Assign(m_siaBuffer.m_v2OrgPosition.x, fOX, m_hOrgPos);
 	}
 
 	float SpriteStaticGL::GetOX() const {
-		return m_svbfBuffer.m_v2OrgPosition.x;
+		return m_siaBuffer.m_v2OrgPosition.x;
 	}
 
 	void SpriteStaticGL::SetOY(float fOY) {
-		m_dcDirtyChecker.Assign(m_svbfBuffer.m_v2OrgPosition.y, fOY, m_hOrgPos);
+		m_dcDirtyChecker.Assign(m_siaBuffer.m_v2OrgPosition.y, fOY, m_hOrgPos);
 	}
 
 	float SpriteStaticGL::GetOY() const {
-		return m_svbfBuffer.m_v2OrgPosition.y;
+		return m_siaBuffer.m_v2OrgPosition.y;
 	}
 
 	void SpriteStaticGL::SetSrcRect(Rect *& pSrcRect) {
@@ -149,6 +150,13 @@ namespace Iris2D {
 		return result;
 	}
 
+	bool SpriteStaticGL::CheckMergeableWith(const SpriteStaticGL* pSpriteTarget) {
+		return (
+			(m_pBitmap == pSpriteTarget->m_pBitmap || GetProxied<BitmapGL*>(m_pBitmap)->GetTexture() == GetProxied<BitmapGL*>(pSpriteTarget->GetBitmap())->GetTexture())
+			&& (!pSpriteTarget->m_pEffect && !m_pEffect)
+		);
+	}
+
 	bool SpriteStaticGL::CreateVertexBuffer() {
 		const auto pBitmap = GetProxied<BitmapGL*>(m_pBitmap);
 
@@ -177,35 +185,54 @@ namespace Iris2D {
 			return IRR_Success;
 		}
 
-		TextureGL* pEffectTexture = nullptr;
-		auto pShader = SpriteShaderGL::Instance();
+		auto pQueue = SpriteRenderQueueGL::Instance();
 
+		pQueue->Push({ TargetType::SpriteStatic, this });
+		
+		//glBindVertexArray(m_nVAO);
+		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		//glBindVertexArray(0);
+
+		return IRR_Success;
+	}
+
+	TextureGL* SpriteStaticGL::RenderEffect() {
 		if (m_pEffect) {
+			TextureGL* pEffectTexture = nullptr;
 			auto pEffect = GetProxied<Effect::EffectBaseGL*>(m_pEffect);
 			const auto pTexture = GetProxied<BitmapGL*>(m_pBitmap)->GetTexture();
 			pEffectTexture = pEffect->Render(pTexture);
 
-			pShader->Use();
+			return pEffectTexture;
 		}
+		return nullptr;
+	}
 
+	SpriteInstanceAttributeGL SpriteStaticGL::GetInstanceAttribute() {
 		m_dcDirtyChecker.DoIfDirty(m_hTranslate, [&]() -> void {
-			m_svbfBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, { m_v3Position.x, m_v3Position.y, 0.0f});
+			//m_siaBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, { m_v3Position.x, m_v3Position.y, 0.0f });
+			//m_siaBuffer.m_v2Translate = glm::vec2{ m_v3Position.x, m_v3Position.y };
+			m_siaBuffer.m_v4TranslateAndZoom.x = m_v3Position.x;
+			m_siaBuffer.m_v4TranslateAndZoom.y = m_v3Position.y;
 		});
-		
+
 		m_dcDirtyChecker.DoIfDirty(m_hRotate, [&]() -> void {
-			m_svbfBuffer.m_mtRotation = glm::rotate(glm::mat4{ 1.0f }, m_fAngle * glm::pi<float>() / 180.0f, glm::vec3{ 0.0f, 0.0f, 1.0f });
+			m_siaBuffer.m_mtRotation = glm::rotate(glm::mat4{ 1.0f }, m_fAngle * glm::pi<float>() / 180.0f, glm::vec3{ 0.0f, 0.0f, 1.0f });
 		});
 
 		m_dcDirtyChecker.DoIfDirty(m_hZoom, [&]() -> void {
-			m_svbfBuffer.m_mtZoom = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ m_v2Zoom.x, m_v2Zoom.y, 1.0f });
+			//m_siaBuffer.m_mtZoom = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ m_v2Zoom.x, m_v2Zoom.y, 1.0f });
+			//m_siaBuffer.m_v2Zoom = glm::vec2{ m_v2Zoom.x, m_v2Zoom };
+			m_siaBuffer.m_v4TranslateAndZoom.z = m_v2Zoom.x;
+			m_siaBuffer.m_v4TranslateAndZoom.w = m_v2Zoom.y;
 		});
 
 		m_dcDirtyChecker.DoIfDirty(m_hOpacity, [&]() -> void {
-			m_svbfBuffer.m_f32Opacity = m_fOpacity;
+			m_siaBuffer.m_f32Opacity = m_fOpacity;
 		});
 
 		m_dcDirtyChecker.DoIfDirty(m_hMirror, [&]() -> void {
-			m_svbfBuffer.m_i32Mirror = m_bMirror ? 1 : 0;
+			m_siaBuffer.m_i32Mirror = m_bMirror ? 1 : 0;
 		});
 
 		if (m_pSrcRect && GetProxied<RectGL*>(m_pSrcRect)->Modified()) {
@@ -214,7 +241,7 @@ namespace Iris2D {
 			const auto fRight = m_pSrcRect->GetRight() / m_pBitmap->GetWidth();
 			const auto fBottom = m_pSrcRect->GetBottom() / m_pBitmap->GetHeight();
 
-			m_svbfBuffer.m_v4Rect = {
+			m_siaBuffer.m_v4Rect = {
 				clip(fLeft, 0.0f, 1.0f),
 				clip(fTop, 0.0f, 1.0f),
 				clip(fRight, 0.0f, 1.0f),
@@ -222,12 +249,13 @@ namespace Iris2D {
 			};
 
 			GetProxied<RectGL*>(m_pSrcRect)->ModifyDone();
-		} else if (!m_pSrcRect){
-			m_svbfBuffer.m_v4Rect = { 0.0f, 0.0f, 1.0f, 1.0f };
+		}
+		else if (!m_pSrcRect) {
+			m_siaBuffer.m_v4Rect = { 0.0f, 0.0f, 1.0f, 1.0f };
 		}
 
 		if (m_pTone && GetProxied<ToneGL*>(m_pTone)->Modified()) {
-			m_svbfBuffer.m_v4Tone = {
+			m_siaBuffer.m_v4Tone = {
 				m_pTone->GetRed(),
 				m_pTone->GetGreen(),
 				m_pTone->GetBlue(),
@@ -235,35 +263,12 @@ namespace Iris2D {
 			};
 
 			GetProxied<ToneGL*>(m_pTone)->ModifyDone();
-		} else if (!m_pTone) {
-			m_svbfBuffer.m_v4Tone = { 0, 0, 0, 0 };
+		}
+		else if (!m_pTone) {
+			m_siaBuffer.m_v4Tone = { 0, 0, 0, 0 };
 		}
 
-		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_pViewport->GetWidth()), static_cast<float>(m_pViewport->GetHeight()), 0.0f, 0.0f, 9999.0f);
-
-		glViewport(0, 0, m_pViewport->GetWidth(), m_pViewport->GetHeight());
-
-		pShader->SetProjectionMatrix(c_mt4Projection);
-		pShader->SetTranslationMatrix(m_svbfBuffer.m_mt4Translate);
-		pShader->SetRotationMatrix(m_svbfBuffer.m_mtRotation);
-		pShader->SetZoomMatrix(m_svbfBuffer.m_mtZoom);
-		pShader->SetOpacity(m_svbfBuffer.m_f32Opacity);
-		pShader->SetMirror(m_svbfBuffer.m_i32Mirror);
-		pShader->SetOrgPosition(m_svbfBuffer.m_v2OrgPosition);
-		pShader->SetRect(m_svbfBuffer.m_v4Rect);
-		pShader->SetTone(m_svbfBuffer.m_v4Tone);
-
-		if (!m_pEffect) {
-			GetProxied<BitmapGL*>(m_pBitmap)->GetTexture()->UseTexture();
-		} else {
-			pEffectTexture->UseTexture();
-		}
-
-		glBindVertexArray(m_nVAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		glBindVertexArray(0);
-
-		return IRR_Success;
+		return m_siaBuffer;
 	}
 
 	bool SpriteStaticGL::NeedDiscard() const {

@@ -24,6 +24,7 @@ extern "C" {
 		IRR_TextureOutputFailed,
 		IRR_TextureReadFailed,
 		IRR_TextureWriteFailed,
+		IRR_WrongRenderCommand,
 
 	};
 #ifdef __cplusplus

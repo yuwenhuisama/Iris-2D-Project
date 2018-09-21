@@ -258,6 +258,10 @@ namespace Iris2D
 		return IRR_Success;
 	}
 
+	Viewport* SpriteDX::GetViewport() {
+		return m_pViewport;
+	}
+
 	void SpriteDX::Render()
 	{
 		if (!m_pBitmap || !m_bVisible || m_bfPixelShaderBuffer.m_fOpacity == 0.0f) {

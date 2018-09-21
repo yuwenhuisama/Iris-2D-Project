@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 
 namespace Iris2D {
-	struct SpriteVertexBufferGL {
+	struct SpriteStaticVertexShaderBufferGL {
 		glm::mat4 m_mt4Translate { 1.f, };
 		glm::mat4 m_mtRotation { 1.f, };
 		glm::mat4 m_mtZoom { 1.f, };
@@ -13,6 +13,10 @@ namespace Iris2D {
 		glm::int32 m_i32Mirror { 1 };
 		glm::vec4 m_v4Rect { 0.0f, };
 		glm::ivec4 m_v4Tone { 0, };
+	};
+
+	struct SpriteIndexedVertexShaderBufferGL {
+		
 	};
 }
 

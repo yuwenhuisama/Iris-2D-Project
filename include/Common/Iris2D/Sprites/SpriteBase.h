@@ -365,6 +365,8 @@ namespace Iris2D {
 		 * \param pEffect 指向 Effect 对象的指针
 		 */
 		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
+
+		Viewport* GetViewport() override;
 	};
 }
 
