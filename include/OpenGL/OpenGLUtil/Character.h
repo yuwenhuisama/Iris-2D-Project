@@ -4,15 +4,9 @@
 #include<OpenGL/OpenGLUtil/TextureGL.h>
 namespace Iris2D {
 	enum class FontStyle {
-		Nomal = 0 ,
-		Bold = 2 ,
-		Italic,
-		Shadow,
-		BoldAndItalic,
-		BoldAdnShadow,
-		ItalicAndShadow,
-		NomalAndBoldAndShadow = 9
-
+		m_nBold   = 0x1,
+		m_nItalic = 0x2,
+		m_nShadow = 0x4,
 	};
 
 	struct Character {
@@ -33,7 +27,7 @@ namespace Iris2D {
 	struct CharCacheMapKey {
 		wchar_t m_wChar;
 		unsigned int m_nSize;
-		FontStyle m_FSStyle;
+		unsigned int m_nFontStyle;
 		unsigned char m_ColorRed;
 		unsigned char m_ColorGreen;
 		unsigned char m_ColorBlue;
@@ -49,7 +43,7 @@ namespace Iris2D {
 
 			return ((hash<wchar_t>()(key.m_wChar))
 				^ (hash<unsigned int>()(key.m_nSize) << 1) >> 1)
-				^ (hash<FontStyle>()(key.m_FSStyle) << 1)
+				^ (hash<unsigned int>()(key.m_nFontStyle) << 1)
 				^ (hash<unsigned char>()(key.m_ColorRed) << 1)
 				^ (hash<unsigned char>()(key.m_ColorGreen) << 1)
 				^ (hash<unsigned char>()(key.m_ColorBlue) << 1)
@@ -63,7 +57,7 @@ namespace Iris2D {
 		bool operator () (const CharCacheMapKey &lhs, const CharCacheMapKey &rhs) const
 		{
 			return lhs.m_wChar == rhs.m_wChar
-				&& lhs.m_FSStyle == rhs.m_FSStyle
+				&& lhs.m_nFontStyle == rhs.m_nFontStyle
 				&& lhs.m_nSize == rhs.m_nSize
 				&& lhs.m_ColorRed == rhs.m_ColorRed
 				&& lhs.m_ColorGreen == rhs.m_ColorGreen
