@@ -108,4 +108,8 @@ namespace Iris2D {
 		return m_pTone;
 	}
 
+	Viewport* SpriteBaseGL::GetViewport() {
+		return m_pViewport;
+	}
+
 }

@@ -55,8 +55,9 @@ namespace Iris2D {
 	}
 
 	BitmapGL * BitmapGL::Create(Bitmap * pSrcBitmapGL) {
-		if (!pSrcBitmapGL)
+		if (!pSrcBitmapGL) {
 			return nullptr;
+		}
 		const auto pBitmap = new BitmapGL();
 
 		auto pShader = FillRectShaderGL::Instance();

@@ -23,6 +23,7 @@
 #include "OpenGL/Iris2D/RectGL.h"
 #include "Common/Util/Util.h"
 #include "OpenGL/Iris2D/Sprites/SpriteStaticGL.h"
+#include "OpenGL/OpenGLUtil/SpriteRenderQueueGL.h"
 
 
 namespace Iris2D {
@@ -182,6 +183,9 @@ namespace Iris2D {
 				break;
 			}
 		}
+
+		auto pQueue = SpriteRenderQueueGL::Instance();
+		pQueue->Push({ TargetType::End, nullptr });
 
 		m_pTexture->RestoreFrameBuffer();
 

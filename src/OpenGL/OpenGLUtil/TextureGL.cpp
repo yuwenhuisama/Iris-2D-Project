@@ -12,10 +12,21 @@
 #include "Common/Util/DebugUtil.h"
 
 namespace Iris2D {
+
+	std::unordered_map<std::wstring, TextureGL*> TextureGL::m_umpCache {};
+	std::unordered_map<TextureGL*, std::wstring> TextureGL::m_umpCacheReverse {};
+
 	TextureGL * TextureGL::Create(const std::wstring & wstrTexturePath) {
+
+		if (m_umpCache.find(wstrTexturePath) != m_umpCache.end()) {
+			return m_umpCache[wstrTexturePath];
+		}
+
 		auto pObject = new TextureGL();
 
 		if (pObject->LoadTexture(wstrTexturePath)) {
+			m_umpCache[wstrTexturePath] = pObject;
+			m_umpCacheReverse[pObject] = wstrTexturePath;
 			return pObject;
 		}
 
@@ -84,8 +95,14 @@ namespace Iris2D {
 	}
 
 	void TextureGL::Release(TextureGL *& pTexture) {
-		delete pTexture;
-		pTexture = nullptr;
+		if (pTexture) {
+			if (pTexture->GetRefCount() == 1) {
+				m_umpCache.erase(m_umpCacheReverse[pTexture]);
+				m_umpCacheReverse.erase(pTexture);
+			}
+
+			RefferRelease(pTexture);
+		}
 	}
 
 	void TextureGL::UseTexture(unsigned int nUnit) const {

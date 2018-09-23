@@ -54,7 +54,7 @@ bool GameCallBack() {
 	auto pColor = Color::Create(255, 255, 255, 255);
 	auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
 
-	//pSprite->SetEffect(pEffect);
+	pSprite->SetEffect(pEffect);
 
 	auto fAngle = 0.0f;
 	auto fBrightness = 0.0f;
@@ -138,7 +138,7 @@ bool GameCallBack() {
 
 		pAnimationGroup->Update();
 
-		//pSprite->Update();
+		pSprite->Update();
 		//pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
 
