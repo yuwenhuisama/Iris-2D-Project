@@ -3,6 +3,7 @@
 
 #include "Common.h"
 
+#undef LIBRARY_EXPORTS
 #ifdef __cplusplus
 extern "C" {
 #endif
