@@ -3,6 +3,7 @@
 #include "Common/Iris2D/AppStartupInfo.h"
 #include "OpenGL/OpenGLUtil/TextureGL.h"
 #include "OpenGL/Iris2D/GraphicsGL.h"
+#include "OpenGL/OpenGLUtil/SpriteRenderQueueGL.h"
 
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
@@ -119,6 +120,11 @@ namespace Iris2D {
 		if (!HueChangeShaderGL::Instance()->Initialize()) {
 			PrintDebugMessageW(L"Error when initializing hue change shader.");
 			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!SpriteRenderQueueGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing render vertex buffer.");
+			return IRR_RenderVertexBufferInitializeFailed;
 		}
 
 		m_pfGameFunc = pInfo->m_pfFunc;

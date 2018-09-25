@@ -409,12 +409,10 @@ namespace Iris2D {
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		glDisable(GL_DEPTH_TEST);
 
 		auto pShader = HueChangeShaderGL::Instance();
 
 		float arrVertices[] = {
-			//destPoint			//Ttexcood	
 			1.0f,	 1.0f,		1.0f,1.0f,
 			1.0f,	-1.0f,   	1.0f,0.0f,
 			-1.0f ,	-1.0f,		0.0f,0.0f,
@@ -443,7 +441,8 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		glViewport(0, 0, nWindowWidth, nWindowHeight);//视口还原
+		glViewport(0, 0, nWindowWidth, nWindowHeight);
+		TextureGL::Release(m_pTexture);
 		m_pTexture = pTextureFrameBuffer;
 		return IRR_Success;
 	}

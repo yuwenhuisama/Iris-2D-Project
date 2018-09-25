@@ -68,11 +68,6 @@ namespace Iris2D {
 		}
 
 		RefferAssign<BitmapGL*>(m_pBitmap, pBitmap);
-
-		if(!CreateVertexBuffer()) {
-			return IRR_OpenGLVertexBufferCreateFailed;
-		}
-
 		return IRR_Success;
 	}
 
@@ -155,28 +150,6 @@ namespace Iris2D {
 			(m_pBitmap == pSpriteTarget->m_pBitmap || GetProxied<BitmapGL*>(m_pBitmap)->GetTexture() == GetProxied<BitmapGL*>(pSpriteTarget->GetBitmap())->GetTexture())
 			&& (!pSpriteTarget->m_pEffect && !m_pEffect)
 		);
-	}
-
-	bool SpriteStaticGL::CreateVertexBuffer() {
-		const auto pBitmap = GetProxied<BitmapGL*>(m_pBitmap);
-
-		const auto nWidth = pBitmap->GetWidth();
-		const auto nHeight = pBitmap->GetHeight();
-
-		SpriteVertexGL arrBuffers[] = {
-			{ { static_cast<float>(nWidth),  static_cast<float>(nHeight),  0.0f, 1.0f },{ 1.0f, 1.0f } },
-			{ { static_cast<float>(nWidth),  0.0f,						   0.0f, 1.0f },{ 1.0f, 0.0f } },
-			{ { 0.0f,					     0.0f,						   0.0f, 1.0f },{ 0.0f, 0.0f } },
-			{ { 0.0f,					     static_cast<float>(nHeight),  0.0f, 1.0f },{ 0.0f, 1.0f } },
-		};
-
-		return OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, [&]() -> void {
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(SpriteVertexGL), reinterpret_cast<void*>(offsetof(SpriteVertexGL, m_v4Position)));
-			glEnableVertexAttribArray(0);
-
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(SpriteVertexGL), reinterpret_cast<void*>(offsetof(SpriteVertexGL, m_v2Texture)));
-			glEnableVertexAttribArray(1);
-		});
 	}
 
 	ResultCode SpriteStaticGL::Render() {

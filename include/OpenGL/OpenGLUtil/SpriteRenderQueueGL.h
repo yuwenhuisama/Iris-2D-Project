@@ -3,6 +3,8 @@
 #include <deque>
 #include "OpenGL/Iris2D/Sprites/SpriteBaseGL.h"
 #include "OpenGL/Common.h"
+#include "OpenGL/OpenGLUtil/SpriteVertexGL.h"
+#include "OpenGL/OpenGLUtil/BufferManagerGL.h"
 
 namespace Iris2D {
 
@@ -20,23 +22,28 @@ namespace Iris2D {
 
 	class BitmapGL;
 	class TextureGL;
-	struct SpriteInstanceAttributeGL;
 	class SpriteRenderQueueGL {
 	private:
 		std::deque<RenderCommand> m_dqRenderCommandQueue {};
+		BufferManagerGL<SpriteInstanceAttributeGL>* m_pStaticSpriteInstanceBufferManager = nullptr;
+		BufferManagerGL<SpriteVertexGL>* m_pStaticSpriteVertexBufferManager = nullptr;
+
+		std::vector<GLuint> m_vcVAOs {};
+		unsigned int m_nCurrentVAOIndex = 0;
+
+		GLuint m_nEBO = 0;
 
 	public:
 		static SpriteRenderQueueGL* Instance();
+		bool Initialize();
+		bool Release();
 
 	public:
 		ResultCode Push(const RenderCommand& rcCommand);
-		ResultCode Push(RenderCommand&& rcCommand);
 
 	private:
 		ResultCode Render();
 		ResultCode RenderSpriteStatics();
-
-		bool CreateSpriteStaticVertexBuffer(const TextureGL* pTexture, GLuint& nVAO, GLuint& nVBO, GLuint& nEBO, GLuint& nInstanceVBO, SpriteInstanceAttributeGL* pAttribArray, unsigned int nArraySize);
 
 	private:
 		SpriteRenderQueueGL() = default;

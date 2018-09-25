@@ -30,12 +30,6 @@ namespace Iris2D {
 	private:
 		Rect* m_pSrcRect = nullptr;
 
-		GLuint m_nVBO = 0;
-		GLuint m_nVAO = 0;
-		GLuint m_nEBO = 0;
-
-		//SpriteStaticVertexShaderBufferGL m_svbfBuffer;
-
 		SpriteInstanceAttributeGL m_siaBuffer;
 
 	public:
@@ -65,7 +59,6 @@ namespace Iris2D {
 		bool CheckMergeableWith(const SpriteStaticGL* pSpriteTarget);
 
 	public:
-		bool CreateVertexBuffer();
 		ResultCode Render() override;
 		TextureGL* RenderEffect();
 		SpriteInstanceAttributeGL GetInstanceAttribute();

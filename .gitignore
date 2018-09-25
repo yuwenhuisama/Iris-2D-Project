@@ -236,3 +236,4 @@ Iris 2D Cerise-A.VC.opendb
 
 CMakeSettings.json
 !vs_configure_files/CMakeSettings.json
+temp/

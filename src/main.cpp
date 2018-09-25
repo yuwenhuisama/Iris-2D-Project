@@ -40,7 +40,8 @@ bool GameCallBack() {
 	pBitmap->DrawText(pRect2, L"bba·¨¿Ë", AlignType::Center);
 	
 
-	pBitmap2->HueChange(200);
+	//pBitmap2->HueChange(200);
+	pBitmap2->SaveToFile(L"temp/123123.png");
 
 	auto pSprite2 = SpriteStatic::Create(pViewport);
 	pSprite2->SetX(200.0f);
