@@ -12,13 +12,13 @@ EXPORT_API VIEWPORT_HANDLE Viewport_Create2(const RECT_HANDLE pRect) {
 }
 
 EXPORT_API void Viewport_Release(VIEWPORT_HANDLE* pViewport) {
-	auto pCastedViewport = reinterpret_cast<Iris2D::Viewport*&>(pViewport);
+	auto pCastedViewport = reinterpret_cast<Iris2D::Viewport*&>(*pViewport);
 
 	Iris2D::Viewport::Release(pCastedViewport);
 }
 
 EXPORT_API void Viewport_ForceRelease(VIEWPORT_HANDLE* pViewport) {
-	auto pCastedViewport = reinterpret_cast<Iris2D::Viewport*&>(pViewport);
+	auto pCastedViewport = reinterpret_cast<Iris2D::Viewport*&>(*pViewport);
 
 	Iris2D::Viewport::ForceRelease(pCastedViewport);
 }
@@ -47,7 +47,7 @@ EXPORT_API float Viewport_GetOY(VIEWPORT_HANDLE hHandle) {
 
 EXPORT_API void Viewport_SetSrcRect(VIEWPORT_HANDLE hHandle, RECT_HANDLE* pSrcRect) {
 	const auto pViewport = reinterpret_cast<Iris2D::Viewport*>(hHandle);
-	auto pCastedSrcRect = reinterpret_cast<Iris2D::Rect*&>(pSrcRect);
+	auto pCastedSrcRect = reinterpret_cast<Iris2D::Rect*&>(*pSrcRect);
 
 	pViewport->SetSrcRect(pCastedSrcRect);
 }
@@ -60,7 +60,7 @@ EXPORT_API RECT_HANDLE Viewport_GetSrcRect(VIEWPORT_HANDLE hHandle) {
 
 EXPORT_API void Viewport_SetTone(VIEWPORT_HANDLE hHandle, COLOR_HANDLE* pTone) {
 	const auto pViewport = reinterpret_cast<Iris2D::Viewport*>(hHandle);
-	auto pCastedTone = reinterpret_cast<Iris2D::Tone*&>(pTone);
+	auto pCastedTone = reinterpret_cast<Iris2D::Color*&>(*pTone);
 
 	pViewport->SetTone(pCastedTone);
 }
