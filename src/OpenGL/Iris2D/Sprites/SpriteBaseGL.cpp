@@ -81,7 +81,7 @@ namespace Iris2D {
 	}
 
 	void SpriteBaseGL::SetOpacity(float fOpacity) {
-		fOpacity = clip(fOpacity, 0.0f, 1.0f);
+		fOpacity = Clip(fOpacity, 0.0f, 1.0f);
 		m_dcDirtyChecker.Assign(m_fOpacity, fOpacity, m_hOpacity);
 	}
 

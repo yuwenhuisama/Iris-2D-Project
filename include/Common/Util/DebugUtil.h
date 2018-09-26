@@ -8,6 +8,7 @@
 
 #ifdef _WIN32
 #include <WinString.h>
+#include <Windows.h>
 #endif
 
 namespace Iris2D {
@@ -106,8 +107,42 @@ namespace Iris2D {
 #define PrintFormatDebugMessageA(strFormat, ...) _PrinFormatDebugMessageA(__LINE__, __FILE__, strFormat, __VA_ARGS__)
 #define PrintDebugMessageA(strMessage) _PrintDebugMessageA(strMessage, __LINE__, __FILE__)
 #else
-#define PrintFormatDebugMessage(wstrFormat, ...)
-#define PrintDebugMessage(wstrMessage)
+#define PrintFormatDebugMessageW(wstrFormat, ...)
+#define PrintDebugMessageW(wstrMessage)
+
+#define PrintFormatDebugMessageA(strFormat, ...)
+#define PrintDebugMessageA(strMessage)
+#endif
+
+#if defined(_WIN32) && defined(_DEBUG)
+	class DebugConsole {
+	private:
+		HANDLE m_hOutput = nullptr;
+
+	public:
+		void Create() {
+			AllocConsole();
+			m_hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+			SetConsoleTitle("Debug Information");
+			SetConsoleTextAttribute(m_hOutput, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
+
+			HWND hWnd = nullptr;
+			while (nullptr == hWnd) {
+				hWnd = FindWindowA(nullptr, "Debug Information");
+			}
+
+			auto hMenu = ::GetSystemMenu(hWnd, false);
+			DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
+
+			freopen("CONOUT$", "w", stdout);
+			std::cout << "Iris 2D Debug Information Window." << std::endl;
+		}
+
+		void Release() {
+			FreeConsole();
+		}
+
+	};
 #endif
 
 }

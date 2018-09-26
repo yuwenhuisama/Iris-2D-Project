@@ -1,4 +1,5 @@
 #include "Common/Iris2D/App.h"
+#include <ctime>
 
 namespace Iris2D {
 
@@ -22,6 +23,7 @@ namespace Iris2D {
 #endif // _WIN32
 
 	ResultCode Application::Initialize(const AppStartupInfo* pInfo) {
+		srand(static_cast<unsigned>(time(nullptr)));
 		return m_pProxied->Initialize(pInfo);
 	}
 

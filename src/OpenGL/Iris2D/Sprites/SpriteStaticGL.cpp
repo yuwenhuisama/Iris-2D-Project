@@ -215,10 +215,10 @@ namespace Iris2D {
 			const auto fBottom = m_pSrcRect->GetBottom() / m_pBitmap->GetHeight();
 
 			m_siaBuffer.m_v4Rect = {
-				clip(fLeft, 0.0f, 1.0f),
-				clip(fTop, 0.0f, 1.0f),
-				clip(fRight, 0.0f, 1.0f),
-				clip(fBottom, 0.0f, 1.0f),
+				Clip(fLeft, 0.0f, 1.0f),
+				Clip(fTop, 0.0f, 1.0f),
+				Clip(fRight, 0.0f, 1.0f),
+				Clip(fBottom, 0.0f, 1.0f),
 			};
 
 			GetProxied<RectGL*>(m_pSrcRect)->ModifyDone();
@@ -279,18 +279,6 @@ namespace Iris2D {
 		Tone::Release(m_pTone);
 		if (m_pEffect) {
 			m_pEffect->AutoRelease();
-		}
-
-		if (m_nVAO) {
-			glDeleteVertexArrays(1, &m_nVAO);
-		}
-
-		if (m_nVBO) {
-			glDeleteBuffers(1, &m_nVBO);
-		}
-
-		if (m_nEBO) {
-			glDeleteBuffers(1, &m_nEBO);
 		}
 	}
 }

@@ -207,10 +207,10 @@ namespace Iris2D {
 			const auto fBottom = m_pSrcRect->GetBottom() / m_pTexture->GetHeight();
 
 			m_vvbBuffer.m_v4Rect = {
-				clip(fLeft, 0.0f, 1.0f),
-				clip(fTop, 0.0f, 1.0f),
-				clip(fRight, 0.0f, 1.0f),
-				clip(fBottom, 0.0f, 1.0f),
+				Clip(fLeft, 0.0f, 1.0f),
+				Clip(fTop, 0.0f, 1.0f),
+				Clip(fRight, 0.0f, 1.0f),
+				Clip(fBottom, 0.0f, 1.0f),
 			};
 			GetProxied<RectGL*>(m_pSrcRect)->ModifyDone();
 		} else if (!m_pSrcRect) {

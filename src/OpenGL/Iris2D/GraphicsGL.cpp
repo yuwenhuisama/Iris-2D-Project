@@ -33,6 +33,25 @@ namespace Iris2D {
 
 		m_bUpdateLockFlag = false;
 
+#ifdef _WIN32
+		static unsigned nLastTime = ::timeGetTime();
+#else
+		// TODO: time get on *nix
+#endif // _WIN32
+
+		static unsigned int nFps = 0;
+		static unsigned int nFrameCount = 0;
+
+		++nFrameCount;
+
+		const auto curTime = ::timeGetTime();
+		if (curTime - nLastTime > 1000) // 取固定时间间隔为1秒
+		{
+			nFps = nFrameCount;
+			nFrameCount = 0;
+			nLastTime = curTime;
+		}
+
 #ifdef _DEBUG
 		static unsigned int  nCount = 0;
 
@@ -43,7 +62,7 @@ namespace Iris2D {
 			const auto pWindow = OpenGLHelper::Instance()->GetWindow();
 
 			boost::format format("Fps: %1%, Frame count: %2%");
-			format % (1000.0f / m_fMsPerUpdate);
+			format % (nFps);
 			format % m_nFrameCount;
 
 			glfwSetWindowTitle(pWindow, format.str().c_str());
@@ -75,7 +94,7 @@ namespace Iris2D {
 			// TODO: time get on Unix
 #endif // _WIN32
 			if (m_dCurrentTime >= m_dLastTime) {
-				m_fTimeDelta = (m_dCurrentTime - fTmp);
+				m_fTimeDelta = (m_dCurrentTime - m_dLastTime + m_fMsPerUpdate);
 				m_dLastTime = m_dCurrentTime + m_fMsPerUpdate;
 				m_bUpdateLockFlag = true;
 			}
@@ -96,7 +115,7 @@ namespace Iris2D {
 			const auto pWindow = OpenGLHelper::Instance()->GetWindow();
 
 			boost::format format("Fps: %1%, Frame count: %2%");
-			format % (1000.0f / m_fMsPerUpdate);
+			format % (1000.0f / m_fTimeDelta);
 			format % m_nFrameCount;
 
 			glfwSetWindowTitle(pWindow, format.str().c_str());
@@ -314,7 +333,7 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::SetBrightness(float fBrightness) {
-		m_fBrightness = clip(fBrightness, 0.0f, 1.0f);
+		m_fBrightness = Clip(fBrightness, 0.0f, 1.0f);
 	}
 
 	void GraphicsGL::SetFrameRate(float fFrameRate) {

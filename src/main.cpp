@@ -41,21 +41,34 @@ bool GameCallBack() {
 	
 
 	//pBitmap2->HueChange(200);
-	pBitmap2->SaveToFile(L"temp/123123.png");
+	//pBitmap2->SaveToFile(L"temp/123123.png");
 
 	auto pSprite2 = SpriteStatic::Create(pViewport);
 	pSprite2->SetX(200.0f);
 	pSprite2->SetBitmap(pBitmap2);
 	pSprite2->SetZ(5.0f);
 
-	auto pTmpColor = pBitmap->GetPixel(0, 0);
-
+	//auto pTmpColor = pBitmap->GetPixel(0, 0);
 	//pSprite2->SetOpacity(0.5f);
 
 	auto pColor = Color::Create(255, 255, 255, 255);
 	auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
 
 	pSprite->SetEffect(pEffect);
+
+	auto pBitmap3 = Bitmap::Create(L"image/face.jpg");
+	std::vector<SpriteStatic*> vcSprites = {};
+	for (size_t i = 0; i < 5000; ++i) {
+		const auto pTmpSprite = SpriteStatic::Create();
+		pTmpSprite->SetBitmap(pBitmap3);
+		pTmpSprite->SetX(RandInRange(0.0f, 1.0f) * 800);
+		pTmpSprite->SetY(RandInRange(0.0f, 1.0f) * 450);
+		const auto fZoomRate = RandInRange(0.0f, 4.0f);
+		pTmpSprite->SetZoomX(fZoomRate);
+		pTmpSprite->SetZoomY(fZoomRate);
+		pTmpSprite->SetAngle(RandInRange(0.0f, 1.0f) * 360);
+		vcSprites.push_back(pTmpSprite);
+	}
 
 	auto fAngle = 0.0f;
 	auto fBrightness = 0.0f;
@@ -176,6 +189,10 @@ bool GameCallBack() {
 	Animation::AnimationZoomProperty::Release(pAnimation3);
 
 	Animation::AnimationSerialGroup::Release(pAnimationGroup);
+
+	for (auto& pTmpSprite : vcSprites) {
+		SpriteStatic::Release(pSprite);
+	}
 
 	return true;
 }

@@ -10,8 +10,16 @@
 
 namespace Iris2D {
 	template <typename T>
-	T clip(const T& n, const T& lower, const T& upper) {
-		return std::max(lower, std::min(n, upper));
+	T Clip(const T& tN, const T& tLower, const T& tUpper) {
+		return std::max(tLower, std::min(tN, tUpper));
+	}
+
+	template<typename T>
+	T RandInRange(T tLower, T tUpper) {
+		if (tLower > tUpper) {
+			std::swap(tLower, tUpper);
+		}
+		return rand() / static_cast<double>(RAND_MAX) *(tUpper - tLower) + tLower;
 	}
 }
 

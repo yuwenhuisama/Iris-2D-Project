@@ -19,8 +19,42 @@ if (WIN32)
 	find_package(glm CONFIG REQUIRED)
 	find_package(Freetype REQUIRED)
 
-	find_library(DIRECTXTEX DirectXTex.lib)
-	link_libraries(${DIRECTXTEX})
+	SET(DIRECTX_DEPENDENCIES dxgi.lib; Windowscodecs.lib; d3d10_1.lib; d3d11.lib; d2d1.lib; dxguid.lib; D3DCompiler.lib; Winmm.lib; Dwrite.lib)
+
+	FOREACH(LIB ${DIRECTX_DEPENDENCIES})
+		FIND_LIBRARY(FOUND_LIB_${LIB} ${LIB})
+		LIST(APPEND DIRECTX_DEPENDENCIES_FOUND ${FOUND_LIB_${LIB}})
+		link_libraries(${FOUND_LIB_${LIB}})
+	ENDFOREACH (LIB)
+
+	if (${CMAKE_BUILD_TYPE} STREQUAL "RELEASE")
+		FIND_LIBRARY(DIRECTXTEX_RELEASE
+		NAMES
+			DirectXTex.lib
+		HINTS
+			${CMAKE_FIND_ROOT_PATH}
+		PATHS
+			${CMAKE_FIND_ROOT_PATH}
+		PATH_SUFFIXES
+			"lib"
+		)
+		link_libraries(${DIRECTXTEX_RELEASE})
+
+	elseif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") 
+		FIND_LIBRARY(DIRECTXTEX_DEBUG
+		NAMES
+			DirectXTex.lib
+		HINTS
+			${CMAKE_FIND_ROOT_PATH}
+		PATHS
+			${CMAKE_FIND_ROOT_PATH}
+		PATH_SUFFIXES
+			"debug/lib"
+		) 
+
+		link_libraries(${DIRECTXTEX_DEBUG})
+	endif()
+
 elseif (APPLE)
 	set(GLEW_LINK /usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.dylib)
 	set(GLFW_LINK /usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.dylib)
