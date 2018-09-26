@@ -7,7 +7,7 @@ out vec2 texCoord;
 uniform mat4 projectionMat;
 
 void main() {
-    gl_Position = projectionMat * position;
+	gl_Position = projectionMat * position;
 
 	texCoord = textureCoord;
 }

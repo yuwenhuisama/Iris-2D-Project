@@ -19,4 +19,6 @@
 #include "Common/Iris2D/Animations/AnimationGroup/AnimationParallelGroup.h"
 #include "Common/Iris2D/Animations/AnimationGroup/AnimationSerialGroup.h"
 
+#include "Common/Util/Util.h"
+
 #endif

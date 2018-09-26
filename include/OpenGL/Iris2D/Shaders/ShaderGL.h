@@ -7,7 +7,6 @@
 
 #include <string>
 #include <functional>
-#include <glm/detail/type_mat.hpp>
 #include <glm/glm.hpp>
 
 #include "OpenGL/Common.h"

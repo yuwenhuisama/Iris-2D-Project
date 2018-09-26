@@ -11,6 +11,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.inl>
+#include <glm/ext/matrix_clip_space.inl>
 
 namespace Iris2D {
 
@@ -20,7 +21,7 @@ namespace Iris2D {
 	}
 
 	bool SpriteRenderQueueGL::Initialize() {
-		m_pStaticSpriteInstanceBufferManager = BufferManagerGL<SpriteInstanceAttributeGL>::Create(IR_VERTEX_BUFFER_NUM, IR_VERTEX_BUFFER_MAX_SIZE);
+		m_pStaticSpriteInstanceBufferManager = BufferManagerGL<SpriteInstanceAttributeGL>::Create(IR_VERTEX_BUFFER_NUM, 128);
 		m_pStaticSpriteVertexBufferManager = BufferManagerGL<SpriteVertexGL>::Create(IR_VERTEX_BUFFER_NUM, 4);
 
 		// Initialize EBO

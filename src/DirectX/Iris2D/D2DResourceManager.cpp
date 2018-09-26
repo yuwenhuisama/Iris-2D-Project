@@ -134,7 +134,7 @@ namespace Iris2D
 			return false;;
 		}
 
-		hResult = pTmpTexture->QueryInterface(IID_ID3D11Resource, (void **)&pTexture);
+		hResult = pTmpTexture->QueryInterface(__uuidof(ID3D11Resource), (void **)&pTexture);
 		if (FAILED(hResult)) {
 			SafeCOMRelease(pTmpTexture);
 			SafeCOMRelease(pTexture);

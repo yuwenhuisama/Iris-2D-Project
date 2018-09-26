@@ -22,14 +22,14 @@
 #include <wrl.h>
 #include <dwrite_3.h>
 
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "Windowscodecs.lib")
-#pragma comment(lib, "d3d10_1.lib")
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d2d1.lib")
-#pragma comment(lib, "D3DCompiler.lib")
-#pragma comment(lib, "Winmm.lib")
-#pragma comment(lib, "Dwrite.lib")
+//#pragma comment(lib, "dxgi.lib")
+//#pragma comment(lib, "Windowscodecs.lib")
+//#pragma comment(lib, "d3d10_1.lib")
+//#pragma comment(lib, "d3d11.lib")
+//#pragma comment(lib, "d2d1.lib")
+//#pragma comment(lib, "D3DCompiler.lib")
+//#pragma comment(lib, "Winmm.lib")
+//#pragma comment(lib, "Dwrite.lib")
 
 //#if defined(DEBUG) || defined(_DEBUG)
 //#pragma comment(lib, "./lib/Debug/DirectXTex.lib")

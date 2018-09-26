@@ -45,11 +45,11 @@ namespace Iris2D {
 		}
 
 		std::string EffectFlashGL::GetVertexShaderFile() {
-			return "shaders/GLSL/effects/effect_common_vertex_shader.frag";
+			return "shaders/GLSL/effects/effect_common_vertex_shader.vert";
 		}
 
 		std::string EffectFlashGL::GetFragmentShaderFile() {
-			return "shaders/GLSL/effects/effect_flash_fragment_shader.vert";
+			return "shaders/GLSL/effects/effect_flash_fragment_shader.frag";
 		}
 
 		TextureGL*  EffectFlashGL::Render(TextureGL* pPreTexture) {
