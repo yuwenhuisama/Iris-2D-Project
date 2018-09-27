@@ -23,36 +23,13 @@ if (WIN32)
 
 	FOREACH(LIB ${DIRECTX_DEPENDENCIES})
 		FIND_LIBRARY(FOUND_LIB_${LIB} ${LIB})
-		LIST(APPEND DIRECTX_DEPENDENCIES_FOUND ${FOUND_LIB_${LIB}})
 		link_libraries(${FOUND_LIB_${LIB}})
 	ENDFOREACH (LIB)
 
 	if (${CMAKE_BUILD_TYPE} STREQUAL "RELEASE")
-		FIND_LIBRARY(DIRECTXTEX_RELEASE
-		NAMES
-			DirectXTex.lib
-		HINTS
-			${CMAKE_FIND_ROOT_PATH}
-		PATHS
-			${CMAKE_FIND_ROOT_PATH}
-		PATH_SUFFIXES
-			"lib"
-		)
-		link_libraries(${DIRECTXTEX_RELEASE})
-
-	elseif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG") 
-		FIND_LIBRARY(DIRECTXTEX_DEBUG
-		NAMES
-			DirectXTex.lib
-		HINTS
-			${CMAKE_FIND_ROOT_PATH}
-		PATHS
-			${CMAKE_FIND_ROOT_PATH}
-		PATH_SUFFIXES
-			"debug/lib"
-		) 
-
-		link_libraries(${DIRECTXTEX_DEBUG})
+		link_libraries(${CMAKE_FIND_ROOT_PATH}/lib/DirectXTex.lib)
+	elseif (${CMAKE_BUILD_TYPE} STREQUAL "DEBUG")
+		link_libraries(${CMAKE_FIND_ROOT_PATH}/debug/lib/DirectXTex.lib)
 	endif()
 
 elseif (APPLE)

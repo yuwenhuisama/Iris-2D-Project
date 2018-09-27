@@ -5,6 +5,8 @@
 #ifndef _H_COMMON_C_
 #define _H_COMMON_C_
 
+#define IR_VERSION "0.3.1"
+
 #include "Common/CompileConfigure.h"
 #include "Common/Util/DebugUtil.h"
 

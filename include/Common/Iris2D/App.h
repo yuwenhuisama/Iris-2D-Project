@@ -198,9 +198,13 @@ namespace Iris2D {
 		*/
 		virtual float GetTimeDelta() const override;
 
-		private:
-			Application(); 
-			~Application() = default;
+	public:
+		bool CommonInitialize();
+		void CommonRelease();
+
+	private:
+		Application(); 
+		~Application() = default;
 	};
 };
 

@@ -1,5 +1,6 @@
 #include "Common/Iris2D/App.h"
 #include <ctime>
+#include "Common/Util/DebugUtil.h"
 
 namespace Iris2D {
 
@@ -14,6 +15,9 @@ namespace Iris2D {
 
 #ifdef _WIN32
 	ResultCode Application::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
+		if (!CommonInitialize()) {
+			return IRR_UnknowError;
+		}
 		return m_pProxied->Initialize(hInstance, nWidth, nHeight, pfGameFunc, wszTitle);
 	}
 #else
@@ -23,7 +27,9 @@ namespace Iris2D {
 #endif // _WIN32
 
 	ResultCode Application::Initialize(const AppStartupInfo* pInfo) {
-		srand(static_cast<unsigned>(time(nullptr)));
+		if (!CommonInitialize()) {
+			return IRR_UnknowError;
+		}
 		return m_pProxied->Initialize(pInfo);
 	}
 
@@ -33,6 +39,7 @@ namespace Iris2D {
 
 	void Application::Release() {
 		m_pProxied->Release();
+		CommonRelease();
 	}
 
 	bool Application::IsUninitialized() const {
@@ -58,6 +65,20 @@ namespace Iris2D {
 
 	float Application::GetTimeDelta() const {
 		return m_pProxied->GetTimeDelta();
+	}
+
+	bool Application::CommonInitialize() {
+		srand(static_cast<unsigned>(time(nullptr)));
+#ifdef _DEBUG
+		DebugConsole::Instance()->Create();
+#endif
+		return true;
+	}
+
+	void Application::CommonRelease() {
+#ifdef _DEBUG
+		DebugConsole::Instance()->Release();
+#endif
 	}
 
 }
