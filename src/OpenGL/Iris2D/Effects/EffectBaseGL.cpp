@@ -4,6 +4,7 @@
 #include "OpenGL/OpenGLUtil/EffectFrameBufferVertexGL.h"
 #include "OpenGL/OpenGLUtil/OpenGLHelper.h"
 #include "OpenGL/Iris2D/GraphicsGL.h"
+#include "Common/Util/DebugUtil.h"
 
 namespace Iris2D {
 	namespace Effect {
@@ -27,6 +28,9 @@ namespace Iris2D {
 
 			glBindVertexArray(m_nVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+			DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 			glBindVertexArray(0);
 
 			glViewport(0, 0, GraphicsGL::Instance()->GetWidth(), GraphicsGL::Instance()->GetHeight());

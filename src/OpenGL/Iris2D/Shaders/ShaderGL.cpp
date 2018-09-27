@@ -16,8 +16,15 @@
 #endif
 
 namespace Iris2D {
+
+	GLuint ShaderGL::sm_nPreShaderID = std::numeric_limits<GLuint>::max();
+
 	void ShaderGL::Use() {
-		glUseProgram(m_nID);
+		if (m_nID != sm_nPreShaderID) {
+			DebugCounter::Instance()->IncreaseShaderSwitchTimesPerFrame();
+			glUseProgram(m_nID);
+			sm_nPreShaderID = m_nID;
+		}
 	}
 
 	void ShaderGL::Unuse() {

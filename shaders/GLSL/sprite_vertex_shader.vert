@@ -26,8 +26,6 @@ uniform mat4 projectionMat;
 void main() {
 	vec4 posTmp = position;
 	posTmp.xy -= orgPos;
-	posTmp.xy += translateAndZoom.xy;
-	posTmp.xy *= translateAndZoom.zw;
 
 	mat4 rotateMat;
 
@@ -35,8 +33,12 @@ void main() {
 	rotateMat[1] = rotateMat2;
 	rotateMat[2] = rotateMat3;
 	rotateMat[3] = rotateMat4;
-	
-	gl_Position = projectionMat * rotateMat * posTmp;
+
+	posTmp.xy *= translateAndZoom.zw;
+	gl_Position = rotateMat * posTmp;
+	gl_Position.xy += translateAndZoom.xy;
+
+	gl_Position = projectionMat * gl_Position;
 
 	texCoord = textureCoord;
 	outOpacity = opacity;

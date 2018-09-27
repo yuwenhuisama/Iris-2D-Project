@@ -26,7 +26,7 @@ extern "C" {
 		IRR_TextureWriteFailed,
 		IRR_WrongRenderCommand,
 		IRR_RenderVertexBufferInitializeFailed,
-		IRR_UnknowError,
+		IRR_UnknownError,
 	};
 #ifdef __cplusplus
 }

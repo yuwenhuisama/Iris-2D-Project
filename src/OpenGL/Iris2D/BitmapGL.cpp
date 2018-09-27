@@ -106,6 +106,9 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetProxied<BitmapGL*>(pSrcBitmapGL)->GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
@@ -199,6 +202,9 @@ namespace Iris2D {
 
 		glBindVertexArray(nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
@@ -262,6 +268,9 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
@@ -328,6 +337,9 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
@@ -438,6 +450,9 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
@@ -503,7 +518,11 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
+
 		auto pShaderFont2 = BackGroundShaderGL::Instance();
 		const GLfloat & fH = static_cast<GLfloat>(GetHeight());
 		const GLfloat & fW = static_cast<GLfloat>(GetWidth());
@@ -533,6 +552,9 @@ namespace Iris2D {
 		glBindVertexArray(nVAO2);
 		pfontTexture->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 		pTextureFrameBuffer->RestoreFrameBuffer();
 		m_pTexture = pTextureFrameBuffer;

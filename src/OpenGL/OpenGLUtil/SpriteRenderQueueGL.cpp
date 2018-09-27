@@ -13,6 +13,8 @@
 #include <glm/gtc/matrix_transform.inl>
 #include <glm/ext/matrix_clip_space.inl>
 
+#include "Common/Util/DebugUtil.h"
+
 namespace Iris2D {
 
 	SpriteRenderQueueGL* SpriteRenderQueueGL::Instance() {
@@ -234,6 +236,9 @@ namespace Iris2D {
 		const auto nVAO = m_vcVAOs[m_nCurrentVAOIndex];
 		glBindVertexArray(nVAO);
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, m_dqRenderCommandQueue.size());
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		m_pStaticSpriteVertexBufferManager->SwitchBuffer();

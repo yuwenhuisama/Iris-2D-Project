@@ -13,6 +13,9 @@
 
 namespace Iris2D {
 	class ShaderGL {
+	private:
+		static GLuint sm_nPreShaderID;
+
 	protected:
 		GLuint m_nID = 0;
 

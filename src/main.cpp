@@ -58,12 +58,13 @@ bool GameCallBack() {
 
 	auto pBitmap3 = Bitmap::Create(L"image/face.jpg");
 	std::vector<SpriteStatic*> vcSprites = {};
-	for (size_t i = 0; i < 5000; ++i) {
+	for (size_t i = 0; i < 50; ++i) {
 		const auto pTmpSprite = SpriteStatic::Create();
 		pTmpSprite->SetBitmap(pBitmap3);
-		pTmpSprite->SetX(RandInRange(0.0f, 1.0f) * 800);
-		pTmpSprite->SetY(RandInRange(0.0f, 1.0f) * 450);
-		const auto fZoomRate = RandInRange(0.0f, 4.0f);
+		auto g = RandInRange(0.1f, 1.0f);
+		pTmpSprite->SetX(RandInRange(0.0f, 1.0f) * 1600);
+		pTmpSprite->SetY(RandInRange(0.0f, 1.0f) * 900);
+		const auto fZoomRate = RandInRange(0.5f, 4.0f);
 		pTmpSprite->SetZoomX(fZoomRate);
 		pTmpSprite->SetZoomY(fZoomRate);
 		pTmpSprite->SetAngle(RandInRange(0.0f, 1.0f) * 360);

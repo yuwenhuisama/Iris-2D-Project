@@ -115,75 +115,9 @@ namespace Iris2D {
 #define PrintDebugMessageA(strMessage)
 #endif
 
-#if defined(_WIN32) && defined(_DEBUG)
-
-	const std::string c_strDebugHeaderTemplate =
-
-"* =============================================================\n\
- * Iris 2D Debug Information Window\
- * Iris 2D Version:  %1%\n\
- * Frame Per Second: %2%\n\
- * Draw Call Times Per Frame: %3%\n\
- * Shader Switch Times Per Frame: %4\n\
- * =============================================================\n\
-";
-
-	class DebugConsole {
-	private:
-		unsigned int m_nMaxBufferSize = 0;
-		HANDLE m_hOutput = nullptr;
-		std::queue<std::string> m_vcDebugBuffer {};
-
-	public:
-		static DebugConsole* Instance() {
-			static DebugConsole console;
-			return &console;
-		}
-
-	public:
-		void Create() {
-			AllocConsole();
-			m_hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
-			SetConsoleTitle("Debug Information");
-			SetConsoleTextAttribute(m_hOutput, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY);
-
-			HWND hWnd = nullptr;
-			while (nullptr == hWnd) {
-				hWnd = FindWindowA(nullptr, "Debug Information");
-			}
-
-			auto hMenu = ::GetSystemMenu(hWnd, false);
-			DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
-
-			freopen("CONOUT$", "w", stdout);
-			std::cout << c_strDebugHeaderTemplate << std::endl;
-		}
-
-		void Release() {
-			FreeConsole();
-		}
-
-		void AppendString(const std::string& strInfo) {
-			if(m_vcDebugBuffer.size() >= m_nMaxBufferSize) {
-				m_vcDebugBuffer.pop();
-			}
-
-			m_vcDebugBuffer.push(strInfo);
-			ShowInfo();
-		}
-
-	private:
-		void ShowInfo() {
-			std::cout << c_strDebugHeaderTemplate << std::endl;
-		}
-
-	private:
-		DebugConsole() = default;
-		~DebugConsole() = default;
-
-	};
-#endif
-
 }
+
+#include "Common/Util/DebugConsole.h"
+#include "Common/Util/DebugCounter.h"
 
 #endif

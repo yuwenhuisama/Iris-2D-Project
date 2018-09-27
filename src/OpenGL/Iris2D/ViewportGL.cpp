@@ -245,6 +245,9 @@ namespace Iris2D {
 
 		glBindVertexArray(m_nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 		glBindVertexArray(0);
 
 		return IRR_Success;

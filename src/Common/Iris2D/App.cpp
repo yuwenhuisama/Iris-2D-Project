@@ -16,7 +16,7 @@ namespace Iris2D {
 #ifdef _WIN32
 	ResultCode Application::Initialize(HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 		if (!CommonInitialize()) {
-			return IRR_UnknowError;
+			return IRR_UnknownError;
 		}
 		return m_pProxied->Initialize(hInstance, nWidth, nHeight, pfGameFunc, wszTitle);
 	}
@@ -28,7 +28,7 @@ namespace Iris2D {
 
 	ResultCode Application::Initialize(const AppStartupInfo* pInfo) {
 		if (!CommonInitialize()) {
-			return IRR_UnknowError;
+			return IRR_UnknownError;
 		}
 		return m_pProxied->Initialize(pInfo);
 	}

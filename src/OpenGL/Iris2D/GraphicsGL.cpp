@@ -13,6 +13,7 @@
 #include "Common/Common.h"
 #include "Common/Util/Util.h"
 #include "OpenGL/Iris2D/Shaders/BackTransitionShaderGL.h"
+#include "Common/Util/DebugUtil.h"
 
 namespace Iris2D {
 	GraphicsGL* GraphicsGL::Instance() {
@@ -45,14 +46,16 @@ namespace Iris2D {
 		++nFrameCount;
 
 		const auto curTime = ::timeGetTime();
-		if (curTime - nLastTime > 1000) // 取固定时间间隔为1秒
-		{
+		if (curTime - nLastTime > 1000) {
+			m_fMsPerUpdate = 1000.0f / nFps;
+			m_fFrameRate = nFps;
 			nFps = nFrameCount;
 			nFrameCount = 0;
 			nLastTime = curTime;
 		}
 
 #ifdef _DEBUG
+
 		static unsigned int  nCount = 0;
 
 		if (nCount < 60) {
@@ -66,8 +69,13 @@ namespace Iris2D {
 			format % m_nFrameCount;
 
 			glfwSetWindowTitle(pWindow, format.str().c_str());
+
+			DebugConsole::Instance()->ShowInfo();
+
 			nCount = 0;
 		}
+
+		DebugCounter::Instance()->ResetFrameData();
 
 #endif // _DEBUG
 
@@ -95,6 +103,7 @@ namespace Iris2D {
 #endif // _WIN32
 			if (m_dCurrentTime >= m_dLastTime) {
 				m_fTimeDelta = (m_dCurrentTime - m_dLastTime + m_fMsPerUpdate);
+				m_fFrameRate = 1000.0 / m_fTimeDelta;
 				m_dLastTime = m_dCurrentTime + m_fMsPerUpdate;
 				m_bUpdateLockFlag = true;
 			}
@@ -119,10 +128,15 @@ namespace Iris2D {
 			format % m_nFrameCount;
 
 			glfwSetWindowTitle(pWindow, format.str().c_str());
+
+			DebugConsole::Instance()->ShowInfo();
+
 			nCount = 0;
 		}
 
 #endif // _DEBUG
+
+		DebugCounter::Instance()->ResetFrameData();
 
 		++m_nFrameCount;
 
@@ -337,7 +351,6 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::SetFrameRate(float fFrameRate) {
-		m_fFrameRate = fFrameRate;
 		m_fMsPerUpdate = 1000.0f / fFrameRate;
 	}
 
@@ -400,6 +413,9 @@ namespace Iris2D {
 
 			glBindVertexArray(m_nVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+			DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 			glBindVertexArray(0);
 		}
 		else {
@@ -448,6 +464,9 @@ namespace Iris2D {
 
 			glBindVertexArray(m_nVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+#ifdef _DEBUG
+			DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
+#endif
 			glBindVertexArray(0);
 		}
 
