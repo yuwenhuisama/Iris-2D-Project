@@ -59,6 +59,9 @@ namespace Iris2D {
 		void SetTone(Tone*& pTone) override;
 		Tone* GetTone() const override;
 
+		Bitmap* GetBitmap() const override;
+		ResultCode SetBitmap(Bitmap*& pBitmap) override;
+
 		Viewport* GetViewport() override;
 
 		virtual ResultCode Render() = 0;

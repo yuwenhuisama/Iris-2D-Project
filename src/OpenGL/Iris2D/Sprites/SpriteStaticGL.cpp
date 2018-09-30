@@ -32,11 +32,8 @@
 namespace Iris2D {
 	SpriteStaticGL * SpriteStaticGL::Create(Viewport * pViewport) {
 		const auto pSprite = new SpriteStaticGL();
-
 		pSprite->m_pViewport = pViewport == nullptr ? ViewportGL::GetGlobalViewport() : pViewport;
-
 		GetProxied<ViewportGL*>(pSprite->m_pViewport)->AddSprite(static_cast<SpriteBaseGL*>(pSprite));
-
 		return pSprite;
 	}
 
@@ -53,26 +50,6 @@ namespace Iris2D {
 		auto pProxy = dynamic_cast<SpriteStatic*>(pSprite->GetProxy());
 		SpriteStatic::ForceRelease(pProxy);
 		delete pSprite;
-	}
-
-	ResultCode SpriteStaticGL::SetBitmap(Bitmap *& pBitmap) {
-		if (pBitmap == m_pBitmap) {
-			return IRR_Success;
-		}
-
-		Bitmap::Release(m_pBitmap);
-
-		if (!pBitmap) {
-			m_pBitmap = nullptr;
-			return IRR_Success;
-		}
-
-		RefferAssign<BitmapGL*>(m_pBitmap, pBitmap);
-		return IRR_Success;
-	}
-
-	Bitmap * SpriteStaticGL::GetBitmap() const {
-		return m_pBitmap;
 	}
 
 	void SpriteStaticGL::SetOX(float fOX) {
@@ -153,7 +130,6 @@ namespace Iris2D {
 	}
 
 	ResultCode SpriteStaticGL::Render() {
-
 		if (NeedDiscard()) {
 			return IRR_Success;
 		}
@@ -162,10 +138,6 @@ namespace Iris2D {
 
 		pQueue->Push({ TargetType::SpriteStatic, this });
 		
-		//glBindVertexArray(m_nVAO);
-		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-		//glBindVertexArray(0);
-
 		return IRR_Success;
 	}
 
@@ -183,8 +155,6 @@ namespace Iris2D {
 
 	SpriteInstanceAttributeGL SpriteStaticGL::GetInstanceAttribute() {
 		m_dcDirtyChecker.DoIfDirty(m_hTranslate, [&]() -> void {
-			//m_siaBuffer.m_mt4Translate = glm::translate(glm::mat4{ 1.0f, }, { m_v3Position.x, m_v3Position.y, 0.0f });
-			//m_siaBuffer.m_v2Translate = glm::vec2{ m_v3Position.x, m_v3Position.y };
 			m_siaBuffer.m_v4TranslateAndZoom.x = m_v3Position.x;
 			m_siaBuffer.m_v4TranslateAndZoom.y = m_v3Position.y;
 		});
@@ -194,8 +164,6 @@ namespace Iris2D {
 		});
 
 		m_dcDirtyChecker.DoIfDirty(m_hZoom, [&]() -> void {
-			//m_siaBuffer.m_mtZoom = glm::scale(glm::mat4{ 1.0f }, glm::vec3{ m_v2Zoom.x, m_v2Zoom.y, 1.0f });
-			//m_siaBuffer.m_v2Zoom = glm::vec2{ m_v2Zoom.x, m_v2Zoom };
 			m_siaBuffer.m_v4TranslateAndZoom.z = m_v2Zoom.x;
 			m_siaBuffer.m_v4TranslateAndZoom.w = m_v2Zoom.y;
 		});

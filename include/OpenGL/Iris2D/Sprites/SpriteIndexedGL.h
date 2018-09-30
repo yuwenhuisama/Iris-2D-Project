@@ -2,24 +2,33 @@
 #define _H_SPRITE_INDEXED_GL
 #include "SpriteBaseGL.h"
 #include "Common/Iris2D/Sprites/ISpriteIndexed.h"
+#include "OpenGL/OpenGLUtil/SpriteVertexGL.h"
+#include "OpenGL/OpenGLUtil/SpriteShaderBuffersGL.h"
 
 namespace Iris2D {
 
 	class Bitmap;
 	class Viewport;
 	class SpriteIndexedGL : public ISpriteIndexed, public SpriteBaseGL {
+		REF_FRIEND_DECLARE
 	private:
 		Bitmap* m_pBitmap = nullptr;
 		unsigned int m_nCurrentIndex = 0;
-		const std::vector<Rect*> m_vcAreas{};
+		std::vector<Rect*> m_vcAreas{};
+
+		Rect* m_pSrcRect = nullptr;
+
+		SpriteIndexedVertexGL m_sivBuffer{};
+
+		unsigned int m_nRow = 0;
+		unsigned int m_nColumn = 0;
 
 	public:
-		static ResultCode Create(Viewport* pViewport = nullptr);
+		static SpriteIndexedGL* Create(const std::vector<Rect*>& vcAreas, Viewport* pViewport = nullptr);
+		static SpriteIndexedGL* Create(unsigned nRow, unsigned nColumn, Viewport* pViewport = nullptr);
 		static void Release(SpriteIndexedGL*& pSprite);
 
 	public:
-		ResultCode SetBitmap(Bitmap*& pBitmap) override;
-		Bitmap* GetBitmap() const override;
 		void SetOX(float fOX) override;
 		float GetOX() const override;
 		void SetOY(float fOY) override;
@@ -27,12 +36,15 @@ namespace Iris2D {
 		ResultCode Update() override;
 		ResultCode SetEffect(Effect::EffectBase* pEffect) override;
 		ResultCode Render() override;
+		bool NeedDiscard() const;
+
+		void SetSrcRect(Rect *& pSrcRect);
+		Rect * GetSrcRect() const;
 
 		void SetIndex(unsigned nIndex) override;
 		unsigned GetIndex() const override;
-		void SetIndexedAreas(const std::vector<Rect*>& vcAreas) override;
-		void SetIndexedAreas(std::vector<Rect*>&& vcAreas) override;
-		void SetSplitIndexAreas(unsigned nRow, unsigned nColumn) override;
+
+		SpriteIndexedVertexGL GetInstanceAttribute();
 
 	public:
 		void SetX(float fX) override {
@@ -120,6 +132,11 @@ namespace Iris2D {
 			return SpriteBaseGL::GetViewport();
 		}
 
+		ResultCode SetBitmap(Bitmap*& pBitmap) override;
+
+		Bitmap* GetBitmap() const override {
+			return SpriteBaseGL::GetBitmap();
+		}
 	};
 
 }

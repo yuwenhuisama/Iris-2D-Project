@@ -29,7 +29,6 @@ namespace Iris2D {
 
 	private:
 		Rect* m_pSrcRect = nullptr;
-
 		SpriteInstanceAttributeGL m_siaBuffer;
 
 	public:
@@ -39,10 +38,6 @@ namespace Iris2D {
 		static void ForceRelease(SpriteStaticGL* pSprite);
 
 	public:
-		// Í¨¹ý ISprite ¼Ì³Ð
-		ResultCode SetBitmap(Bitmap *& pBitmap) override;
-		Bitmap * GetBitmap() const override;
-
 		void SetOX(float fOX) override;
 		float GetOX() const override;
 
@@ -154,6 +149,14 @@ namespace Iris2D {
 
 		Viewport* GetViewport() override {
 			return SpriteBaseGL::GetViewport();
+		}
+
+		ResultCode SetBitmap(Bitmap*& pBitmap) override {
+			return SpriteBaseGL::SetBitmap(pBitmap);
+		}
+
+		Bitmap* GetBitmap() const override {
+			return SpriteBaseGL::GetBitmap();
 		}
 
 	};

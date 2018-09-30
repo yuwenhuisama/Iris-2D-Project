@@ -19,6 +19,10 @@ namespace Iris2D {
 		glm::ivec4 m_v4Tone{ 0, };
 	};
 
+	struct SpriteIndexedVertexGL {
+		SpriteVertexGL m_svBase {};
+		SpriteInstanceAttributeGL m_svAttribute {};
+	};
 
 }
 

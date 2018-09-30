@@ -9,9 +9,6 @@ namespace Iris2D {
 	public:
 		virtual void SetIndex(unsigned int nIndex) = 0;
 		virtual unsigned int GetIndex() const = 0;
-		virtual void SetIndexedAreas(const std::vector<Rect*>& vcAreas) = 0;
-		virtual void SetIndexedAreas(std::vector<Rect*>&& vcAreas) = 0;
-		virtual void SetSplitIndexAreas(unsigned int nRow, unsigned int nColumn) = 0;
 	};
 }
 

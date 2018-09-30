@@ -14,10 +14,6 @@ namespace Iris2D {
 		glm::vec4 m_v4Rect { 0.0f, };
 		glm::ivec4 m_v4Tone { 0, };
 	};
-
-	struct SpriteIndexedVertexShaderBufferGL {
-		
-	};
 }
 
 #endif // !_H_SPRITE_SHADER_BUFFERS_GL_

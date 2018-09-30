@@ -2,6 +2,9 @@
 #include "OpenGL/Iris2D/Sprites/SpriteBaseGL.h"
 #include "OpenGL/Iris2D/FontGL.h"
 #include "Common/Util/Util.h"
+#include "OpenGL/Iris2D/BitmapGL.h"
+
+#include "Common/Iris2D/Bitmap.h"
 
 namespace Iris2D {
 
@@ -106,6 +109,26 @@ namespace Iris2D {
 
 	Tone * SpriteBaseGL::GetTone() const {
 		return m_pTone;
+	}
+
+	Bitmap* SpriteBaseGL::GetBitmap() const {
+		return m_pBitmap;
+	}
+
+	ResultCode SpriteBaseGL::SetBitmap(Bitmap*& pBitmap) {
+		if (pBitmap == m_pBitmap) {
+			return IRR_Success;
+		}
+
+		Bitmap::Release(m_pBitmap);
+
+		if (!pBitmap) {
+			m_pBitmap = nullptr;
+			return IRR_Success;
+		}
+
+		RefferAssign<BitmapGL*>(m_pBitmap, pBitmap);
+		return IRR_Success;
 	}
 
 	Viewport* SpriteBaseGL::GetViewport() {
