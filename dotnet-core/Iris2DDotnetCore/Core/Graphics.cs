@@ -6,8 +6,13 @@ namespace Iris2D.Core
     public class Graphics
     {
         private readonly IntPtr m_handle;
+        public IntPtr Handle
+        {
+            get => m_handle;
+            set => throw new NotImplementedException();
+        }
 
-        private Graphics(IntPtr handle)
+        public Graphics(IntPtr handle)
         {
             m_handle = handle;
         }
