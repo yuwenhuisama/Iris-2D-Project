@@ -27,14 +27,22 @@ namespace Iris2D {
 		std::deque<RenderCommand> m_dqRenderCommandQueue {};
 		BufferManagerGL<SpriteInstanceAttributeGL>* m_pStaticSpriteInstanceBufferManager = nullptr;
 		BufferManagerGL<SpriteVertexGL>* m_pStaticSpriteVertexBufferManager = nullptr;
+		
+		BufferManagerGL<SpriteIndexedVertexGL>* m_pIndexedSpriteVertexBufferManager = nullptr;
+		BufferManagerGL<SpriteIndexedInstanceAttributeGL>* m_pIndexedSpriteVertexInstanceBufferManager = nullptr;
 
-		std::vector<GLuint> m_vcVAOs {};
-		unsigned int m_nCurrentVAOIndex = 0;
+		std::vector<GLuint> m_vcStaticVAOs {};
+		std::vector<GLuint> m_vcIndexedVAOs{};
+
+		unsigned int m_nCurrentStaticVAOIndex = 0;
+		unsigned int m_nCurrentIndexVAOIndex = 0;
 
 		GLuint m_nEBO = 0;
 
 	public:
 		static SpriteRenderQueueGL* Instance();
+		void InitializeSpriteStaticBuffers();
+		void InitializeSpriteIndexedBuffers();
 		bool Initialize();
 		bool Release();
 
@@ -44,6 +52,7 @@ namespace Iris2D {
 	private:
 		ResultCode Render();
 		ResultCode RenderSpriteStatics();
+		ResultCode RenderSpriteIndices();
 
 	private:
 		SpriteRenderQueueGL() = default;

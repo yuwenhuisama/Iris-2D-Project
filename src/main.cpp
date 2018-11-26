@@ -12,9 +12,9 @@ bool GameCallBack() {
 	Viewport* pViewport = nullptr;
 
 	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
-	auto pSprite = SpriteStatic::Create(pViewport);
-	pSprite->SetBitmap(pBitmap);
-	pSprite->SetZ(4.0f);
+	//auto pSprite = SpriteStatic::Create(pViewport);
+	//pSprite->SetBitmap(pBitmap);
+	//pSprite->SetZ(4.0f);
 
 	auto pBitmap2 = Bitmap::Create(L"image\\leimu.jpg");
 
@@ -43,10 +43,10 @@ bool GameCallBack() {
 	//pBitmap2->HueChange(200);
 	//pBitmap2->SaveToFile(L"temp/123123.png");
 
-	auto pSprite2 = SpriteStatic::Create(pViewport);
-	pSprite2->SetX(200.0f);
-	pSprite2->SetBitmap(pBitmap2);
-	pSprite2->SetZ(5.0f);
+	//auto pSprite2 = SpriteStatic::Create(pViewport);
+	//pSprite2->SetX(200.0f);
+	//pSprite2->SetBitmap(pBitmap2);
+	//pSprite2->SetZ(5.0f);
 
 	//auto pTmpColor = pBitmap->GetPixel(0, 0);
 	//pSprite2->SetOpacity(0.5f);
@@ -54,72 +54,72 @@ bool GameCallBack() {
 	auto pColor = Color::Create(255, 255, 255, 255);
 	auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
 
-	pSprite->SetEffect(pEffect);
+	//pSprite->SetEffect(pEffect);
 
-	auto pBitmap3 = Bitmap::Create(L"image/face.jpg");
-	std::vector<SpriteStatic*> vcSprites = {};
-	for (size_t i = 0; i < 50; ++i) {
-		const auto pTmpSprite = SpriteStatic::Create();
+	auto pBitmap3 = Bitmap::Create(L"image/awesomeface.png");
+	//std::vector<SpriteIndexed*> vcSprites = {};
+	//for (size_t i = 0; i < 5; ++i) {
+		auto pTmpSprite = SpriteIndexed::Create(3, 3);
 		pTmpSprite->SetBitmap(pBitmap3);
-		auto g = RandInRange(0.1f, 1.0f);
-		pTmpSprite->SetX(RandInRange(0.0f, 1.0f) * 1600);
-		pTmpSprite->SetY(RandInRange(0.0f, 1.0f) * 900);
-		const auto fZoomRate = RandInRange(0.5f, 4.0f);
-		pTmpSprite->SetZoomX(fZoomRate);
-		pTmpSprite->SetZoomY(fZoomRate);
-		pTmpSprite->SetAngle(RandInRange(0.0f, 1.0f) * 360);
-		vcSprites.push_back(pTmpSprite);
-	}
+		//auto g = RandInRange(0.1f, 1.0f);
+		//pTmpSprite->SetX(RandInRange(0.0f, 1.0f) * 1600);
+		//pTmpSprite->SetY(RandInRange(0.0f, 1.0f) * 900);
+		//const auto fZoomRate = RandInRange(0.5f, 4.0f);
+		//pTmpSprite->SetZoomX(fZoomRate);
+		//pTmpSprite->SetZoomY(fZoomRate);
+		//pTmpSprite->SetAngle(RandInRange(0.0f, 1.0f) * 360);
+		//vcSprites.push_back(pTmpSprite);
+	//}
 
 	auto fAngle = 0.0f;
 	auto fBrightness = 0.0f;
 	auto bUp = true;
 	auto nCounter = 0;
 
-	auto pAnimation = Animation::AnimationPositionProperty::Create(pSprite2);
-	pAnimation->SetStartKeyFrame({ 0, 0 });
-	pAnimation->SetEndKeyFrame({ 0, 0 });
-	pAnimation->SetTotalTime(400);
-	pAnimation->SetKeyFrameList({
-		{ 0.25f,{ 0, 400 } },
-		{ 0.5f,{ 400, 400 } },
-		{ 0.75f,{ 400, 0 } }
-		});
+	//auto pAnimation = Animation::AnimationPositionProperty::Create(pSprite2);
+	//pAnimation->SetStartKeyFrame({ 0, 0 });
+	//pAnimation->SetEndKeyFrame({ 0, 0 });
+	//pAnimation->SetTotalTime(400);
+	//pAnimation->SetKeyFrameList({
+	//	{ 0.25f,{ 0, 400 } },
+	//	{ 0.5f,{ 400, 400 } },
+	//	{ 0.75f,{ 400, 0 } }
+	//	});
 	//pAnimation->SetLoop(true);
 	//pAnimation->Start();
 
-	auto pAnimation2 = Animation::AnimationAngleProperty::Create(pSprite2);
-	pAnimation2->SetStartKeyFrame(0.0f);
-	pAnimation2->SetEndKeyFrame(360.0f);
-	pAnimation2->SetTotalTime(300);
-	//pAnimation2->SetLoop(true);
-	//pAnimation2->Start();
+	//auto pAnimation2 = Animation::AnimationAngleProperty::Create(pSprite2);
+	//pAnimation2->SetStartKeyFrame(0.0f);
+	//pAnimation2->SetEndKeyFrame(360.0f);
+	//pAnimation2->SetTotalTime(300);
+	////pAnimation2->SetLoop(true);
+	////pAnimation2->Start();
 
-	auto pAnimation3 = Animation::AnimationZoomProperty::Create(pSprite2);
-	pAnimation3->SetStartKeyFrame({ 0.5, 0.5 });
-	pAnimation3->SetEndKeyFrame({ 1.0, 1.0 });
-	pAnimation3->SetTotalTime(400);
-	pAnimation3->SetKeyFrameList({
-		{ 0.25f,{ 0.75, 0.5 } },
-		{ 0.5f,{ 0.75, 0.75 } },
-		{ 0.75f,{ 1.0, 0.75 } }
-		});
-	//pAnimation3->SetLoop(true);
-	pAnimation3->AddCallBack(0.2f, [](float fProgress) -> void {
-		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
-	});
+	//auto pAnimation3 = Animation::AnimationZoomProperty::Create(pSprite2);
+	//pAnimation3->SetStartKeyFrame({ 0.5, 0.5 });
+	//pAnimation3->SetEndKeyFrame({ 1.0, 1.0 });
+	//pAnimation3->SetTotalTime(400);
+	//pAnimation3->SetKeyFrameList({
+	//	{ 0.25f,{ 0.75, 0.5 } },
+	//	{ 0.5f,{ 0.75, 0.75 } },
+	//	{ 0.75f,{ 1.0, 0.75 } }
+	//	});
+	////pAnimation3->SetLoop(true);
+	//pAnimation3->AddCallBack(0.2f, [](float fProgress) -> void {
+	//	PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
+	//});
 
-	pAnimation3->AddCallBack(0.8f, [](float fProgress) -> void {
-		PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
-	});
+	//pAnimation3->AddCallBack(0.8f, [](float fProgress) -> void {
+	//	PrintFormatDebugMessageW(L"Call back at progress %1%", fProgress);
+	//});
 
-	auto pAnimationGroup = Animation::AnimationSerialGroup::Create();
-	pAnimationGroup->AddAnimation(pAnimation);
-	pAnimationGroup->AddAnimation(pAnimation2);
-	pAnimationGroup->AddAnimation(pAnimation3);
-	pAnimationGroup->SetLoop(true);
+	//auto pAnimationGroup = Animation::AnimationSerialGroup::Create();
+	//pAnimationGroup->AddAnimation(pAnimation);
+	//pAnimationGroup->AddAnimation(pAnimation2);
+	//pAnimationGroup->AddAnimation(pAnimation3);
+	//pAnimationGroup->SetLoop(true);
 
-	pAnimationGroup->Start();
+	//pAnimationGroup->Start();
 
 	//pAnimation3->Start();
 	//pGraphics->FadeIn(50);
@@ -151,9 +151,9 @@ bool GameCallBack() {
 
 		//pAnimation3->Update();
 
-		pAnimationGroup->Update();
+		//pAnimationGroup->Update();
 
-		pSprite->Update();
+		//pSprite->Update();
 		//pGraphics->SetBrightness(fBrightness);
 		pGraphics->Update();
 
@@ -176,8 +176,8 @@ bool GameCallBack() {
 		//++nCounter;
 	}
 
-	SpriteStatic::Release(pSprite);
-	SpriteStatic::Release(pSprite2);
+	//SpriteStatic::Release(pSprite);
+	//SpriteStatic::Release(pSprite2);
 	//Rect::Release(pRect);
 	Bitmap::Release(pBitmap);
 	Bitmap::Release(pBitmap2);
@@ -185,15 +185,17 @@ bool GameCallBack() {
 	Color::Release(pColor);
 	Viewport::Release(pViewport);
 
-	Animation::AnimationPositionProperty::Release(pAnimation);
-	Animation::AnimationAngleProperty::Release(pAnimation2);
-	Animation::AnimationZoomProperty::Release(pAnimation3);
+	//Animation::AnimationPositionProperty::Release(pAnimation);
+	//Animation::AnimationAngleProperty::Release(pAnimation2);
+	//Animation::AnimationZoomProperty::Release(pAnimation3);
 
-	Animation::AnimationSerialGroup::Release(pAnimationGroup);
+	//Animation::AnimationSerialGroup::Release(pAnimationGroup);
 
-	for (auto& pTmpSprite : vcSprites) {
-		SpriteStatic::Release(pSprite);
-	}
+	//for (auto& pTmpSprite : vcSprites) {
+	//	SpriteStatic::Release(pSprite);
+	//}
+
+	SpriteIndexed::Release(pTmpSprite);
 
 	return true;
 }

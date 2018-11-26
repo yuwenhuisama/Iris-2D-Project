@@ -2,6 +2,7 @@
 #include "Common/Iris2D/Bitmap.h"
 #include "Common/Iris2D/Rect.h"
 #include "Common/Iris2D/Color.h"
+#include "Common/Iris2D/Viewport.h"
 
 #include "OpenGL/Iris2D/BitmapGL.h"
 #include "OpenGL/Iris2D/RectGL.h"
@@ -21,6 +22,10 @@ namespace Iris2D {
 		GetProxied<ViewportGL*>(pSprite->m_pViewport)->AddSprite(static_cast<SpriteBaseGL*>(pSprite));
 
 		pSprite->m_vcAreas = vcAreas;
+
+		for (auto& pRect : pSprite->m_vcAreas) {
+			GetProxied<RectGL*>(pRect)->IncreamRefCount();
+		}
 
 		return pSprite;
 	}
@@ -150,7 +155,10 @@ namespace Iris2D {
 		return m_nCurrentIndex;
 	}
 
-	SpriteIndexedVertexGL SpriteIndexedGL::GetInstanceAttribute() {
+	SpriteIndexedInstanceAttributeGL SpriteIndexedGL::GetInstanceAttribute() {
+		m_sivBuffer.m_v4TextureA = { 1.0f, 1.0f, 1.0f, 0.0f };
+		m_sivBuffer.m_v4TextureB = { 0.0f, 0.0f, 0.0f, 1.0f };
+
 		m_dcDirtyChecker.DoIfDirty(m_hTranslate, [&]() -> void {
 			m_sivBuffer.m_svAttribute.m_v4TranslateAndZoom.x = m_v3Position.x;
 			m_sivBuffer.m_svAttribute.m_v4TranslateAndZoom.y = m_v3Position.y;
@@ -209,8 +217,22 @@ namespace Iris2D {
 		return m_sivBuffer;
 	}
 
+	bool SpriteIndexedGL::CheckMergeableWith(const SpriteIndexedGL* pSpriteTarget) {
+		return (
+			(m_pBitmap == pSpriteTarget->m_pBitmap || GetProxied<BitmapGL*>(m_pBitmap)->GetTexture() == GetProxied<BitmapGL*>(pSpriteTarget->GetBitmap())->GetTexture())
+			&& (!pSpriteTarget->m_pEffect && !m_pEffect)
+			);
+	}
+
 	ResultCode SpriteIndexedGL::SetBitmap(Bitmap*& pBitmap) {
-		if (m_vcAreas.empty() && (m_nColumn != 0 && m_nRow != 0)) {
+		if (m_nColumn != 0 && m_nRow != 0) {
+
+			if (!m_vcAreas.empty()) {
+				for (auto& pRect : m_vcAreas) {
+					Rect::Release(pRect);
+				}
+				m_vcAreas.clear();
+			}
 
 			const auto fPerWidth = pBitmap->GetWidth() / static_cast<float>(m_nColumn);
 			const auto fPerHeight = pBitmap->GetHeight() / static_cast<float>(m_nRow);

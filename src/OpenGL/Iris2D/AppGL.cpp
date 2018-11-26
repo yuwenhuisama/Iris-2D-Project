@@ -7,6 +7,7 @@
 
 #include "OpenGL/Iris2D/Shaders/ViewportShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/SpriteShaderGL.h"
+#include "OpenGL/Iris2D/Shaders/SpriteIndexedShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackShaderGL.h"
 #include "OpenGL/Iris2D/Shaders/BackTransitionShaderGL.h"
 
@@ -78,7 +79,12 @@ namespace Iris2D {
 		}
 		
 		if (!SpriteShaderGL::Instance()->Initialize()) {
-			PrintDebugMessageW(L"Error when initializing sprite shader.");
+			PrintDebugMessageW(L"Error when initializing sprite static shader.");
+			return IRR_ShaderInitializeFailed;
+		}
+
+		if (!SpriteIndexedShaderGL::Instance()->Initialize()) {
+			PrintDebugMessageW(L"Error when initializing sprite indexed shader.");
 			return IRR_ShaderInitializeFailed;
 		}
 

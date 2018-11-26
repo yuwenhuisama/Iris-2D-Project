@@ -12,13 +12,12 @@ namespace Iris2D {
 	class SpriteIndexedGL : public ISpriteIndexed, public SpriteBaseGL {
 		REF_FRIEND_DECLARE
 	private:
-		Bitmap* m_pBitmap = nullptr;
 		unsigned int m_nCurrentIndex = 0;
 		std::vector<Rect*> m_vcAreas{};
 
 		Rect* m_pSrcRect = nullptr;
 
-		SpriteIndexedVertexGL m_sivBuffer{};
+		SpriteIndexedInstanceAttributeGL m_sivBuffer{};
 
 		unsigned int m_nRow = 0;
 		unsigned int m_nColumn = 0;
@@ -44,7 +43,9 @@ namespace Iris2D {
 		void SetIndex(unsigned nIndex) override;
 		unsigned GetIndex() const override;
 
-		SpriteIndexedVertexGL GetInstanceAttribute();
+		SpriteIndexedInstanceAttributeGL GetInstanceAttribute();
+
+		bool CheckMergeableWith(const SpriteIndexedGL* pSpriteTarget);
 
 	public:
 		void SetX(float fX) override {

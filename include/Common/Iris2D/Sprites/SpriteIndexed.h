@@ -9,10 +9,13 @@ namespace Iris2D {
 	class SpriteIndexed : public Proxy<ISpriteIndexed>, public ISpriteIndexed, public SpriteBase {
 
 	public:
+		static SpriteIndexed* Create(const std::vector<Rect*>& vcAreas, Viewport* pViewport = nullptr);
+		static SpriteIndexed* Create(unsigned nRow, unsigned nColumn, Viewport* pViewport = nullptr);
+		static void Release(SpriteIndexed*& pSprite);
+
+	public:
 		void SetIndex(unsigned nIndex) override;
 		unsigned GetIndex() const override;
-		void SetIndexedAreas(const std::vector<Rect*>& vcAreas) override;
-		void SetSplitIndexAreas(unsigned nRow, unsigned nColumn) override;
 
 		ISprite* GetAbstractProxied() const override;
 

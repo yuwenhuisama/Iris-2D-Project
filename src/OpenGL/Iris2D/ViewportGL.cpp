@@ -189,6 +189,8 @@ namespace Iris2D {
 
 		m_pTexture->RestoreFrameBuffer();
 
+		//m_pTexture->SaveToFile(L"temp.png");
+
 		return eResult;
 	}
 

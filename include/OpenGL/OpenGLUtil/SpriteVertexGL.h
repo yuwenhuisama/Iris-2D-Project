@@ -6,7 +6,7 @@
 namespace Iris2D {
 	struct SpriteVertexGL {
 		glm::vec4 m_v4Position {0.f,};
-		glm::vec2 m_v2Texture {0.f,};
+		glm::vec2 m_v2Texture;
 	};
 
 	struct SpriteInstanceAttributeGL {
@@ -20,7 +20,12 @@ namespace Iris2D {
 	};
 
 	struct SpriteIndexedVertexGL {
-		SpriteVertexGL m_svBase {};
+		glm::vec4 m_v4Position{ 0.f, };
+	};
+
+	struct SpriteIndexedInstanceAttributeGL {
+		glm::vec4 m_v4TextureA;
+		glm::vec4 m_v4TextureB;
 		SpriteInstanceAttributeGL m_svAttribute {};
 	};
 
