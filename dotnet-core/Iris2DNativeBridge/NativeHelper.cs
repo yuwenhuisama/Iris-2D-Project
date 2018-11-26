@@ -23,5 +23,4 @@ namespace Iris2D.NativeBridge
                 throw new Iris2DNativeException(code);
             }
         }
-    }
 }
