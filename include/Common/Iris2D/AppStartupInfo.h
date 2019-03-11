@@ -2,6 +2,7 @@
 #define _H_APP_STARTUP_INFO_
 #include <string>
 #include <Windows.h>
+#include <functional>
 
 namespace Iris2D {
 
@@ -13,7 +14,8 @@ namespace Iris2D {
 	* \~chinese
 	* Iris 2D 回调函数的类型。
 	*/
-	typedef bool(*GameFunc)();
+	//typedef bool(*GameFunc)();
+	typedef std::function<bool(void)> GameFunc;
 
 	/**
 	* \~english
@@ -56,11 +58,11 @@ namespace Iris2D {
 		/**< \~chinese Iris 2D 窗口的初始化标题。 */
 
 #ifdef _WIN32
-		AppStartupInfo(HINSTANCE hInstance, int nShowCmd, unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, bool(*pfFunc)(), const std::wstring & wstrTitle) : m_nX(nX), m_nY(nY),
+		AppStartupInfo(HINSTANCE hInstance, int nShowCmd, unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, GameFunc pfFunc, const std::wstring& wstrTitle) : m_hInstance(hInstance), nShowCmd(nShowCmd),
+			m_nX(nX),
+			m_nY(nY),
 			m_nWidth(nWidth),
-			m_nHeight(nHeight),
-			m_pfFunc(pfFunc),
-			m_wstrTitle(wstrTitle), m_hInstance(hInstance), nShowCmd(nShowCmd) {}
+			m_nHeight(nHeight), m_pfFunc(pfFunc), m_wstrTitle(wstrTitle) {}
 #else
 		AppStartupInfo(unsigned int nX, unsigned int nY, unsigned int nWidth,
 			unsigned int nHeight, bool(*pfFunc)(),

@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-	typedef BOOL(*App_GameFunc)();
+	typedef BOOL(*App_GameFunc)(VOID* pUserData);
 
 #pragma pack(push, 8)  
 	struct App_AppStartupInfo {

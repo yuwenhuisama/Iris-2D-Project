@@ -4,13 +4,15 @@
 #include <Windows.h>
 #endif
 #include <string>
+#include <functional>
 
 #include "Common/Util/Result.h"
 
 namespace Iris2D {
 
 	struct AppStartupInfo;
-	typedef bool (*GameFunc)();
+	//typedef bool (*GameFunc)();
+	typedef std::function<bool(void)> GameFunc;
 
 	class IApplication {
 	public:
