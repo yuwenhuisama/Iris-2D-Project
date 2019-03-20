@@ -19,7 +19,11 @@ void RunTest(const std::string& strTestName) {
 	if (g_umapTestMap.find(strTestName) != g_umapTestMap.end()) {
 		auto pTestUnit = g_umapTestMap.at(strTestName);
 
+#ifdef _WIN32
+		pTestUnit->Run(hInstance, prevInstance, cmdLine, showCmd);
+#else
 		pTestUnit->Run();
+#endif
 	}
 }
 
