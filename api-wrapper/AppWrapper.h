@@ -44,7 +44,7 @@ extern "C" {
 
 	EXPORT_API APP_HANDLE App_GetInstance();
 
-#if PLATFORM_WINDOWS
+#ifdef PLATFORM_WINDOWS
 	EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
 #else
 	EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
