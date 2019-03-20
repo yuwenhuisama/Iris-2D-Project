@@ -8,7 +8,7 @@ void TestUnit::Run(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 void TestUnit::Run() {
 #endif
 #ifdef _WIN32
-	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900,
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 800,
 		[this]() -> bool {
 			this->TestInitialize();
 			this->TestMain();
@@ -18,7 +18,7 @@ void TestUnit::Run() {
 		L"My Iris App"
 	};
 #else
-	AppStartupInfo iasiStartInfo = { 60u, 60u, 800, 600,
+	AppStartupInfo iasiStartInfo = { 60u, 60u, 1600, 1200,
 									 [this]() -> bool {
 										 this->TestInitialize();
 										 this->TestMain();

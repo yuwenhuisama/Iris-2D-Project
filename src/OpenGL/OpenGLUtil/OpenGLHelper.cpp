@@ -32,6 +32,9 @@ namespace Iris2D {
 
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+//		glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GL_FALSE);
+
 #endif
 		return true;
 	}
@@ -92,8 +95,12 @@ namespace Iris2D {
 
 		auto strConverted = converter.to_bytes(strTitle);
 		// create pWindow
+#ifdef __APPLE__
+		const auto pWindow = glfwCreateWindow(nWidth-1, nHeight, strConverted.c_str(), nullptr, nullptr);
+#else
 		const auto pWindow = glfwCreateWindow(nWidth, nHeight, strConverted.c_str(), nullptr, nullptr);
-		
+#endif
+
 #ifdef _WIN32
 		RECT rcArea = { 0, 0, nWidth, nHeight};
 		AdjustWindowRect(&rcArea, WS_OVERLAPPEDWINDOW, false);

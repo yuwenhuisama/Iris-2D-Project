@@ -129,8 +129,8 @@ public:
 		//pGraphics->FadeOut(50);
 
 		while (!pApp->IsQuited()) {
-			//fAngle += 2.0f;
-			//pSprite->SetAngle(fAngle);
+			fAngle += 2.0f;
+			pSprite->SetAngle(fAngle);
 			//pSprite2->SetAngle(-fAngle);
 
 			//if (bUp) {
