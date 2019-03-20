@@ -6,7 +6,13 @@
 #include "Types.h"
 
 #ifdef LIBRARY_EXPORTS
+
+#ifdef PLATFORM_WINDOWS
 #define EXPORT_API __declspec(dllexport)
+#else
+#define EXPORT_API __attribute__((visibility("default")))
+#endif
+
 #else
 #define EXPORT_API __declspec(dllimport)
 #endif

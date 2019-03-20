@@ -29,6 +29,8 @@ elseif (APPLE)
 #	set(GLFW_LIB /usr/local/lib/libglfw.dylib)
 	find_package(harfbuzz CONFIG REQUIRED)
 	link_libraries(${OPENGL} ${GLFW_LIB})
+
+	set (CMAKE_CXX_FLAGS "-fdeclspec")
 endif ()
 
 find_package(OpenGL REQUIRED)
