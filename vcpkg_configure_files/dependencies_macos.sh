@@ -4,3 +4,4 @@ vcpkg install glfw3:x64-osx
 vcpkg install glm:x64-osx
 vcpkg install freetype:x64-osx
 vcpkg install boost:x64-osx
+vcpkg install harfbuzz:x64-osx

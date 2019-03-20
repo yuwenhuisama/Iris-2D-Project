@@ -140,12 +140,26 @@ namespace Iris2D {
 		return IRR_Success;
 	}
 
+#ifndef _WIN32
+	#include <time.h>
+	unsigned int timeGetTime()
+	{
+		unsigned int uptime = 0;
+		struct timespec on;
+		if(clock_gettime(CLOCK_MONOTONIC, &on) == 0)
+			uptime = on.tv_sec*1000 + on.tv_nsec/1000000;
+		return uptime;
+	}
+#endif
+
 	bool ApplicationGL::Run() {
 		m_eAppState = AppState::Running;
 		OpenGLHelper::Instance()->ShowWindow();
-
+#ifdef _WIN32
 		GraphicsGL::Instance()->m_dLastTime = ::timeGetTime();
-
+#else
+		GraphicsGL::Instance()->m_dLastTime = timeGetTime();
+#endif
 		return m_pfGameFunc();
 	}
 

@@ -4,6 +4,8 @@
 #include "Common/Common.h"
 #include "Common/Iris2D/AppFactory.h"
 #include <cstdlib>
+#include <Common/Util/DebugConsole.h>
+
 
 #if defined(_WIN32) && defined(_DEBUG)
 namespace Iris2D {
@@ -87,4 +89,24 @@ namespace Iris2D {
 	}
 }
 
+#else
+Iris2D::DebugConsole *Iris2D::DebugConsole::Instance() {
+    return nullptr;
+}
+
+void Iris2D::DebugConsole::Create() {
+
+}
+
+void Iris2D::DebugConsole::Release() {
+
+}
+
+void Iris2D::DebugConsole::AppendString(const std::string &strInfo) {
+
+}
+
+void Iris2D::DebugConsole::ShowInfo() {
+
+}
 #endif

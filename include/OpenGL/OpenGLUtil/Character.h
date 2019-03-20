@@ -12,11 +12,11 @@ namespace Iris2D {
 	struct Character {
 
 		GLuint m_nTextureID;
-		int m_nWidth;
-		int m_nHeight;
+		unsigned int m_nWidth;
+		unsigned int m_nHeight;
 		int m_nLeft;
 		int m_nTop;
-		GLuint m_nAdvance;
+		signed long m_nAdvance;
 	};
 	struct CharacterWithcache {
 	

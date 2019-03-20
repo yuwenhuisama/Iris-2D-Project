@@ -16,7 +16,11 @@ namespace Iris2D {
 	class GraphicsGL : public IGraphics, public Proxied<Graphics> {
 	private:
 		//std::unordered_set<ViewportGL*> m_stViewports;
+#ifdef _WIN32
 		std::multimap<float, ViewportGL*, std::less<>> m_stViewports;
+#else
+		std::multimap<float, ViewportGL*, std::less<float >> m_stViewports;
+#endif
 
 		unsigned int m_nWidth = 0;
 		unsigned int m_nHeight = 0;
@@ -57,7 +61,7 @@ namespace Iris2D {
 		static GraphicsGL* Instance();
 
 	public:
-		// Í¨¹ý IGraphics ¼Ì³Ð
+		// Í¨ï¿½ï¿½ IGraphics ï¿½Ì³ï¿½
 		ResultCode Update() override;
 		ResultCode UpdateNoLock() override;
 		ResultCode Wait(unsigned int nDuration) override;

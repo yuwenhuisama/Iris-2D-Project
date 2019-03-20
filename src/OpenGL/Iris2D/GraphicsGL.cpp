@@ -21,7 +21,8 @@ namespace Iris2D {
 		return &graphics;
 	}
 
-	ResultCode GraphicsGL::Update() {
+    unsigned int timeGetTime();
+    ResultCode GraphicsGL::Update() {
 
 		if (!m_bVsync) {
 			m_bVsync = true;
@@ -37,7 +38,7 @@ namespace Iris2D {
 #ifdef _WIN32
 		static unsigned nLastTime = ::timeGetTime();
 #else
-		// TODO: time get on *nix
+		static unsigned nLastTime = timeGetTime();
 #endif // _WIN32
 
 		static unsigned int nFps = 0;
@@ -45,7 +46,11 @@ namespace Iris2D {
 
 		++nFrameCount;
 
+#ifdef _WIN32
 		const auto curTime = ::timeGetTime();
+#else
+		const auto curTime = timeGetTime();
+#endif
 		if (curTime - nLastTime > 1000) {
 			m_fMsPerUpdate = 1000.0f / nFps;
 			m_fFrameRate = nFps;
@@ -486,12 +491,11 @@ namespace Iris2D {
 	}
 
 	bool GraphicsGL::CreateVertexBackBuffer() {
-
 		BackBufferVertexGL arrBuffers[] = {
-			{ { static_cast<float>(m_nWidth),  static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 1.0f, 0.0f } },
+			{ { static_cast<float>(m_nWidth),  static_cast<float>(m_nHeight), 0.0f, 1.0f }, { 1.0f, 0.0f } },
 			{ { static_cast<float>(m_nWidth),  0.0f,						   0.0f, 1.0f }, { 1.0f, 1.0f } },
-			{ { 0.0f,						   0.0f,						   0.0f, 1.0f }, { 0.0f, 1.0f } },
-			{ { 0.0f,					       static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 0.0f, 0.0f } },
+			{ { 0.0f,						  0.0f,						   0.0f, 1.0f }, { 0.0f, 1.0f } },
+			{ { 0.0f,					      static_cast<float>(m_nHeight),  0.0f, 1.0f }, { 0.0f, 0.0f } },
 		};
 
 		if (!OpenGLHelper::Instance()->CreateVertextBuffer(arrBuffers, sizeof(arrBuffers), m_nVAO, m_nVBO, m_nEBO, []() -> void {

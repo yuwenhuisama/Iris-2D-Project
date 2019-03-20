@@ -46,7 +46,7 @@ namespace Iris2D {
 		float m_fY = 0.0f;
 		float m_fZ = 0.0f;
 
-		std::multimap<float, SpriteBaseGL*, std::less<>> m_stSprites;
+		std::multimap<float, SpriteBaseGL*, std::less<float>> m_stSprites;
 
 		unsigned int m_nVAO = 0;
 		unsigned int m_nVBO = 0;
@@ -60,7 +60,7 @@ namespace Iris2D {
 		DirtyChecker::DirtyCheckerHandler m_hPosHandler = 0;
 
 	public:
-		// Í¨¹ý IViewport ¼Ì³Ð
+		// Í¨ï¿½ï¿½ IViewport ï¿½Ì³ï¿½
 		void SetOX(float fOX) override;
 		float GetOX() const override;
 		void SetOY(float fOY) override;

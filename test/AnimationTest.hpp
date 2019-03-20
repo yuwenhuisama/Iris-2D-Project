@@ -41,7 +41,7 @@ public:
 		pfont->SetBold(false);
 		auto pRect2 = Rect::Create(100, 350, 360, 100);
 		pfont->SetSize(100);
-		pBitmap->DrawText(pRect2, L"bba·¨¿Ë", AlignType::Center);
+		pBitmap->DrawText(pRect2, L"test", AlignType::Center);
 
 		//pBitmap2->HueChange(200);
 		//pBitmap2->SaveToFile(L"temp/123123.png");

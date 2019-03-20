@@ -18,11 +18,20 @@ namespace Iris2D {
 
 		template<typename E>
 		struct KeyFrameElement {
+			KeyFrameElement(float fProgress, E dpData) : m_fProgress(fProgress), m_dpData(dpData) {}
+
+			KeyFrameElement() {}
+
 			float m_fProgress = 0.0;
 			E m_dpData{};
 		};
 
 		struct AnimationCallBackPair {
+			AnimationCallBackPair(float fProgress, const AnimationCallBack &fCallBack) : fProgress(fProgress),
+																						 fCallBack(fCallBack) {}
+
+			AnimationCallBackPair() {}
+
 			float fProgress = 0.0f;
 			AnimationCallBack fCallBack {};
 		};

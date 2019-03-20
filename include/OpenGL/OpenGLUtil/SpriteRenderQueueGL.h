@@ -18,6 +18,8 @@ namespace Iris2D {
 	struct RenderCommand {
 		TargetType m_eTargetType = TargetType::None;
 		SpriteBaseGL* m_pSprite = nullptr;
+
+		RenderCommand(const TargetType& eTargetType, SpriteBaseGL* pSprite): m_eTargetType(eTargetType), m_pSprite(pSprite) {}
 	};
 
 	class BitmapGL;

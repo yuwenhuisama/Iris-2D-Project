@@ -1,5 +1,4 @@
 #include "Common/Util/DirtyChecker.h"
-#include <winerror.h>
 
 namespace Iris2D {
 

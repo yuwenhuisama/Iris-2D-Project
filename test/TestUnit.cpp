@@ -7,6 +7,7 @@ void TestUnit::Run(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 void TestUnit::Run() {
 #endif
+#ifdef _WIN32
 	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900,
 		[this]() -> bool {
 			this->TestInitialize();
@@ -16,6 +17,17 @@ void TestUnit::Run() {
 		},
 		L"My Iris App"
 	};
+#else
+	AppStartupInfo iasiStartInfo = { 60u, 60u, 1600, 900,
+									 [this]() -> bool {
+										 this->TestInitialize();
+										 this->TestMain();
+										 this->TestTerminate();
+										 return true;
+									 },
+									 L"My Iris App"
+	};
+#endif
 
 	AppFactory::InitApiType(ApiType::OpenGL);
 	auto pApp = AppFactory::GetApplication();

@@ -1,7 +1,11 @@
 #ifndef _H_APP_STARTUP_INFO_
 #define _H_APP_STARTUP_INFO_
 #include <string>
+
+#ifdef _WIN32
 #include <Windows.h>
+#endif
+
 #include <functional>
 
 namespace Iris2D {
@@ -12,7 +16,7 @@ namespace Iris2D {
 	*/
 	/**
 	* \~chinese
-	* Iris 2D »Øµ÷º¯ÊýµÄÀàÐÍ¡£
+	* Iris 2D ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¡ï¿½
 	*/
 	//typedef bool(*GameFunc)();
 	typedef std::function<bool(void)> GameFunc;
@@ -24,7 +28,7 @@ namespace Iris2D {
 	*/
 	/**
 	* \~chinese
-	* Iris 2D Æô¶¯ÐÅÏ¢µÄ½á¹¹Ìå¡£
+	* Iris 2D ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ä½á¹¹ï¿½å¡£
 	* @see Initialize(const AppStartupInfo* pInfo)
 	*/
 	struct AppStartupInfo {
@@ -33,29 +37,29 @@ namespace Iris2D {
 	#ifdef _WIN32
 		HINSTANCE m_hInstance = nullptr;
 		/**< \~english Instance handle of Windows application taken from WinMain as a parameter. */
-		/**< \~chinese Windows Ó¦ÓÃµÄ Instance ¾ä±ú£¬À´×ÔÓÚ WinMain µÄ²ÎÊý¡£ */
+		/**< \~chinese Windows Ó¦ï¿½Ãµï¿½ Instance ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ WinMain ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ */
 		int nShowCmd = 0;
 	#endif
 		/**< \~english Show command of Windows application taken from WinMain as a parameter. */
-		/**< \~chinese Windows Ó¦ÓÃµÄ Show command£¬À´×ÔÓÚ WinMain µÄ²ÎÊý¡£ */
+		/**< \~chinese Windows Ó¦ï¿½Ãµï¿½ Show commandï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ WinMain ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ */
 		unsigned int m_nX = 0;
 		/**< \~english Initial X Position of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯ X ×ø±ê¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ X ï¿½ï¿½ï¿½ê¡£ */
 		unsigned int m_nY = 0;
 		/**< \~english Initial Y Position of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯ Y ×ø±ê¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ Y ï¿½ï¿½ï¿½ê¡£ */
 		unsigned int m_nWidth = 0;
 		/**< \~english Initial width of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯¿í¶È¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½È¡ï¿½ */
 		unsigned int m_nHeight = 0;
 		/**< \~english Initial height of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯¸ß¶È¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ï¿½ß¶È¡ï¿½ */
 		GameFunc m_pfFunc = nullptr;
 		/**< \~english Initial call-back function pointer of Iris 2D application, user's code of game should be written in this function */
-		/**< \~chinese Iris 2D »Øµ÷º¯ÊýÖ¸Õë£¬ÓÃ»§ÓÎÏ·´úÂëÓ¦¸Ã±»Ð´ÔÚ´Ëº¯ÊýÖ®ÖÐ¡£ */
+		/**< \~chinese Iris 2D ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½Ã»ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã±ï¿½Ð´ï¿½Ú´Ëºï¿½ï¿½ï¿½Ö®ï¿½Ð¡ï¿½ */
 		std::wstring m_wstrTitle = L"";
 		/**< \~english Initial title of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿ÚµÄ³õÊ¼»¯±êÌâ¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½ÚµÄ³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½â¡£ */
 
 #ifdef _WIN32
 		AppStartupInfo(HINSTANCE hInstance, int nShowCmd, unsigned int nX, unsigned int nY, unsigned int nWidth, unsigned int nHeight, GameFunc pfFunc, const std::wstring& wstrTitle) : m_hInstance(hInstance), nShowCmd(nShowCmd),
@@ -65,7 +69,7 @@ namespace Iris2D {
 			m_nHeight(nHeight), m_pfFunc(pfFunc), m_wstrTitle(wstrTitle) {}
 #else
 		AppStartupInfo(unsigned int nX, unsigned int nY, unsigned int nWidth,
-			unsigned int nHeight, bool(*pfFunc)(),
+			unsigned int nHeight, const GameFunc& pfFunc,
 			const std::wstring &wstrTitle) : m_nX(nX), m_nY(nY),
 			m_nWidth(nWidth),
 			m_nHeight(nHeight),

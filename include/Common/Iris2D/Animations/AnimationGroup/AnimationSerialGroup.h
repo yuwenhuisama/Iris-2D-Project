@@ -3,6 +3,7 @@
 
 #include "Common/Iris2D/Animations/AnimationReferred.h"
 #include <unordered_map>
+#include <list>
 
 namespace Iris2D {
 	namespace Animation {

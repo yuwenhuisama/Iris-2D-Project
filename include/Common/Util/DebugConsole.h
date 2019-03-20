@@ -2,7 +2,11 @@
 #define _H_DEBUG_CONSOLE_
 
 #include <string>
+
+#ifdef _WIN32
 #include <Windows.h>
+#endif
+
 #include <queue>
 #include <iostream>
 namespace Iris2D {

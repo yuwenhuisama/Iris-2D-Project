@@ -3,6 +3,12 @@
 #include <type_traits>
 #include "Common/Util/ProxyConvert.h"
 
+
+#ifndef _WIN32
+template <class T>
+using remove_pointer_t = typename std::remove_pointer<T>::type;
+#endif
+
 namespace Iris2D
 {
 	class RefCounter
@@ -22,7 +28,11 @@ namespace Iris2D
 
 	template <typename PT, typename T>
 	void RefferAssign(T& refferrer, const T& refferee) {
+#ifdef _WIN32
 		using R_PT = std::remove_pointer_t<PT>;
+#else
+		using R_PT = remove_pointer_t<PT>;
+#endif
 		static_assert(std::is_base_of<Iris2D::RefCounter, R_PT>::value, "Only RefCounter type can use RefferAssign function.");
 
 		GetProxied<PT>(refferee)->IncreamRefCount();
@@ -31,7 +41,11 @@ namespace Iris2D
 
 	template <typename T>
 	void RefferRelease(T& refferer) {
+#ifdef  _WIN32
 		using R_T = std::remove_pointer_t<T>;
+#else
+		using R_T = remove_pointer_t<T>;
+#endif
 		static_assert(std::is_base_of<Iris2D::RefCounter, R_T>::value, "Only RefCounter type can use RefferRelease function.");
 		refferer->DecreamRefCount();
 		if (refferer->GetRefCount() == 0) {

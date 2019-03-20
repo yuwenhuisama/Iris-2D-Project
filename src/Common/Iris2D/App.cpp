@@ -21,7 +21,7 @@ namespace Iris2D {
 		return m_pProxied->Initialize(hInstance, nWidth, nHeight, pfGameFunc, wszTitle);
 	}
 #else
-	ResultCode IApplication::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
+	ResultCode Application::Initialize(unsigned int nWidth, unsigned int nHeight, GameFunc pfGameFunc, const std::wstring & wszTitle) {
 		return m_pProxied->Initialize(nWidth, nHeight, pfGameFunc, wszTitle);
 	}
 #endif // _WIN32

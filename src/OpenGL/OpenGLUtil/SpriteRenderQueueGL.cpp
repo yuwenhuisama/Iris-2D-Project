@@ -10,8 +10,9 @@
 #include "Common/Iris2D/Viewport.h"
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.inl>
-#include <glm/ext/matrix_clip_space.inl>
+#include <glm/gtc/matrix_transform.hpp>
+//#include <glm/gtc/matrix_transform.inl>
+//#include <glm/ext/matrix_clip_space.inl>
 
 #include "Common/Util/DebugUtil.h"
 #include "Common/Iris2D/Sprites/SpriteIndexed.h"

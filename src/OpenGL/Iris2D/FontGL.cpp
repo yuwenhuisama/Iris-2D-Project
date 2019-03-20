@@ -33,7 +33,7 @@ namespace Iris2D {
 	{
 		m_nTextureMapHeight = 0;
 		m_nOriginY = 0;
-		for (const auto& c : L"abgµÄ")
+		for (const auto& c : L"test")
 		{
 			if (FT_Load_Char(m_FTFace, c, FT_LOAD_RENDER)) {
 				continue;
@@ -87,7 +87,6 @@ namespace Iris2D {
 				m_FTFace->glyph->bitmap_left,
 				m_FTFace->glyph->bitmap_top,
 				m_FTFace->glyph->advance.x,
-
 			};
 			Characters.insert(std::pair<wchar_t, Character>(c, character));
 		}

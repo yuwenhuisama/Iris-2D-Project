@@ -192,7 +192,7 @@ namespace Iris2D {
 		pShader->Use();
 		pShader->SetDesOthoMat(c_mt4Projection);
 		pShader->SetDesRect(pDestRect);
-		pShader->SetSrcTexCoordRect(pSrcRect, static_cast<float >(GetProxied<BitmapGL*>(pSrcBitmap)->GetWidth()),static_cast<float>(GetProxied<BitmapGL*>(pSrcBitmap)->GetHeight()));
+		pShader->SetSrcTexCoordRect(pSrcRect, static_cast<float>(GetProxied<BitmapGL*>(pSrcBitmap)->GetWidth()),static_cast<float>(GetProxied<BitmapGL*>(pSrcBitmap)->GetHeight()));
 		pShader->SetOpacity(fOpacity);
 
 		GetTexture()->UseTexture(0);
@@ -208,7 +208,7 @@ namespace Iris2D {
 		glBindVertexArray(0);
 
 		pTextureFrameBuffer->RestoreFrameBuffer();
-		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<GLsizei>(nWindowHeight));//适口还原
+		glViewport(0, 0, static_cast<GLsizei>(nWindowWidth), static_cast<GLsizei>(nWindowHeight));//锟绞口伙拷原
 
 		TextureGL::Release(m_pTexture);
 

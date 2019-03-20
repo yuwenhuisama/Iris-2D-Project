@@ -12,12 +12,12 @@ const std::unordered_map<std::string, TestUnit*> g_umapTestMap = {
 #ifdef _WIN32
 void RunTest(const std::string& strTestName, HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd) {
 #else
-void RunTest() {
+void RunTest(const std::string& strTestName) {
 #endif
 	if (g_umapTestMap.find(strTestName) != g_umapTestMap.end()) {
 		auto pTestUnit = g_umapTestMap.at(strTestName);
 
-		pTestUnit->Run(hInstance, prevInstance, cmdLine, showCmd);
+		pTestUnit->Run();
 	}
 }
 
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 #ifdef _WIN32
 	RunTest("animation", hInstance, prevInstance, cmdLine, showCmd);
 #else
-	RunTest("animation")
+	RunTest("animation");
 #endif
 
 	return 0;
