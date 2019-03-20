@@ -18,7 +18,7 @@ void TestUnit::Run() {
 		L"My Iris App"
 	};
 #else
-	AppStartupInfo iasiStartInfo = { 60u, 60u, 1600, 900,
+	AppStartupInfo iasiStartInfo = { 60u, 60u, 800, 600,
 									 [this]() -> bool {
 										 this->TestInitialize();
 										 this->TestMain();

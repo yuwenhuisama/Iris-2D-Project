@@ -16,54 +16,54 @@ public:
 		//pViewport->SetZ(1.0f);
 		Viewport* pViewport = nullptr;
 
-		auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
-		//auto pSprite = SpriteStatic::Create(pViewport);
-		//pSprite->SetBitmap(pBitmap);
-		//pSprite->SetZ(4.0f);
+		auto pBitmap = Bitmap::Create(L"image/kurumi.jpg");
+		auto pSprite = SpriteStatic::Create(pViewport);
+		pSprite->SetBitmap(pBitmap);
+		pSprite->SetZ(4.0f);
 
-		auto pBitmap2 = Bitmap::Create(L"image\\leimu.jpg");
+		auto pBitmap2 = Bitmap::Create(L"image/leimu.jpg");
 
 		//pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
 		//pBitmap2->ClearRect(Rect::Create(130, 140, 400, 400));
 		//pBitmap2->StretchBlt(Rect::Create(130, 140, 100, 100),pBitmap, Rect::Create(100, 100, 300, 300),100);
 
-		auto pfont = Font::Create(L"Font/simhei.ttf");
-		pfont->SetSize(60);
-		pfont->SetBold(true);
-		pfont->SetItalic(true);
-		pfont->SetShadow(true);
-		pBitmap->SetFont(pfont);
+//		auto pfont = Font::Create(L"Font/simhei.ttf");
+//		pfont->SetSize(60);
+//		pfont->SetBold(true);
+//		pfont->SetItalic(true);
+//		pfont->SetShadow(true);
+//		pBitmap->SetFont(pfont);
 
-		auto pRect1 = Rect::Create(200, 220, 260, 80);
-		pBitmap->DrawText(pRect1, L"cb", AlignType::Left);
-		pfont->SetItalic(false);
-		//pfont->SetShadow(false);
-		pfont->SetBold(false);
-		auto pRect2 = Rect::Create(100, 350, 360, 100);
-		pfont->SetSize(100);
-		pBitmap->DrawText(pRect2, L"test", AlignType::Center);
+//		auto pRect1 = Rect::Create(200, 220, 260, 80);
+//		pBitmap->DrawText(pRect1, L"cb", AlignType::Left);
+//		pfont->SetItalic(false);
+//		//pfont->SetShadow(false);
+//		pfont->SetBold(false);
+//		auto pRect2 = Rect::Create(100, 350, 360, 100);
+//		pfont->SetSize(100);
+//		pBitmap->DrawText(pRect2, L"test", AlignType::Center);
 
 		//pBitmap2->HueChange(200);
 		//pBitmap2->SaveToFile(L"temp/123123.png");
 
-		//auto pSprite2 = SpriteStatic::Create(pViewport);
-		//pSprite2->SetX(200.0f);
-		//pSprite2->SetBitmap(pBitmap2);
-		//pSprite2->SetZ(5.0f);
+		auto pSprite2 = SpriteStatic::Create();
+		pSprite2->SetX(200.0f);
+		pSprite2->SetBitmap(pBitmap2);
+		pSprite2->SetZ(5.0f);
 
 		//auto pTmpColor = pBitmap->GetPixel(0, 0);
 		//pSprite2->SetOpacity(0.5f);
 
-		auto pColor = Color::Create(255, 255, 255, 255);
-		auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
+//		auto pColor = Color::Create(255, 255, 255, 255);
+//		auto pEffect = Effect::EffectFlash::Create(pColor, 2, true);
 
 		//pSprite->SetEffect(pEffect);
 
-		auto pBitmap3 = Bitmap::Create(L"image/awesomeface.png");
+//		auto pBitmap3 = Bitmap::Create(L"image/awesomeface.png");
 		//std::vector<SpriteIndexed*> vcSprites = {};
 		//for (size_t i = 0; i < 5; ++i) {
-		auto pTmpSprite = SpriteIndexed::Create(3, 3);
-		pTmpSprite->SetBitmap(pBitmap3);
+//		auto pTmpSprite = SpriteIndexed::Create(3, 3);
+//		pTmpSprite->SetBitmap(pBitmap3);
 		//auto g = RandInRange(0.1f, 1.0f);
 		//pTmpSprite->SetX(RandInRange(0.0f, 1.0f) * 1600);
 		//pTmpSprite->SetY(RandInRange(0.0f, 1.0f) * 900);
@@ -184,8 +184,8 @@ public:
 		//Rect::Release(pRect);
 		Bitmap::Release(pBitmap);
 		Bitmap::Release(pBitmap2);
-		Effect::EffectFlash::Release(pEffect);
-		Color::Release(pColor);
+//		Effect::EffectFlash::Release(pEffect);
+//		Color::Release(pColor);
 		Viewport::Release(pViewport);
 
 		//Animation::AnimationPositionProperty::Release(pAnimation);
@@ -198,7 +198,7 @@ public:
 		//	SpriteStatic::Release(pSprite);
 		//}
 
-		SpriteIndexed::Release(pTmpSprite);
+//		SpriteIndexed::Release(pTmpSprite);
 	}
 
 	void TestTerminate() override {

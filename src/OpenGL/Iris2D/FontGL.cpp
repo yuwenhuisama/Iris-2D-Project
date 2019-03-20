@@ -274,7 +274,7 @@ namespace Iris2D {
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 			DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 			CharacterWicaches[ccKey].m_nTimes++;

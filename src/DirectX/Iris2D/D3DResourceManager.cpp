@@ -167,7 +167,7 @@ namespace Iris2D
 		unsigned int nCreationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 		D3D_DRIVER_TYPE ddtDX11DriverType = D3D_DRIVER_TYPE_HARDWARE;
 
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		nCreationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif 
 		auto hResult = D3D11CreateDeviceAndSwapChain(
@@ -227,7 +227,7 @@ namespace Iris2D
 		// DX 10 Device
 		unsigned int nCreationFlags = D3D10_CREATE_DEVICE_BGRA_SUPPORT;
 
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		nCreationFlags |= D3D10_CREATE_DEVICE_DEBUG;
 #endif 
 

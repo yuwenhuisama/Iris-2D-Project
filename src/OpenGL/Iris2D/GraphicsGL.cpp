@@ -59,7 +59,7 @@ namespace Iris2D {
 			nLastTime = curTime;
 		}
 
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 
 		static unsigned int  nCount = 0;
 
@@ -119,7 +119,7 @@ namespace Iris2D {
 		}
 		m_bUpdateLockFlag = false;
 
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		static unsigned int  nCount = 0;
 
 		if (nCount < 60) {
@@ -384,7 +384,7 @@ namespace Iris2D {
 	}
 
 	void GraphicsGL::AddViewport(ViewportGL*& pViewport) {
-		m_stViewports.insert(std::pair<float, ViewportGL*>(pViewport->GetZ(), pViewport));
+		m_stViewports.insert(std::make_pair(pViewport->GetZ(), pViewport));
 	}
 
 	void GraphicsGL::RemoveViewport(ViewportGL* & pViewport) {
@@ -410,7 +410,7 @@ namespace Iris2D {
 	}
 
 	ResultCode GraphicsGL::Render() {
-		const auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
+		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
 
 		if (m_bTransition) {
 			glClearColor(0.f, 0.f, 0.f, 1.f);
@@ -418,7 +418,7 @@ namespace Iris2D {
 
 			glBindVertexArray(m_nVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 			DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 			glBindVertexArray(0);
@@ -448,6 +448,8 @@ namespace Iris2D {
 			pShader->SetProjectionMatrix(c_mt4Projection);
 			pShader->SetBrightness(m_fBrightness - 0.5f);
 
+//			auto result = c_mt4Projection * glm::vec4(static_cast<float>(m_nWidth),  static_cast<float>(m_nHeight), 0.0f, 1.0f);
+
 			if (m_bFading) {
 				pShader->SetFadeInfo(glm::vec2{ m_nCurrentDuration, m_nDuration });
 			}
@@ -457,6 +459,7 @@ namespace Iris2D {
 
 			if (!m_bFreezing) {
 				m_pBackBuffer->UseTexture();
+//				m_pBackBuffer->SaveToFile(L"temp/output.png");
 			}
 			else {
 				m_pFreezedBackBuffer->UseTexture();
@@ -469,7 +472,7 @@ namespace Iris2D {
 
 			glBindVertexArray(m_nVAO);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 			DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 			glBindVertexArray(0);

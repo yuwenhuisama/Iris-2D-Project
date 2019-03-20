@@ -7,7 +7,7 @@ namespace Iris2D {
 	enum class ApiType {
 		OpenGL = 0,
 		DirectX,
-		// Vulkan,
+	 	Vulkan,
 	};
 
 	class Application;

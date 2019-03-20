@@ -19,7 +19,7 @@ namespace Iris2D {
 #ifdef _WIN32
 		std::multimap<float, ViewportGL*, std::less<>> m_stViewports;
 #else
-		std::multimap<float, ViewportGL*, std::less<float >> m_stViewports;
+		std::multimap<float, ViewportGL*> m_stViewports;
 #endif
 
 		unsigned int m_nWidth = 0;

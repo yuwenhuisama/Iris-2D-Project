@@ -46,7 +46,7 @@ namespace Iris2D {
 	ResultCode ApplicationGL::Initialize(const AppStartupInfo * pInfo) {
 		auto pHelper = OpenGLHelper::Instance();
 
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		PrintDebugMessageW(L"Iris 2D is currently running under Debug mode.");
 #endif
 

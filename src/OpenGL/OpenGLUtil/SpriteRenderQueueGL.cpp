@@ -340,7 +340,7 @@ namespace Iris2D {
 		const auto nVAO = m_vcStaticVAOs[m_nCurrentStaticVAOIndex];
 		glBindVertexArray(nVAO);
 		glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, dqQueue.size());
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -385,6 +385,7 @@ namespace Iris2D {
 
 		const auto pBuffer = m_pIndexedSpriteVertexInstanceBufferManager->MapBuffer();
 
+		std::cout << dqQueue.size();
 		for (size_t i = 0; i < dqQueue.size(); ++i) {
 			pBuffer[i] = static_cast<SpriteIndexedGL*>(dqQueue[i].m_pSprite)->GetInstanceAttribute();
 		}
@@ -401,7 +402,7 @@ namespace Iris2D {
 		glDrawElementsInstancedBaseVertexBaseInstance(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr, dqQueue.size(), 0, 0);
 
 		// glDrawElements(GL_TRIANGLES, 6 * dqQueue.size(), GL_UNSIGNED_INT, nullptr)
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);

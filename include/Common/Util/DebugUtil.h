@@ -14,8 +14,8 @@
 
 namespace Iris2D {
 	inline void _PrintDebugMessageW(const std::wstring& strMsg, unsigned int strLineNumber = 0, const char* strFileNumber = nullptr) {
-#ifdef _DEBUG
-		const auto strOutput = std::wstring(L"Debug: ") + strMsg.c_str() + L"\n";
+#if !defined(NDEBUG) | defined(_DEBUG)
+		const std::wstring strOutput = std::wstring(L"Debug: ") + strMsg + L"\n";
 
 #ifdef _WIN32
 		::OutputDebugStringW(L"=======================\n");
@@ -29,15 +29,15 @@ namespace Iris2D {
 		}
 		::OutputDebugStringW(L"=======================\n");
 #else
-		std::cout << "=======================\n";
-		std::cout << "Iris 2D Debug Message :\n";
-		std::cout << strOutput;
+		std::wcout << L"=======================\n";
+		std::wcout << L"Iris 2D Debug Message :\n";
+		std::wcout << strOutput;
 		if (strLineNumber && strFileNumber) {
-			boost::format ftFormatter("At line %1%, file %2%");
-			ftFormatter % strLineNumber % strFileNumber;
-			std::cout << ftFormatter.str() << std::endl;
+			boost::wformat wftFormatter(L"At line %1%, file %2%");
+			wftFormatter % strLineNumber % strFileNumber;
+			std::wcout << wftFormatter.str() << std::endl;
 		}
-		std::cout << "=======================\n";
+		std::wcout << L"=======================\n";
 #endif // _WIN32
 #endif // _DEBUG
 	}
@@ -58,7 +58,7 @@ namespace Iris2D {
 	}
 
 	inline void _PrintDebugMessageA(const std::string& strMsg, unsigned int strLineNumber = 0, const char* strFileNumber = nullptr) {
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		const auto strOutput = std::string("Debug: ") + strMsg.c_str() + "\n";
 
 #ifdef _WIN32
@@ -101,7 +101,7 @@ namespace Iris2D {
 		_PrintDebugMessageA(ftFormatter.str(), strLineNumber, strFileNumber);
 	}
 
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 #define PrintFormatDebugMessageW(wstrFormat, ...) _PrinFormatDebugMessageW(__LINE__, __FILE__, wstrFormat, __VA_ARGS__)
 #define PrintDebugMessageW(wstrMessage) _PrintDebugMessageW(wstrMessage, __LINE__, __FILE__)
 

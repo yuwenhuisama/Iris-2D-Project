@@ -15,8 +15,8 @@ namespace Iris2D {
 		using R_T1 = std::remove_pointer_t<T1>;
 		static_assert(std::is_base_of<std::remove_pointer_t<decltype(pProxy->GetProxied())>, R_T1>::value, "Wrong convert operation happend in GetProxied() function.");
 #else
-//		using R_T1 = std::remove_pointer<T1>;
-//        static_assert(std::is_base_of<remove_pointer_t<decltype(pProxy->GetProxied())>, R_T1>::value, "Wrong convert operation happend in GetProxied() function.");
+		using R_T1 = remove_pointer_t<T1>;
+        static_assert(std::is_base_of<remove_pointer_t<decltype(pProxy->GetProxied())>, R_T1>::value, "Wrong convert operation happend in GetProxied() function.");
 #endif
 		return pProxy ? static_cast<T1>(pProxy->GetProxied()) : nullptr;
 	}

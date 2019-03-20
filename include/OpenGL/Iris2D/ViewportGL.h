@@ -46,7 +46,7 @@ namespace Iris2D {
 		float m_fY = 0.0f;
 		float m_fZ = 0.0f;
 
-		std::multimap<float, SpriteBaseGL*, std::less<float>> m_stSprites;
+		std::multimap<float, SpriteBaseGL*> m_stSprites;
 
 		unsigned int m_nVAO = 0;
 		unsigned int m_nVBO = 0;

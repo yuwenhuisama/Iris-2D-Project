@@ -106,7 +106,7 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetProxied<BitmapGL*>(pSrcBitmapGL)->GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -202,7 +202,7 @@ namespace Iris2D {
 
 		glBindVertexArray(nVAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -268,7 +268,7 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -337,7 +337,7 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -450,7 +450,7 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -518,7 +518,7 @@ namespace Iris2D {
 		glBindVertexArray(nVAO);
 		GetTexture()->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);
@@ -552,7 +552,7 @@ namespace Iris2D {
 		glBindVertexArray(nVAO2);
 		pfontTexture->UseTexture();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugCounter::Instance()->IncreaseDrawCallTimesPerFrame();
 #endif
 		glBindVertexArray(0);

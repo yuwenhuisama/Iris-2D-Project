@@ -69,14 +69,14 @@ namespace Iris2D {
 
 	bool Application::CommonInitialize() {
 		srand(static_cast<unsigned>(time(nullptr)));
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugConsole::Instance()->Create();
 #endif
 		return true;
 	}
 
 	void Application::CommonRelease() {
-#ifdef _DEBUG
+#if !defined(NDEBUG) | defined(_DEBUG)
 		DebugConsole::Instance()->Release();
 #endif
 	}
