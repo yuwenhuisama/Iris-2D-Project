@@ -108,11 +108,11 @@ namespace Iris2D {
 #define PrintFormatDebugMessageA(strFormat, ...) _PrinFormatDebugMessageA(__LINE__, __FILE__, strFormat, __VA_ARGS__)
 #define PrintDebugMessageA(strMessage) _PrintDebugMessageA(strMessage, __LINE__, __FILE__)
 #else
-#define PrintFormatDebugMessageW(wstrFormat, ...)
-#define PrintDebugMessageW(wstrMessage)
+#define PrintFormatDebugMessageW(wstrFormat, ...) (0)
+#define PrintDebugMessageW(wstrMessage) (0)
 
-#define PrintFormatDebugMessageA(strFormat, ...)
-#define PrintDebugMessageA(strMessage)
+#define PrintFormatDebugMessageA(strFormat, ...) (0)
+#define PrintDebugMessageA(strMessage) (0)
 #endif
 
 }

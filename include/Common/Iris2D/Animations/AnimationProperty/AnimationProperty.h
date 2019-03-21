@@ -146,7 +146,7 @@ namespace Iris2D {
 				}
 
 				m_nFrameCounter = 0;
-				m_eState= AnimationState::Displaying;
+				m_eState = AnimationState::Displaying;
 				m_dpPreFrameData = m_dpStartFrameData;
 				m_iterCurrent = m_lsKeyFrameList.begin();
 			}

@@ -14,7 +14,11 @@
 #endif
 
 #else
+#ifdef PLATFORM_WINDOWS
 #define EXPORT_API __declspec(dllimport)
+#else
+#define EXPORT_API
+#endif
 #endif
 
 #endif
