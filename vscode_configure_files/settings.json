@@ -1,0 +1,6 @@
+{
+    "cmake.configureSettings" : {
+        "CMAKE_TOOLCHAIN_FILE": "${YOUR VCPKG CMAKE TOOLCHAIN_FILE PATH}"
+    }
+}
+ 
