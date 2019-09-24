@@ -70,6 +70,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::Existed(wstrFontName);
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -98,6 +100,8 @@ namespace Iris2D {
 			pFont->SetProxied(pTmp);
 		}
 			break;
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -124,6 +128,8 @@ namespace Iris2D {
 		case ApiType::OpenGL:
 			FontGL::Release(reinterpret_cast<FontGL*&>(pProxied));
 			break;
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -146,6 +152,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::GetDefaultName();
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -163,6 +171,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::GetDefaultSize();
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -180,6 +190,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::GetDefaultBold();
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -197,6 +209,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::GetDefaultItalic();
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -214,6 +228,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::GetDefaultShadow();
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:
@@ -231,6 +247,8 @@ namespace Iris2D {
 #endif // _WIN32
 		case ApiType::OpenGL:
 			return FontGL::GetDefaultColor();
+		case ApiType::Vulkan:
+			break;
 			/*
 			break;
 		default:

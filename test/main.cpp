@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 #ifdef _WIN32
 	RunTest("animation", hInstance, prevInstance, cmdLine, showCmd);
 #else
-	RunTest("sprite_indexed");
+	RunTest("animation");
 #endif
 
 	return 0;

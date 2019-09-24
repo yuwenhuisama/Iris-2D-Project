@@ -14,7 +14,7 @@
 namespace Iris2D {
 	Application* AppFactory::sm_pApp = nullptr;
 	Graphics* AppFactory::sm_pGraphics= nullptr;
-	ApiType AppFactory::sm_eType = ApiType::DirectX;
+	ApiType AppFactory::sm_eType = ApiType::OpenGL;
 
 	Application * AppFactory::GetApplication()  {
 		return sm_pApp;
