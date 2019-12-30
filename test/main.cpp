@@ -3,11 +3,15 @@
 #include <unordered_map>
 #include <map>
 
-#include "AnimationTest.hpp"
+#include "AnimationAndEffectTest.hpp"
+#include "SpriteStaticTest.hpp"
+#include "SpriteIndexedTest.hpp"
 
 
 const std::unordered_map<std::string, TestUnit*> g_umapTestMap = {
-	{ "animation", new AnimationTest() }
+	{ "animation", new AnimationAndEffectTest() },
+	{ "sprite_static", new SpriteStaticTest()},
+	{ "sprite_indexed", new SpriteIndexedTest()},
 };
 
 

@@ -19,7 +19,7 @@ namespace Iris2D {
 
 		private:
 			AnimationAngleProperty() = default;
-			~AnimationAngleProperty() = default;
+			~AnimationAngleProperty() override = default;
 		};
 	}
 }

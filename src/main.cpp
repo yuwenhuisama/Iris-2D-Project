@@ -11,12 +11,12 @@ bool GameCallBack() {
 	//pViewport->SetZ(1.0f);
 	Viewport* pViewport = nullptr;
 
-	auto pBitmap = Bitmap::Create(L"image\\kurumi.jpg");
+	auto pBitmap = Bitmap::Create(L"image/kurumi.jpg");
 	//auto pSprite = SpriteStatic::Create(pViewport);
 	//pSprite->SetBitmap(pBitmap);
 	//pSprite->SetZ(4.0f);
 
-	auto pBitmap2 = Bitmap::Create(L"image\\leimu.jpg");
+	auto pBitmap2 = Bitmap::Create(L"image/leimu.jpg");
 
 	//pBitmap2->FillRect(Rect::Create(30,40,100,200),Color::Create(250,0,0,100));
 	//pBitmap2->ClearRect(Rect::Create(130, 140, 400, 400));
@@ -29,7 +29,6 @@ bool GameCallBack() {
 	pfont->SetShadow(true);
 	pBitmap->SetFont(pfont);
 
-
 	auto pRect1 = Rect::Create(200, 220, 260, 80);
 	pBitmap->DrawText(pRect1, L"cb", AlignType::Left);
 	pfont->SetItalic(false);
@@ -37,8 +36,7 @@ bool GameCallBack() {
 	pfont->SetBold(false);
 	auto pRect2 = Rect::Create(100, 350, 360, 100);
 	pfont->SetSize(100);
-	pBitmap->DrawText(pRect2, L"bba·¨¿Ë", AlignType::Center);
-	
+	pBitmap->DrawText(pRect2, L"test", AlignType::Center);
 
 	//pBitmap2->HueChange(200);
 	//pBitmap2->SaveToFile(L"temp/123123.png");
@@ -205,7 +203,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 #else
 int main(int argc, char* argv[]) {
 #endif
+#ifdef _WIN32
 	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
+#else
+	AppStartupInfo iasiStartInfo = { 60, 60, 1600, 900, GameCallBack, L"My Iris App" };
+#endif
 
 	AppFactory::InitApiType(ApiType::OpenGL);
 	auto pApp = AppFactory::GetApplication();

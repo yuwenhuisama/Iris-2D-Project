@@ -40,7 +40,7 @@ namespace Iris2D {
 			}
 
 			bool bNeedStop = true;
-			for (auto& pAnimation : m_lsAnimations) {
+			for (const auto& pAnimation : m_lsAnimations) {
 				const auto bResult = pAnimation->Update();
 				const auto bState = pAnimation->GetAnimationState();
 

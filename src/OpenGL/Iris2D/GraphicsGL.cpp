@@ -23,7 +23,6 @@ namespace Iris2D {
 
     unsigned int timeGetTime();
     ResultCode GraphicsGL::Update() {
-
 		if (!m_bVsync) {
 			m_bVsync = true;
 			glfwSwapInterval(1);
@@ -32,6 +31,14 @@ namespace Iris2D {
 		auto eResult = Render();
 		glfwSwapBuffers(OpenGLHelper::Instance()->GetWindow());
 		glfwPollEvents();
+
+#ifdef __APPLE__
+		static bool bFirst = true;
+		if (bFirst) {
+			bFirst = false;
+			glfwSetWindowSize(OpenGLHelper::Instance()->GetWindow(), GetWidth(), GetHeight());
+		}
+#endif
 
 		m_bUpdateLockFlag = false;
 
@@ -410,7 +417,11 @@ namespace Iris2D {
 	}
 
 	ResultCode GraphicsGL::Render() {
-		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth), static_cast<float>(m_nHeight), 0.0f, 0.0f, 9999.0f);
+#ifdef __APPLE__
+		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth/2), static_cast<float>(m_nHeight/2), 0.0f, 0.0f, 9999.0f);
+#else
+		auto c_mt4Projection = glm::ortho(0.0f, static_cast<float>(m_nWidth/2), static_cast<float>(m_nHeight/2), 0.0f, 0.0f, 9999.0f);
+#endif
 
 		if (m_bTransition) {
 			glClearColor(0.f, 0.f, 0.f, 1.f);

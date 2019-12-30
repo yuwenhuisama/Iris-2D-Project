@@ -13,6 +13,17 @@
 #include "OpenGL/Common.h"
 
 #ifdef _WIN32
+#define PLATFORM_WINDOWS
+#else
+#define PLATFORM_APPLE
+#endif
+
+#ifdef PLATFORM_APPLE
+#define BOOL bool
+#define VOID void
+#endif
+
+#ifdef _WIN32
 #include "DirectX/Common.h"
 #endif
 

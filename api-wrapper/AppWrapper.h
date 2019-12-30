@@ -16,34 +16,40 @@ extern "C" {
 #ifdef _WIN32
 		HINSTANCE m_hInstance;
 		/**< \~english Instance handle of Windows application taken from WinMain as a parameter. */
-		/**< \~chinese Windows Ó¦ÓÃµÄ Instance ¾ä±ú£¬À´×ÔÓÚ WinMain µÄ²ÎÊý¡£ */
+		/**< \~chinese Windows Ó¦ï¿½Ãµï¿½ Instance ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ WinMain ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ */
 		int nShowCmd;
 #endif
 		/**< \~english Show command of Windows application taken from WinMain as a parameter. */
-		/**< \~chinese Windows Ó¦ÓÃµÄ Show command£¬À´×ÔÓÚ WinMain µÄ²ÎÊý¡£ */
+		/**< \~chinese Windows Ó¦ï¿½Ãµï¿½ Show commandï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ WinMain ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ */
 		unsigned int m_nX;
 		/**< \~english Initial X Position of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯ X ×ø±ê¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ X ï¿½ï¿½ï¿½ê¡£ */
 		unsigned int m_nY;
 		/**< \~english Initial Y Position of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯ Y ×ø±ê¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ Y ï¿½ï¿½ï¿½ê¡£ */
 		unsigned int m_nWidth;
 		/**< \~english Initial width of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯¿í¶È¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½È¡ï¿½ */
 		unsigned int m_nHeight;
 		/**< \~english Initial height of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿Ú³õÊ¼»¯¸ß¶È¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ï¿½ß¶È¡ï¿½ */
 		App_GameFunc m_pfFunc;
 		/**< \~english Initial call-back function pointer of Iris 2D application, user's code of game should be written in this function */
-		/**< \~chinese Iris 2D »Øµ÷º¯ÊýÖ¸Õë£¬ÓÃ»§ÓÎÏ·´úÂëÓ¦¸Ã±»Ð´ÔÚ´Ëº¯ÊýÖ®ÖÐ¡£ */
+		/**< \~chinese Iris 2D ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ë£¬ï¿½Ã»ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã±ï¿½Ð´ï¿½Ú´Ëºï¿½ï¿½ï¿½Ö®ï¿½Ð¡ï¿½ */
 		wchar_t* m_wstrTitle;
 		/**< \~english Initial title of the window of Iris 2D application. */
-		/**< \~chinese Iris 2D ´°¿ÚµÄ³õÊ¼»¯±êÌâ¡£ */
+		/**< \~chinese Iris 2D ï¿½ï¿½ï¿½ÚµÄ³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½â¡£ */
 	};
 #pragma pack(pop)
 
 	EXPORT_API APP_HANDLE App_GetInstance();
+
+#ifdef PLATFORM_WINDOWS
 	EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
+#else
+	EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle);
+#endif
+
 	EXPORT_API ResultCode App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo);
 	EXPORT_API BOOL App_Run(APP_HANDLE hHandle);
 	EXPORT_API void App_Release(APP_HANDLE hHandle);

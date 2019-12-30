@@ -6,10 +6,10 @@ set(CMAKE_CXX_STANDARD 11)
 include_directories(include)
 include_directories(api-wrapper)
 
-find_package(GLEW REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(GLEW REQUIRED)
 
 if (WIN32)
 	SET(DIRECTX_DEPENDENCIES dxgi.lib; Windowscodecs.lib; d3d10_1.lib; d3d11.lib; d2d1.lib; dxguid.lib; D3DCompiler.lib; Winmm.lib; Dwrite.lib)
@@ -26,7 +26,9 @@ if (WIN32)
 	endif()
 elseif (APPLE)
 	find_package(harfbuzz CONFIG REQUIRED)
-	link_libraries(${OPENGL})
+	link_libraries(${OPENGL} ${GLFW_LIB})
+
+	set (CMAKE_CXX_FLAGS "-Wno-nonportable-include-path")
 endif ()
 
 find_package(OpenGL REQUIRED)
@@ -60,14 +62,14 @@ aux_source_directory(./test DIR_TEST)
 
 if (WIN32)
 		add_library(libiris2d SHARED
-		${DIR_WRAPPER}		
+		${DIR_WRAPPER}
 		${DIR_SRCS_MAIN_OPENGL}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SPRITE}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_EFFECT}
 		${DIR_SRCS_MAIN_OPENGL_UTIL}
-		
+
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL}
@@ -91,7 +93,7 @@ if (WIN32)
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_EFFECT}
 		${DIR_SRCS_MAIN_OPENGL_UTIL}
-		
+
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL}
@@ -105,21 +107,20 @@ if (WIN32)
 		${DIR_SRCS_COMMON_IRIS2D_ANIMATION_PROPERTY}
 
 		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
-		
-		${DIR_TEST}
-		)
+
+		${DIR_TEST})
 
 		add_executable(main
 		WIN32
 		${DIR_SRCS_MAIN}
-		
+
 		${DIR_SRCS_MAIN_OPENGL}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SPRITE}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_OPENGL_IRIS2D_EFFECT}
 		${DIR_SRCS_MAIN_OPENGL_UTIL}
-		
+
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_SHADER}
 		${DIR_SRCS_MAIN_DIRECTX_IRIS2D_UTIL}
@@ -133,9 +134,9 @@ if (WIN32)
 		${DIR_SRCS_COMMON_IRIS2D_ANIMATION_PROPERTY}
 
 		${DIR_SRCS_MAIN_DIRECTX_DX_UTIL}
-	  )
+	  	)
 elseif (APPLE)
-	add_library(libiris2d SHARED
+	add_library(iris2d SHARED
 			${DIR_WRAPPER}
 			${DIR_SRCS_MAIN_OPENGL}
 			${DIR_SRCS_MAIN_OPENGL_IRIS2D}
@@ -197,7 +198,7 @@ if (WIN32)
 	target_link_libraries(main PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm Freetype::Freetype)
 	target_link_libraries(test PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm Freetype::Freetype)
 elseif (APPLE)
-	target_link_libraries(libiris2d PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm Freetype::Freetype harfbuzz::harfbuzz)
+	target_link_libraries(iris2d PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm Freetype::Freetype harfbuzz::harfbuzz)
 	target_link_libraries(main PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm Freetype::Freetype harfbuzz::harfbuzz)
 	target_link_libraries(test PRIVATE ${OPENGL_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} glfw GLEW::GLEW glm Freetype::Freetype harfbuzz::harfbuzz)
 endif()

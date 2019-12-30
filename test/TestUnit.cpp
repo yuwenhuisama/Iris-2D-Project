@@ -8,7 +8,7 @@ void TestUnit::Run(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 void TestUnit::Run() {
 #endif
 #ifdef _WIN32
-	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 900,
+	AppStartupInfo iasiStartInfo = { hInstance, showCmd, 60, 60, 1600, 800,
 		[this]() -> bool {
 			this->TestInitialize();
 			this->TestMain();

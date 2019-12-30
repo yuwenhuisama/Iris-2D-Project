@@ -5,6 +5,8 @@ EXPORT_API APP_HANDLE App_GetInstance() {
 	return Iris2D::AppFactory::GetApplication();
 }
 
+#ifdef PLATFORM_WINDOWS
+
 EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, HINSTANCE hInstance, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle) {
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
 	return pApplication->Initialize(hInstance, nWidth, nHeight, reinterpret_cast<bool(*)()>(pfGameFunc), wszTitle);
@@ -15,6 +17,23 @@ EXPORT_API ResultCode App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pI
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
 	return pApplication->Initialize(&asiInfo);
 }
+
+#else
+
+EXPORT_API ResultCode App_Initialize(APP_HANDLE hHandle, unsigned int nWidth, unsigned int nHeight, App_GameFunc pfGameFunc, wchar_t* wszTitle) {
+	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
+	return pApplication->Initialize(nWidth, nHeight, reinterpret_cast<bool(*)()>(pfGameFunc), wszTitle);
+}
+
+EXPORT_API ResultCode App_Initialize2(APP_HANDLE hHandle, App_AppStartupInfo* pInfo) {
+	Iris2D::AppStartupInfo asiInfo(pInfo->m_nX, pInfo->m_nY, pInfo->m_nWidth, pInfo->m_nHeight, reinterpret_cast<bool(*)()>(pInfo->m_pfFunc), pInfo->m_wstrTitle);
+	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
+	return pApplication->Initialize(&asiInfo);
+}
+
+#endif
+
+
 
 EXPORT_API BOOL App_Run(APP_HANDLE hHandle) {
 	auto pApplication = reinterpret_cast<Iris2D::Application*>(hHandle);
